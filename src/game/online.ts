@@ -2,7 +2,9 @@ import Peer, { type DataConnection } from 'peerjs';
 import { CONFIG, MOODS } from '../data/config';
 import { defaultSeats } from '../data/storage';
 import { createGame, playCard, selectTarget } from './rules';
-import type { Card, GameState, PlayerConfig } from './types';
+import type { GameState, PlayerConfig } from './types';
+import { projectForSeat } from './projection';
+export { projectForSeat } from './projection';
 
 type Profile = Pick<PlayerConfig, 'name' | 'avatar' | 'mood'>;
 type GuestCommand = { type: 'hello'; profile: Profile } | { type: 'play'; cardId: string } | { type: 'target'; seat: number } | { type: 'mood'; mood: PlayerConfig['mood'] };
@@ -10,7 +12,6 @@ type HostMessage = { type: 'snapshot'; seat: number; seats: PlayerConfig[]; stat
 const CONNECTION_TIMEOUT_MS = 20_000;
 const MOVE_TIMEOUT_MS = 10_000;
 
-const hiddenCard = (index: number): Card => ({ id: `hidden-${index}`, rank: 'A', suit: 'fire' });
 const cleanProfile = (input: unknown): Profile => {
   const profile = input && typeof input === 'object' ? input as Partial<Profile> : {};
   return {
@@ -20,22 +21,11 @@ const cleanProfile = (input: unknown): Profile => {
   };
 };
 
-/** The host keeps the deck and all hands. A guest receives only their own real cards. */
-export function projectForSeat(full: GameState, seat: number): GameState {
-  return {
-    ...full,
-    players: full.players.map((player, index) => ({ ...player, hand: index === seat ? [...player.hand] : player.hand.map((_, i) => hiddenCard(i)) })),
-    drawPile: full.drawPile.map((_, i) => hiddenCard(i)),
-    played: [...full.played],
-    pendingSevens: [...full.pendingSevens],
-    exactEvents: [...full.exactEvents],
-    log: [...full.log],
-  };
-}
-
 export class OnlineRoom {
   readonly isHost: boolean;
   readonly roomId: string;
+  readonly hostSeat = 0;
+  get runsCpuLocally(): boolean { return this.isHost; }
   localSeat = 0;
   seats: PlayerConfig[] = [];
   state: GameState | null = null;

@@ -30,13 +30,13 @@ Invalid throws return to your hand. To use a 7, choose a highlighted player afte
 
 ## Play online
 
-GitHub Pages: **[Play 100](https://barryklaus.github.io/100game/)**
+Current GitHub Pages version: **[Play 100](https://barryklaus.github.io/100game/)**. It still uses direct browser connections. The hosted version below has been built and tested locally but is not yet publicly deployed.
 
 Choose **Play Online with Friends**, pick one of 16 characters, and create a room. Send the invite link to friends. Each friend enters a name and joins from a separate browser; the host can add CPU seats and starts the round when at least two seats are ready. The same room can play another round. Each browser's bottom panel always shows that person's own two cards and mood, even while someone else takes a turn. On one-device local games, other Human turns use a separate pass-the-device panel above the fixed local hand.
 
-The host's browser runs the rules and holds the shuffled deck. Guests receive only their own card faces; other hands and the draw pile are masked in network messages. The host must keep the tab open. A guest who disconnects during a round is replaced by a CPU; rooms are not saved after the host leaves or reloads. PeerJS Cloud provides connection signaling, with encrypted WebRTC data channels between browsers. Some restrictive networks may need a TURN relay, which this version does not provide. There is no account, public matchmaking, chat, or central game server.
+On the GitHub Pages version, the host's browser runs the rules and holds the shuffled deck. Guests receive only their own card faces; other hands and the draw pile are masked in network messages. The host must keep the tab open. PeerJS Cloud provides connection signaling, with encrypted WebRTC data channels between browsers. Some restrictive networks may need a TURN relay, which this version does not provide.
 
-If a room stays on **Connecting…**, it now ends with a clear error after 20 seconds and offers a retry. A guest move that receives no reply also becomes available to retry after 10 seconds. These checks prevent a silent hang, but cannot make a direct WebRTC connection work through every router or VPN. If two friends cannot join across networks, try another connection; reliable cross-network play and saved rooms require a hosted relay or game service. Refreshing the host's page still ends the room.
+On GitHub Pages, a failed connection or unconfirmed move eventually shows a retry. Refreshing the host's page still ends that room. The hosted version runs the rules on Cloudflare instead, so the host can refresh and return to the same seat. The hosted service validates turns and sends each player a private view of the game. Rooms expire after 24 hours without activity. Players can rejoin from the same browser using a saved room token; there are no accounts, public matchmaking, or chat.
 
 ## Run locally
 
@@ -54,6 +54,17 @@ pnpm test
 pnpm build
 ```
 
+## Hosted version
+
+The Cloudflare Worker serves both the website and a persistent multiplayer room service. To try it locally:
+
+```bash
+pnpm build:cloudflare
+pnpm dev:cloudflare
+```
+
+Open the local URL shown by Wrangler. Create a room in one browser, then open the invite link in another browser or an isolated browser profile. To deploy, sign in to a Cloudflare account with Wrangler and run `pnpm deploy:cloudflare`. The live URL will be supplied by Cloudflare after deployment. GitHub Pages continues to use the direct browser version unless its publishing workflow is changed.
+
 ## Prototype status
 
-Version 0.2 is a browser game built with **TypeScript, Three.js, PeerJS, HTML, CSS, and Vite**. Settings, statistics, rating, and cosmetic currency live in LocalStorage on each device. The supplied card artwork remains unchanged in its source files; optimized copies power the website. See [GAME_RULES.md](GAME_RULES.md) for complete rules and [ASSET_MANIFEST.md](ASSET_MANIFEST.md) for asset provenance.
+Version 0.2 is a browser game built with **TypeScript, Three.js, PeerJS, Cloudflare Workers, Durable Objects, HTML, CSS, and Vite**. Settings, statistics, rating, and cosmetic currency live in LocalStorage on each device. The supplied card artwork remains unchanged in its source files; optimized copies power the website. See [GAME_RULES.md](GAME_RULES.md) for complete rules and [ASSET_MANIFEST.md](ASSET_MANIFEST.md) for asset provenance.

@@ -1,5 +1,5 @@
 import { CONFIG } from '../data/config';
-import { makeDeck, shuffle } from './deck';
+import { makeDeck, shuffle } from './deckCore';
 import type { Card, GameState, PlayerConfig } from './types';
 
 export function cardValue(card: Card): number {

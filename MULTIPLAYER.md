@@ -1,19 +1,26 @@
-# Online multiplayer investigation
+# Online multiplayer
 
-## What was reproduced
+## Why the public version was unreliable
 
-- On the published site, a host and guest in separate browser tabs joined one room and exchanged turns. Each tab displayed its own hand.
-- Reloading the host tab immediately ended the guest's room and discarded the round. The invite URL then opened the join form, because the host browser had owned the only authoritative copy of the game.
-- A missing room returned a `peer-unavailable` error. Before the connection checks in this update, a WebRTC connection that never opened had no deadline and could stay on **Connecting…** indefinitely.
+On the published GitHub Pages site, a host and guest could join and exchange turns. Refreshing the host immediately ended the guest's room, because the host browser owned the only copy of the game. PeerJS uses direct WebRTC connections, and its [FAQ](https://peerjs.com/client/faq) explains that some network combinations need a TURN relay. [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site) serves static files and cannot run the room service.
 
-## Comparison with Settlecoast
+Settlecoast's public interface offers invite games, a lobby, AI seats, and saved online games. Its [privacy policy](https://settlecoast.com/privacy) names Supabase and Netlify. Its exact internal game protocol is not public.
 
-Settlecoast's public UI offers private invite games, a game lobby, turn timers, AI seats, and saved online games. Its [privacy policy](https://settlecoast.com/privacy) says it uses Supabase for authentication and database services and Netlify for hosting; it processes online room identifiers, actions, and game state. The exact internal game protocol is not public.
+## Hosted implementation
 
-100 currently uses PeerJS Cloud only to introduce browsers. The host browser owns the deck and rules; the players exchange moves through direct WebRTC data channels. PeerJS [documents](https://peerjs.com/client/faq) that some network combinations cannot connect directly and need a TURN relay. [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site) serves static files and cannot itself run the game service.
+The new Cloudflare Worker serves the site and routes each room to a [Durable Object](https://developers.cloudflare.com/durable-objects/best-practices/websockets/). The room stores seats, the deck, turn state, and a revision. Players send commands over WebSockets; the room validates whose turn it is, applies the rules, runs CPU turns, and sends each browser a separate view. Other players' card faces and the draw pile remain hidden.
 
-## Current repair and remaining work
+Each player receives a private room token stored in that browser. A refresh reconnects to the same seat, including the host seat. If a player does not return within 30 seconds, a CPU can take over during a round, and an available human becomes host. Rooms expire after 24 hours without activity.
 
-This update adds a 20-second connection deadline, a retry action, clear errors for rejected or missing rooms, and a 10-second deadline for an unconfirmed guest move. It stops silent hangs and preserves the host's actual rejection message. It does not provide a relay, persist a room, or restore a seat after a disconnect.
+The hosted version passed local rule tests, a Cloudflare Worker build, and a two-browser game in which both players exchanged turns and the host refreshed and rejoined. It has **not** been deployed publicly; the current GitHub Pages link still uses PeerJS.
 
-For reliable online play, move the authoritative deck, rules, seats, and saved state to a hosted game service. Clients should send `join`, `start`, `play`, and `target` commands; the service validates each command and returns a separate state view to each seat so opponents' cards and the draw pile stay private. Broadcast a room revision, then fetch the correct view for each player. Keep room state across browser refreshes, support reconnection by the same player, and expire abandoned rooms. A hosted database and function or a persistent WebSocket service can do this; either requires a separate deployment and account beyond GitHub Pages. A TURN relay alone helps more networks connect but does not solve host refresh or saved rooms.
+## Development and deployment
+
+```bash
+pnpm install
+pnpm test
+pnpm build:cloudflare
+pnpm dev:cloudflare
+```
+
+To publish, sign in to a Cloudflare account with Wrangler, then run `pnpm deploy:cloudflare`. The Cloudflare site URL becomes the hosted multiplayer entry point. The GitHub Pages workflow can stay as an older demo or be redirected after the hosted version is verified online.

@@ -8,6 +8,7 @@ import type { Card, GameState, PlayerConfig } from './game/types';
 import { AudioManager } from './audio/AudioManager';
 import { HoloShader } from './render/HoloShader';
 import { OnlineRoom, newRoomId } from './game/online';
+import { HostedRoom } from './game/hosted';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 let settings: Settings = loadSettings();
@@ -19,10 +20,11 @@ let modal: 'rules' | 'settings' | 'stats' | 'menu' | null = null;
 let cpuTimer: number | undefined;
 let reaction: Record<number, string> = {};
 let toastTimer: number | undefined;
-let online: OnlineRoom | null = null;
+let online: OnlineRoom | HostedRoom | null = null;
 let onlineMode: 'host' | 'join' | null = new URLSearchParams(location.search).has('room') ? 'join' : null;
 let joinCode = new URLSearchParams(location.search).get('room') || '';
 let roomCpuCount = 0;
+let hostedLobbyInitialized = false;
 let recordedRound = 0;
 let lastTurnKey = '';
 let awaitingNetwork = false;
@@ -45,7 +47,14 @@ function closeOnline(): void {
 function roomChanged(): void {
   if (!online) return;
   if (!awaitingNetwork || online.error || online.status === 'disconnected' || online.state?.log[0] !== pendingLog) awaitingNetwork = false;
-  if (online.isHost && online.status === 'lobby' && online.cpuCount !== roomCpuCount) { online.setCpuCount(roomCpuCount); return; }
+  if (online.isHost && online.status === 'lobby') {
+    if (online instanceof HostedRoom && !hostedLobbyInitialized) {
+      roomCpuCount = online.cpuCount;
+      hostedLobbyInitialized = true;
+    }
+    roomCpuCount = Math.min(roomCpuCount, CONFIG.PLAYER_MAX - online.seats.filter(seat => seat.kind === 'human').length);
+    if (online.cpuCount !== roomCpuCount) { online.setCpuCount(roomCpuCount); return; }
+  }
   const previous = state;
   state = online.state;
   if (previous?.phase === 'ended' && state?.phase === 'playing') recordedRound = 0;
@@ -68,7 +77,9 @@ function connectOnline(mode: 'host' | 'join'): void {
   const code = mode === 'host' ? newRoomId() : joinCode.trim().replace(/^.*[?&]room=/, '').split('&')[0];
   if (!/^100-[a-z0-9]{12}$/.test(code)) { flash('Enter a valid room code or invite link.', 'bust'); return; }
   online?.close(); online = null; state = null; awaitingNetwork = false; selectedCard = null; lastTurnKey = '';
-  online = new OnlineRoom(mode === 'join' ? 'guest' : 'host', code, { name, avatar, mood: settings.seats[0].mood }, roomChanged);
+  hostedLobbyInitialized = false;
+  const Room = import.meta.env.MODE === 'cloudflare' ? HostedRoom : OnlineRoom;
+  online = new Room(mode === 'join' ? 'guest' : 'host', code, { name, avatar, mood: settings.seats[0].mood }, roomChanged);
   onlineMode = mode; recordedRound = 0;
   if (mode === 'host') { online.setCpuCount(roomCpuCount); history.replaceState(null, '', `${location.pathname}?room=${code}`); }
   render();
@@ -123,7 +134,7 @@ function resolveCard(cardId: string): void {
       if (card.rank === '10') stats.tens++;
       save();
     }
-    selectedCard = null; awaitingNetwork = !online.isHost; pendingLog = state.log[0]; online.play(cardId); render(); return;
+    selectedCard = null; awaitingNetwork = !online.isHost || online instanceof HostedRoom; pendingLog = state.log[0]; online.play(cardId); render(); return;
   }
   playCard(state, cardId);
   stats.cards++;
@@ -177,7 +188,7 @@ async function animatePlay(cardId: string, source?: HTMLElement): Promise<void> 
 function chooseTarget(target: number): void {
   if (!state || state.phase !== 'target' || locked) return;
   const chooser = state.pendingSevens.at(-1)!;
-  if (online) { awaitingNetwork = !online.isHost; pendingLog = state.log[0]; online.target(target); render(); return; }
+  if (online) { awaitingNetwork = !online.isHost || online instanceof HostedRoom; pendingLog = state.log[0]; online.target(target); render(); return; }
   selectTarget(state, target);
   react([target], ['WHAT?!','HEY!','ME?'][Math.floor(Math.random()*3)]);
   flash(`${state.players[chooser].name} chose ${state.players[target].name}`, 'seven');
@@ -186,7 +197,7 @@ function chooseTarget(target: number): void {
 function scheduleCpu(): void {
   clearCpu();
   if (!state || locked || state.phase === 'ended') return;
-  if (online && !online.isHost) return;
+  if (online && !online.runsCpuLocally) return;
   const actor = state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current;
   if (state.players[actor].kind !== 'cpu') return;
   const delay = CONFIG.CPU_DELAY_MIN + Math.random() * (CONFIG.CPU_DELAY_MAX - CONFIG.CPU_DELAY_MIN);
@@ -214,12 +225,12 @@ function avatarPicker(): string {
   return `<div class="avatar-picker" role="group" aria-label="Choose a character">${avatarNames.map((name, index) => `<button class="avatar-choice ${settings.seats[0].avatar === index ? 'chosen' : ''}" data-avatar-choice="${index}" aria-label="${escapeHtml(name)}" aria-pressed="${settings.seats[0].avatar === index}"><img src="${avatarImage(index)}" alt=""><span>${escapeHtml(name)}</span></button>`).join('')}</div>`;
 }
 function onlineView(): string {
-  return `<main class="online-page"><section class="online-panel"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">PLAY TOGETHER</div><h1>Online table</h1><p>Each friend plays from their own browser. The host keeps this tab open during the round.</p><div class="online-tabs"><button class="${onlineMode === 'host' ? 'current' : ''}" data-action="host-tab">Create room</button><button class="${onlineMode === 'join' ? 'current' : ''}" data-action="join-tab">Join room</button></div><label class="online-field">YOUR NAME<input id="online-name" maxlength="15" value="${escapeHtml(settings.seats[0].name)}"></label><div class="online-avatar-heading">YOUR CHARACTER <span>${escapeHtml(avatarNames[settings.seats[0].avatar % 16])}</span></div>${avatarPicker()}${onlineMode === 'join' ? `<label class="online-field">ROOM CODE OR INVITE LINK<input id="room-code" autocomplete="off" value="${escapeHtml(joinCode)}" placeholder="100-abc123…"></label>` : ''}<button class="primary-button start-button" data-action="${onlineMode === 'join' ? 'join-room' : 'create-room'}">${onlineMode === 'join' ? 'JOIN ROOM' : 'CREATE ROOM'} ➜</button><button class="text-button" data-action="back-setup">Back to local setup</button></section></main>`;
+  return `<main class="online-page"><section class="online-panel"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">PLAY TOGETHER</div><h1>Online table</h1><p>Each friend plays from their own browser. Share a room link to play together.</p><div class="online-tabs"><button class="${onlineMode === 'host' ? 'current' : ''}" data-action="host-tab">Create room</button><button class="${onlineMode === 'join' ? 'current' : ''}" data-action="join-tab">Join room</button></div><label class="online-field">YOUR NAME<input id="online-name" maxlength="15" value="${escapeHtml(settings.seats[0].name)}"></label><div class="online-avatar-heading">YOUR CHARACTER <span>${escapeHtml(avatarNames[settings.seats[0].avatar % 16])}</span></div>${avatarPicker()}${onlineMode === 'join' ? `<label class="online-field">ROOM CODE OR INVITE LINK<input id="room-code" autocomplete="off" value="${escapeHtml(joinCode)}" placeholder="100-abc123…"></label>` : ''}<button class="primary-button start-button" data-action="${onlineMode === 'join' ? 'join-room' : 'create-room'}">${onlineMode === 'join' ? 'JOIN ROOM' : 'CREATE ROOM'} ➜</button><button class="text-button" data-action="back-setup">Back to local setup</button></section></main>`;
 }
 function lobbyView(): string {
   if (!online) return onlineView();
   const invite = `${location.origin}${location.pathname}?room=${online.roomId}`;
-  return `<main class="online-page"><section class="online-panel"><div class="eyebrow">${online.isHost ? 'YOUR ROOM' : 'JOINING A ROOM'}</div><h1>${online.status === 'disconnected' ? 'Connection ended' : online.status === 'connecting' ? 'Connecting…' : 'Gather your players'}</h1><p role="status">${online.error ? escapeHtml(online.error) : online.isHost ? 'Share this link. Each friend joins from a separate browser.' : 'Waiting for the host to start the round.'}</p>${online.isHost && online.status === 'lobby' ? `<div class="invite-box"><input readonly aria-label="Invite link" value="${escapeHtml(invite)}"><button data-action="copy-invite">COPY LINK</button></div>` : ''}<div class="lobby-seats">${online.seats.map((seat,i)=>`<div><img src="${avatarImage(seat.avatar)}" alt=""><strong>${escapeHtml(seat.name)}${i === online!.localSeat ? ' · You' : ''}</strong><span>${seat.kind === 'cpu' ? 'CPU' : i === 0 ? 'Host' : 'Online'}</span></div>`).join('')}</div>${online.isHost && online.status === 'lobby' ? `<label class="online-field">CPU PLAYERS <select id="room-cpus">${Array.from({length:Math.max(0,9-online.seats.filter(s=>s.kind==='human').length)},(_,i)=>`<option value="${i}" ${online!.cpuCount===i?'selected':''}>${i}</option>`).join('')}</select></label><button class="primary-button start-button" data-action="start-online" ${online.seats.length<2?'disabled':''}>START ONLINE ROUND ➜</button><p class="setup-note">${online.seats.length}/8 seats · At least two players needed</p>` : ''}${online.status === 'disconnected' ? `<button class="primary-button start-button" data-action="retry-room">${online.isHost ? 'CREATE NEW ROOM' : 'TRY JOINING AGAIN'} ➜</button>` : ''}<button class="text-button" data-action="leave-room">Leave room</button></section></main>`;
+  return `<main class="online-page"><section class="online-panel"><div class="eyebrow">${online.isHost ? 'YOUR ROOM' : 'JOINING A ROOM'}</div><h1>${online.status === 'disconnected' ? 'Connection ended' : online.status === 'connecting' ? 'Connecting…' : 'Gather your players'}</h1><p role="status">${online.error ? escapeHtml(online.error) : online.isHost ? 'Share this link. Each friend joins from a separate browser.' : 'Waiting for the host to start the round.'}</p>${online.isHost && online.status === 'lobby' ? `<div class="invite-box"><input readonly aria-label="Invite link" value="${escapeHtml(invite)}"><button data-action="copy-invite">COPY LINK</button></div>` : ''}<div class="lobby-seats">${online.seats.map((seat,i)=>`<div><img src="${avatarImage(seat.avatar)}" alt=""><strong>${escapeHtml(seat.name)}${i === online!.localSeat ? ' · You' : ''}</strong><span>${seat.kind === 'cpu' ? 'CPU' : i === online!.hostSeat ? 'Host' : 'Online'}</span></div>`).join('')}</div>${online.isHost && online.status === 'lobby' ? `<label class="online-field">CPU PLAYERS <select id="room-cpus">${Array.from({length:Math.max(0,9-online.seats.filter(s=>s.kind==='human').length)},(_,i)=>`<option value="${i}" ${online!.cpuCount===i?'selected':''}>${i}</option>`).join('')}</select></label><button class="primary-button start-button" data-action="start-online" ${online.seats.length<2?'disabled':''}>START ONLINE ROUND ➜</button><p class="setup-note">${online.seats.length}/8 seats · At least two players needed</p>` : ''}${online.status === 'disconnected' ? `<button class="primary-button start-button" data-action="retry-room">${online instanceof HostedRoom ? 'RECONNECT TO ROOM' : online.isHost ? 'CREATE NEW ROOM' : 'TRY JOINING AGAIN'} ➜</button>` : ''}<button class="text-button" data-action="leave-room">Leave room</button></section></main>`;
 }
 function seatHtml(player: GameState['players'][number], index: number, count: number): string {
   if (!state) return '';
@@ -227,7 +238,7 @@ function seatHtml(player: GameState['players'][number], index: number, count: nu
   const x = 50 + 42*Math.cos(angle), y = 50 + 39*Math.sin(angle);
   const active = state.phase === 'target' ? state.pendingSevens.at(-1) === index : state.current === index;
   const targetable = state.phase === 'target' && canControlActor() && index !== state.pendingSevens.at(-1);
-  return `<button class="seat ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''}" data-seat="${index}" style="--seat-x:${x}%;--seat-y:${y}%" ${targetable?'data-target="'+index+'"':''} aria-label="${player.name}, ${player.kind}, ${player.hand.length} cards, mood ${player.mood}"><div class="reaction-bubble">${reaction[index]||''}</div><div class="character"><div class="character-head"><img src="${avatarImage(player.avatar)}" alt=""></div><div class="character-body"></div></div><div class="seat-info"><span class="seat-name">${escapeHtml(player.name)}</span><span class="seat-meta">${suitSymbols[['fire','water','leaf','sun'][index%4] as keyof typeof suitSymbols]} ${player.kind==='cpu'?'CPU':'HUMAN'} · ${moodSymbols[player.mood]} ${player.mood}</span></div><div class="opponent-hand"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div></button>`;
+  return `<button class="seat ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''}" data-seat="${index}" style="--seat-x:${x}%;--seat-y:${y}%" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards, mood ${player.mood}"><div class="reaction-bubble">${reaction[index]||''}</div><div class="character"><div class="character-head"><img src="${avatarImage(player.avatar)}" alt=""></div><div class="character-body"></div></div><div class="seat-info"><span class="seat-name">${escapeHtml(player.name)}</span><span class="seat-meta">${suitSymbols[['fire','water','leaf','sun'][index%4] as keyof typeof suitSymbols]} ${player.kind==='cpu'?'CPU':'HUMAN'} · ${moodSymbols[player.mood]} ${player.mood}</span></div><div class="opponent-hand"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div></button>`;
 }
 function gameView(): string {
   if (!state) return '';
@@ -258,13 +269,14 @@ function modalView(): string {
   const body = modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 busts; everyone else survives.</p><div class="rules-grid"><div><strong>A, 2–6</strong><span>Add face value</span></div><div><strong>J, Q, K</strong><span>Add 10</span></div><div><strong>7 · CHOOSE</strong><span>Make another player play immediately. Their normal turn stays in place.</span></div><div><strong>8 · REVERSE</strong><span>Reverse direction. In a two-player game, play again.</span></div><div><strong>9 · ZERO</strong><span>Add nothing.</span></div><div><strong>10 · MINUS</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Bust for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. You can also tap a card, then press Play Card.</p>`
   : modal==='settings' ? `<h2>Settings</h2><div class="modal-setting"><label for="volume">Sound volume <strong>${Math.round(settings.volume*100)}%</strong></label><input id="volume" type="range" min="0" max="1" step="0.01" value="${settings.volume}"></div><div class="modal-setting"><label for="graphics">Graphics</label><select id="graphics"><option value="high" ${settings.graphics==='high'?'selected':''}>High · holographic shine</option><option value="low" ${settings.graphics==='low'?'selected':''}>Low · static cards</option></select></div><p>Settings save on this device.</p>`
   : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Busts',stats.busts],['Cards played',stats.cards],['7s used',stats.sevens],['8s used',stats.eights],['9s used',stats.nines],['10s used',stats.tens],['Test rating',stats.rating],['Currency',stats.currency]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Statistics, rating, and currency are local to this device. Currency does not affect gameplay.</p>`
-  : `<h2>Game menu</h2><p>Round ${state?.round || 1} · ${state?.players.length || settings.playerCount} players</p><div class="menu-actions">${!online || online.isHost ? '<button class="secondary-button" data-action="restart">Restart round</button>' : ''}<button class="secondary-button" data-action="${online?'leave-room':'new-game'}">${online?'Leave online room':'Return to setup'}</button><button class="secondary-button" data-action="stats">Local statistics</button></div>`;
+  : `<h2>Game menu</h2><p>Round ${state?.round || 1} · ${state?.players.length || settings.playerCount} players</p><div class="menu-actions">${!online || (online.isHost && !(online instanceof HostedRoom)) ? '<button class="secondary-button" data-action="restart">Restart round</button>' : ''}<button class="secondary-button" data-action="${online?'leave-room':'new-game'}">${online?'Leave online room':'Return to setup'}</button><button class="secondary-button" data-action="stats">Local statistics</button></div>`;
   return `<div class="overlay modal-overlay" data-action="close-modal"><section class="modal-panel" role="dialog" aria-modal="true"><button class="close-button" data-action="close-modal" aria-label="Close">×</button>${body}</section></div>`;
 }
 function render(): void {
   app.innerHTML = (online && online.status !== 'playing' ? lobbyView() : state ? gameView() : onlineMode ? onlineView() : setupView()) + modalView();
 }
 render();
+if (import.meta.env.MODE === 'cloudflare' && onlineMode === 'join' && /^100-[a-z0-9]{12}$/.test(joinCode) && localStorage.getItem(`100game:room:${joinCode}`)) connectOnline('join');
 
 app.addEventListener('click', event => {
   const target = event.target as HTMLElement;
@@ -277,7 +289,7 @@ app.addEventListener('click', event => {
     if (action === 'host-tab' || action === 'join-tab') { onlineMode = action === 'host-tab' ? 'host' : 'join'; render(); }
     if (action === 'back-setup') { onlineMode = null; history.replaceState(null, '', location.pathname); render(); }
     if (action === 'create-room' || action === 'join-room') connectOnline(action === 'create-room' ? 'host' : 'join');
-    if (action === 'retry-room' && online) connectOnline(online.isHost ? 'host' : 'join');
+    if (action === 'retry-room' && online) { if (online instanceof HostedRoom) online.retry(); else connectOnline(online.isHost ? 'host' : 'join'); }
     if (action === 'start-online') online?.startRound();
     if (action === 'leave-room') { modal = null; closeOnline(); }
     if (action === 'copy-invite' && online) void navigator.clipboard.writeText(`${location.origin}${location.pathname}?room=${online.roomId}`).then(()=>flash('Invite link copied')).catch(()=>flash('Select and copy the invite link.'));
