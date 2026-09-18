@@ -4,7 +4,7 @@
 
 **PLAY. BLUFF. SURVIVE.**
 
-100 is a fast, tactile card game for 2–8 players. Watch the shared total, make another player take a risky turn, and stay under 101. Mix Human and CPU players at any seat; multiple Humans can pass one device around the table.
+100 is a fast, tactile card game for 2–8 players. Watch the shared total, make another player take a risky turn, and stay under 101. Mix Human and CPU players at any seat. Play locally on one device or online with friends on separate devices.
 
 Every player holds **exactly two cards**. Play one card every turn, then draw back to two. There is no Pass action. Fire, Water, Leaf, and Sun are visual suits and do not change the rules.
 
@@ -32,6 +32,10 @@ Invalid throws return to your hand. To use a 7, choose a highlighted player afte
 
 GitHub Pages: **[Play 100](https://barryklaus.github.io/100game/)**
 
+Choose **Play Online with Friends**, pick one of 16 characters, and create a room. Send the invite link to friends. Each friend enters a name and joins from a separate browser; the host can add CPU seats and starts the round when at least two seats are ready. The same room can play another round. Each browser's bottom panel always shows that person's own two cards and mood, even while someone else takes a turn. On one-device local games, other Human turns use a separate pass-the-device panel above the fixed local hand.
+
+The host's browser runs the rules and holds the shuffled deck. Guests receive only their own card faces; other hands and the draw pile are masked in network messages. The host must keep the tab open. A guest who disconnects during a round is replaced by a CPU; rooms are not saved after the host leaves or reloads. PeerJS Cloud provides connection signaling, with encrypted WebRTC data channels between browsers. Some restrictive networks may need a TURN relay, which this first online version does not provide. There is no account, public matchmaking, chat, or central game server.
+
 ## Run locally
 
 Requires Node.js 22+ and pnpm 11 for development only. Players only need a modern browser.
@@ -50,4 +54,4 @@ pnpm build
 
 ## Prototype status
 
-Version 0.1 is a browser-only prototype built with **TypeScript, Three.js, HTML, CSS, and Vite**. Settings, statistics, rating, and cosmetic currency live in LocalStorage. There are no accounts, online multiplayer, or backend services. The supplied card artwork remains unchanged in its source files; optimized copies power the website. See [GAME_RULES.md](GAME_RULES.md) for complete rules and [ASSET_MANIFEST.md](ASSET_MANIFEST.md) for asset provenance.
+Version 0.2 is a browser game built with **TypeScript, Three.js, PeerJS, HTML, CSS, and Vite**. Settings, statistics, rating, and cosmetic currency live in LocalStorage on each device. The supplied card artwork remains unchanged in its source files; optimized copies power the website. See [GAME_RULES.md](GAME_RULES.md) for complete rules and [ASSET_MANIFEST.md](ASSET_MANIFEST.md) for asset provenance.

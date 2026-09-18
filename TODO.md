@@ -10,3 +10,7 @@
 - [x] Create the local `100game` repository and public `barryklaus/100game` remote.
 - [x] Push the complete source to GitHub.
 - [x] Verify the GitHub Pages build and public desktop/mobile URL.
+- [x] Keep the bottom hand and mood panel tied to the local player through every turn.
+- [x] Add host and guest online rooms with private hands, mixed CPU seats, invite links, and turn synchronization.
+- [x] Generate and integrate 16 original selectable character portraits.
+- [x] Verify a host and guest can join, exchange turns, and keep their own two-card panels visible.

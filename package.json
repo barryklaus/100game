@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc --noEmit && vite build",
-    "test": "node scripts/test-rules.mjs",
+    "test": "node scripts/test-rules.mjs && node scripts/test-online.mjs",
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
+    "peerjs": "^1.5.5",
     "three": "^0.180.0"
   },
   "devDependencies": {

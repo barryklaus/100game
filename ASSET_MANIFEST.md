@@ -66,4 +66,27 @@ The four supplied 6144 × 4096 PNG suit sheets in the connected `Cards` folder a
 | `public/assets/cards/back.webp` | WebP | 400 × 535 | — | One shared neutral navy and gold 100 back for the draw pile and all face-down hands. |
 | `public/assets/scene/tavern.webp` | WebP | 1400 × 636 | — | Decorative table ambience cropped from the Water suit sheet. |
 
-Card crops are resized and compressed only. Their artwork is not redrawn or recolored. Character portraits reuse small crops of the supplied card faces. Interface panels, table rings, effects, and simple seated silhouettes are code and CSS, not separate image assets. Audio cues are synthesized locally with Web Audio; no audio files were supplied.
+Card crops are resized and compressed only. Their artwork is not redrawn or recolored. Interface panels, table rings, effects, and simple seated silhouettes are code and CSS. Audio cues are synthesized locally with Web Audio; no audio files were supplied.
+
+## Original avatar portraits
+
+Sixteen separate original character portraits were generated with the built-in imagegen tool, then resized to 512 × 512 JPEG at quality 82 for the site. They are distinct from the supplied card faces. Shared prompt direction: “One original square chest-up character avatar for 100; expressive face, clear silhouette, vibrant hand-painted anime fantasy card illustration, energetic ink outlines, painterly highlights, saturated color, warm tavern light, soft motif background; no card frame, suit, rank, lettering, or watermark.” Each prompt used the following distinct subject:
+
+| File | Character | Subject prompt |
+| --- | --- | --- |
+| `public/assets/avatars/avatar-01.jpg` | Ember Scout | Tousled black hair, brass goggles, red scarf, ember motif. |
+| `public/assets/avatars/avatar-02.jpg` | Tide Scholar | Dark skin, teal braids, pearl earrings, blue water robes. |
+| `public/assets/avatars/avatar-03.jpg` | Grove Guardian | Older man, leafy beard, moss cloak, botanical motifs. |
+| `public/assets/avatars/avatar-04.jpg` | Sun Knight | Golden curls, sunburst armor, amber cape. |
+| `public/assets/avatars/avatar-05.jpg` | Storm Pilot | Silver undercut, violet scarf, lightning goggles. |
+| `public/assets/avatars/avatar-06.jpg` | Coral Bard | Freckles, seafoam curls, coral jewelry, lute strap. |
+| `public/assets/avatars/avatar-07.jpg` | Mushroom Alchemist | Round glasses, mushroom hat, green coat. |
+| `public/assets/avatars/avatar-08.jpg` | Desert Ranger | Brown skin, dark braid, amber cloak, sun compass. |
+| `public/assets/avatars/avatar-09.jpg` | Moon Seer | Elderly woman, indigo-silver hair, crescent eyepiece. |
+| `public/assets/avatars/avatar-10.jpg` | River Courier | Auburn curls, blue messenger satchel, ripple pins. |
+| `public/assets/avatars/avatar-11.jpg` | Thorn Duelist | Dark skin, short emerald hair, thorned collar. |
+| `public/assets/avatars/avatar-12.jpg` | Forge Captain | Older woman, copper skin, short white hair, forged pauldron. |
+| `public/assets/avatars/avatar-13.jpg` | Cloud Mechanic | Lavender bob, brass goggles, sky-blue tool belt. |
+| `public/assets/avatars/avatar-14.jpg` | Marsh Mystic | Black man, violet cloak, teal beads, firefly lantern. |
+| `public/assets/avatars/avatar-15.jpg` | Wildwood Archer | Freckles, red hair, leaf-green hood, woodland markings. |
+| `public/assets/avatars/avatar-16.jpg` | Dawn Dancer | South Asian woman, dark waves, saffron ribbons, gold jewelry. |
