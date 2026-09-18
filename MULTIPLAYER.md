@@ -12,7 +12,7 @@ The new Cloudflare Worker serves the site and routes each room to a [Durable Obj
 
 Each player receives a private room token stored in that browser. A refresh reconnects to the same seat, including the host seat. If a player does not return within 30 seconds, a CPU can take over during a round, and an available human becomes host. Rooms expire after 24 hours without activity.
 
-The hosted version passed local rule tests, a Cloudflare Worker build, and a two-browser game in which both players exchanged turns and the host refreshed and rejoined. It has **not** been deployed publicly; the current GitHub Pages link still uses PeerJS.
+The hosted version passed local rule tests, a Cloudflare Worker build, and a two-browser game in which both players exchanged turns and the host refreshed and rejoined. It is live at **[100game.100game.workers.dev](https://100game.100game.workers.dev/)**. A live HTTPS check created two seats, applied a turn, and restored the host after disconnect. The older GitHub Pages link still uses PeerJS.
 
 ## Development and deployment
 
@@ -23,4 +23,4 @@ pnpm build:cloudflare
 pnpm dev:cloudflare
 ```
 
-To publish, sign in to a Cloudflare account with Wrangler, then run `pnpm deploy:cloudflare`. The Cloudflare site URL becomes the hosted multiplayer entry point. The GitHub Pages workflow can stay as an older demo or be redirected after the hosted version is verified online.
+To publish a new version, run `pnpm deploy:cloudflare` while signed in to the owner's Cloudflare account. The GitHub Pages workflow can stay as an older demo or be redirected to the hosted version.

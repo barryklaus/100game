@@ -15,4 +15,4 @@
 - [x] Generate and integrate 16 original selectable character portraits.
 - [x] Verify a host and guest can join, exchange turns, and keep their own two-card panels visible.
 - [x] Build and locally test a hosted room service that survives host refresh.
-- [ ] Deploy the hosted version to Cloudflare and verify play across separate networks.
+- [x] Deploy the hosted version to Cloudflare and verify the live HTTPS room service with separate players and host reconnection.
