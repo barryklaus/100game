@@ -1,0 +1,224 @@
+/* Illustrated game table. The art is scenery; every card, seat, and control remains live HTML. */
+.game-page {
+  height: 100svh;
+  min-height: 620px;
+  background: #10131b url('/assets/scene/fantasy-table.jpg') center / cover no-repeat;
+}
+.game-page::before {
+  opacity: 1;
+  filter: none;
+  background: linear-gradient(180deg, #080b15a6 0%, #080b1530 19%, transparent 38%, transparent 69%, #090b15b5 100%);
+}
+.game-page::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(90deg, #0709127a, transparent 25%, transparent 75%, #07091255);
+}
+.game-header {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 8;
+  height: 112px;
+  align-items: flex-start;
+  padding: 22px 28px;
+  background: none;
+  border: 0;
+  pointer-events: none;
+}
+.game-header button { pointer-events: auto; }
+.game-logo { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 0; width: 170px; }
+.game-logo strong { font-size: clamp(3.5rem, 6vw, 5.3rem); line-height: .81; color: #ffe8b6; text-shadow: 0 4px 12px #140d16d9; }
+.game-logo .game-crown { position: absolute; left: 57px; top: -19px; font-size: 2rem; color: #ffcf6f; transform: rotate(-11deg); }
+.game-logo small { margin: 9px 0 0; max-width: none; color: #fff0d2; font-size: .66rem; line-height: 1.25; font-style: italic; letter-spacing: .11em; text-shadow: 0 2px 8px #000; }
+.header-status { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.round-pill { border: 0; padding: 0; color: #fff6e8; font-size: .91rem; letter-spacing: .01em; text-transform: none; text-shadow: 0 2px 8px #000; }
+.turn-pill { border: 1px solid #d1b58777; padding: 5px 11px; background: #0a101ac9; color: #f4d395; font-size: .66rem; letter-spacing: .02em; box-shadow: 0 4px 15px #0007; }
+.header-actions { margin-left: 20px; gap: 7px; }
+.header-actions button { width: 39px; height: 39px; border-color: #e5d6b467; background: #121622cc; backdrop-filter: blur(10px); color: #fff1d3; }
+.header-actions button:last-child { width: 46px; height: 46px; margin-top: -3px; }
+
+.game-layout { position: absolute; inset: 0; z-index: 2; display: block; min-height: 0; padding: 0; }
+.arena { position: absolute; inset: 0; min-height: 0; }
+.arena-glow, .table-lines { display: none; }
+.table-rim, .table-felt {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%; min-width: 0; min-height: 0;
+  transform: none; border: 0; border-radius: 0; box-shadow: none;
+  background: none; overflow: visible;
+}
+.table-felt::before, .table-felt::after { display: none; }
+.direction-indicator { top: 21.5%; font-size: .64rem; letter-spacing: .12em; color: #f6d195; text-shadow: 0 2px 7px #000; }
+.direction-indicator span { font-size: .9rem; margin-right: 5px; }
+.total-wrap { top: 25%; min-width: 130px; text-shadow: 0 3px 13px #000, 0 0 24px #ffa54599; }
+.total-caption { color: #fff6e8; font-size: .85rem; font-weight: 700; letter-spacing: .14em; }
+.total-number { font-size: clamp(3.6rem, 5.2vw, 5.4rem); line-height: .93; color: #fff2c8; }
+.total-max { margin-top: 1px; font-size: .65rem; color: #f3ddbb; letter-spacing: .17em; }
+.table-cards { top: 38%; bottom: auto; gap: clamp(25px, 3vw, 48px); align-items: start; }
+.pile-wrap { color: #fff4e8; font-size: .83rem; font-weight: 600; letter-spacing: .02em; text-transform: none; text-shadow: 0 2px 9px #000; }
+.pile-wrap small { color: #f2e4d5; font-size: .72rem; }
+.draw-stack, .played-slot, .played-slot .playing-card { width: clamp(77px, 7.2vw, 114px); height: min(clamp(115px, 10.8vw, 171px), 17vh); }
+.draw-stack, .played-slot { margin-bottom: 12px; }
+.draw-stack img { border-radius: 8px; border: 2px solid #d7aa68; box-shadow: 3px 4px #d5b786, 7px 9px #141824, 11px 17px 16px #000b; }
+.played-slot { border: 2px dashed #d3b786a8; border-radius: 10px; }
+.played-slot:has(.playing-card) { border: 0; }
+.played-slot .playing-card { box-shadow: 0 0 0 2px #ffe1a1, 0 0 20px #ffb547bb, 0 15px 25px #000b; }
+.empty-slot { color: #ffe4aa; font-size: .7rem; }
+
+.seat-layer { z-index: 4; }
+.seat {
+  display: flex; align-items: center; gap: 7px;
+  width: clamp(135px, 12.3vw, 190px); height: 54px; padding: 4px 9px 4px 5px;
+  border: 1px solid #d5a7659e; border-radius: 27px;
+  background: linear-gradient(100deg, #0b1019f2, #22202be0);
+  box-shadow: 0 7px 19px #000b, inset 0 1px #fff2;
+  backdrop-filter: blur(9px); text-align: left; filter: none;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.seat:hover { transform: translate(-50%, -55%); }
+.seat.active { border-color: #ffe294; box-shadow: 0 0 19px #ffc36e99, 0 7px 19px #000b; filter: none; }
+.seat.targetable { border-color: #ffe697; box-shadow: 0 0 24px #ffe18dbb, 0 7px 19px #000b; filter: none; animation: target-pulse 1s infinite; }
+.seat.targetable::after { top: -21px; }
+.seat.local-seat { display: none; }
+.seat .character { flex: none; width: 44px; height: 44px; }
+.seat .character-head { width: 44px; height: 44px; border: 2px solid #e2bd78; box-shadow: 0 2px 9px #000c; }
+.seat .character-head img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.seat-info { flex: 1; min-width: 0; padding: 0; margin: 0; border: 0; background: none; box-shadow: none; }
+.seat.active .seat-info { border: 0; box-shadow: none; }
+.seat-name { color: #fff8ed; font-size: .82rem; line-height: 1.2; }
+.seat-meta { color: #dfd7cf; font-size: .61rem; margin-top: 2px; }
+.seat-suit { flex: none; color: #ffcb7d; font-size: 1.27rem; line-height: 1; text-shadow: 0 0 10px currentColor; }
+.seat.suit-fire .seat-suit, .log-suit.suit-fire { color: #ff7358; }
+.seat.suit-water .seat-suit, .log-suit.suit-water { color: #70c7ff; }
+.seat.suit-leaf .seat-suit, .log-suit.suit-leaf { color: #8bd768; }
+.seat.suit-sun .seat-suit, .log-suit.suit-sun { color: #ffd36c; }
+.reaction-bubble { top: -32px; }
+.target-hint { bottom: 43%; background: #171b29ed; font-size: .74rem; }
+
+.side-panel { position: absolute; top: 54%; right: 1.6%; bottom: auto; width: min(20vw, 306px); min-width: 230px; padding: 0; display: block; z-index: 5; }
+.side-panel > .side-card:first-child, .side-foot { display: none; }
+.side-card.log-card { padding: 13px 15px; border: 1px solid #ddb986a3; border-radius: 14px; background: #0c1019d9; box-shadow: 0 16px 28px #000a; backdrop-filter: blur(13px); }
+.log-card h3 { margin: 0; font: 700 1rem 'DM Sans', system-ui, sans-serif; }
+.log-card .card-heading span { display: none; }
+.log-card ul { max-height: min(26vh, 250px); margin: 6px 0 0; }
+.log-card li { display: flex; gap: 8px; align-items: flex-start; padding: 5px 0; color: #f2e5d7; font-size: .72rem; line-height: 1.3; }
+.log-suit { width: 17px; flex: none; font-size: .92rem; line-height: 1; text-align: center; }
+
+.hand-dock { position: absolute; inset: 0; z-index: 6; display: block; height: auto; padding: 0; background: none; border: 0; box-shadow: none; pointer-events: none; }
+.dock-prompt { position: absolute; left: 2.4%; bottom: 9%; display: flex; flex-direction: row; align-items: center; gap: 10px; max-width: 250px; min-width: 200px; padding: 5px 12px 5px 5px; border: 1px solid #67b6eaab; border-radius: 40px 15px 15px 40px; background: #09121ddf; box-shadow: 0 8px 20px #000a; backdrop-filter: blur(9px); }
+.dock-avatar { width: 60px; height: 60px; flex: none; border-radius: 50%; border: 2px solid #78c7ff; object-fit: cover; box-shadow: 0 0 13px #58bfff77; }
+.dock-person { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dock-person .eyebrow { color: #88cff6; font-size: .54rem; letter-spacing: .13em; }
+.dock-person strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 800 1rem 'DM Sans', sans-serif; }
+.dock-person small { color: #e3dfdc; font-size: .68rem; white-space: nowrap; }
+.local-hand { position: absolute; left: 50%; top: 60%; transform: translateX(-50%); min-width: 0; gap: clamp(12px, 1.4vw, 24px); pointer-events: auto; }
+.local-hand .hand-card { height: clamp(145px, 20vh, 212px); border-radius: 10px; box-shadow: 0 0 0 2px #f6e8c6, 0 0 17px #72c2ff8c, 0 16px 25px #000c; }
+.local-hand .hand-card.special { box-shadow: 0 0 0 2px #f6e8c6, 0 0 20px #ed83e8bb, 0 16px 25px #000c; }
+.local-hand .hand-card.selected { box-shadow: 0 0 0 3px #fff7bd, 0 0 27px #ffd665, 0 19px 30px #000c; }
+.waiting-hand { opacity: .88; }
+.waiting-cards img { height: clamp(135px, 18vh, 190px); border: 2px solid #edd9aa; }
+.dock-controls { position: absolute; top: 81%; left: 50%; transform: translateX(-50%); width: min(23vw, 280px); display: flex; align-items: center; gap: 7px; pointer-events: auto; }
+.dock-controls .play-button { width: 100%; min-height: 59px; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 9px 19px; border: 2px solid #ffe1a1; border-radius: 35px; background: linear-gradient(180deg, #f9dc8c, #bb782b 58%, #efc067); color: #fff7e8; font-size: 1.25rem; letter-spacing: .02em; text-shadow: 0 2px 3px #704010; box-shadow: inset 0 1px 3px #fff9, 0 3px 0 #342012, 0 8px 24px #000c, 0 0 0 3px #261b15; }
+.dock-controls .play-button span { font-size: .9rem; }
+.dock-controls .play-button:disabled { opacity: .65; }
+.dock-hint { color: #fff3e3; font-size: .72rem; text-align: center; text-shadow: 0 2px 6px #000; }
+.hand-dock > .mood-label { position: absolute; left: 2.4%; bottom: 3.1%; width: 230px; padding: 0; color: #f2dfb8; font-size: .6rem; pointer-events: auto; }
+.hand-dock > .mood-label select { padding: 5px 8px; border-color: #e4bc8099; background: #101927d9; color: #fff3db; }
+.dock-quote { position: absolute; right: 2.2%; bottom: 2.8%; color: #ffdc8b; font: italic 700 1rem 'Fraunces', Georgia, serif; letter-spacing: .05em; text-align: right; text-shadow: 0 2px 10px #000; }
+.shared-turn { bottom: auto; top: 52%; max-width: 430px; }
+.online-alert { position: absolute; top: 12%; left: 50%; transform: translateX(-50%); z-index: 12; width: max-content; max-width: 85vw; }
+
+@media (max-width: 1050px) {
+  .game-header { height: 96px; padding: 15px 20px; }
+  .game-logo strong { font-size: 3.7rem; }
+  .game-logo .game-crown { left: 39px; top: -14px; font-size: 1.5rem; }
+  .game-logo small { font-size: .5rem; margin-top: 6px; }
+  .seat { width: 142px; height: 46px; transform: translate(-50%, -50%); }
+  .seat:hover { transform: translate(-50%, -53%); }
+  .seat .character, .seat .character-head { width: 36px; height: 36px; }
+  .seat-name { font-size: .73rem; }
+  .seat-meta { font-size: .54rem; }
+  .side-panel { width: 205px; min-width: 0; top: 56%; right: 1%; }
+  .log-card li { font-size: .62rem; }
+  .dock-controls { width: 240px; }
+}
+
+@media (max-width: 720px) {
+  .game-page { min-height: 600px; background-position: center top; }
+  .game-page::before { background: linear-gradient(180deg, #080b16df 0%, #080b1666 20%, transparent 40%, #090b145c 65%, #090b16e0 100%); }
+  .game-page::after { background: linear-gradient(90deg, #0609147a, transparent 30%, transparent 70%, #0609147a); }
+  .game-header { height: 76px; padding: 13px 12px; }
+  .game-logo { width: 84px; }
+  .game-logo strong { font-size: 2.7rem; }
+  .game-logo .game-crown { left: 27px; top: -12px; font-size: 1.1rem; }
+  .game-logo small { display: none; }
+  .round-pill { font-size: .65rem; white-space: nowrap; }
+  .round-pill { display: block; }
+  .turn-pill { font-size: .55rem; padding: 4px 7px; }
+  .header-actions { margin-left: 8px; gap: 3px; }
+  .header-actions button { width: 29px; height: 29px; font-size: .8rem; }
+  .header-actions button:last-child { width: 33px; height: 33px; margin-top: -2px; }
+  .seat-layer { top: 78px; right: 6px; bottom: auto; left: 6px; height: 61px; display: flex; gap: 5px; overflow-x: auto; pointer-events: auto; scrollbar-width: none; }
+  .seat-layer::-webkit-scrollbar { display: none; }
+  .seat { position: relative; left: auto!important; top: auto!important; transform: none!important; flex: 0 0 113px; width: 113px; height: 46px; padding: 3px; gap: 4px; }
+  .seat .character, .seat .character-head { width: 32px; height: 32px; }
+  .seat-name { font-size: .66rem; }
+  .seat-meta { font-size: .47rem; }
+  .seat-suit { font-size: .85rem; }
+  .seat.targetable::after { top: 40px; font-size: .46rem; }
+  .direction-indicator { top: 24%; font-size: .52rem; }
+  .direction-indicator span { font-size: .7rem; }
+  .total-wrap { top: 28%; }
+  .total-caption { font-size: .61rem; }
+  .total-number { font-size: 3.8rem; }
+  .total-max { font-size: .52rem; }
+  .table-cards { top: 40%; gap: 24px; }
+  .draw-stack, .played-slot, .played-slot .playing-card { width: 65px; height: 96px; }
+  .pile-wrap { font-size: .63rem; }
+  .pile-wrap small { font-size: .56rem; }
+  .local-hand { top: 58%; gap: 10px; }
+  .local-hand .hand-card { height: clamp(115px, 18vh, 155px); }
+  .waiting-cards img { height: 120px; }
+  .dock-controls { top: 79%; width: 180px; gap: 4px; }
+  .dock-controls .play-button { min-height: 45px; padding: 7px 12px; font-size: .86rem; }
+  .dock-hint { font-size: .54rem; white-space: nowrap; }
+  .dock-prompt { bottom: 2%; left: 7px; min-width: 0; max-width: 130px; gap: 4px; padding: 3px; border-radius: 28px 9px 9px 28px; }
+  .dock-avatar { width: 38px; height: 38px; }
+  .dock-person .eyebrow { font-size: .42rem; }
+  .dock-person strong { font-size: .69rem; max-width: 75px; }
+  .dock-person small { font-size: .45rem; }
+  .hand-dock > .mood-label { left: 145px; bottom: 2.5%; width: 96px; font-size: .48rem; gap: 2px; }
+  .hand-dock > .mood-label select { width: 66px; padding: 3px; font-size: .52rem; }
+  .dock-quote { display: none; }
+  .side-panel { display: block; top: auto; bottom: 2%; right: 6px; width: 120px; }
+  .side-card.log-card { padding: 5px 7px; border-radius: 9px; }
+  .log-card h3 { font-size: .66rem; }
+  .log-card ul { max-height: 42px; margin-top: 3px; overflow: hidden; }
+  .log-card li { padding: 2px 0; font-size: .47rem; line-height: 1.15; }
+  .log-card li:nth-child(n+3) { display: none; }
+  .log-suit { width: 11px; font-size: .55rem; }
+  .target-hint { bottom: 41%; font-size: .57rem; }
+  .shared-turn { top: 43%; bottom: auto; width: min(96vw, 360px); }
+  .online-alert { top: 15%; font-size: .7rem; }
+}
+
+@media (max-width: 430px) {
+  .game-header { padding: 12px 8px; }
+  .header-actions button:not(:last-child) { display: none; }
+  .total-number { font-size: 3.5rem; }
+  .side-panel { display: none; }
+  .hand-dock > .mood-label { left: auto; right: 8px; bottom: 2%; }
+}
+
+@media (max-height: 700px) and (min-width: 721px) {
+  .table-cards { top: 36%; }
+  .draw-stack, .played-slot, .played-slot .playing-card { width: 75px; height: 112px; }
+  .local-hand { top: 58%; }
+  .local-hand .hand-card { height: 145px; }
+  .dock-controls { top: 82%; }
+  .dock-controls .play-button { min-height: 45px; font-size: 1rem; }
+  .dock-hint { display: none; }
+}

@@ -65,8 +65,11 @@ The four supplied 6144 × 4096 PNG suit sheets in the connected `Cards` folder a
 | `public/assets/cards/sun-k.webp` | WebP | 400 × 584 | SUN / K | Normal matte card face. |
 | `public/assets/cards/back.webp` | WebP | 400 × 535 | — | One shared neutral navy and gold 100 back for the draw pile and all face-down hands. |
 | `public/assets/scene/tavern.webp` | WebP | 1400 × 636 | — | Decorative table ambience cropped from the Water suit sheet. |
+| `public/assets/scene/fantasy-table.jpg` | JPEG | 1536 × 1024 | — | Original illustrated full-screen tavern table used behind the live game controls. |
 
-Card crops are resized and compressed only. Their artwork is not redrawn or recolored. Interface panels, table rings, effects, and simple seated silhouettes are code and CSS. Audio cues are synthesized locally with Web Audio; no audio files were supplied.
+Card crops are resized and compressed only. Their artwork is not redrawn or recolored. Interactive cards, player badges, controls, and effects are code and CSS. Audio cues are synthesized locally with Web Audio; no audio files were supplied.
+
+The full-screen game background was generated with the built-in imagegen tool using the user-supplied `GAME and UI.png` as a visual reference. Prompt direction: “Recreate the cozy fantasy tavern at night, with a large empty oval blue marble and gold game table, warm lanterns, moonlit town, and fantasy characters around the table. Keep central and lower table space clear for live UI. No words, numbers, logos, badges, cards, buttons, menus, or watermark.” It was converted to an 86-quality JPEG for the site; gameplay UI remains live HTML and CSS.
 
 ## Original avatar portraits
 
