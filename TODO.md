@@ -8,5 +8,5 @@
 - [x] Add Three.js holographic shader for special cards and responsive layouts.
 - [x] Run rule checks, production build, and desktop/mobile browser checks.
 - [x] Create the local `100game` repository and public `barryklaus/100game` remote.
-- [ ] Push the complete source to GitHub.
-- [ ] Verify the GitHub Pages build and public desktop/mobile URL.
+- [x] Push the complete source to GitHub.
+- [x] Verify the GitHub Pages build and public desktop/mobile URL.
