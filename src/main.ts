@@ -2,7 +2,7 @@ import './style.css';
 import './game-presentation.css';
 import { CONFIG, MOODS, moodSymbols, suitSymbols } from './data/config';
 import { defaultSeats, loadSettings, loadStats, saveSettings, saveStats, type Settings, type Stats } from './data/storage';
-import { backImage, cardImage, makeDeck } from './game/deck';
+import { backImage, cardDisplayRank, cardImage, makeDeck } from './game/deck';
 import { chooseCpuCard, chooseCpuTarget } from './game/cpu';
 import { createGame, playCard, selectTarget } from './game/rules';
 import type { Card, GameState, PlayerConfig } from './game/types';
@@ -108,8 +108,13 @@ function startGame(round = 1): void {
   const seats = settings.seats.slice(0, settings.playerCount).map((seat, i) => ({ ...seat, name: seat.name.trim() || defaultSeats[i].name }));
   state = createGame(seats, round);
   save(); render(); scheduleCpu();
-  // Core textures load into the browser cache after the first frame.
-  requestAnimationFrame(() => makeDeck().forEach(card => { const image = new Image(); image.src = cardImage(card); }));
+  // Warm the texture cache in small batches so mobile browsers stay responsive.
+  const textureQueue = makeDeck();
+  const preloadBatch = (): void => {
+    textureQueue.splice(0, 4).forEach(card => { const image = new Image(); image.src = cardImage(card); });
+    if (textureQueue.length) window.setTimeout(preloadBatch, 120);
+  };
+  requestAnimationFrame(preloadBatch);
 }
 function finishRound(): void {
   if (!state) return;
@@ -163,13 +168,13 @@ async function animatePlay(cardId: string, source?: HTMLElement): Promise<void> 
   if (!card) { locked = false; return; }
   let flying: HTMLElement;
   let start: DOMRect;
-  if (source) { start = source.getBoundingClientRect(); flying = source.cloneNode(true) as HTMLElement; }
+  if (source) { start = source.getBoundingClientRect(); flying = source.cloneNode(true) as HTMLElement; flying.classList.remove('three-card-ready'); }
   else {
     const seat = document.querySelector<HTMLElement>(`.seat[data-seat="${state.current}"]`) || document.querySelector<HTMLElement>('.draw-stack')!;
     start = seat.getBoundingClientRect();
     flying = document.createElement('div');
     flying.className = `playing-card ${['7','8','9','10'].includes(card.rank) ? 'special' : ''}`;
-    flying.innerHTML = `<img src="${cardImage(card)}" alt="${card.rank} of ${card.suit}">`;
+    flying.innerHTML = `<img src="${cardImage(card)}" alt="${cardDisplayRank(card)} of ${card.suit}">`;
   }
   flying.classList.add('flying-card');
   Object.assign(flying.style, { position:'fixed', left:`${start.left}px`, top:`${start.top}px`, width:`${start.width || 76}px`, height:`${start.height || 108}px`, margin:'0', transform:'none' });
@@ -211,7 +216,8 @@ function scheduleCpu(): void {
 function cardElement(card: Card, selected = false, extra = ''): string {
   const special = ['7','8','9','10'].includes(card.rank);
   const interactive = extra.includes('hand-card') && !extra.includes('waiting-hand');
-  return `<div class="playing-card ${special ? 'special' : ''} ${selected ? 'selected' : ''} ${extra}" data-card="${card.id}" role="${interactive?'button':'img'}" ${interactive?'tabindex="0"':''} aria-label="${card.rank} of ${card.suit}${special ? ', special card' : ''}"><img src="${cardImage(card)}" alt="${card.rank} of ${card.suit}" draggable="false"></div>`;
+  const rank = cardDisplayRank(card);
+  return `<div class="playing-card ${special ? 'special' : ''} ${selected ? 'selected' : ''} ${extra}" data-card="${card.id}" role="${interactive?'button':'img'}" ${interactive?'tabindex="0"':''} aria-label="${rank} of ${card.suit}${special ? ', special card' : ''}"><img src="${cardImage(card)}" alt="${rank} of ${card.suit}" draggable="false"></div>`;
 }
 function setupView(): string {
   return `<main class="setup-page">
@@ -240,7 +246,7 @@ function seatHtml(player: GameState['players'][number], index: number, count: nu
   const active = state.phase === 'target' ? state.pendingSevens.at(-1) === index : state.current === index;
   const targetable = state.phase === 'target' && canControlActor() && index !== state.pendingSevens.at(-1);
   const suit = ['fire','water','leaf','sun'][index%4] as keyof typeof suitSymbols;
-  return `<button class="seat ${index===localSeat()?'local-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit}" data-seat="${index}" style="--seat-x:${x}%;--seat-y:${y}%" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards, mood ${player.mood}"><span class="reaction-bubble">${reaction[index]||''}</span><span class="character"><span class="character-head"><img src="${avatarImage(player.avatar)}" alt=""></span></span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)}</span><span class="seat-meta">${player.hand.length} cards · ${player.kind==='cpu'?'CPU':'Human'}</span></span><span class="seat-suit" aria-hidden="true">${suitSymbols[suit]}</span></button>`;
+  return `<button class="seat ${index===localSeat()?'local-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit} mood-${player.mood.toLowerCase()}" data-seat="${index}" style="--seat-x:${x}%;--seat-y:${y}%" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards, mood ${player.mood}"><span class="reaction-bubble">${reaction[index]||''}</span><span class="character"><span class="character-head"><img src="${avatarImage(player.avatar)}" alt=""></span></span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)}</span><span class="seat-meta">${player.hand.length} cards · ${player.kind==='cpu'?'CPU':'Human'}</span></span><span class="seat-suit" aria-hidden="true">${suitSymbols[suit]}</span></button>`;
 }
 function gameLogLine(item: string): string {
   const playerIndex = state?.players.findIndex(player => item.startsWith(`${player.name} `)) ?? -1;
@@ -257,8 +263,9 @@ function gameView(): string {
   const otherLocalTurn = !online && active.kind === 'human' && actor !== localSeat();
   const hand = mine?.kind === 'human' ? mine.hand : [];
   const totalClass = state.total>100?'busted':state.total===100?'at100':state.total>=CONFIG.TOTAL_WARNING_3?'danger':state.total>=CONFIG.TOTAL_WARNING_2?'warning-2':state.total>=CONFIG.TOTAL_WARNING_1?'warning-1':'';
-  return `<main class="game-page"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>SIMPLE NUMBERS.<br>BIG REACTIONS.</small></div><div class="header-status"><span class="round-pill">Round ${state.round} / Unlimited</span><span class="turn-pill">${escapeHtml(active.name)}'s ${state.phase==='target'?'choice':'turn'}</span></div><div class="header-actions"><button data-action="rules" aria-label="Rules">?</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}
-    <div class="game-layout"><section class="arena" aria-label="Game table"><div class="table-rim"><div class="table-felt"><div class="direction-indicator ${state.direction===-1?'ccw':''}"><span>➜</span> ${state.direction===1?'CLOCKWISE':'COUNTER-CLOCKWISE'}</div><div class="total-wrap ${totalClass}"><span class="total-caption">CURRENT TOTAL</span><div class="total-number">${state.total}</div><div class="total-max">/ 100</div></div><div class="table-cards"><div class="pile-wrap"><div class="played-slot">${top?cardElement(top,false,'last-card'):'<span class="empty-slot">PLAY HERE</span>'}</div><span>Last Played</span></div><div class="pile-wrap"><div class="draw-stack"><img src="${backImage}" alt="Draw pile"></div><span>Draw Pile<br><small>(${state.drawPile.length} cards)</small></span></div></div></div></div>
+  const energy = Math.max(0, Math.min(100, state.total));
+  return `<main class="game-page" data-event="${state.event}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>SIMPLE NUMBERS.<br>BIG REACTIONS.</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>Ranked Match</strong><small>Good friends. Higher numbers.</small></div></div><div class="header-status"><span class="round-pill">Round ${state.round} / Unlimited</span><span class="turn-pill">${escapeHtml(active.name)}'s ${state.phase==='target'?'choice':'turn'}</span></div><div class="header-actions"><button data-action="rules" aria-label="Rules">?</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}
+    <div class="game-layout"><section class="arena" aria-label="Game table"><div class="table-rim"><div class="table-felt"><div class="energy-system ${totalClass}" style="--energy-angle:${energy * 3.6}deg;--energy-level:${energy / 100}"><div class="energy-ring"><span class="direction-spark ${state.direction===-1?'ccw':''}" aria-hidden="true"></span></div><div class="cauldron"><div class="cauldron-steam"><i></i><i></i><i></i></div><div class="cauldron-liquid"></div><div class="cauldron-body"><span class="cauldron-eye left"></span><span class="cauldron-eye right"></span><span class="cauldron-mouth"></span></div><span class="cauldron-handle left"></span><span class="cauldron-handle right"></span><span class="cauldron-foot left"></span><span class="cauldron-foot right"></span></div><div class="total-wrap ${totalClass}"><span class="total-caption">CURRENT TOTAL</span><div class="total-number">${state.total}</div><div class="total-max">/ 100</div></div><div class="direction-indicator ${state.direction===-1?'ccw':''}"><span>➜</span> ${state.direction===1?'CLOCKWISE':'COUNTER-CLOCKWISE'}</div></div><div class="table-cards"><div class="pile-wrap"><div class="draw-stack"><div class="playing-card card-back" role="img" aria-label="Draw pile"><img src="${backImage}" alt="Draw pile" draggable="false"></div></div><span>Draw<br><small>${state.drawPile.length} cards</small></span></div><div class="pile-wrap"><div class="played-slot">${top?cardElement(top,false,'last-card'):'<span class="empty-slot">PLAY HERE</span>'}</div><span>Discard<br><small>${top?`Top: ${cardDisplayRank(top)}`:'No cards'}</small></span></div></div></div></div>
       <div class="seat-layer">${state.players.map((player,i)=>seatHtml(player,i,state!.players.length)).join('')}</div>
       ${state.phase==='target'&&canControlActor()?'<div class="target-hint">Choose another player to take a forced turn</div>':''}
     </section><aside class="side-panel"><div class="side-card"><div class="eyebrow">AT THE TABLE</div><h3>${state.phase==='target'?'Choosing a target: ':state.forced?'Forced play: ':'Now playing: '}${escapeHtml(active.name)}</h3><div class="side-direction">${state.direction===1?'↻':'↺'} ${state.direction===1?'Clockwise':'Counter-clockwise'} · ${state.players.length} players</div></div><div class="side-card log-card"><div class="card-heading"><h3>Game Log</h3><span>RECENT MOVES</span></div><ul>${state.log.slice(0,7).map(gameLogLine).join('')}</ul></div></aside></div>

@@ -222,3 +222,197 @@
   .dock-controls .play-button { min-height: 45px; font-size: 1rem; }
   .dock-hint { display: none; }
 }
+
+/* Hybrid table presentation based on the supplied final UI direction. */
+.game-logo { display: none; }
+.match-plaque {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 276px;
+  padding: 9px 24px 9px 13px;
+  color: #fff5d5;
+  background: linear-gradient(145deg, #141927f5, #090d18e8);
+  border: 2px solid #f0cb70;
+  clip-path: polygon(4% 0, 96% 0, 100% 50%, 96% 100%, 4% 100%, 0 50%);
+  filter: drop-shadow(0 7px 12px #0008);
+}
+.plaque-crown { color: #ffd86c; font-size: 2.25rem; line-height: 1; }
+.match-plaque div { display: flex; flex-direction: column; }
+.match-plaque strong { font: 800 1.05rem 'DM Sans', sans-serif; letter-spacing: .03em; }
+.match-plaque small { color: #fff; font-size: .68rem; }
+
+.energy-system {
+  --energy-angle: 0deg;
+  --energy-level: 0;
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 21%;
+  width: clamp(205px, 20vw, 300px);
+  height: clamp(205px, 20vw, 300px);
+  transform: translateX(-50%);
+  pointer-events: none;
+  filter: drop-shadow(0 18px 20px #0008);
+}
+.energy-ring {
+  position: absolute;
+  inset: 26% -10% 1%;
+  border-radius: 50%;
+  transform: rotateX(63deg);
+  background:
+    radial-gradient(ellipse, transparent 52%, #1a1120 53% 61%, transparent 62%),
+    conic-gradient(from -90deg, #ffef92 0deg, #ff9c32 var(--energy-angle), #392241 var(--energy-angle), #20192b 360deg);
+  box-shadow: 0 0 calc(15px + 35px * var(--energy-level)) #ff9a3d99, inset 0 0 24px #ffd26d8c;
+  opacity: calc(.7 + var(--energy-level) * .3);
+}
+.energy-ring::before,
+.energy-ring::after {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  border: 2px dashed #ffd9809c;
+  border-radius: 50%;
+  animation: energy-turn 14s linear infinite;
+}
+.energy-ring::after { inset: -6%; border-style: dotted; opacity: .52; animation-direction: reverse; animation-duration: 20s; }
+.direction-spark {
+  position: absolute;
+  left: 50%; top: -8px;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: #fff7c7;
+  box-shadow: 0 0 8px #fff, 0 0 22px #ffc04c;
+  transform-origin: 0 calc(50% + 92px);
+  animation: direction-travel 4.5s linear infinite;
+}
+.direction-spark.ccw { animation-direction: reverse; }
+@keyframes energy-turn { to { transform: rotate(360deg); } }
+@keyframes direction-travel { to { transform: rotate(360deg); } }
+
+.cauldron {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 5%;
+  width: 64%;
+  height: 49%;
+  transform: translateX(-50%);
+  animation: cauldron-idle 3.2s ease-in-out infinite;
+}
+.cauldron-body {
+  position: absolute;
+  inset: 14% 5% 0;
+  border: 3px solid #160f17;
+  border-radius: 42% 42% 48% 48% / 28% 28% 70% 70%;
+  background: radial-gradient(circle at 50% 19%, #7b5361, #362a39 45%, #171722 83%);
+  box-shadow: inset 0 9px 9px #c08c8757, inset 0 -15px 18px #090911aa, 0 8px 13px #0009;
+}
+.cauldron-body::before {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  left: -4%; right: -4%; top: -15%; height: 29%;
+  border: 4px solid #1b141d;
+  border-radius: 50%;
+  background: linear-gradient(#664552, #211a25 53%, #0b0c13 55%);
+  box-shadow: 0 0 calc(10px + 24px * var(--energy-level)) #ffad44aa;
+}
+.cauldron-liquid {
+  position: absolute;
+  z-index: 5;
+  left: 8%; right: 8%; top: 4%; height: 24%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, #fff6a8, #ffc847 45%, #f07a2d 77%);
+  box-shadow: 0 0 calc(12px + 34px * var(--energy-level)) #ffbd3edb;
+  animation: liquid-pulse calc(2.3s - var(--energy-level) * 1s) ease-in-out infinite;
+}
+.cauldron-eye { position: absolute; z-index: 4; top: 43%; width: 8%; height: 17%; border-radius: 50%; background: #fff0a2; box-shadow: 0 0 8px #ffcc53; }
+.cauldron-eye.left { left: 29%; }.cauldron-eye.right { right: 29%; }
+.cauldron-mouth { position: absolute; z-index: 4; left: 50%; top: 53%; width: 18%; height: 19%; transform: translateX(-50%); border-radius: 8% 8% 50% 50%; background: #120e18; border-bottom: 5px solid #f08c8d; }
+.cauldron-handle { position: absolute; z-index: 1; top: 42%; width: 24%; height: 32%; border: 8px solid #1a1420; border-radius: 50%; }
+.cauldron-handle.left { left: -9%; }.cauldron-handle.right { right: -9%; }
+.cauldron-foot { position: absolute; z-index: 1; bottom: -4%; width: 25%; height: 14%; border-radius: 50%; background: #15131c; }
+.cauldron-foot.left { left: 14%; transform: rotate(-12deg); }.cauldron-foot.right { right: 14%; transform: rotate(12deg); }
+.cauldron-steam { position: absolute; z-index: 6; inset: -23% 18% auto; height: 50%; }
+.cauldron-steam i { position: absolute; bottom: 0; width: 7px; height: 60%; border-radius: 50%; background: linear-gradient(transparent, #ffe9a8); filter: blur(2px); opacity: calc(.2 + var(--energy-level) * .6); animation: steam 1.9s ease-in-out infinite; }
+.cauldron-steam i:nth-child(1) { left: 16%; }.cauldron-steam i:nth-child(2) { left: 48%; height: 90%; animation-delay: -.7s; }.cauldron-steam i:nth-child(3) { right: 16%; animation-delay: -1.2s; }
+@keyframes cauldron-idle { 50% { transform: translate(-50%, -3px) scale(1.012); } }
+@keyframes liquid-pulse { 50% { transform: scale(1.04); filter: brightness(1.18); } }
+@keyframes steam { 0% { transform: translateY(9px) scaleX(.7); opacity: 0; } 45% { opacity: .7; } 100% { transform: translateY(-13px) scaleX(1.25); opacity: 0; } }
+
+.energy-system .total-wrap { top: -5%; z-index: 8; min-width: 170px; }
+.energy-system .total-caption { font-size: .64rem; }
+.energy-system .total-number { font-size: clamp(3.7rem, 5.4vw, 5.5rem); color: #fff8d8; -webkit-text-stroke: 2px #30200f; paint-order: stroke fill; }
+.energy-system .total-max { display: none; }
+.energy-system .direction-indicator { top: auto; bottom: -4%; font-size: .51rem; opacity: .88; }
+.game-page[data-event='exact'] .cauldron { animation: cauldron-celebrate .52s ease-in-out 3; }
+.game-page[data-event='exact'] .energy-system { filter: drop-shadow(0 0 38px #ffdb61); }
+.game-page[data-event='bust'] .cauldron { animation: cauldron-bust .17s linear 8; }
+.game-page[data-event='bust'] .cauldron-mouth { height: 25%; border-radius: 50%; border: 4px solid #f3a09f; }
+.game-page[data-event='minus'] .cauldron-liquid { animation: energy-drain .7s ease-out; }
+.energy-system.warning-1 .cauldron-liquid { filter: brightness(1.12) saturate(1.12); }
+.energy-system.warning-2 .cauldron { animation-duration: 2.15s; }
+.energy-system.warning-2 .cauldron-steam i { animation-duration: 1.25s; }
+.energy-system.danger .cauldron { animation: cauldron-danger .48s ease-in-out infinite; }
+.energy-system.danger .cauldron-liquid { filter: brightness(1.35) saturate(1.3); }
+.energy-system.at100 .energy-ring { box-shadow: 0 0 60px #ffe06bcc, inset 0 0 34px #fff3ad; }
+@keyframes cauldron-celebrate { 50% { transform: translate(-50%, -18px) rotate(3deg) scale(1.08); } }
+@keyframes cauldron-bust { 25% { transform: translateX(calc(-50% - 4px)) rotate(-2deg); } 75% { transform: translateX(calc(-50% + 4px)) rotate(2deg); } }
+@keyframes cauldron-danger { 25% { transform: translateX(calc(-50% - 1px)); } 75% { transform: translateX(calc(-50% + 1px)); } }
+@keyframes energy-drain { 50% { transform: scale(.7); filter: brightness(.6); } }
+
+.table-cards { top: 43%; width: clamp(330px, 38vw, 555px); justify-content: space-between; gap: 0; }
+.draw-stack, .played-slot, .played-slot .playing-card { width: clamp(76px, 7vw, 108px); height: auto; aspect-ratio: 511 / 710; }
+.draw-stack { position: relative; }
+.draw-stack::before, .draw-stack::after { content: ''; position: absolute; inset: 6px -7px -6px 7px; z-index: -1; border-radius: 9px; background: #171520; border: 1px solid #b98d56; box-shadow: 0 4px 0 #12111a; }
+.draw-stack::after { inset: 3px -4px -3px 4px; }
+.draw-stack .card-back { width: 100%; height: 100%; border-radius: 9px; }
+.draw-stack img { border: 0; box-shadow: none; }
+.played-slot { min-height: 106px; }
+.pile-wrap { min-width: 110px; font-size: .88rem; }
+.pile-wrap small { font-size: .62rem; }
+
+.seat .character-head img { animation: portrait-idle 3.7s ease-in-out infinite; transform-origin: 50% 75%; }
+.seat:nth-child(even) .character-head img { animation-delay: -1.8s; }
+.seat.active { animation: active-player 1.45s ease-in-out infinite; }
+.seat.active::before { content: ''; position: absolute; inset: -5px; border: 2px solid #ffe48b; border-radius: inherit; box-shadow: 0 0 20px #ffbd4b; }
+.seat.mood-angry .character-head img { filter: saturate(1.2) contrast(1.07) hue-rotate(-8deg); }
+.seat.mood-sad .character-head img, .seat.mood-tired .character-head img { filter: saturate(.72) brightness(.88); }
+.seat.mood-excited .character-head img, .seat.mood-happy .character-head img { animation-duration: 2.2s; }
+@keyframes portrait-idle { 50% { transform: translateY(-2px) scale(1.025); } }
+@keyframes active-player { 50% { box-shadow: 0 0 28px #ffc95ec9, 0 8px 20px #000c; } }
+
+@media (max-width: 720px) {
+  .match-plaque { min-width: 0; width: 175px; padding: 6px 13px 6px 9px; gap: 7px; }
+  .plaque-crown { font-size: 1.45rem; }
+  .match-plaque strong { font-size: .72rem; }.match-plaque small { font-size: .46rem; }
+  .energy-system { top: 24%; width: 205px; height: 205px; }
+  .energy-system .total-wrap { top: -1%; }
+  .energy-system .total-caption { font-size: .53rem; }
+  .energy-system .total-number { font-size: 3.4rem; }
+  .table-cards { top: 43%; width: 285px; }
+  .draw-stack, .played-slot, .played-slot .playing-card { width: 64px; height: auto; }
+  .played-slot { min-height: 89px; }
+  .pile-wrap { min-width: 72px; font-size: .63rem; }
+  .pile-wrap small { font-size: .48rem; }
+  .local-hand { top: 62%; }
+  .local-hand .hand-card { height: clamp(125px, 19vh, 165px); }
+  .dock-controls { top: 82%; }
+}
+
+@media (max-width: 430px) {
+  .match-plaque { width: 160px; }
+  .header-status { position: absolute; top: 69px; right: 8px; }
+  .seat-layer { top: 108px; }
+  .energy-system { top: 25%; width: 190px; height: 190px; }
+  .table-cards { top: 44%; width: 270px; }
+  .local-hand { top: 65%; }
+  .local-hand .hand-card { height: 135px; }
+  .dock-controls { top: 84%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .energy-ring::before, .energy-ring::after, .direction-spark, .cauldron, .cauldron-liquid, .cauldron-steam i, .seat .character-head img, .seat.active { animation: none !important; }
+}

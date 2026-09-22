@@ -1,5 +1,5 @@
 import { CONFIG } from '../data/config';
-import { makeDeck, shuffle } from './deckCore';
+import { cardDisplayRank, makeDeck, shuffle } from './deckCore';
 import type { Card, GameState, PlayerConfig } from './types';
 
 export function cardValue(card: Card): number {
@@ -65,7 +65,7 @@ export function playCard(state: GameState, cardId: string): GameState {
   const previousTotal = state.total;
   state.total += cardValue(card);
   state.event = 'none';
-  addLog(state, `${player.name} played ${card.rank} ${card.suit.toUpperCase()} · Total ${state.total}`);
+  addLog(state, `${player.name} played ${cardDisplayRank(card)} ${card.suit.toUpperCase()} · Total ${state.total}`);
 
   if (previousTotal !== 100 && state.total === 100) {
     state.exactEvents.push({ player: player.id, total: 100 });

@@ -1,75 +1,34 @@
 # Asset manifest
 
-The four supplied 6144 × 4096 PNG suit sheets in the connected `Cards` folder are the authoritative artwork. They remain unmodified outside the published repository. The game uses optimized WebP crops of their approved art.
+The authoritative card artwork is the user supplied `CARD DESIGN/FINAL` set. Source PNG files remain unchanged outside the repository. The game uses WebP versions at the original approximate 510–511 × 710–711 dimensions, preserving transparency and aspect ratio.
 
-| Source filename | Type | Dimensions | Intended usage |
+## Final card texture mapping
+
+| Game card | Source artwork |
+| --- | --- |
+| Ace | `*-1.png` |
+| 2–6 | Matching numbered artwork |
+| 7 | `*-7-ChoosePlayer.png` |
+| 8 | `*-8-Reverse.png` |
+| 9 | `*-9-Zero.png` |
+| 10 | `*-10-Minus10.png` |
+| Jack | `*-10A.png` |
+| Queen | `*-10B.png` |
+| King | `*-10C.png` |
+| Card back | `CARD BACK/Card-Back.png` |
+
+All four suits map into `public/assets/cards/{suit}-{rank}.webp`. The Fire source files use the `Card-Sun` filename prefix inside the `FIRE` folder. The Sun choose-player source is named `Card-Sun-9-ChoosePlayer.png`; it fills the otherwise missing rank 7 slot. These source naming inconsistencies are mapped without changing the originals.
+
+Ranks 7, 8, 9, and 10 receive the live Three.js holographic material. The alternate 10 artworks used by Jack, Queen, and King stay matte and display as 10 in the interface because all four variants have the same gameplay value.
+
+## Scene artwork
+
+| File | Type | Dimensions | Intended usage |
 | --- | --- | --- | --- |
-| `100-Fire-Suit-Topaz-Gigapixel-4x-scale.png` | PNG | 6144 × 4096 | Original Fire reference sheet; source for its 13 card faces. |
-| `100-Water-Suit-Topaz-Gigapixel-4x-scale.png` | PNG | 6144 × 4096 | Original Water reference sheet; source for its 13 card faces. |
-| `100-Leaf-Suit-Topaz-Gigapixel-4x-scale.png` | PNG | 6144 × 4096 | Original Leaf reference sheet; source for its 13 card faces. |
-| `100-Sun-Suit-Topaz-Gigapixel-4x-scale.png` | PNG | 6144 × 4096 | Original Sun reference sheet; source for its 13 card faces. |
+| `public/assets/scene/tavern.webp` | WebP | 1400 × 636 | Setup screen ambience derived from the original card sheet. |
+| `public/assets/scene/fantasy-table.jpg` | JPEG | 1536 × 1024 | Full-screen illustrated tavern behind the live game. |
 
-| Derived filename | Type | Dimensions | Suit / rank | Intended usage |
-| --- | --- | --- | --- | --- |
-| `public/assets/cards/fire-a.webp` | WebP | 391 × 600 | FIRE / A | Normal matte card face. |
-| `public/assets/cards/fire-2.webp` | WebP | 393 × 600 | FIRE / 2 | Normal matte card face. |
-| `public/assets/cards/fire-3.webp` | WebP | 395 × 600 | FIRE / 3 | Normal matte card face. |
-| `public/assets/cards/fire-4.webp` | WebP | 400 × 574 | FIRE / 4 | Normal matte card face. |
-| `public/assets/cards/fire-5.webp` | WebP | 400 × 583 | FIRE / 5 | Normal matte card face. |
-| `public/assets/cards/fire-6.webp` | WebP | 400 × 571 | FIRE / 6 | Normal matte card face. |
-| `public/assets/cards/fire-7.webp` | WebP | 394 × 600 | FIRE / 7 | Special holographic card face. |
-| `public/assets/cards/fire-8.webp` | WebP | 391 × 600 | FIRE / 8 | Special holographic card face. |
-| `public/assets/cards/fire-9.webp` | WebP | 391 × 600 | FIRE / 9 | Special holographic card face. |
-| `public/assets/cards/fire-10.webp` | WebP | 398 × 600 | FIRE / 10 | Special holographic card face. |
-| `public/assets/cards/fire-j.webp` | WebP | 383 × 600 | FIRE / J | Normal matte card face. |
-| `public/assets/cards/fire-q.webp` | WebP | 396 × 600 | FIRE / Q | Normal matte card face. |
-| `public/assets/cards/fire-k.webp` | WebP | 400 × 584 | FIRE / K | Normal matte card face. |
-| `public/assets/cards/water-a.webp` | WebP | 391 × 600 | WATER / A | Normal matte card face. |
-| `public/assets/cards/water-2.webp` | WebP | 393 × 600 | WATER / 2 | Normal matte card face. |
-| `public/assets/cards/water-3.webp` | WebP | 395 × 600 | WATER / 3 | Normal matte card face. |
-| `public/assets/cards/water-4.webp` | WebP | 400 × 574 | WATER / 4 | Normal matte card face. |
-| `public/assets/cards/water-5.webp` | WebP | 400 × 583 | WATER / 5 | Normal matte card face. |
-| `public/assets/cards/water-6.webp` | WebP | 400 × 571 | WATER / 6 | Normal matte card face. |
-| `public/assets/cards/water-7.webp` | WebP | 394 × 600 | WATER / 7 | Special holographic card face. |
-| `public/assets/cards/water-8.webp` | WebP | 391 × 600 | WATER / 8 | Special holographic card face. |
-| `public/assets/cards/water-9.webp` | WebP | 391 × 600 | WATER / 9 | Special holographic card face. |
-| `public/assets/cards/water-10.webp` | WebP | 398 × 600 | WATER / 10 | Special holographic card face. |
-| `public/assets/cards/water-j.webp` | WebP | 383 × 600 | WATER / J | Normal matte card face. |
-| `public/assets/cards/water-q.webp` | WebP | 396 × 600 | WATER / Q | Normal matte card face. |
-| `public/assets/cards/water-k.webp` | WebP | 400 × 584 | WATER / K | Normal matte card face. |
-| `public/assets/cards/leaf-a.webp` | WebP | 391 × 600 | LEAF / A | Normal matte card face. |
-| `public/assets/cards/leaf-2.webp` | WebP | 393 × 600 | LEAF / 2 | Normal matte card face. |
-| `public/assets/cards/leaf-3.webp` | WebP | 395 × 600 | LEAF / 3 | Normal matte card face. |
-| `public/assets/cards/leaf-4.webp` | WebP | 400 × 574 | LEAF / 4 | Normal matte card face. |
-| `public/assets/cards/leaf-5.webp` | WebP | 400 × 583 | LEAF / 5 | Normal matte card face. |
-| `public/assets/cards/leaf-6.webp` | WebP | 400 × 571 | LEAF / 6 | Normal matte card face. |
-| `public/assets/cards/leaf-7.webp` | WebP | 394 × 600 | LEAF / 7 | Special holographic card face. |
-| `public/assets/cards/leaf-8.webp` | WebP | 391 × 600 | LEAF / 8 | Special holographic card face. |
-| `public/assets/cards/leaf-9.webp` | WebP | 391 × 600 | LEAF / 9 | Special holographic card face. |
-| `public/assets/cards/leaf-10.webp` | WebP | 398 × 600 | LEAF / 10 | Special holographic card face. |
-| `public/assets/cards/leaf-j.webp` | WebP | 383 × 600 | LEAF / J | Normal matte card face. |
-| `public/assets/cards/leaf-q.webp` | WebP | 396 × 600 | LEAF / Q | Normal matte card face. |
-| `public/assets/cards/leaf-k.webp` | WebP | 400 × 584 | LEAF / K | Normal matte card face. |
-| `public/assets/cards/sun-a.webp` | WebP | 391 × 600 | SUN / A | Normal matte card face. |
-| `public/assets/cards/sun-2.webp` | WebP | 393 × 600 | SUN / 2 | Normal matte card face. |
-| `public/assets/cards/sun-3.webp` | WebP | 395 × 600 | SUN / 3 | Normal matte card face. |
-| `public/assets/cards/sun-4.webp` | WebP | 400 × 574 | SUN / 4 | Normal matte card face. |
-| `public/assets/cards/sun-5.webp` | WebP | 400 × 583 | SUN / 5 | Normal matte card face. |
-| `public/assets/cards/sun-6.webp` | WebP | 400 × 571 | SUN / 6 | Normal matte card face. |
-| `public/assets/cards/sun-7.webp` | WebP | 394 × 600 | SUN / 7 | Special holographic card face. |
-| `public/assets/cards/sun-8.webp` | WebP | 391 × 600 | SUN / 8 | Special holographic card face. |
-| `public/assets/cards/sun-9.webp` | WebP | 391 × 600 | SUN / 9 | Special holographic card face. |
-| `public/assets/cards/sun-10.webp` | WebP | 398 × 600 | SUN / 10 | Special holographic card face. |
-| `public/assets/cards/sun-j.webp` | WebP | 383 × 600 | SUN / J | Normal matte card face. |
-| `public/assets/cards/sun-q.webp` | WebP | 396 × 600 | SUN / Q | Normal matte card face. |
-| `public/assets/cards/sun-k.webp` | WebP | 400 × 584 | SUN / K | Normal matte card face. |
-| `public/assets/cards/back.webp` | WebP | 400 × 535 | — | One shared neutral navy and gold 100 back for the draw pile and all face-down hands. |
-| `public/assets/scene/tavern.webp` | WebP | 1400 × 636 | — | Decorative table ambience cropped from the Water suit sheet. |
-| `public/assets/scene/fantasy-table.jpg` | JPEG | 1536 × 1024 | — | Original illustrated full-screen tavern table used behind the live game controls. |
-
-Card crops are resized and compressed only. Their artwork is not redrawn or recolored. Interactive cards, player badges, controls, and effects are code and CSS. Audio cues are synthesized locally with Web Audio; no audio files were supplied.
-
-The full-screen game background was generated with the built-in imagegen tool using the user-supplied `GAME and UI.png` as a visual reference. Prompt direction: “Recreate the cozy fantasy tavern at night, with a large empty oval blue marble and gold game table, warm lanterns, moonlit town, and fantasy characters around the table. Keep central and lower table space clear for live UI. No words, numbers, logos, badges, cards, buttons, menus, or watermark.” It was converted to an 86-quality JPEG for the site; gameplay UI remains live HTML and CSS.
+The full-screen game background was generated with the built-in imagegen tool using the user-supplied `GAME and UI.png` as a visual reference. Prompt direction: “Recreate the cozy fantasy tavern at night, with a large empty oval blue marble and gold game table, warm lanterns, moonlit town, and fantasy characters around the table. Keep central and lower table space clear for live UI. No words, numbers, logos, badges, cards, buttons, menus, or watermark.” Gameplay cards, the cauldron, energy ring, seats, controls, lighting, and effects remain interactive code.
 
 ## Original avatar portraits
 
