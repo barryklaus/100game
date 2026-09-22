@@ -324,7 +324,7 @@ function gameView(): string {
       ${state.phase==='target'&&canControlActor()?'<div class="target-hint">Choose another player to take a forced turn</div>':''}
     </section><aside class="side-panel"><div class="side-card"><div class="eyebrow">AT THE TABLE</div><h3>${state.phase==='target'?'Choosing a target: ':state.forced?'Forced play: ':'Now playing: '}${escapeHtml(active.name)}</h3><div class="side-direction">${state.direction===1?'↻':'↺'} ${state.direction===1?'Clockwise':'Counter-clockwise'} · ${state.players.length} players</div></div><div class="side-card log-card"><div class="card-heading"><h3>Game Log</h3><span>RECENT MOVES</span></div><ul>${state.log.slice(0,7).map(gameLogLine).join('')}</ul></div></aside></div>
     ${otherLocalTurn ? `<div class="shared-turn" role="region" aria-label="${escapeHtml(active.name)}'s local turn"><strong>Pass the device to ${escapeHtml(active.name)}</strong><span>${state.phase === 'target' ? 'Tap a highlighted player at the table.' : 'Choose a card and play it.'}</span><div class="shared-hand">${state.phase === 'playing' ? active.hand.map(card=>cardElement(card,selectedCard===card.id,'hand-card')).join('') : ''}</div><button class="primary-button" data-action="play-selected" ${!selectedCard||state.phase!=='playing'?'disabled':''}>PLAY CARD ➜</button></div>` : ''}
-    <footer class="hand-dock"><div class="dock-prompt"><img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${hand.length} cards · ${mine ? `${moodSymbols[mine.mood]} ${mine.mood}` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><button class="primary-button play-button" data-action="play-selected" ${!selectedCard||!myTurn||state.phase!=='playing'?'disabled':''}>PLAY CARD <span>✦</span></button><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Select or drag one of your cards' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><label class="mood-label">MOOD <select id="live-mood" ${mine?.kind!=='human'?'disabled':''}>${MOODS.map(m=>`<option ${mine?.mood===m?'selected':''}>${m}</option>`).join('')}</select></label><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
+    <footer class="hand-dock"><div class="dock-prompt"><img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${hand.length} cards · ${mine ? `${moodSymbols[mine.mood]} ${mine.mood}` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><button class="primary-button play-button" data-action="play-selected" ${!selectedCard||!myTurn||state.phase!=='playing'?'disabled':''}>PLAY CARD <span>✦</span></button><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Tap a card or flick it upward' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><label class="mood-label">MOOD <select id="live-mood" ${mine?.kind!=='human'?'disabled':''}>${MOODS.map(m=>`<option ${mine?.mood===m?'selected':''}>${m}</option>`).join('')}</select></label><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
     ${state.phase==='ended'?resultView():''}</main>`;
 }
 function resultView(): string {
@@ -411,6 +411,7 @@ app.addEventListener('pointermove', event => {
   if (!drag) return;
   const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
   drag.moved ||= Math.hypot(dx,dy) > 8;
+  drag.element.classList.toggle('flick-ready', Math.hypot(dx, dy) >= CONFIG.CARD_THROW_MIN_DISTANCE && dy <= -10);
   drag.element.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.max(-12,Math.min(12,dx*.045))}deg) scale(1.08)`;
   drag.lastX = event.clientX; drag.lastY = event.clientY; drag.lastTime = performance.now();
 });
@@ -425,9 +426,10 @@ function endDrag(event: PointerEvent): void {
   const towardX = (zone?.left || innerWidth/2)+(zone?.width || 0)/2-current.x;
   const towardY = (zone?.top || innerHeight/2)+(zone?.height || 0)/2-current.y;
   const toward = (dx*towardX+dy*towardY)/(Math.max(1,dist)*Math.max(1,Math.hypot(towardX,towardY)));
-  const inZone = !!zone && event.clientX>zone.left && event.clientX<zone.right && event.clientY>zone.top && event.clientY<zone.bottom;
-  current.element.classList.remove('dragging');
-  if (dist >= CONFIG.CARD_THROW_MIN_DISTANCE && toward > .5 && (inZone || velocity >= CONFIG.CARD_THROW_MIN_VELOCITY)) {
+  const shortUpwardFlick = dist >= CONFIG.CARD_THROW_MIN_DISTANCE && dy <= -10 && toward > .05;
+  const quickUpwardFlick = dist >= 14 && dy <= -8 && velocity >= CONFIG.CARD_THROW_MIN_VELOCITY && toward > 0;
+  current.element.classList.remove('dragging', 'flick-ready');
+  if (shortUpwardFlick || quickUpwardFlick) {
     current.element.style.transform = '';
     void animatePlay(current.id, current.element);
   } else {
