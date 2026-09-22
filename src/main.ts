@@ -30,6 +30,8 @@ let recordedRound = 0;
 let lastTurnKey = '';
 let awaitingNetwork = false;
 let pendingLog = '';
+let observedOnlineHand = new Set<string>();
+let observedOnlineRound = 0;
 const audio = new AudioManager();
 audio.volume = settings.volume;
 let holo: HoloShader | undefined;
@@ -41,7 +43,7 @@ const avatarImage = (index: number): string => `${import.meta.env.BASE_URL}asset
 const localSeat = (): number => online?.localSeat ?? Math.max(0, settings.seats.findIndex(seat => seat.kind === 'human'));
 const canControlActor = (): boolean => !!state && !awaitingNetwork && state.players[state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current]?.kind === 'human' && (!online || (state.phase === 'target' ? state.pendingSevens.at(-1) : state.current) === online.localSeat);
 function closeOnline(): void {
-  online?.close(); online = null; state = null; onlineMode = null; selectedCard = null; recordedRound = 0; awaitingNetwork = false; pendingLog = ''; clearCpu();
+  online?.close(); online = null; state = null; onlineMode = null; selectedCard = null; recordedRound = 0; awaitingNetwork = false; pendingLog = ''; observedOnlineHand.clear(); observedOnlineRound = 0; clearCpu();
   history.replaceState(null, '', location.pathname);
   render();
 }
@@ -58,6 +60,11 @@ function roomChanged(): void {
   }
   const previous = state;
   state = online.state;
+  const drawnForLocal = state && observedOnlineRound === state.round
+    ? state.players[online.localSeat]?.hand.find(card => !observedOnlineHand.has(card.id))
+    : undefined;
+  observedOnlineHand = new Set(state?.players[online.localSeat]?.hand.map(card => card.id) ?? []);
+  observedOnlineRound = state?.round ?? 0;
   if (previous?.phase === 'ended' && state?.phase === 'playing') recordedRound = 0;
   const key = state ? `${state.round}-${state.phase}-${state.current}-${state.pendingSevens.length}` : '';
   if (key !== lastTurnKey) { selectedCard = null; lastTurnKey = key; }
@@ -69,7 +76,9 @@ function roomChanged(): void {
     else audio.play('draw');
   }
   if (state?.phase === 'ended' && recordedRound !== state.round) { recordedRound = state.round; finishRound(); }
-  render(); scheduleCpu();
+  render();
+  if (drawnForLocal) void animateDrawToHand(drawnForLocal);
+  scheduleCpu();
 }
 function connectOnline(mode: 'host' | 'join'): void {
   const name = (document.querySelector<HTMLInputElement>('#online-name')?.value || settings.seats[0].name).trim().slice(0,15) || 'Player';
@@ -77,7 +86,7 @@ function connectOnline(mode: 'host' | 'join'): void {
   settings.seats[0] = { ...settings.seats[0], name, avatar, kind: 'human' }; save();
   const code = mode === 'host' ? newRoomId() : joinCode.trim().replace(/^.*[?&]room=/, '').split('&')[0];
   if (!/^100-[a-z0-9]{12}$/.test(code)) { flash('Enter a valid room code or invite link.', 'bust'); return; }
-  online?.close(); online = null; state = null; awaitingNetwork = false; selectedCard = null; lastTurnKey = '';
+  online?.close(); online = null; state = null; awaitingNetwork = false; selectedCard = null; lastTurnKey = ''; observedOnlineHand.clear(); observedOnlineRound = 0;
   hostedLobbyInitialized = false;
   const Room = import.meta.env.MODE === 'cloudflare' ? HostedRoom : OnlineRoom;
   online = new Room(mode === 'join' ? 'guest' : 'host', code, { name, avatar, mood: settings.seats[0].mood }, roomChanged);
@@ -98,6 +107,39 @@ function react(ids: number[], text: string): void {
   ids.forEach(id => reaction[id] = text);
   render();
   window.setTimeout(() => { ids.forEach(id => delete reaction[id]); if (!locked) render(); }, 1500);
+}
+
+async function animateDrawToHand(card: Card): Promise<void> {
+  const pile = document.querySelector<HTMLElement>('.draw-stack .card-back');
+  const target = document.querySelector<HTMLElement>(`.local-hand .hand-card[data-card="${card.id}"]`);
+  if (!pile || !target || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const start = pile.getBoundingClientRect();
+  const end = target.getBoundingClientRect();
+  if (start.width < 2 || end.width < 2) return;
+
+  target.classList.add('receiving-card');
+  const flight = document.createElement('div');
+  flight.className = 'draw-flight';
+  flight.setAttribute('aria-hidden', 'true');
+  flight.innerHTML = `<img class="draw-face draw-back" src="${backImage}" alt=""><img class="draw-face draw-front" src="${cardImage(card)}" alt="">`;
+  Object.assign(flight.style, {
+    left: `${start.left}px`, top: `${start.top}px`, width: `${start.width}px`, height: `${start.height}px`,
+  });
+  document.body.append(flight);
+
+  const dx = end.left + end.width / 2 - (start.left + start.width / 2);
+  const dy = end.top + end.height / 2 - (start.top + start.height / 2);
+  const scale = end.width / start.width;
+  await flight.animate([
+    { transform: 'translate(0, 0) scale(1) rotateY(0deg) rotateZ(0deg)', offset: 0 },
+    { transform: `translate(${dx * .48}px, ${dy * .48 - 34}px) scale(${1 + (scale - 1) * .45}) rotateY(86deg) rotateZ(-6deg)`, offset: .48 },
+    { transform: `translate(${dx}px, ${dy}px) scale(${scale}) rotateY(180deg) rotateZ(0deg)`, offset: 1 },
+  ], { duration: 520, easing: 'cubic-bezier(.2,.76,.22,1)', fill: 'forwards' }).finished.catch(() => undefined);
+  flight.remove();
+  if (target.isConnected) {
+    target.classList.remove('receiving-card');
+    target.animate([{ opacity: 0, filter: 'brightness(1.7)' }, { opacity: 1, filter: 'brightness(1)' }], { duration: 170, easing: 'ease-out' });
+  }
 }
 function setSeat(index: number, update: Partial<PlayerConfig>): void {
   settings.seats[index] = { ...settings.seats[index], ...update };
@@ -140,9 +182,11 @@ function resolveCard(cardId: string): void {
       if (card.rank === '10') stats.tens++;
       save();
     }
-    selectedCard = null; awaitingNetwork = !online.isHost || online instanceof HostedRoom; pendingLog = state.log[0]; online.play(cardId); render(); return;
+    selectedCard = null; awaitingNetwork = !online.isHost || online instanceof HostedRoom; pendingLog = state.log[0]; online.play(cardId); return;
   }
+  const previousLocalHand = new Set(state.players[localSeat()].hand.map(item => item.id));
   playCard(state, cardId);
+  const drawnForLocal = state.players[localSeat()].hand.find(item => !previousLocalHand.has(item.id));
   stats.cards++;
   if (card.rank === '7') stats.sevens++;
   if (card.rank === '8') stats.eights++;
@@ -159,7 +203,9 @@ function resolveCard(cardId: string): void {
   else if (ev === 'minus') { audio.play('minus'); flash('−10  ·  REWIND', 'minus'); react([actor], 'PHEW!'); }
   else audio.play('draw');
   if ((state as GameState).phase === 'ended') finishRound();
-  render(); scheduleCpu();
+  render();
+  if (drawnForLocal) void animateDrawToHand(drawnForLocal);
+  scheduleCpu();
 }
 async function animatePlay(cardId: string, source?: HTMLElement): Promise<void> {
   if (!state || locked || state.phase !== 'playing') return;
@@ -168,7 +214,15 @@ async function animatePlay(cardId: string, source?: HTMLElement): Promise<void> 
   if (!card) { locked = false; return; }
   let flying: HTMLElement;
   let start: DOMRect;
-  if (source) { start = source.getBoundingClientRect(); flying = source.cloneNode(true) as HTMLElement; flying.classList.remove('three-card-ready'); }
+  if (source) {
+    start = source.getBoundingClientRect();
+    flying = source.cloneNode(true) as HTMLElement;
+    flying.classList.remove('selected', 'dragging', 'waiting-hand', 'card-departing');
+    flying.removeAttribute('data-card-hover');
+    flying.removeAttribute('data-card-pressed');
+    flying.style.cssText = '';
+    source.classList.add('card-departing');
+  }
   else {
     const seat = document.querySelector<HTMLElement>(`.seat[data-seat="${state.current}"]`) || document.querySelector<HTMLElement>('.draw-stack')!;
     start = seat.getBoundingClientRect();
