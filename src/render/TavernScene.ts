@@ -87,6 +87,9 @@ export class TavernScene {
   private stationChairs: THREE.Group[] = [];
   private textureLoader = new THREE.TextureLoader();
   private textureCache = new Map<string, Promise<THREE.Texture>>();
+  private loadedTextures = new Map<string, THREE.Texture>();
+  private textureLastUsed = new Map<string, number>();
+  private pruneTimer = 0;
   private deckPile!: CardPile;
   private discardPile!: CardPile;
   private deckStack!: THREE.Group;
@@ -189,8 +192,13 @@ export class TavernScene {
     this.drawCardUrl = next.drawCardUrl;
     this.pileShadows[0].visible = (next.drawCount ?? 0) > 0;
     this.pileShadows[1].visible = (next.discardCount ?? 0) > 0;
-    void this.deckPile.setCards(Array.from({length:next.drawCount??0},()=>next.drawCardUrl),next.drawCardUrl).then(()=>{this.renderer.shadowMap.needsUpdate=true;}).catch(()=>undefined);
-    void this.discardPile.setCards(next.discardCards??(next.discardCardUrl?[next.discardCardUrl]:[]),next.drawCardUrl).then(()=>{this.renderer.shadowMap.needsUpdate=true;}).catch(()=>undefined);
+    const deckUpdate = this.deckPile.setCards(Array.from({length:next.drawCount??0},()=>next.drawCardUrl),next.drawCardUrl);
+    const discardUpdate = this.discardPile.setCards(next.discardCards??(next.discardCardUrl?[next.discardCardUrl]:[]),next.drawCardUrl);
+    void Promise.allSettled([deckUpdate,discardUpdate]).then(()=>{
+      this.renderer.shadowMap.needsUpdate=true;
+      clearTimeout(this.pruneTimer);
+      this.pruneTimer=window.setTimeout(()=>this.pruneTextureCache(),300);
+    });
     const key=next.eventKey??`${next.total}:${next.discardCardUrl}:${next.event}`;
     if(key!==this.lastEventKey){
       if(this.lastEventKey){this.eventPulse=next.event==='exact'?1.6:next.event==='bust'?1.25:.8;this.impact=1;this.eventKind=next.event;}
@@ -464,16 +472,47 @@ export class TavernScene {
   }
 
   private loadTexture(url: string): Promise<THREE.Texture> {
+    this.textureLastUsed.set(url, performance.now());
     let pending = this.textureCache.get(url);
     if (!pending) {
       pending = this.textureLoader.loadAsync(url).then(texture => {
         texture.colorSpace = THREE.SRGBColorSpace;
         texture.anisotropy = Math.min(QUALITY_PRESETS[this.quality].textureAnisotropy, this.renderer.capabilities.getMaxAnisotropy());
+        this.loadedTextures.set(url, texture);
         return texture;
+      }).catch(error => {
+        this.textureCache.delete(url);
+        this.textureLastUsed.delete(url);
+        throw error;
       });
       this.textureCache.set(url, pending);
     }
     return pending;
+  }
+
+  /** Keep only a small warm set of high-resolution cards in GPU memory. */
+  private pruneTextureCache(): void {
+    const maximum = 14;
+    if (this.loadedTextures.size <= maximum) return;
+    const active = new Set<THREE.Texture>();
+    this.scene.traverse(object => {
+      if (!(object instanceof THREE.Mesh)) return;
+      const materials = Array.isArray(object.material) ? object.material : [object.material];
+      materials.forEach(material => {
+        const map = (material as THREE.MeshBasicMaterial).map;
+        if (map) active.add(map);
+      });
+    });
+    const unused = [...this.loadedTextures.entries()]
+      .filter(([,texture]) => !active.has(texture))
+      .sort(([a],[b]) => (this.textureLastUsed.get(a)??0) - (this.textureLastUsed.get(b)??0));
+    for (const [url, texture] of unused) {
+      if (this.loadedTextures.size <= maximum) break;
+      texture.dispose();
+      this.loadedTextures.delete(url);
+      this.textureCache.delete(url);
+      this.textureLastUsed.delete(url);
+    }
   }
 
   private screenPoint(rect: DOMRect, distance: number): THREE.Vector3 {
@@ -562,6 +601,7 @@ export class TavernScene {
               materials.forEach(material => material.dispose());
             }
           });
+          this.pruneTextureCache();
           resolve();
         }
       };
@@ -931,6 +971,7 @@ export class TavernScene {
 
   dispose(): void {
     cancelAnimationFrame(this.frame);
+    clearTimeout(this.pruneTimer);
     this.hand.dispose();this.number.dispose();this.composer?.dispose();this.bloom?.dispose();this.ao?.dispose();this.environment.dispose();
     this.deckPile.dispose();this.discardPile.dispose();
     removeEventListener('resize', this.resize);

@@ -47,6 +47,14 @@ for(const special of [false,true]) {
     assert.equal(surface.userData.cleanCard,true,'Every card surface must be excluded from room effects');
     assert(surface.layers.isEnabled(CLEAN_CARD_LAYER),'Every card surface must render in the clean card pass');
   }
+  const face=card.children[1];
+  const vertices=face.geometry.getAttribute('position');
+  const halfWidth=card.userData.cardWidth/2,halfHeight=card.userData.cardHeight/2;
+  assert(vertices.count>40,'Rounded corners need enough geometry for a smooth outline');
+  for(let i=0;i<vertices.count;i++){
+    assert(!(Math.abs(vertices.getX(i))>halfWidth-.001&&Math.abs(vertices.getY(i))>halfHeight-.001),'Square corners must be clipped from the artwork');
+  }
+  assert.equal(face.material.alphaTest,0,'Card edges must not use a jagged hard alpha cutoff');
   disposeCardMesh(card);
 }
 const pile=new CardPile(false,async()=>texture);

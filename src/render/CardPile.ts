@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { CARD_THICKNESS, createCardMesh, disposeCardMesh } from './CardMesh';
+import { CARD_THICKNESS, createCardMesh, disposeCardMesh, roundedCardOutline } from './CardMesh';
 
 // The inset cloth ends at .3475. Cards sit on it, with no plinth or spacer.
 export const CARD_TABLE_HEIGHT = .349;
@@ -25,6 +25,25 @@ function makePaperSide(): THREE.DataTexture {
   return texture;
 }
 
+function makeRoundedStackSide(): THREE.BufferGeometry {
+  const outline = roundedCardOutline(1.02, 1.42);
+  const positions: number[] = [], uv: number[] = [], indices: number[] = [];
+  let distance = 0;
+  outline.forEach((point, index) => {
+    if (index) distance += point.distanceTo(outline[index - 1]);
+    positions.push(point.x, 0, point.y, point.x, 1, point.y);
+    uv.push(distance, 0, distance, 1);
+    const next = (index + 1) % outline.length;
+    indices.push(index * 2, index * 2 + 1, next * 2, next * 2, index * 2 + 1, next * 2 + 1);
+  });
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+  geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+  return geometry;
+}
+
 /** The top three cards stay physical; a striped paper block carries hidden layers. */
 export class CardPile {
   readonly group = new THREE.Group();
@@ -35,7 +54,7 @@ export class CardPile {
   private disposed = false;
   private sideTexture = makePaperSide();
   private sideMaterial = new THREE.MeshStandardMaterial({map:this.sideTexture,roughness:.9,metalness:0});
-  private body = new THREE.Mesh(new THREE.BoxGeometry(1.01,1,1.405), this.sideMaterial);
+  private body = new THREE.Mesh(makeRoundedStackSide(), this.sideMaterial);
   get count(): number { return this.requested.length; }
 
   constructor(private draw: boolean, private load: (url: string) => Promise<THREE.Texture>) {
@@ -54,7 +73,7 @@ export class CardPile {
     this.sideTexture.needsUpdate = true;
     if (firstVisible) {
       this.body.scale.y = firstVisible * CARD_PITCH;
-      this.body.position.y = CARD_TABLE_HEIGHT + this.body.scale.y / 2;
+      this.body.position.y = CARD_TABLE_HEIGHT;
       if (this.body.parent !== this.group) this.group.add(this.body);
     } else this.group.remove(this.body);
     for (const [key, card] of this.cards) {

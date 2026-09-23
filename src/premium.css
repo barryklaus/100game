@@ -171,7 +171,9 @@ button:active { translate:0 1px; }
   filter:none!important;
   box-shadow:none!important;
   border:0!important;
+  border-radius:5.5% / 3.95%!important;
 }
+.draw-face,.flying-card img,.waiting-cards img { border-radius:5.5% / 3.95%; }
 .playing-card::before,.playing-card::after,
 .world3d-active .hand-card::before,.world3d-active .hand-card::after {display:none!important;}
 /* These screen-wide gradients also covered the hand; the 3D room supplies its

@@ -1,6 +1,6 @@
 # Asset manifest
 
-The authoritative card artwork is the user supplied `CARD DESIGN/FINAL` set. Source PNG files remain unchanged outside the repository. The game uses WebP versions at the original approximate 510–511 × 710–711 dimensions, preserving transparency and aspect ratio.
+The authoritative card artwork is the user supplied `CARD DESIGN/FINAL/HIGH-RESOLUTION` set. All 52 fronts and the back are used. Source PNG files remain unchanged outside the repository. The game uses quality-94 WebP copies at their supplied approximately 1063–1064 × 1478–1480 dimensions. Rounded corners are cut by 3D geometry and CSS at display time, so no artwork is cropped or painted over in the files.
 
 ## Final card texture mapping
 
@@ -8,18 +8,18 @@ The authoritative card artwork is the user supplied `CARD DESIGN/FINAL` set. Sou
 | --- | --- |
 | Ace | `*-1.png` |
 | 2–6 | Matching numbered artwork |
-| 7 | `*-7-ChoosePlayer.png` |
+| 7 | `*-7-Choose-Player.png` |
 | 8 | `*-8-Reverse.png` |
 | 9 | `*-9-Zero.png` |
 | 10 | `*-10-Minus10.png` |
 | Jack | `*-10A.png` |
 | Queen | `*-10B.png` |
 | King | `*-10C.png` |
-| Card back | `CARD BACK/Card-Back.png` |
+| Card back | `BACK/CARD-BACK.png` |
 
-All four suits map into `public/assets/cards/{suit}-{rank}.webp`. The Fire source files use the `Card-Sun` filename prefix inside the `FIRE` folder. The Sun choose-player source is named `Card-Sun-9-ChoosePlayer.png`; it fills the otherwise missing rank 7 slot. These source naming inconsistencies are mapped without changing the originals.
+All four suits map into `public/assets/cards/{suit}-{rank}.webp`. Source `*-1.png` maps to game rank A; `*-10A.png`, `*-10B.png`, and `*-10C.png` map to game ranks J, Q, and K respectively. The source files remain unchanged.
 
-All cards show their original printed artwork with no added frame or foil overlay. The thin 3D paper edge follows the source alpha silhouette instead of filling its transparent corners. The alternate 10 artworks used by Jack, Queen, and King display as normal 10s (+10). Rank 10 itself is MINUS TEN (−10), not a normal 10.
+All cards show their original printed artwork with no added frame or foil overlay. The 3D surface and thin paper edge share one rounded card outline; the HTML fallback clips its image to matching corners. The alternate 10 artworks used by Jack, Queen, and King display as normal 10s (+10). Rank 10 itself is MINUS TEN (−10), not a normal 10.
 
 ## Scene artwork
 

@@ -3,7 +3,7 @@ import './game-presentation.css';
 import './premium.css';
 import { CONFIG, MOODS, moodSymbols, suitSymbols } from './data/config';
 import { defaultSeats, loadSettings, loadStats, saveSettings, saveStats, type Settings, type Stats } from './data/storage';
-import { backImage, cardDisplayRank, cardImage, makeDeck } from './game/deck';
+import { backImage, cardDisplayRank, cardImage } from './game/deck';
 import { chooseCpuCard, chooseCpuTarget } from './game/cpu';
 import { createGame, playCard, selectTarget } from './game/rules';
 import type { Card, GameState, PlayerConfig } from './game/types';
@@ -187,13 +187,6 @@ function startGame(round = 1): void {
   const seats = settings.seats.slice(0, settings.playerCount).map((seat, i) => ({ ...seat, name: seat.name.trim() || defaultSeats[i].name }));
   state = createGame(seats, round);
   save(); render(); scheduleCpu();
-  // Warm the texture cache in small batches so mobile browsers stay responsive.
-  const textureQueue = makeDeck();
-  const preloadBatch = (): void => {
-    textureQueue.splice(0, 4).forEach(card => { const image = new Image(); image.src = cardImage(card); });
-    if (textureQueue.length) window.setTimeout(preloadBatch, 120);
-  };
-  requestAnimationFrame(preloadBatch);
 }
 function finishRound(): void {
   if (!state) return;
