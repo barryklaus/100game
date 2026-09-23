@@ -11,6 +11,8 @@ import { makeWorldMaterials, glowTexture } from './WorldMaterials';
 import { ManifestedTotal } from './ManifestedTotal';
 import { PhysicalHand } from './PhysicalHand';
 import { CLEAN_CARD_LAYER, createCardMesh } from './CardMesh';
+import { cardFaceFromUrl } from '../game/cardFace';
+import { cardFaceTexture } from './CardFaceTexture';
 import { CardPile } from './CardPile';
 
 type SceneState = {
@@ -475,7 +477,10 @@ export class TavernScene {
     this.textureLastUsed.set(url, performance.now());
     let pending = this.textureCache.get(url);
     if (!pending) {
-      pending = this.textureLoader.loadAsync(url).then(texture => {
+      pending = this.textureLoader.loadAsync(url).then(async loaded => {
+        const face = cardFaceFromUrl(url);
+        const texture = face ? await cardFaceTexture(loaded, face) : loaded;
+        if (texture !== loaded) loaded.dispose();
         texture.colorSpace = THREE.SRGBColorSpace;
         texture.anisotropy = Math.min(QUALITY_PRESETS[this.quality].textureAnisotropy, this.renderer.capabilities.getMaxAnisotropy());
         this.loadedTextures.set(url, texture);
@@ -869,6 +874,8 @@ export class TavernScene {
     this.scene.traverse(object => {
       if (!(object instanceof THREE.Mesh) || !object.userData.cleanCard) return;
       cards.push({ mesh: object, material: object.material, visible: object.visible });
+      // The foil is composited only in the clean pass; it never feeds bloom.
+      if (object.userData.cardFoil) { object.visible = false; return; }
       const mask = (material: THREE.Material): THREE.Material => {
         let cached = this.cardMasks.get(material);
         if (!cached) {
@@ -893,7 +900,7 @@ export class TavernScene {
     try {
       this.composer!.render();
     } finally {
-      cards.forEach(card => { card.mesh.material = card.material; });
+      cards.forEach(card => { card.mesh.material = card.material; card.mesh.visible = card.visible; });
     }
     if (!cards.length) return;
 

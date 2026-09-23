@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>100 — card face mockups</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700;800;900&family=Fraunces:opsz,wght@9..144,700;9..144,900&display=swap');
+    :root { color: #f8edd4; background: #14111d; font-family: 'DM Sans', Arial, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: radial-gradient(ellipse 70% 40% at 50% -4%, #4c315c 0%, transparent 72%), radial-gradient(circle at 80% 110%, #33243d 0%, transparent 34%), #14111d; }
+    main { max-width: 1460px; margin: auto; padding: 48px 54px 56px; }
+    header { display: flex; align-items: end; justify-content: space-between; border-bottom: 1px solid #8c704767; padding-bottom: 21px; margin-bottom: 26px; }
+    .kicker { color: #e0b971; font-size: 13px; font-weight: 900; letter-spacing: .24em; }
+    h1 { font-family: Fraunces, Georgia, serif; font-size: 43px; line-height: 1; margin: 10px 0 0; color: #fff5da; }
+    header p { max-width: 325px; color: #c5b9ca; line-height: 1.4; font-size: 15px; text-align: right; margin: 0 0 2px; }
+    section { padding: 14px 0 24px; }
+    section + section { border-top: 1px solid #8c704740; padding-top: 27px; }
+    .section-head { display: flex; align-items: center; gap: 20px; margin-bottom: 15px; }
+    .choice { border: 1px solid #d9ac69; color: #f6d89f; font-size: 14px; font-weight: 900; letter-spacing: .12em; border-radius: 30px; padding: 8px 12px; }
+    h2 { font: 700 25px Fraunces, Georgia, serif; margin: 0; }
+    .description { color: #bcb1c3; font-size: 14px; margin-left: auto; }
+    .cards { display: flex; gap: 24px; justify-content: space-between; }
+    .sample { min-width: 0; flex: 1; }
+    .card { --accent: #e2b85e; position: relative; width: 100%; aspect-ratio: 1064 / 1478; border-radius: 15px; isolation: isolate; overflow: hidden; background: #221d26; box-shadow: 0 16px 30px #05040980; }
+    .card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .sun { --accent: #e9c274; }
+    .fire { --accent: #fa846c; }
+    .water { --accent: #8bd6f7; }
+    .leaf { --accent: #a7d28a; }
+    .a .card { border: 5px solid var(--accent); }
+    .a .card::before { content: ''; position: absolute; z-index: 3; inset: 5px; border: 1px solid #fff8d3bc; border-radius: 9px; pointer-events: none; }
+    .a .number { position: absolute; z-index: 4; left: 10px; top: 10px; width: 56px; height: 64px; background: #fffaea; color: #1e1724; border: 2px solid #5c4238; border-radius: 10px; box-shadow: 0 3px 0 #e8c275, 2px 4px 7px #0008; text-align: center; font: 900 41px/58px Fraunces, Georgia, serif; letter-spacing: -.08em; padding-right: 4px; }
+    .a .number.long { width: 73px; font-size: 35px; }
+    .a .mirror { position: absolute; z-index: 5; right: 10px; bottom: 9px; width: 32px; height: 38px; background: #fff8e8; color: #1e1724; border: 1px solid #6a4c3d; border-radius: 6px; transform: rotate(180deg); text-align: center; font: 900 22px/36px Fraunces, Georgia, serif; }
+    .a .mirror.long { width: 41px; font-size: 18px; }
+    .a .action { position: absolute; z-index: 4; left: 10px; right: 10px; bottom: 49px; background: #17131eea; border: 1px solid var(--accent); border-radius: 7px; text-align: center; padding: 8px 3px 9px; box-shadow: 0 3px 14px #0009; }
+    .a .action strong { display: block; color: #fff5da; font-weight: 900; font-size: clamp(11px, 1.08vw, 16px); letter-spacing: .07em; line-height: 1.05; white-space: nowrap; }
+    .a .action span { display: block; color: #e5d6bf; font-size: clamp(8px, .78vw, 11px); font-weight: 700; margin-top: 4px; line-height: 1.1; white-space: nowrap; }
+    .a .card.plain .action { display: none; }
+    .b .card { border: 7px solid var(--accent); box-shadow: 0 17px 30px #05040990, inset 0 0 0 1px #ffffffb0; }
+    .b .card::after { content: ''; position: absolute; z-index: 1; inset: 0; background: linear-gradient(180deg, #11131f7a, transparent 25%, transparent 58%, #0c0a10c2); pointer-events: none; }
+    .b .number { position: absolute; z-index: 4; top: 5px; left: 12px; font: 900 51px/1 Fraunces, Georgia, serif; color: #fffef3; -webkit-text-stroke: 2px #1e1620; paint-order: stroke fill; filter: drop-shadow(2px 3px 1px #000a); letter-spacing: -.06em; }
+    .b .number.long { font-size: 43px; }
+    .b .mirror { position: absolute; z-index: 4; right: 10px; bottom: 50px; font: 900 23px/1 Fraunces, Georgia, serif; color: #fffef3; -webkit-text-stroke: 1.5px #1e1620; paint-order: stroke fill; transform: rotate(180deg); }
+    .b .action { position: absolute; z-index: 5; left: 0; right: 0; bottom: 0; height: 46px; display: flex; flex-direction: column; justify-content: center; padding: 0 10px 2px; background: #fff9e8; border-top: 3px solid var(--accent); text-align: center; color: #261b29; }
+    .b .action strong { font-weight: 900; font-size: clamp(11px, .95vw, 15px); letter-spacing: .07em; line-height: 1.05; white-space: nowrap; }
+    .b .action span { color: #5a4c55; font-weight: 700; font-size: clamp(8px, .73vw, 11px); white-space: nowrap; margin-top: 2px; }
+    .b .card.plain .action { display: none; }
+    .b .card.plain .mirror { bottom: 9px; }
+    .label { margin: 10px 2px 0; font-size: 13px; font-weight: 800; color: #e0d1b8; text-align: center; }
+    footer { border-top: 1px solid #8c704767; padding-top: 16px; color: #a99eab; font-size: 13px; }
+    @media (max-width: 900px) { main { padding: 28px 20px; } .cards { overflow-x: auto; padding-bottom: 14px; } .sample { flex: 0 0 192px; } .description { display: none; } header p { display: none; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div><div class="kicker">100 · CARD FACE EXPLORATION</div><h1>Border, number &amp; action</h1></div>
+    <p>Two printed treatments using the current high-resolution artwork. These are visual mockups; the game has not changed.</p>
+  </header>
+  <section class="a">
+    <div class="section-head"><span class="choice">A</span><h2>Tavern frame</h2><span class="description">Warm gilded edge · traditional corner indices · dark action plaque</span></div>
+    <div class="cards">
+      <div class="sample"><div class="card fire plain"><img src="../public/assets/cards/fire-4.webp" alt="Fire 4 artwork"><div class="number">4</div><div class="mirror">4</div></div><div class="label">Regular card · +4</div></div>
+      <div class="sample"><div class="card sun"><img src="../public/assets/cards/sun-7.webp" alt="Sun 7 artwork"><div class="number">7</div><div class="action"><strong>CHOOSE A PLAYER</strong><span>They play next · +0</span></div><div class="mirror">7</div></div><div class="label">Special 7</div></div>
+      <div class="sample"><div class="card fire"><img src="../public/assets/cards/fire-8.webp" alt="Fire 8 artwork"><div class="number">8</div><div class="action"><strong>REVERSE</strong><span>Change direction · +0</span></div><div class="mirror">8</div></div><div class="label">Special 8</div></div>
+      <div class="sample"><div class="card water"><img src="../public/assets/cards/water-9.webp" alt="Water 9 artwork"><div class="number">9</div><div class="action"><strong>ZERO</strong><span>Keep total unchanged · +0</span></div><div class="mirror">9</div></div><div class="label">Special 9</div></div>
+      <div class="sample"><div class="card leaf"><img src="../public/assets/cards/leaf-10.webp" alt="Leaf 10 artwork"><div class="number long">10</div><div class="action"><strong>−10</strong><span>Subtract 10 from total</span></div><div class="mirror long">10</div></div><div class="label">Special 10</div></div>
+    </div>
+  </section>
+  <section class="b">
+    <div class="section-head"><span class="choice">B</span><h2>Clear play</h2><span class="description">Suit-colored edge · bold numbers · compact printed instruction band</span></div>
+    <div class="cards">
+      <div class="sample"><div class="card fire plain"><img src="../public/assets/cards/fire-4.webp" alt="Fire 4 artwork"><div class="number">4</div><div class="mirror">4</div></div><div class="label">Regular card · +4</div></div>
+      <div class="sample"><div class="card sun"><img src="../public/assets/cards/sun-7.webp" alt="Sun 7 artwork"><div class="number">7</div><div class="action"><strong>CHOOSE A PLAYER</strong><span>They play next · +0</span></div><div class="mirror">7</div></div><div class="label">Special 7</div></div>
+      <div class="sample"><div class="card fire"><img src="../public/assets/cards/fire-8.webp" alt="Fire 8 artwork"><div class="number">8</div><div class="action"><strong>REVERSE</strong><span>Change direction · +0</span></div><div class="mirror">8</div></div><div class="label">Special 8</div></div>
+      <div class="sample"><div class="card water"><img src="../public/assets/cards/water-9.webp" alt="Water 9 artwork"><div class="number">9</div><div class="action"><strong>ZERO</strong><span>Keep total unchanged · +0</span></div><div class="mirror">9</div></div><div class="label">Special 9</div></div>
+      <div class="sample"><div class="card leaf"><img src="../public/assets/cards/leaf-10.webp" alt="Leaf 10 artwork"><div class="number long">10</div><div class="action"><strong>−10</strong><span>Subtract 10 from total</span></div><div class="mirror">10</div></div><div class="label">Special 10</div></div>
+    </div>
+  </section>
+  <footer>Mockups only · artwork and gameplay remain unchanged · labels reflect the current rules</footer>
+</main>
+</body>
+</html>

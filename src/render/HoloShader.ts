@@ -1,5 +1,5 @@
-// Keeps the supplied card artwork untouched. The class only feeds pointer
-// position into the CSS border foil used by ranks 7–10.
+// Feeds pointer position into the DOM fallback's border-only foil. The 3D
+// cards have their own matching border shader that follows their real tilt.
 export class HoloShader {
   private isEnabled = true;
   private active: HTMLElement | null = null;

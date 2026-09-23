@@ -26,8 +26,14 @@ assert(isCardEdgeGrip(cardRect,150,108));
 assert(isCardEdgeGrip(cardRect,195,232));
 assert.equal(isCardEdgeGrip(cardRect,150,170),false);
 const {makeDeck,cardDisplayRank}=await load('src/game/deckCore.ts');
+const {cardFace,cardFaceFromUrl}=await load('src/game/cardFace.ts');
 const labels=new Set(makeDeck().map(cardDisplayRank));
 assert.deepEqual([...labels],['1','2','3','4','5','6','CHOOSE PLAYER','REVERSE','ZERO','MINUS TEN','10']);
+assert.equal(cardFace({rank:'A',suit:'sun'}).index,'1');
+assert.equal(cardFace({rank:'K',suit:'sun'}).index,'10');
+assert.deepEqual(['7','8','9','10'].map(rank=>cardFace({rank,suit:'fire'}).title),['CHOOSE A PLAYER','REVERSE','ZERO','−10']);
+assert.equal(cardFaceFromUrl('/assets/cards/water-9.webp')?.detail,'Total stays the same · +0');
+assert.equal(cardFaceFromUrl('/assets/cards/back.webp'),null);
 const totalFont=JSON.parse(readFileSync('src/render/totalFont.json','utf8'));
 for(const total of [-40,-10,-1,0,99,100,110])for(const character of String(total))assert(totalFont.glyphs[character]?.o,`Total ${total} has a missing glyph: ${character}`);
 const {CardPile,CARD_TABLE_HEIGHT}=await load('src/render/CardPile.ts');
@@ -35,8 +41,8 @@ const {CARD_THICKNESS,CLEAN_CARD_LAYER,createCardMesh,disposeCardMesh}=await loa
 const texture={image:{width:511,height:711},isTexture:true};
 for(const special of [false,true]) {
   const card=createCardMesh(texture,texture,special);
-  assert.deepEqual(card.children.map(surface=>surface.name),['card-paper-edge','card-front','card-back']);
-  for(const surface of card.children) {
+  assert.deepEqual(card.children.map(surface=>surface.name),['card-paper-edge','card-front','card-back','card-border-foil']);
+  for(const surface of card.children.slice(0,3)) {
     const material=surface.material;
     assert.equal(material.isMeshBasicMaterial,true,`${surface.name} must show clean, unlit card color`);
     assert.equal(material.toneMapped,false,'Room tone mapping must not change printed artwork');
@@ -46,6 +52,20 @@ for(const special of [false,true]) {
     assert.equal(material.clearcoat,undefined,'Cards must not receive reflective clearcoat');
     assert.equal(surface.userData.cleanCard,true,'Every card surface must be excluded from room effects');
     assert(surface.layers.isEnabled(CLEAN_CARD_LAYER),'Every card surface must render in the clean card pass');
+  }
+  const foil=card.children[3];
+  assert.equal(foil.material.isShaderMaterial,true,'Foil uses a cheap border-only shader');
+  assert.equal(foil.userData.cardFoil,true);
+  assert.equal(foil.userData.cleanCard,true,'Foil renders in the clean card pass');
+  assert.equal(foil.material.uniforms.uSpecial.value,special?1:0);
+  const foilPositions=foil.geometry.getAttribute('position');
+  const foilTriangles=foil.geometry.getIndex();
+  assert(foilTriangles?.count,'Foil must be a triangulated ring');
+  for(let i=0;i<foilTriangles.count;i+=3){
+    const a=foilTriangles.getX(i),b=foilTriangles.getX(i+1),c=foilTriangles.getX(i+2);
+    const x=(foilPositions.getX(a)+foilPositions.getX(b)+foilPositions.getX(c))/3;
+    const y=(foilPositions.getY(a)+foilPositions.getY(b)+foilPositions.getY(c))/3;
+    assert(Math.abs(x)>card.userData.cardWidth*.4||Math.abs(y)>card.userData.cardHeight*.42,'Foil must leave the card illustration unobscured');
   }
   const face=card.children[1];
   const vertices=face.geometry.getAttribute('position');
@@ -80,4 +100,4 @@ pile.dispose();
 console.log('Presentation checks passed: settings migration, short flicks, canceled gestures, inspection, card language, and negative-to-bust numeral coverage.');
 console.log('Card input checks passed: quick same-card double taps and edge/corner spin grips.');
 console.log('Physical pile checks passed: empty, single, multiple cards, landing/draw alignment, and recycling.');
-console.log('Clean card checks passed: normal and special cards use unlit artwork with no glow, tint, reflections, fog, or tone mapping.');
+console.log('Card face checks passed: rank indices, special instructions, clean art, and border-only normal/special foil.');

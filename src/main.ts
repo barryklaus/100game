@@ -4,11 +4,13 @@ import './premium.css';
 import { CONFIG, MOODS, moodSymbols, suitSymbols } from './data/config';
 import { defaultSeats, loadSettings, loadStats, saveSettings, saveStats, type Settings, type Stats } from './data/storage';
 import { backImage, cardDisplayRank, cardImage } from './game/deck';
+import { cardFace } from './game/cardFace';
 import { chooseCpuCard, chooseCpuTarget } from './game/cpu';
 import { createGame, playCard, selectTarget } from './game/rules';
 import type { Card, GameState, PlayerConfig } from './game/types';
 import { AudioManager } from './audio/AudioManager';
 import { TavernScene } from './render/TavernScene';
+import { HoloShader } from './render/HoloShader';
 import { OnlineRoom, newRoomId } from './game/online';
 import { HostedRoom } from './game/hosted';
 import { isCardEdgeGrip, isDoubleCardTap, isPlayGesture, type CardTap } from './ui/cardGesture';
@@ -41,6 +43,7 @@ let remoteFlightKey='';
 let observedOnlineHand = new Set<string>();
 let observedOnlineRound = 0;
 const audio = new AudioManager();
+const holo = new HoloShader();
 audio.configure(settings);
 let tavern: TavernScene | undefined;
 try { tavern = new TavernScene(); tavern.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion}); } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
@@ -115,6 +118,7 @@ function connectOnline(mode: 'host' | 'join'): void {
 function applyPreferences(): void {
   audio.configure(settings);
   tavern?.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion});
+  holo.enabled = !settings.reducedMotion;
   document.documentElement.classList.toggle('reduce-motion',settings.reducedMotion);
   document.documentElement.style.setProperty('--ui-scale',String(settings.uiScale));
 }
@@ -158,7 +162,7 @@ async function animateDrawToHand(card: Card): Promise<void> {
   const flight = document.createElement('div');
   flight.className = 'draw-flight';
   flight.setAttribute('aria-hidden', 'true');
-  flight.innerHTML = `<img class="draw-face draw-back" src="${backImage}" alt=""><img class="draw-face draw-front" src="${cardImage(card)}" alt="">`;
+  flight.innerHTML = `<img class="draw-face draw-back" src="${backImage}" alt="">${cardElement(card, false, 'draw-face draw-front')}`;
   Object.assign(flight.style, {
     left: `${start.left}px`, top: `${start.top}px`, width: `${start.width}px`, height: `${start.height}px`,
   });
@@ -267,9 +271,9 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin = 0): Prom
     source.classList.add('card-departing');
   }
   else {
-    flying = document.createElement('div');
-    flying.className = `playing-card ${['7','8','9','10'].includes(card.rank) ? 'special' : ''}`;
-    flying.innerHTML = `<img src="${cardImage(card)}" alt="${cardDisplayRank(card)} of ${card.suit}">`;
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = cardElement(card);
+    flying = wrapper.firstElementChild as HTMLElement;
   }
   flying.classList.add('flying-card');
   Object.assign(flying.style, { position:'fixed', left:`${start.left}px`, top:`${start.top}px`, width:`${start.width || 76}px`, height:`${start.height || 108}px`, margin:'0', transform:'none' });
@@ -309,10 +313,11 @@ function scheduleCpu(): void {
   }, delay);
 }
 function cardElement(card: Card, selected = false, extra = ''): string {
-  const special = ['7','8','9','10'].includes(card.rank);
+  const face = cardFace(card);
+  const special = face.special;
   const interactive = extra.includes('hand-card') && !extra.includes('waiting-hand');
   const rank = cardDisplayRank(card);
-  return `<div class="playing-card ${special ? 'special' : ''} ${selected ? 'selected' : ''} ${extra}" data-card="${card.id}" role="${interactive?'button':'img'}" ${interactive?'tabindex="0"':''} aria-label="${rank} of ${card.suit}${special ? ', special card' : ''}"><img src="${cardImage(card)}" alt="${rank} of ${card.suit}" draggable="false"></div>`;
+  return `<div class="playing-card suit-${face.suit} ${special ? 'special' : 'standard'} ${selected ? 'selected' : ''} ${extra}" data-card="${card.id}" role="${interactive?'button':'img'}" ${interactive?'tabindex="0"':''} aria-label="${rank} of ${card.suit}${special ? ', special card' : ''}"><img src="${cardImage(card)}" alt="${rank} of ${card.suit}" draggable="false"><span class="card-print" aria-hidden="true"><span class="card-index top">${face.index}</span>${special ? `<span class="card-action"><strong>${face.title}</strong><small>${face.detail}</small></span>` : ''}<span class="card-index bottom">${face.index}</span></span></div>`;
 }
 function setupView(): string {
   return `<main class="setup-page">

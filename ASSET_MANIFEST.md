@@ -19,7 +19,7 @@ The authoritative card artwork is the user supplied `CARD DESIGN/FINAL/HIGH-RESO
 
 All four suits map into `public/assets/cards/{suit}-{rank}.webp`. Source `*-1.png` maps to game rank A; `*-10A.png`, `*-10B.png`, and `*-10C.png` map to game ranks J, Q, and K respectively. The source files remain unchanged.
 
-All cards show their original printed artwork with no added frame or foil overlay. The 3D surface and thin paper edge share one rounded card outline; the HTML fallback clips its image to matching corners. The alternate 10 artworks used by Jack, Queen, and King display as normal 10s (+10). Rank 10 itself is MINUS TEN (−10), not a normal 10.
+The source artwork stays unchanged. At display time each front gets a thick suit-colored frame, top-left and rotated bottom-right rank indices, and a printed instruction band for ranks 7–10. The 3D surface and thin paper edge share one rounded card outline; an animated shader ring follows the border only. Ordinary cards use a restrained metallic sheen; ranks 7–10 use stronger prismatic foil. The HTML fallback uses matching clipped CSS border effects. The alternate 10 artworks used by Jack, Queen, and King display as normal 10s (+10). Rank 10 itself is MINUS TEN (−10), not a normal 10.
 
 ## Scene artwork
 
@@ -32,9 +32,9 @@ The legacy fallback background was generated with the built-in imagegen tool usi
 
 ## Procedural materials and numeral font
 
-`WorldMaterials.ts` creates wood grain, woven cloth, worn brass, and stone texture maps in code. No supplied illustration is painted over or regenerated. `totalFont.json` contains only numerals and punctuation from Three.js's Gentilis Bold typeface, used for the extruded center total. Its upstream license is retained in `public/assets/fonts/`.
+`WorldMaterials.ts` creates wood grain, woven cloth, worn brass, and stone texture maps in code. No supplied illustration is edited in its source file. `totalFont.json` contains only numerals and punctuation from Three.js's Gentilis Bold typeface, used for the extruded center total. The card corner indices and special titles use Google's Luckiest Guy font, bundled with its Apache 2.0 license in `public/assets/fonts/` so they remain available offline. Its upstream license is retained in `public/assets/fonts/`.
 
-The local supplied `holo/Holo-1.png` was previously inspected as a spectral-reflection reference. No third-party Pokémon artwork or card textures were copied. The experimental foil shader has since been removed at the user's request.
+The local supplied `holo/Holo-1.png` was previously inspected as a spectral-reflection reference. No third-party Pokémon artwork or card textures were copied. The new foil is original shader code confined to the printed card border.
 
 ## Original avatar portraits
 

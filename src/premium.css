@@ -6,7 +6,7 @@
 .world3d-active .hand-card { aspect-ratio:var(--card-aspect, .719718);height:clamp(310px,47vh,530px);width:auto;touch-action:none; }
 .world3d-active .hand-card img { width:100%;height:100%;object-fit:contain; }
 .world3d-active .local-hand { bottom:-18%;gap:0; }
-.world3d-active .hand-card.inspecting { z-index:25;transform:translateY(-42px) scale(1.22)!important; }
+.world3d-active .hand-card.inspecting { z-index:25;transform:translateY(calc(-18vh - 72px)) scale(1.08)!important; }
 .world3d-active .hand-card.dragging { transition:none!important;z-index:30; }
 .world3d-active .hand-card.selected:not(.dragging) { transform:translateY(-25px) rotate(0deg); }
 .world3d-active .hand-card:focus-visible { outline:2px solid #ffe3a4;outline-offset:8px;border-radius:8%; }
@@ -68,6 +68,7 @@ button:active { translate:0 1px; }
  .world3d-active .turn-pill {display:none;}
  .world3d-active .local-hand {bottom:-10%;gap:0;}
  .world3d-active .local-hand .hand-card {height:min(50svh,75vw);max-width:none;}
+ .world3d-active .hand-card.inspecting {transform:translateY(calc(-10svh - 64px)) scale(1.08)!important;}
  .world3d-active .dock-prompt {left:12px;right:auto;bottom:44%;min-width:0;width:auto;flex-direction:row;gap:6px;padding:5px 8px;background:#151521b8;border:1px solid #ccb68144;}
  .world3d-active .dock-prompt .dock-avatar {width:36px;height:36px;border-width:1px;box-shadow:none;}
  .world3d-active .dock-prompt strong {font-size:.65rem;}
@@ -84,6 +85,7 @@ button:active { translate:0 1px; }
 @media(orientation:landscape) and (max-height:520px) {
  .world3d-active .local-hand .hand-card {height:clamp(180px,58vh,295px);}
  .world3d-active .local-hand {bottom:-23%;}
+ .world3d-active .hand-card.inspecting {transform:translateY(calc(-23vh - 58px)) scale(1.08)!important;}
  .world3d-active .seat .character,.world3d-active .seat .character-head {width:43px;height:43px;}
  .world3d-active .seat .seat-info {min-width:54px;padding:2px 4px;}
  .world3d-active .seat .seat-name {font-size:.57rem;}
@@ -151,14 +153,13 @@ button:active { translate:0 1px; }
  .world3d-active .seat.active::before {width:50px;height:50px;}
 }
 
-/* Printed art stays clean in the WebGL scene and the DOM fallback. Motion is
-   the selection feedback; neither path adds a colored glow or reflective layer. */
+/* The printed card stays free of room filters. The border foil has its own
+   clipped layer below; it never covers the character illustration. */
 .playing-card,
 .playing-card:is(.special,.selected,.flick-ready,.dragging,.inspecting),
 .playing-card:hover,
 .world3d-active .hand-card,
 .world3d-active .hand-card:is(.selected,.flick-ready,.dragging,.inspecting) {
-  background:transparent!important;
   border:0!important;
   box-shadow:none!important;
   filter:none!important;
@@ -171,11 +172,9 @@ button:active { translate:0 1px; }
   filter:none!important;
   box-shadow:none!important;
   border:0!important;
-  border-radius:5.5% / 3.95%!important;
 }
 .draw-face,.flying-card img,.waiting-cards img { border-radius:5.5% / 3.95%; }
-.playing-card::before,.playing-card::after,
-.world3d-active .hand-card::before,.world3d-active .hand-card::after {display:none!important;}
+.playing-card::before,.world3d-active .hand-card::before {display:none!important;}
 /* These screen-wide gradients also covered the hand; the 3D room supplies its
    own atmospheric depth without tinting the printed card colors. */
 .world3d-active .game-page::before,.world3d-active .game-page::after {background:none!important;}
@@ -196,3 +195,102 @@ button:active { translate:0 1px; }
 /* The fallback table keeps a static pot, without an orbit or moving liquid. */
 .game-page .energy-ring {display:none!important;}
 .game-page .cauldron-liquid {animation:none!important;}
+
+@font-face {
+  font-family:'Luckiest Guy';
+  src:url('/assets/fonts/LuckiestGuy-Regular.ttf') format('truetype');
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+}
+
+/* B card face: a printed suit frame, two traditional indices and one concise
+   rule band. Container units let the print scale with the card in every seat. */
+.playing-card:not(.card-back) {
+  --card-accent:#ecc26a;
+  position:relative;
+  container-type:inline-size;
+  overflow:hidden;
+  border-radius:5.5% / 3.95%!important;
+  background:var(--card-accent)!important;
+}
+.playing-card.suit-fire {--card-accent:#f09069;}
+.playing-card.suit-water {--card-accent:#83d0e9;}
+.playing-card.suit-leaf {--card-accent:#a5cc82;}
+.playing-card.suit-sun {--card-accent:#f0c66a;}
+.playing-card:not(.card-back)>img {
+  position:absolute;
+  z-index:1;
+  top:3.65%;left:5.1%;
+  width:89.8%;height:92.7%;
+  object-fit:cover;
+  border-radius:4% / 2.8%!important;
+}
+.playing-card .card-print {position:absolute;inset:0;z-index:3;pointer-events:none;}
+.playing-card .card-index {
+  position:absolute;
+  display:block;
+  color:#fffdf4;
+  font:400 24.9cqw/.95 'Luckiest Guy',system-ui,sans-serif;
+  letter-spacing:-.035em;
+  -webkit-text-stroke:.9cqw #191525;
+  paint-order:stroke fill;
+  text-shadow:0 .7cqw .8cqw #140d1a9a;
+  white-space:nowrap;
+}
+.playing-card .card-index.top {top:4.8%;left:7.3%;}
+.playing-card .card-index.bottom {right:7.3%;bottom:4.8%;transform:rotate(180deg);}
+.playing-card.special .card-index.bottom {color:#211927;-webkit-text-stroke:.55cqw #fff9e9;text-shadow:none;}
+.playing-card .card-action {
+  position:absolute;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  left:5.1%;right:5.1%;bottom:3.65%;
+  height:16.2%;
+  padding-right:20.5%;
+  border-top:.9cqw solid var(--card-accent);
+  background:#fff9e9;
+  color:#211927;
+  text-align:center;
+  white-space:nowrap;
+}
+.playing-card .card-action strong {font:400 6.9cqw/1 'Luckiest Guy',system-ui,sans-serif;letter-spacing:.015em;}
+.playing-card .card-action small {font:700 3.8cqw/1.15 system-ui,sans-serif;color:#5a4c55;margin-top:1cqw;}
+
+/* Both effects are masked to the thick border. The special cards get stronger
+   rainbow interference; all other fronts have a restrained metallic glint. */
+.playing-card:not(.card-back)::after,
+.world3d-active .hand-card:not(.card-back)::after {
+  content:'';
+  display:block!important;
+  position:absolute;
+  z-index:4;
+  inset:0;
+  border-radius:5.5% / 3.95%;
+  padding:5.1%;
+  pointer-events:none;
+  background:linear-gradient(118deg,#70512d,#fff3c6 17%,#bd8845 36%,#fff8df 50%,#a46e32 68%,#fff2c4 86%,#70512d);
+  background-size:220% 220%;
+  mix-blend-mode:screen;
+  opacity:.47!important;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  animation:card-foil-roll 5.7s ease-in-out infinite alternate;
+}
+.playing-card.special::after,
+.world3d-active .hand-card.special::after {
+  background:radial-gradient(circle at var(--holo-x,50%) var(--holo-y,50%),#fff 0 2%,transparent 35%),conic-gradient(from 15deg,#f5e27c,#ef65ac,#8887f3,#6bdbf8,#9ee2a1,#fff49a,#f5e27c);
+  background-size:160% 160%,210% 210%;
+  opacity:.77!important;
+  animation:card-foil-roll 3.1s ease-in-out infinite alternate!important;
+}
+.playing-card.special:is(:hover,.dragging,[data-card-pressed])::after {opacity:.95!important;}
+.world3d-active .hand-card.mesh-ready {background:transparent!important;overflow:visible;}
+.world3d-active .hand-card.mesh-ready .card-print {visibility:hidden;}
+.world3d-active .hand-card.mesh-ready::after {display:none!important;}
+@keyframes card-foil-roll {from{background-position:8% 52%;filter:hue-rotate(0deg)}to{background-position:92% 48%;filter:hue-rotate(32deg)}}
+.reduce-motion .playing-card::after {animation:none!important;}
+.draw-flight .playing-card.draw-front {width:100%;height:100%;}
