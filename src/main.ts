@@ -8,6 +8,7 @@ import { createGame, playCard, selectTarget } from './game/rules';
 import type { Card, GameState, PlayerConfig } from './game/types';
 import { AudioManager } from './audio/AudioManager';
 import { HoloShader } from './render/HoloShader';
+import { TavernScene } from './render/TavernScene';
 import { OnlineRoom, newRoomId } from './game/online';
 import { HostedRoom } from './game/hosted';
 
@@ -17,7 +18,8 @@ let stats: Stats = loadStats();
 let state: GameState | null = null;
 let selectedCard: string | null = null;
 let locked = false;
-let modal: 'rules' | 'settings' | 'stats' | 'menu' | null = null;
+let modal: 'rules' | 'settings' | 'stats' | 'history' | 'menu' | null = null;
+let emotesOpen = false;
 let cpuTimer: number | undefined;
 let reaction: Record<number, string> = {};
 let toastTimer: number | undefined;
@@ -36,6 +38,8 @@ const audio = new AudioManager();
 audio.volume = settings.volume;
 let holo: HoloShader | undefined;
 try { holo = new HoloShader(); holo.enabled = settings.graphics === 'high'; } catch { /* Cards remain fully playable without motion effects. */ }
+let tavern: TavernScene | undefined;
+try { tavern = new TavernScene(); tavern.qualityHigh = settings.graphics === 'high'; } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
 
 const escapeHtml = (value: string): string => value.replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char]!);
 const avatarNames = ['Ember Scout', 'Tide Scholar', 'Grove Guardian', 'Sun Knight', 'Storm Pilot', 'Coral Bard', 'Mushroom Alchemist', 'Desert Ranger', 'Moon Seer', 'River Courier', 'Thorn Duelist', 'Forge Captain', 'Cloud Mechanic', 'Marsh Mystic', 'Wildwood Archer', 'Dawn Dancer'];
@@ -94,7 +98,7 @@ function connectOnline(mode: 'host' | 'join'): void {
   if (mode === 'host') { online.setCpuCount(roomCpuCount); history.replaceState(null, '', `${location.pathname}?room=${code}`); }
   render();
 }
-function save(): void { saveSettings(settings); saveStats(stats); audio.volume = settings.volume; if (holo) holo.enabled = settings.graphics === 'high'; }
+function save(): void { saveSettings(settings); saveStats(stats); audio.volume = settings.volume; if (holo) holo.enabled = settings.graphics === 'high'; if (tavern) tavern.qualityHigh = settings.graphics === 'high'; }
 function clearCpu(): void { if (cpuTimer) clearTimeout(cpuTimer); cpuTimer = undefined; }
 function flash(text: string, kind = ''): void {
   document.querySelector('.event-toast')?.remove();
@@ -318,13 +322,13 @@ function gameView(): string {
   const hand = mine?.kind === 'human' ? mine.hand : [];
   const totalClass = state.total>100?'busted':state.total===100?'at100':state.total>=CONFIG.TOTAL_WARNING_3?'danger':state.total>=CONFIG.TOTAL_WARNING_2?'warning-2':state.total>=CONFIG.TOTAL_WARNING_1?'warning-1':'';
   const energy = Math.max(0, Math.min(100, state.total));
-  return `<main class="game-page" data-event="${state.event}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>SIMPLE NUMBERS.<br>BIG REACTIONS.</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>Ranked Match</strong><small>Good friends. Higher numbers.</small></div></div><div class="header-status"><span class="round-pill">Round ${state.round} / Unlimited</span><span class="turn-pill">${escapeHtml(active.name)}'s ${state.phase==='target'?'choice':'turn'}</span></div><div class="header-actions"><button data-action="rules" aria-label="Rules">?</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}
+  return `<main class="game-page" data-event="${state.event}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>SIMPLE NUMBERS.<br>BIG REACTIONS.</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>Ranked Match</strong><small>Good friends. Higher numbers.</small></div></div><div class="header-wallet" aria-label="Player rewards"><span class="wallet-pill"><b>★</b>${stats.currency.toLocaleString()}</span><span class="wallet-pill gem"><b>◆</b>${stats.rating.toLocaleString()}</span></div><div class="header-status"><span class="round-pill">Round ${state.round} / Unlimited</span><span class="turn-pill">${escapeHtml(active.name)}'s ${state.phase==='target'?'choice':'turn'}</span></div><div class="header-actions"><button data-action="history" aria-label="Game history">▤</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}
     <div class="game-layout"><section class="arena" aria-label="Game table"><div class="table-rim"><div class="table-felt"><div class="energy-system ${totalClass}" style="--energy-angle:${energy * 3.6}deg;--energy-level:${energy / 100}"><div class="energy-ring"><span class="direction-spark ${state.direction===-1?'ccw':''}" aria-hidden="true"></span></div><div class="cauldron"><div class="cauldron-steam"><i></i><i></i><i></i></div><div class="cauldron-liquid"></div><div class="cauldron-body"><span class="cauldron-eye left"></span><span class="cauldron-eye right"></span><span class="cauldron-mouth"></span></div><span class="cauldron-handle left"></span><span class="cauldron-handle right"></span><span class="cauldron-foot left"></span><span class="cauldron-foot right"></span></div><div class="total-wrap ${totalClass}"><span class="total-caption">CURRENT TOTAL</span><div class="total-number">${state.total}</div><div class="total-max">/ 100</div></div><div class="direction-indicator ${state.direction===-1?'ccw':''}"><span>➜</span> ${state.direction===1?'CLOCKWISE':'COUNTER-CLOCKWISE'}</div></div><div class="table-cards"><div class="pile-wrap"><div class="draw-stack"><div class="playing-card card-back" role="img" aria-label="Draw pile"><img src="${backImage}" alt="Draw pile" draggable="false"></div></div><span>Draw<br><small>${state.drawPile.length} cards</small></span></div><div class="pile-wrap"><div class="played-slot">${top?cardElement(top,false,'last-card'):'<span class="empty-slot">PLAY HERE</span>'}</div><span>Discard<br><small>${top?`Top: ${cardDisplayRank(top)}`:'No cards'}</small></span></div></div></div></div>
       <div class="seat-layer">${state.players.map((player,i)=>seatHtml(player,i,state!.players.length)).join('')}</div>
       ${state.phase==='target'&&canControlActor()?'<div class="target-hint">Choose another player to take a forced turn</div>':''}
     </section><aside class="side-panel"><div class="side-card"><div class="eyebrow">AT THE TABLE</div><h3>${state.phase==='target'?'Choosing a target: ':state.forced?'Forced play: ':'Now playing: '}${escapeHtml(active.name)}</h3><div class="side-direction">${state.direction===1?'↻':'↺'} ${state.direction===1?'Clockwise':'Counter-clockwise'} · ${state.players.length} players</div></div><div class="side-card log-card"><div class="card-heading"><h3>Game Log</h3><span>RECENT MOVES</span></div><ul>${state.log.slice(0,7).map(gameLogLine).join('')}</ul></div></aside></div>
     ${otherLocalTurn ? `<div class="shared-turn" role="region" aria-label="${escapeHtml(active.name)}'s local turn"><strong>Pass the device to ${escapeHtml(active.name)}</strong><span>${state.phase === 'target' ? 'Tap a highlighted player at the table.' : 'Choose a card and play it.'}</span><div class="shared-hand">${state.phase === 'playing' ? active.hand.map(card=>cardElement(card,selectedCard===card.id,'hand-card')).join('') : ''}</div><button class="primary-button" data-action="play-selected" ${!selectedCard||state.phase!=='playing'?'disabled':''}>PLAY CARD ➜</button></div>` : ''}
-    <footer class="hand-dock"><div class="dock-prompt"><img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${hand.length} cards · ${mine ? `${moodSymbols[mine.mood]} ${mine.mood}` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><button class="primary-button play-button" data-action="play-selected" ${!selectedCard||!myTurn||state.phase!=='playing'?'disabled':''}>PLAY CARD <span>✦</span></button><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Tap a card or flick it upward' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><label class="mood-label">MOOD <select id="live-mood" ${mine?.kind!=='human'?'disabled':''}>${MOODS.map(m=>`<option ${mine?.mood===m?'selected':''}>${m}</option>`).join('')}</select></label><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
+    <footer class="hand-dock"><div class="dock-prompt ${myTurn?'my-turn':''}">${myTurn?'<span class="your-turn-bubble">YOUR TURN!</span>':''}<img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${hand.length} cards · ${mine ? `${moodSymbols[mine.mood]} ${mine.mood}` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><button class="primary-button play-button" data-action="play-selected" ${!selectedCard||!myTurn||state.phase!=='playing'?'disabled':''}>PLAY CARD <span>✦</span></button><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Tap a card or flick it upward' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><div class="emote-menu ${emotesOpen?'open':''}"><button class="emote-trigger" data-action="emotes" aria-label="Choose emote" aria-expanded="${emotesOpen}">☺<small>EMOTE</small></button><div class="emote-wheel" aria-label="Emotes">${MOODS.slice(0,6).map(m=>`<button data-emote="${m}" title="${m}">${moodSymbols[m]}</button>`).join('')}</div></div><button class="info-fab" data-action="rules" aria-label="Game information">i<small>INFO</small></button><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
     ${state.phase==='ended'?resultView():''}</main>`;
 }
 function resultView(): string {
@@ -337,11 +341,13 @@ function modalView(): string {
   const body = modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 busts; everyone else survives.</p><div class="rules-grid"><div><strong>A, 2–6</strong><span>Add face value</span></div><div><strong>J, Q, K</strong><span>Add 10</span></div><div><strong>7 · CHOOSE</strong><span>Make another player play immediately. Their normal turn stays in place.</span></div><div><strong>8 · REVERSE</strong><span>Reverse direction. In a two-player game, play again.</span></div><div><strong>9 · ZERO</strong><span>Add nothing.</span></div><div><strong>10 · MINUS</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Bust for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. You can also tap a card, then press Play Card.</p>`
   : modal==='settings' ? `<h2>Settings</h2><div class="modal-setting"><label for="volume">Sound volume <strong>${Math.round(settings.volume*100)}%</strong></label><input id="volume" type="range" min="0" max="1" step="0.01" value="${settings.volume}"></div><div class="modal-setting"><label for="graphics">Graphics</label><select id="graphics"><option value="high" ${settings.graphics==='high'?'selected':''}>High · special-card border foil</option><option value="low" ${settings.graphics==='low'?'selected':''}>Low · static cards</option></select></div><p>Settings save on this device.</p>`
   : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Busts',stats.busts],['Cards played',stats.cards],['7s used',stats.sevens],['8s used',stats.eights],['9s used',stats.nines],['10s used',stats.tens],['Test rating',stats.rating],['Currency',stats.currency]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Statistics, rating, and currency are local to this device. Currency does not affect gameplay.</p>`
+  : modal==='history' ? `<h2>Game history</h2><p>Recent moves at this table.</p><ul class="history-list">${state?.log.length ? state.log.map(gameLogLine).join('') : '<li>No cards have been played yet.</li>'}</ul>`
   : `<h2>Game menu</h2><p>Round ${state?.round || 1} · ${state?.players.length || settings.playerCount} players</p><div class="menu-actions">${!online || (online.isHost && !(online instanceof HostedRoom)) ? '<button class="secondary-button" data-action="restart">Restart round</button>' : ''}<button class="secondary-button" data-action="${online?'leave-room':'new-game'}">${online?'Leave online room':'Return to setup'}</button><button class="secondary-button" data-action="stats">Local statistics</button></div>`;
   return `<div class="overlay modal-overlay" data-action="close-modal"><section class="modal-panel" role="dialog" aria-modal="true"><button class="close-button" data-action="close-modal" aria-label="Close">×</button>${body}</section></div>`;
 }
 function render(): void {
   app.innerHTML = (online && online.status !== 'playing' ? lobbyView() : state ? gameView() : onlineMode ? onlineView() : setupView()) + modalView();
+  tavern?.update({ active: !!state && (!online || online.status === 'playing'), total: state?.total ?? 0, direction: state?.direction ?? 1, event: state?.event ?? 'none' });
 }
 render();
 if (import.meta.env.MODE === 'cloudflare' && onlineMode === 'join' && /^100-[a-z0-9]{12}$/.test(joinCode) && localStorage.getItem(`100game:room:${joinCode}`)) connectOnline('join');
@@ -364,10 +370,20 @@ app.addEventListener('click', event => {
     if (action === 'again' && state) { modal = null; if (online) online.startRound(state.round + 1); else startGame(state.round + 1); }
     if (action === 'restart' && state) { modal = null; if (online) online.startRound(state.round); else startGame(state.round); }
     if (action === 'new-game') { clearCpu(); state = null; selectedCard = null; render(); }
-    if (action === 'rules' || action === 'settings' || action === 'stats') { modal = action; render(); }
+    if (action === 'rules' || action === 'settings' || action === 'stats' || action === 'history') { modal = action; emotesOpen = false; render(); }
     if (action === 'menu') { modal = 'menu'; render(); }
+    if (action === 'emotes') { emotesOpen = !emotesOpen; render(); }
     if (action === 'close-modal') { modal = null; render(); }
     if (action === 'play-selected' && selectedCard) void animatePlay(selectedCard, document.querySelector<HTMLElement>(`.hand-card[data-card="${selectedCard}"]`) || undefined);
+    return;
+  }
+  const emote = target.closest<HTMLElement>('[data-emote]')?.dataset.emote as PlayerConfig['mood'] | undefined;
+  if (emote && state) {
+    const seat = localSeat();
+    emotesOpen = false;
+    if (online) online.setMood(seat, emote);
+    else { state.players[seat].mood = emote; settings.seats[seat].mood = emote; save(); render(); }
+    react([seat], moodSymbols[emote]);
     return;
   }
   const seat = target.closest<HTMLElement>('[data-target]');
