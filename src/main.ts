@@ -122,6 +122,18 @@ async function animateDrawToHand(card: Card): Promise<void> {
   if (start.width < 2 || end.width < 2) return;
 
   target.classList.add('receiving-card');
+  if (tavern) {
+    try {
+      await tavern.drawCardToHand(cardImage(card), end);
+      if (target.isConnected) {
+        target.classList.remove('receiving-card');
+        target.animate([{ opacity: 0, filter: 'brightness(1.7)' }, { opacity: 1, filter: 'brightness(1)' }], { duration: 170, easing: 'ease-out' });
+      }
+      return;
+    } catch {
+      target.classList.remove('receiving-card');
+    }
+  }
   const flight = document.createElement('div');
   flight.className = 'draw-flight';
   flight.setAttribute('aria-hidden', 'true');
@@ -216,10 +228,22 @@ async function animatePlay(cardId: string, source?: HTMLElement): Promise<void> 
   locked = true; clearCpu();
   const card = state.players[state.current].hand.find(item => item.id === cardId);
   if (!card) { locked = false; return; }
+  const origin = source || document.querySelector<HTMLElement>(`.seat[data-seat="${state.current}"]`) || document.querySelector<HTMLElement>('.draw-stack')!;
+  const start = origin.getBoundingClientRect();
+  if (tavern && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    source?.classList.add('card-departing');
+    try {
+      await tavern.playCardToDiscard(cardImage(card), start);
+      audio.play('slap');
+      locked = false;
+      resolveCard(cardId);
+      return;
+    } catch {
+      source?.classList.remove('card-departing');
+    }
+  }
   let flying: HTMLElement;
-  let start: DOMRect;
   if (source) {
-    start = source.getBoundingClientRect();
     flying = source.cloneNode(true) as HTMLElement;
     flying.classList.remove('selected', 'dragging', 'waiting-hand', 'card-departing');
     flying.removeAttribute('data-card-hover');
@@ -228,8 +252,6 @@ async function animatePlay(cardId: string, source?: HTMLElement): Promise<void> 
     source.classList.add('card-departing');
   }
   else {
-    const seat = document.querySelector<HTMLElement>(`.seat[data-seat="${state.current}"]`) || document.querySelector<HTMLElement>('.draw-stack')!;
-    start = seat.getBoundingClientRect();
     flying = document.createElement('div');
     flying.className = `playing-card ${['7','8','9','10'].includes(card.rank) ? 'special' : ''}`;
     flying.innerHTML = `<img src="${cardImage(card)}" alt="${cardDisplayRank(card)} of ${card.suit}">`;
@@ -347,7 +369,16 @@ function modalView(): string {
 }
 function render(): void {
   app.innerHTML = (online && online.status !== 'playing' ? lobbyView() : state ? gameView() : onlineMode ? onlineView() : setupView()) + modalView();
-  tavern?.update({ active: !!state && (!online || online.status === 'playing'), total: state?.total ?? 0, direction: state?.direction ?? 1, event: state?.event ?? 'none' });
+  const discard = state?.played.at(-1);
+  tavern?.update({
+    active: !!state && (!online || online.status === 'playing'),
+    total: state?.total ?? 0,
+    direction: state?.direction ?? 1,
+    event: state?.event ?? 'none',
+    playerCount: state?.players.length ?? 0,
+    drawCardUrl: backImage,
+    discardCardUrl: discard ? cardImage(discard) : undefined,
+  });
 }
 render();
 if (import.meta.env.MODE === 'cloudflare' && onlineMode === 'join' && /^100-[a-z0-9]{12}$/.test(joinCode) && localStorage.getItem(`100game:room:${joinCode}`)) connectOnline('join');

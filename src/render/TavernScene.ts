@@ -5,6 +5,9 @@ type SceneState = {
   total: number;
   direction: 1 | -1;
   event: string;
+  playerCount: number;
+  drawCardUrl: string;
+  discardCardUrl?: string;
 };
 
 type EnergyMaterial = THREE.ShaderMaterial & {
@@ -41,6 +44,17 @@ export class TavernScene {
   private particleBase: Float32Array;
   private floatingIslands: THREE.Group[] = [];
   private lanterns: THREE.Group[] = [];
+  private stationMaterials: THREE.MeshStandardMaterial[] = [];
+  private stationChairs: THREE.Group[] = [];
+  private stationMarkers: THREE.Group[] = [];
+  private textureLoader = new THREE.TextureLoader();
+  private textureCache = new Map<string, Promise<THREE.Texture>>();
+  private deckTop!: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
+  private discardTop!: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
+  private deckStack!: THREE.Group;
+  private discardStack!: THREE.Group;
+  private drawCardUrl = '';
+  private discardCardUrl = '';
 
   constructor() {
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
@@ -79,6 +93,20 @@ export class TavernScene {
     this.total = Math.max(0, next.total);
     this.targetPower = .16 + Math.min(1, this.total / 100) * .78;
     this.direction = next.direction;
+    this.stationMaterials.forEach((material, index) => {
+      const occupied = index < next.playerCount;
+      material.emissiveIntensity = occupied ? .62 : .12;
+      material.opacity = occupied ? 1 : .58;
+    });
+    if (next.drawCardUrl !== this.drawCardUrl) {
+      this.drawCardUrl = next.drawCardUrl;
+      void this.setSurfaceTexture(this.deckTop, next.drawCardUrl);
+    }
+    if ((next.discardCardUrl ?? '') !== this.discardCardUrl) {
+      this.discardCardUrl = next.discardCardUrl ?? '';
+      this.discardTop.visible = !!next.discardCardUrl;
+      if (next.discardCardUrl) void this.setSurfaceTexture(this.discardTop, next.discardCardUrl);
+    }
     if (next.event !== 'none') this.eventPulse = next.event === 'exact' ? 1.6 : next.event === 'bust' ? 1.25 : .72;
     this.renderer.domElement.hidden = !next.active;
     document.documentElement.classList.toggle('world3d-active', next.active);
@@ -127,6 +155,7 @@ export class TavernScene {
     this.addLighting();
     this.addSkyAndArchitecture();
     this.addTable();
+    this.addPlayerStations();
     this.addWell();
     this.addProps();
   }
@@ -278,6 +307,75 @@ export class TavernScene {
     }
   }
 
+  private addPlayerStations(): void {
+    const chairWood = wood(0x3a1d1b, .68);
+    const chairMetal = new THREE.MeshStandardMaterial({ color: 0xa96b31, roughness: .38, metalness: .48 });
+    const cushion = new THREE.MeshStandardMaterial({ color: 0x302349, roughness: .72 });
+    const legGeometry = new THREE.CylinderGeometry(.075, .095, .72, 8);
+    const seatGeometry = new THREE.BoxGeometry(1.18, .2, .92);
+    const backGeometry = new THREE.BoxGeometry(1.2, 1.32, .16);
+
+    for (let index = 0; index < 8; index++) {
+      const angle = index / 8 * Math.PI * 2;
+      const chair = new THREE.Group();
+      const seat = new THREE.Mesh(seatGeometry, chairWood);
+      seat.position.y = .38;
+      seat.castShadow = true;
+      chair.add(seat);
+      const seatPad = new THREE.Mesh(new THREE.BoxGeometry(.96, .1, .7), cushion);
+      seatPad.position.y = .53;
+      seatPad.castShadow = true;
+      chair.add(seatPad);
+      const back = new THREE.Mesh(backGeometry, chairWood);
+      back.position.set(0, 1.11, .39);
+      back.castShadow = true;
+      chair.add(back);
+      [-.5, .5].forEach(x => {
+        const post = new THREE.Mesh(new THREE.CylinderGeometry(.06, .075, 1.55, 8), chairMetal);
+        post.position.set(x, 1.08, .39);
+        post.castShadow = true;
+        chair.add(post);
+      });
+      const crest = new THREE.Mesh(new THREE.TorusGeometry(.42, .07, 8, 24, Math.PI), chairMetal);
+      crest.rotation.z = Math.PI;
+      crest.position.set(0, 1.78, .39);
+      chair.add(crest);
+      [[-.45,.25,-.32],[.45,.25,-.32],[-.45,.25,.32],[.45,.25,.32]].forEach(([x,y,z]) => {
+        const leg = new THREE.Mesh(legGeometry, chairWood);
+        leg.position.set(x, y, z);
+        leg.castShadow = true;
+        chair.add(leg);
+      });
+      chair.position.set(Math.sin(angle) * 6.95, -.12, Math.cos(angle) * 6.95);
+      chair.rotation.y = angle;
+      this.stationChairs.push(chair);
+      this.world.add(chair);
+
+      const stationMaterial = new THREE.MeshStandardMaterial({
+        color: 0xb17434,
+        emissive: 0xff9d2d,
+        emissiveIntensity: .12,
+        roughness: .38,
+        metalness: .58,
+        transparent: true,
+        opacity: .58,
+      });
+      const marker = new THREE.Group();
+      const ring = new THREE.Mesh(new THREE.RingGeometry(.38, .55, 32), stationMaterial);
+      ring.rotation.x = -Math.PI / 2;
+      marker.add(ring);
+      const notch = new THREE.Mesh(new THREE.ConeGeometry(.12, .28, 3), stationMaterial);
+      notch.rotation.x = Math.PI / 2;
+      notch.position.z = -.64;
+      marker.add(notch);
+      marker.position.set(Math.sin(angle) * 5.2, .37, Math.cos(angle) * 5.2);
+      marker.rotation.y = angle;
+      this.stationMaterials.push(stationMaterial);
+      this.stationMarkers.push(marker);
+      this.world.add(marker);
+    }
+  }
+
   private addWell(): void {
     this.energyGroup.position.set(0, .43, -.28);
     this.world.add(this.energyGroup);
@@ -334,11 +432,14 @@ export class TavernScene {
     this.energyGroup.add(tongue);
     this.energyGroup.add(this.particles);
 
-    this.addPhysicalCardStack(-2.35, -.06, true);
-    this.addPhysicalCardStack(2.35, -.06, false);
+    this.deckTop = this.addPhysicalCardStack(-2.82, -.06, true);
+    this.discardTop = this.addPhysicalCardStack(2.82, -.06, false);
+    this.deckStack = this.deckTop.parent as THREE.Group;
+    this.discardStack = this.discardTop.parent as THREE.Group;
+    this.discardTop.visible = false;
   }
 
-  private addPhysicalCardStack(x: number, z: number, muted: boolean): void {
+  private addPhysicalCardStack(x: number, z: number, muted: boolean): THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial> {
     const group = new THREE.Group();
     const edgeMaterial = new THREE.MeshStandardMaterial({ color: muted ? 0x37323b : 0x4d3340, roughness: .45, metalness: .28 });
     for (let i = 0; i < 7; i++) {
@@ -348,9 +449,152 @@ export class TavernScene {
       card.castShadow = true;
       group.add(card);
     }
+    const topMaterial = new THREE.MeshBasicMaterial({ color: muted ? 0x252231 : 0x4d3340, toneMapped: false });
+    const topCard = new THREE.Mesh(new THREE.PlaneGeometry(1.03, 1.43), topMaterial);
+    topCard.rotation.x = -Math.PI / 2;
+    topCard.position.y = .725;
+    topCard.receiveShadow = true;
+    group.add(topCard);
     group.position.set(x, 0, z);
     group.rotation.y = x < 0 ? -.06 : .06;
     this.world.add(group);
+    return topCard;
+  }
+
+  private loadTexture(url: string): Promise<THREE.Texture> {
+    let pending = this.textureCache.get(url);
+    if (!pending) {
+      pending = this.textureLoader.loadAsync(url).then(texture => {
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy());
+        return texture;
+      });
+      this.textureCache.set(url, pending);
+    }
+    return pending;
+  }
+
+  private async setSurfaceTexture(mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>, url: string): Promise<void> {
+    const texture = await this.loadTexture(url);
+    mesh.material.map = texture;
+    mesh.material.color.set(0xffffff);
+    mesh.material.needsUpdate = true;
+  }
+
+  private screenPoint(rect: DOMRect, distance: number): THREE.Vector3 {
+    const x = (rect.left + rect.width / 2) / innerWidth * 2 - 1;
+    const y = -(rect.top + rect.height / 2) / innerHeight * 2 + 1;
+    const direction = new THREE.Vector3(x, y, .35).unproject(this.camera).sub(this.camera.position).normalize();
+    return this.camera.position.clone().add(direction.multiplyScalar(distance));
+  }
+
+  private screenScale(rect: DOMRect, distance: number): number {
+    const worldHeight = 2 * distance * Math.tan(THREE.MathUtils.degToRad(this.camera.fov * .5));
+    return Math.max(.46, Math.min(1.65, rect.height / innerHeight * worldHeight / 1.43));
+  }
+
+  private tablePoint(x: number, y: number, z: number): THREE.Vector3 {
+    this.world.updateMatrixWorld(true);
+    return this.world.localToWorld(new THREE.Vector3(x, y, z));
+  }
+
+  private pilePoint(side: -1 | 1, y: number): THREE.Vector3 {
+    const portrait = innerHeight > innerWidth * 1.08;
+    return this.tablePoint(side * (portrait ? 1.55 : 2.82), y, portrait ? 1.62 : -.06);
+  }
+
+  private async makeFlyingCard(frontUrl: string): Promise<{ root: THREE.Group; visual: THREE.Group }> {
+    const [frontTexture, backTexture] = await Promise.all([
+      this.loadTexture(frontUrl),
+      this.loadTexture(this.drawCardUrl || frontUrl),
+    ]);
+    const root = new THREE.Group();
+    const visual = new THREE.Group();
+    const edge = new THREE.Mesh(new THREE.BoxGeometry(1.06, 1.47, .045), new THREE.MeshStandardMaterial({ color: 0x191722, roughness: .42, metalness: .16 }));
+    edge.castShadow = true;
+    visual.add(edge);
+    const front = new THREE.Mesh(new THREE.PlaneGeometry(1.03, 1.43), new THREE.MeshBasicMaterial({ map: frontTexture, toneMapped: false }));
+    front.position.z = .026;
+    visual.add(front);
+    const back = new THREE.Mesh(new THREE.PlaneGeometry(1.03, 1.43), new THREE.MeshBasicMaterial({ map: backTexture, toneMapped: false }));
+    back.position.z = -.026;
+    back.rotation.y = Math.PI;
+    visual.add(back);
+    root.add(visual);
+    this.scene.add(root);
+    return { root, visual };
+  }
+
+  private animateCardFlight(options: {
+    root: THREE.Group;
+    visual: THREE.Group;
+    start: THREE.Vector3;
+    end: THREE.Vector3;
+    startQuaternion: THREE.Quaternion;
+    endQuaternion: THREE.Quaternion;
+    startScale: number;
+    endScale: number;
+    draw: boolean;
+  }): Promise<void> {
+    const { root, visual, start, end, startQuaternion, endQuaternion, startScale, endScale, draw } = options;
+    const control = start.clone().lerp(end, .5);
+    control.y += draw ? 2.05 : 2.55;
+    control.z += draw ? .45 : -.3;
+    root.position.copy(start);
+    root.quaternion.copy(startQuaternion);
+    root.scale.setScalar(startScale);
+    visual.rotation.y = draw ? Math.PI : 0;
+    const started = performance.now();
+    const duration = draw ? 720 : 590;
+    return new Promise(resolve => {
+      const step = (now: number): void => {
+        const raw = Math.min(1, (now - started) / duration);
+        const t = 1 - Math.pow(1 - raw, 3);
+        const inverse = 1 - t;
+        root.position.set(
+          inverse * inverse * start.x + 2 * inverse * t * control.x + t * t * end.x,
+          inverse * inverse * start.y + 2 * inverse * t * control.y + t * t * end.y,
+          inverse * inverse * start.z + 2 * inverse * t * control.z + t * t * end.z,
+        );
+        root.quaternion.slerpQuaternions(startQuaternion, endQuaternion, t);
+        root.scale.setScalar(THREE.MathUtils.lerp(startScale, endScale, t));
+        visual.rotation.y = draw ? Math.PI * (1 - t) : Math.sin(raw * Math.PI) * .24;
+        visual.rotation.z = Math.sin(raw * Math.PI) * (draw ? -.16 : .24);
+        if (raw < 1) requestAnimationFrame(step);
+        else {
+          this.scene.remove(root);
+          root.traverse(object => {
+            if (object instanceof THREE.Mesh) {
+              object.geometry.dispose();
+              const materials = Array.isArray(object.material) ? object.material : [object.material];
+              materials.forEach(material => material.dispose());
+            }
+          });
+          resolve();
+        }
+      };
+      requestAnimationFrame(step);
+    });
+  }
+
+  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect): Promise<void> {
+    const { root, visual } = await this.makeFlyingCard(frontUrl);
+    const distance = innerHeight > innerWidth * 1.08 ? 4.9 : 5.35;
+    const start = this.screenPoint(sourceRect, distance);
+    const end = this.pilePoint(1, .78);
+    const startQuaternion = this.camera.quaternion.clone();
+    const endQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 2, 0, .025));
+    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: this.screenScale(sourceRect, distance), endScale: 1, draw: false });
+  }
+
+  async drawCardToHand(frontUrl: string, targetRect: DOMRect): Promise<void> {
+    const { root, visual } = await this.makeFlyingCard(frontUrl);
+    const distance = innerHeight > innerWidth * 1.08 ? 4.85 : 5.15;
+    const start = this.pilePoint(-1, .8);
+    const end = this.screenPoint(targetRect, distance);
+    const startQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 2, 0, -.035));
+    const endQuaternion = this.camera.quaternion.clone();
+    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: 1, endScale: this.screenScale(targetRect, distance), draw: true });
   }
 
   private makeParticles(): { points: THREE.Points; base: Float32Array } {
@@ -441,6 +685,20 @@ export class TavernScene {
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, this.highQuality ? (portrait ? 1.3 : 1.45) : 1));
     this.renderer.setSize(innerWidth, innerHeight, false);
     this.renderer.shadowMap.enabled = this.highQuality && innerWidth > 720;
+    if (this.deckStack && this.discardStack) {
+      const pileX = portrait ? 1.55 : 2.82;
+      const pileZ = portrait ? 1.62 : -.06;
+      this.deckStack.position.set(-pileX, 0, pileZ);
+      this.discardStack.position.set(pileX, 0, pileZ);
+    }
+    this.stationChairs.forEach((chair, index) => {
+      const angle = index / 8 * Math.PI * 2;
+      chair.position.set(Math.sin(angle) * (portrait ? 4.05 : 6.95), -.12, Math.cos(angle) * (portrait ? 6.15 : 6.95));
+    });
+    this.stationMarkers.forEach((marker, index) => {
+      const angle = index / 8 * Math.PI * 2;
+      marker.position.set(Math.sin(angle) * (portrait ? 3.25 : 5.2), .37, Math.cos(angle) * (portrait ? 4.35 : 5.2));
+    });
   };
 
   private animate(time: number, delta: number): void {
@@ -501,6 +759,7 @@ export class TavernScene {
         materials.forEach(material => material.dispose());
       }
     });
+    this.textureCache.forEach(pending => void pending.then(texture => texture.dispose()));
     this.renderer.dispose();
     this.renderer.domElement.remove();
     document.documentElement.classList.remove('world3d-active');

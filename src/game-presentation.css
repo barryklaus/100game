@@ -856,3 +856,35 @@
 @media (max-width: 390px) {
   .world3d-active .local-hand .hand-card { height: clamp(230px, 33vh, 280px); }
 }
+
+/* Physical card surfaces and the enlarged pot total. */
+.world3d-active .draw-stack .card-back,
+.world3d-active .played-slot .playing-card { opacity: 0; }
+.world3d-active .draw-stack::before,
+.world3d-active .draw-stack::after { display: none; }
+.world3d-active .hand-card::before {
+  content: '';
+  position: absolute;
+  inset: 2.7% 3.8%;
+  z-index: 0;
+  border-radius: 7%;
+  background: #11121b;
+  transform: translate3d(6px, 8px, -7px);
+  box-shadow: 0 10px 14px #0009;
+  pointer-events: none;
+}
+.world3d-active .hand-card img { transform: translateZ(2px); }
+.world3d-active .energy-system .total-wrap { top: 0; }
+.world3d-active .energy-system .total-number {
+  font-size: clamp(9.6rem, 14vw, 14rem);
+  line-height: .75;
+  letter-spacing: -.09em;
+  transform: translateX(-.045em);
+}
+@media (max-width: 720px) {
+  .world3d-active .energy-system .total-wrap { top: -2%; }
+  .world3d-active .energy-system .total-number {
+    font-size: clamp(7.6rem, 30vw, 9rem);
+    line-height: .76;
+  }
+}
