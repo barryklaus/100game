@@ -11,6 +11,7 @@ import { makeWorldMaterials, glowTexture } from './WorldMaterials';
 import { ManifestedTotal } from './ManifestedTotal';
 import { PhysicalHand } from './PhysicalHand';
 import { createCardMesh } from './CardMesh';
+import { CardPile } from './CardPile';
 
 type SceneState = {
   active: boolean;
@@ -25,6 +26,7 @@ type SceneState = {
   discardCount?: number;
   drawCardUrl: string;
   discardCardUrl?: string;
+  discardCards?: string[];
 };
 
 type EnergyMaterial = THREE.ShaderMaterial & {
@@ -88,12 +90,11 @@ export class TavernScene {
   private stationMarkers: THREE.Group[] = [];
   private textureLoader = new THREE.TextureLoader();
   private textureCache = new Map<string, Promise<THREE.Texture>>();
-  private deckTop!: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>;
-  private discardTop!: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>;
+  private deckPile!: CardPile;
+  private discardPile!: CardPile;
   private deckStack!: THREE.Group;
   private discardStack!: THREE.Group;
   private drawCardUrl = '';
-  private discardCardUrl = '';
   private playerCount = 0;
   private localSeat = 0;
 
@@ -174,22 +175,14 @@ export class TavernScene {
       material.emissiveIntensity = index===activeStation?.55:occupied?.1:.035;
       material.opacity = occupied ? 1 : .58;
     });
-    if (next.drawCardUrl !== this.drawCardUrl) {
-      this.drawCardUrl = next.drawCardUrl;
-      void this.setSurfaceTexture(this.deckTop, next.drawCardUrl);
-    }
-    if ((next.discardCardUrl ?? '') !== this.discardCardUrl) {
-      this.discardCardUrl = next.discardCardUrl ?? '';
-      this.discardTop.visible = !!next.discardCardUrl;
-      if (next.discardCardUrl) void this.setSurfaceTexture(this.discardTop, next.discardCardUrl);
-    }
+    this.drawCardUrl = next.drawCardUrl;
+    void this.deckPile.setCards(Array.from({length:next.drawCount??0},()=>next.drawCardUrl),next.drawCardUrl).catch(()=>undefined);
+    void this.discardPile.setCards(next.discardCards??(next.discardCardUrl?[next.discardCardUrl]:[]),next.drawCardUrl).catch(()=>undefined);
     const key=next.eventKey??`${next.total}:${next.discardCardUrl}:${next.event}`;
     if(key!==this.lastEventKey){
       if(this.lastEventKey){this.eventPulse=next.event==='exact'?1.6:next.event==='bust'?1.25:.8;this.impact=1;this.eventKind=next.event;}
       this.lastEventKey=key;
     }
-    this.deckStack.children.forEach((child,index)=>{if(child!==this.deckTop)child.visible=index<Math.max(0,Math.ceil((next.drawCount??24)/6));});
-    this.discardStack.children.forEach((child,index)=>{if(child!==this.discardTop)child.visible=index<Math.min(7,Math.ceil((next.discardCount??0)/3));});
     this.renderer.domElement.hidden = !next.active||this.contextLost;
     document.documentElement.classList.toggle('world3d-active', next.active&&!this.contextLost);
     document.documentElement.classList.toggle('world3d-total', next.active&&!this.contextLost);
@@ -501,30 +494,12 @@ export class TavernScene {
     const rippleMaterial=new THREE.MeshBasicMaterial({color:0xffd788,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending});
     this.ripple=new THREE.Mesh(new THREE.RingGeometry(1.98,2.015,100),rippleMaterial);this.ripple.rotation.x=-Math.PI/2;this.ripple.position.y=.012;this.energyGroup.add(this.ripple);
     this.energyGroup.add(this.particles);
-    this.deckTop=this.addPhysicalCardStack(-2.82,-.06,true);this.discardTop=this.addPhysicalCardStack(2.82,-.06,false);
-    this.deckStack=this.deckTop.parent as THREE.Group;this.discardStack=this.discardTop.parent as THREE.Group;this.discardTop.visible=false;
-  }
-
-  private addPhysicalCardStack(x: number, z: number, muted: boolean): THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial> {
-    const group = new THREE.Group();
-    const edgeMaterial = new THREE.MeshStandardMaterial({ color: muted ? 0x37323b : 0x4d3340, roughness: .45, metalness: .28 });
-    for (let i = 0; i < 7; i++) {
-      const card = new THREE.Mesh(new RoundedBoxGeometry(.975, .019, 1.43,2,.018), edgeMaterial);
-      card.position.y = .48 + i * .033;
-      card.rotation.y = (i - 3) * .006;
-      card.castShadow = true;
-      group.add(card);
-    }
-    const topMaterial = new THREE.MeshStandardMaterial({ color: muted ? 0x252231 : 0x4d3340, roughness:.68,metalness:.025,alphaTest:.3 });
-    const topCard = new THREE.Mesh(new THREE.PlaneGeometry(.975, 1.43), topMaterial);
-    topCard.rotation.x = -Math.PI / 2;
-    topCard.position.y = .725;
-    topCard.receiveShadow = true;
-    group.add(topCard);
-    group.position.set(x, 0, z);
-    group.rotation.y = x < 0 ? -.06 : .06;
-    this.world.add(group);
-    return topCard;
+    this.deckPile=new CardPile(true,url=>this.loadTexture(url));
+    this.discardPile=new CardPile(false,url=>this.loadTexture(url));
+    this.deckStack=this.deckPile.group;this.discardStack=this.discardPile.group;
+    this.deckStack.position.set(-2.82,0,-.06);this.deckStack.rotation.y=-.06;
+    this.discardStack.position.set(2.82,0,-.06);this.discardStack.rotation.y=.06;
+    this.world.add(this.deckStack,this.discardStack);
   }
 
   private loadTexture(url: string): Promise<THREE.Texture> {
@@ -538,14 +513,6 @@ export class TavernScene {
       this.textureCache.set(url, pending);
     }
     return pending;
-  }
-
-  private async setSurfaceTexture(mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>, url: string): Promise<void> {
-    const texture = await this.loadTexture(url);
-    mesh.scale.x = ((texture.image.width/texture.image.height)*1.43)/.975;
-    mesh.material.map = texture;
-    mesh.material.color.set(0xffffff);
-    mesh.material.needsUpdate = true;
   }
 
   private screenPoint(rect: DOMRect, distance: number): THREE.Vector3 {
@@ -641,18 +608,20 @@ export class TavernScene {
     const { root, visual } = await this.makeFlyingCard(frontUrl);
     const distance = innerHeight > innerWidth * 1.08 ? 4.9 : 5.35;
     const start = this.screenPoint(sourceRect, distance);
-    const end = this.pilePoint(1, .78);
+    const landing = this.discardPile.cardPose(this.discardPile.count);
+    const end = landing.position;
     const startQuaternion = this.camera.quaternion.clone();
-    const endQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 2, 0, .025));
+    const endQuaternion = landing.quaternion;
     await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: this.screenScale(sourceRect, distance), endScale: 1, draw: false });
   }
 
   async drawCardToHand(frontUrl: string, targetRect: DOMRect): Promise<void> {
     const { root, visual } = await this.makeFlyingCard(frontUrl);
     const distance = innerHeight > innerWidth * 1.08 ? 4.85 : 5.15;
-    const start = this.pilePoint(-1, .8);
+    const drawn = this.deckPile.cardPose(this.deckPile.count);
+    const start = drawn.position;
     const end = this.screenPoint(targetRect, distance);
-    const startQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 2, 0, -.035));
+    const startQuaternion = drawn.quaternion;
     const endQuaternion = this.camera.quaternion.clone();
     await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: 1, endScale: this.screenScale(targetRect, distance), draw: true });
   }
@@ -787,7 +756,7 @@ export class TavernScene {
     if (!layer) return;
     const bounds = layer.getBoundingClientRect();
     document.querySelectorAll<HTMLElement>('.table-cards .pile-wrap').forEach((pile,index)=>{
-      const point=this.pilePoint(index===0?-1:1,.74);point.z+=.91;point.project(this.camera);
+      const point=this.pilePoint(index===0?-1:1,.35);point.z+=.91;point.project(this.camera);
       pile.style.setProperty('--pile-label-x',`${(point.x*.5+.5)*innerWidth}px`);
       pile.style.setProperty('--pile-label-y',`${(-point.y*.5+.5)*innerHeight+7}px`);
     });
@@ -910,6 +879,7 @@ export class TavernScene {
   dispose(): void {
     cancelAnimationFrame(this.frame);
     this.hand.dispose();this.number.dispose();this.composer.dispose();this.bloom.dispose();this.ao.dispose();this.environment.dispose();
+    this.deckPile.dispose();this.discardPile.dispose();
     removeEventListener('resize', this.resize);
     removeEventListener('pointermove', this.onPointerMove);
     this.scene.traverse(object => {

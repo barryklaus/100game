@@ -19,7 +19,7 @@ The authoritative card artwork is the user supplied `CARD DESIGN/FINAL` set. Sou
 
 All four suits map into `public/assets/cards/{suit}-{rank}.webp`. The Fire source files use the `Card-Sun` filename prefix inside the `FIRE` folder. The Sun choose-player source is named `Card-Sun-9-ChoosePlayer.png`; it fills the otherwise missing rank 7 slot. These source naming inconsistencies are mapped without changing the originals.
 
-Ranks 7, 8, 9, and 10 receive a restrained angle-responsive foil on the colored border of the live Three.js card material. The alternate 10 artworks used by Jack, Queen, and King stay matte and display as normal 10s (+10). Rank 10 itself is MINUS TEN (−10), not a normal 10.
+All cards show their original printed artwork with no added frame or foil overlay. The thin 3D paper edge follows the source alpha silhouette instead of filling its transparent corners. The alternate 10 artworks used by Jack, Queen, and King display as normal 10s (+10). Rank 10 itself is MINUS TEN (−10), not a normal 10.
 
 ## Scene artwork
 
@@ -34,7 +34,7 @@ The legacy fallback background was generated with the built-in imagegen tool usi
 
 `WorldMaterials.ts` creates wood grain, woven cloth, worn brass, and stone texture maps in code. No supplied illustration is painted over or regenerated. `totalFont.json` contains only numerals and punctuation from Three.js's Gentilis Bold typeface, used for the extruded center total. Its upstream license is retained in `public/assets/fonts/`.
 
-The local supplied `holo/Holo-1.png` was inspected as a spectral-reflection reference. No third-party Pokémon artwork or card textures were copied. The border effect is a native shader.
+The local supplied `holo/Holo-1.png` was previously inspected as a spectral-reflection reference. No third-party Pokémon artwork or card textures were copied. The experimental foil shader has since been removed at the user's request.
 
 ## Original avatar portraits
 

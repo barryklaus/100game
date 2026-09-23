@@ -407,6 +407,7 @@ function render(): void {
     localSeat: state ? localSeat() : 0,
     drawCardUrl: backImage,
     discardCardUrl: discard ? cardImage(discard) : undefined,
+    discardCards: state?.played.map(cardImage)??[],
   });
 }
 render();

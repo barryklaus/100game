@@ -32,7 +32,7 @@ Invalid throws return to your hand. After CHOOSE PLAYER lands, choose a highligh
 
 ## 3D presentation
 
-The live game is a Three.js scene: eight fixed chairs, a layered wood-and-cloth table, a sculpted energy well, an extruded gold total, physical card meshes and stacks, candlelit props, and a layered nighttime city beyond the windows. Original card faces retain their aspect ratio. Special cards have a restrained angle-responsive foil along their colored borders.
+The live game is a Three.js scene: eight fixed chairs, a layered wood-and-cloth table, a sculpted energy well, an extruded gold total, physical card meshes and stacks, candlelit props, and a layered nighttime city beyond the windows. Original card faces retain their aspect ratio and printed borders, with no added frame or foil overlay. Thin paper edges follow the artwork's transparency. Each pile contains one physical layer per card, rests on the cloth, and grows or shrinks with its actual count.
 
 Cards travel from the hand to the discard stack and from the draw stack back to the hand. Opponents' public plays animate from their seats; their hidden card faces are never used. Portrait and landscape have separate camera and hand layouts, with avatar and pile labels anchored to the world.
 
