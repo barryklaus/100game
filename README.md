@@ -10,23 +10,35 @@ Every player holds **exactly two cards**. Play one card every turn, then draw ba
 
 | Cards | Value or action |
 | --- | --- |
-| A | +1 |
+| 1 | +1 |
 | 2–6 | Face value |
-| J, Q, K | +10 |
-| 7 | Choose another player to play immediately |
-| 8 | Reverse direction; with two players, play again |
-| 9 | +0 |
-| 10 | −10 |
+| Normal 10 (three artworks per suit) | +10 |
+| CHOOSE PLAYER | Choose another player to play immediately |
+| REVERSE | Reverse direction; with two players, play again |
+| ZERO | +0 |
+| MINUS TEN | −10 |
 
 Landing **exactly 100** scores a local +3 test-rating event and play continues. A card that takes the total **over 100** busts its player; all others survive. The local test rating also awards +1 for surviving and −5 for busting.
 
 ## Play controls
 
-- **Mouse:** drag or flick a card toward the center of the table.
-- **Touch:** swipe a card toward the center.
+- **Mouse or touch:** a short upward flick plays a card. Dragging tilts the physical card; releasing sideways or downward returns it to the hand.
+- **Inspect:** hold a card briefly without moving to lift and enlarge it.
 - **Alternate:** select a card, then press **Play Card**.
+- **Keyboard:** focus a card and press Enter or Space to select it, then activate **Play Card**.
+- **Emotes:** tap or hold the Emote button to open the reaction wheel.
 
-Invalid throws return to your hand. To use a 7, choose a highlighted player after the card lands.
+Invalid throws return to your hand. After CHOOSE PLAYER lands, choose a highlighted player.
+
+## 3D presentation
+
+The live game is a Three.js scene: eight fixed chairs, a layered wood-and-cloth table, a sculpted energy well, an extruded gold total, physical card meshes and stacks, candlelit props, and a layered nighttime city beyond the windows. Original card faces retain their aspect ratio. Special cards have a restrained angle-responsive foil along their colored borders.
+
+Cards travel from the hand to the discard stack and from the draw stack back to the hand. Opponents' public plays animate from their seats; their hidden card faces are never used. Portrait and landscape have separate camera and hand layouts, with avatar and pile labels anchored to the world.
+
+**Settings** offers Ultra, High, Medium, and Mobile quality, reduced motion, interface text size, mute, and independent master, SFX, music, and ambience volumes. Mobile removes real-time shadows and bloom and reduces resolution, particles, and lights. Ultra adds ambient occlusion. Browser viewport testing is included in the visual checks; real phone performance should also be measured before release.
+
+`AudioManager` includes procedural interaction cues and replaceable clip hooks, separate audio buses, and optional positional sound. Music and ambience remain silent until finished recordings are registered. `AvatarAnimator` supports reaction poses and future sprite atlases; the supplied portraits currently use subtle movement and lighting, rather than fabricated facial frames.
 
 ## Play online
 
@@ -65,6 +77,8 @@ pnpm dev:cloudflare
 
 Open the local URL shown by Wrangler. Create a room in one browser, then open the invite link in another browser or an isolated browser profile. To publish a new version, run `pnpm deploy:cloudflare` while signed in to the owner's Cloudflare account. The live address is [100game.100game.workers.dev](https://100game.100game.workers.dev/). GitHub Pages continues to use the direct browser version unless its publishing workflow is changed.
 
-## Prototype status
+## Project status
 
-Version 0.2 is a browser game built with **TypeScript, Three.js, PeerJS, Cloudflare Workers, Durable Objects, HTML, CSS, and Vite**. Settings, statistics, rating, and cosmetic currency live in LocalStorage on each device. The supplied card artwork remains unchanged in its source files; optimized copies power the website. See [GAME_RULES.md](GAME_RULES.md) for complete rules and [ASSET_MANIFEST.md](ASSET_MANIFEST.md) for asset provenance.
+100 is built with **TypeScript, Three.js, PeerJS, Cloudflare Workers, Durable Objects, HTML, CSS, and Vite**. Settings, statistics, rating, and cosmetic currency live in LocalStorage on each device. Currency and the Ranked Match banner are presentation only: there are no purchases or competitive matchmaking. The supplied card artwork remains unchanged in its source files; optimized copies power the website. The rules retain their original internal rank identifiers for saved/network compatibility. See [GAME_RULES.md](GAME_RULES.md) for complete rules and [ASSET_MANIFEST.md](ASSET_MANIFEST.md) for asset provenance.
+
+Automated checks cover rules, private online views, room reconnection, settings migration, short flick recognition, canceled/inspection gestures, and player-facing card names. Production builds type-check both browser and Worker code.

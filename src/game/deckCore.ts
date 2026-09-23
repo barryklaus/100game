@@ -8,7 +8,8 @@ export function makeDeck(): Card[] {
 export function cardDisplayRank(card: Card): string {
   if (card.rank === 'A') return '1';
   if (card.rank === 'J' || card.rank === 'Q' || card.rank === 'K') return '10';
-  return card.rank;
+  const special: Partial<Record<Card['rank'], string>> = {'7':'CHOOSE PLAYER','8':'REVERSE','9':'ZERO','10':'MINUS TEN'};
+  return special[card.rank] ?? card.rank;
 }
 
 export function shuffle<T>(items: T[], random = Math.random): T[] {

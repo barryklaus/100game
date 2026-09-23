@@ -1,5 +1,6 @@
 import './style.css';
 import './game-presentation.css';
+import './premium.css';
 import { CONFIG, MOODS, moodSymbols, suitSymbols } from './data/config';
 import { defaultSeats, loadSettings, loadStats, saveSettings, saveStats, type Settings, type Stats } from './data/storage';
 import { backImage, cardDisplayRank, cardImage, makeDeck } from './game/deck';
@@ -10,8 +11,11 @@ import { AudioManager } from './audio/AudioManager';
 import { TavernScene } from './render/TavernScene';
 import { OnlineRoom, newRoomId } from './game/online';
 import { HostedRoom } from './game/hosted';
+import { isPlayGesture } from './ui/cardGesture';
+import { AvatarAnimator, avatarPose } from './ui/AvatarAnimator';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
+const avatars = new AvatarAnimator(app);
 let settings: Settings = loadSettings();
 let stats: Stats = loadStats();
 let state: GameState | null = null;
@@ -19,6 +23,8 @@ let selectedCard: string | null = null;
 let locked = false;
 let modal: 'rules' | 'settings' | 'stats' | 'history' | 'menu' | null = null;
 let emotesOpen = false;
+let emoteHoldTimer:number|undefined;
+let emoteHeld=false;
 let cpuTimer: number | undefined;
 let reaction: Record<number, string> = {};
 let toastTimer: number | undefined;
@@ -31,12 +37,14 @@ let recordedRound = 0;
 let lastTurnKey = '';
 let awaitingNetwork = false;
 let pendingLog = '';
+let remoteFlight=false;
+let remoteFlightKey='';
 let observedOnlineHand = new Set<string>();
 let observedOnlineRound = 0;
 const audio = new AudioManager();
-audio.volume = settings.volume;
+audio.configure(settings);
 let tavern: TavernScene | undefined;
-try { tavern = new TavernScene(); tavern.qualityHigh = settings.graphics === 'high'; } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
+try { tavern = new TavernScene(); tavern.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion}); } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
 
 const escapeHtml = (value: string): string => value.replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char]!);
 const avatarNames = ['Ember Scout', 'Tide Scholar', 'Grove Guardian', 'Sun Knight', 'Storm Pilot', 'Coral Bard', 'Mushroom Alchemist', 'Desert Ranger', 'Moon Seer', 'River Courier', 'Thorn Duelist', 'Forge Captain', 'Cloud Mechanic', 'Marsh Mystic', 'Wildwood Archer', 'Dawn Dancer'];
@@ -60,6 +68,14 @@ function roomChanged(): void {
     if (online.cpuCount !== roomCpuCount) { online.setCpuCount(roomCpuCount); return; }
   }
   const previous = state;
+  const incoming=online.state;
+  const incomingTop=incoming?.played.at(-1);
+  const remoteKey=incoming?`${incoming.round}:${incoming.log[0]}`:'';
+  if(remoteFlight && online.status==='playing')return;
+  if(tavern && !settings.reducedMotion && incomingTop && previous && incoming?.round===previous.round && incoming.log[0]!==previous.log[0] && incomingTop.id!==previous.played.at(-1)?.id && previous.current!==online.localSeat && remoteKey!==remoteFlightKey){
+    const seat=document.querySelector<HTMLElement>(`.seat[data-seat="${previous.current}"]`);
+    if(seat){const room=online;remoteFlight=true;remoteFlightKey=remoteKey;void tavern.playCardToDiscard(cardImage(incomingTop),seat.getBoundingClientRect()).catch(()=>undefined).finally(()=>{remoteFlight=false;if(online===room)roomChanged();});return;}
+  }
   state = online.state;
   const drawnForLocal = state && observedOnlineRound === state.round
     ? state.players[online.localSeat]?.hand.find(card => !observedOnlineHand.has(card.id))
@@ -74,7 +90,9 @@ function roomChanged(): void {
     else if (state.event === 'exact') { audio.play('exact'); flash('EXACT 100!  +3', 'exact'); }
     else if (state.event === 'reverse') { audio.play('reverse'); flash('DIRECTION REVERSED', 'reverse'); }
     else if (state.event === 'seven') { audio.play('target'); flash('CHOOSE A PLAYER', 'seven'); }
-    else audio.play('draw');
+    else if(state.event==='zero')audio.play('zero');
+    else if(state.event==='minus')audio.play('minus');
+    else audio.play('total-increase',{position:{x:0,y:1,z:-3}});
   }
   if (state?.phase === 'ended' && recordedRound !== state.round) { recordedRound = state.round; finishRound(); }
   render();
@@ -95,7 +113,15 @@ function connectOnline(mode: 'host' | 'join'): void {
   if (mode === 'host') { online.setCpuCount(roomCpuCount); history.replaceState(null, '', `${location.pathname}?room=${code}`); }
   render();
 }
-function save(): void { saveSettings(settings); saveStats(stats); audio.volume = settings.volume; if (tavern) tavern.qualityHigh = settings.graphics === 'high'; }
+function applyPreferences(): void {
+  audio.configure(settings);
+  avatars.configure(settings.reducedMotion);
+  tavern?.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion});
+  document.documentElement.classList.toggle('reduce-motion',settings.reducedMotion);
+  document.documentElement.style.setProperty('--ui-scale',String(settings.uiScale));
+}
+function save(): void { saveSettings(settings); saveStats(stats); applyPreferences(); }
+applyPreferences();
 function clearCpu(): void { if (cpuTimer) clearTimeout(cpuTimer); cpuTimer = undefined; }
 function flash(text: string, kind = ''): void {
   document.querySelector('.event-toast')?.remove();
@@ -113,7 +139,7 @@ function react(ids: number[], text: string): void {
 async function animateDrawToHand(card: Card): Promise<void> {
   const pile = document.querySelector<HTMLElement>('.draw-stack .card-back');
   const target = document.querySelector<HTMLElement>(`.local-hand .hand-card[data-card="${card.id}"]`);
-  if (!pile || !target || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!pile || !target || settings.reducedMotion) return;
   const start = pile.getBoundingClientRect();
   const end = target.getBoundingClientRect();
   if (start.width < 2 || end.width < 2) return;
@@ -214,7 +240,7 @@ function resolveCard(cardId: string): void {
   else if (ev === 'reverse') { audio.play('reverse'); flash('DIRECTION REVERSED', 'reverse'); react(state.players.map(p => p.id), '↺'); }
   else if (ev === 'zero') { audio.play('zero'); flash('+0  ·  ZERO', 'zero'); react([actor], '…'); }
   else if (ev === 'minus') { audio.play('minus'); flash('−10  ·  REWIND', 'minus'); react([actor], 'PHEW!'); }
-  else audio.play('draw');
+  else audio.play('total-increase',{position:{x:0,y:1,z:-3}});
   if ((state as GameState).phase === 'ended') finishRound();
   render();
   if (drawnForLocal) void animateDrawToHand(drawnForLocal);
@@ -225,9 +251,10 @@ async function animatePlay(cardId: string, source?: HTMLElement): Promise<void> 
   locked = true; clearCpu();
   const card = state.players[state.current].hand.find(item => item.id === cardId);
   if (!card) { locked = false; return; }
+  if(settings.reducedMotion){audio.play('slap');locked=false;resolveCard(cardId);return;}
   const origin = source || document.querySelector<HTMLElement>(`.seat[data-seat="${state.current}"]`) || document.querySelector<HTMLElement>('.draw-stack')!;
   const start = origin.getBoundingClientRect();
-  if (tavern && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (tavern && !settings.reducedMotion) {
     source?.classList.add('card-departing');
     try {
       await tavern.playCardToDiscard(cardImage(card), start);
@@ -283,7 +310,7 @@ function scheduleCpu(): void {
   if (online && !online.runsCpuLocally) return;
   const actor = state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current;
   if (state.players[actor].kind !== 'cpu') return;
-  const delay = CONFIG.CPU_DELAY_MIN + Math.random() * (CONFIG.CPU_DELAY_MAX - CONFIG.CPU_DELAY_MIN);
+  const delay = 420 + Math.random() * 440;
   cpuTimer = window.setTimeout(() => {
     if (!state) return;
     if (state.phase === 'target') chooseTarget(chooseCpuTarget(state, settings.difficulty));
@@ -323,7 +350,7 @@ function seatHtml(player: GameState['players'][number], index: number, count: nu
   const active = state.phase === 'target' ? state.pendingSevens.at(-1) === index : state.current === index;
   const targetable = state.phase === 'target' && canControlActor() && index !== state.pendingSevens.at(-1);
   const suit = ['fire','water','leaf','sun'][index%4] as keyof typeof suitSymbols;
-  return `<button class="seat ${index===localSeat()?'local-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit} mood-${player.mood.toLowerCase()}" data-seat="${index}" style="--seat-x:${x}%;--seat-y:${y}%" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards, mood ${player.mood}"><span class="reaction-bubble">${reaction[index]||''}</span><span class="character"><span class="character-head"><img src="${avatarImage(player.avatar)}" alt=""></span><span class="seat-count" aria-hidden="true">${player.hand.length}</span></span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)}</span><span class="seat-meta">★ ${player.kind==='cpu'?'CPU':'PLAYER'}</span></span><span class="seat-suit" aria-hidden="true">${suitSymbols[suit]}</span></button>`;
+  return `<button class="seat ${index===localSeat()?'local-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit} mood-${player.mood.toLowerCase()}" data-seat="${index}" style="--seat-x:${x}%;--seat-y:${y}%;--seat-index:${index}" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards, mood ${player.mood}"><span class="reaction-bubble">${reaction[index]||''}</span><span class="character"><span class="character-head" data-avatar-id="${player.avatar}" data-avatar-pose="${avatarPose(player.mood,active,state.phase==='ended',state.bust===index)}"><img src="${avatarImage(player.avatar)}" alt=""></span><span class="seat-count" aria-hidden="true">${player.hand.length}</span></span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)}</span><span class="seat-meta">★ ${player.kind==='cpu'?'CPU':'PLAYER'}</span></span><span class="seat-suit" aria-hidden="true">${suitSymbols[suit]}</span></button>`;
 }
 function gameLogLine(item: string): string {
   const playerIndex = state?.players.findIndex(player => item.startsWith(`${player.name} `)) ?? -1;
@@ -336,18 +363,18 @@ function gameView(): string {
   const actor = state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current;
   const active = state.players[actor];
   const mine = state.players[localSeat()];
-  const myTurn = active.kind === 'human' && actor === localSeat();
+  const myTurn = state.phase !== 'ended' && active.kind === 'human' && actor === localSeat();
   const otherLocalTurn = !online && active.kind === 'human' && actor !== localSeat();
   const hand = mine?.kind === 'human' ? mine.hand : [];
   const totalClass = state.total>100?'busted':state.total===100?'at100':state.total>=CONFIG.TOTAL_WARNING_3?'danger':state.total>=CONFIG.TOTAL_WARNING_2?'warning-2':state.total>=CONFIG.TOTAL_WARNING_1?'warning-1':'';
   const energy = Math.max(0, Math.min(100, state.total));
   return `<main class="game-page" data-event="${state.event}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>SIMPLE NUMBERS.<br>BIG REACTIONS.</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>Ranked Match</strong><small>Good friends. Higher numbers.</small></div></div><div class="header-wallet" aria-label="Player rewards"><span class="wallet-pill"><b>★</b>${stats.currency.toLocaleString()}</span><span class="wallet-pill gem"><b>◆</b>${stats.rating.toLocaleString()}</span></div><div class="header-status"><span class="round-pill">Round ${state.round} / Unlimited</span><span class="turn-pill">${escapeHtml(active.name)}'s ${state.phase==='target'?'choice':'turn'}</span></div><div class="header-actions"><button data-action="history" aria-label="Game history">▤</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}
-    <div class="game-layout"><section class="arena" aria-label="Game table"><div class="table-rim"><div class="table-felt"><div class="energy-system ${totalClass}" style="--energy-angle:${energy * 3.6}deg;--energy-level:${energy / 100}"><div class="energy-ring"><span class="direction-spark ${state.direction===-1?'ccw':''}" aria-hidden="true"></span></div><div class="cauldron"><div class="cauldron-steam"><i></i><i></i><i></i></div><div class="cauldron-liquid"></div><div class="cauldron-body"><span class="cauldron-eye left"></span><span class="cauldron-eye right"></span><span class="cauldron-mouth"></span></div><span class="cauldron-handle left"></span><span class="cauldron-handle right"></span><span class="cauldron-foot left"></span><span class="cauldron-foot right"></span></div><div class="total-wrap ${totalClass}"><span class="total-caption">CURRENT TOTAL</span><div class="total-number">${state.total}</div><div class="total-max">/ 100</div></div><div class="direction-indicator ${state.direction===-1?'ccw':''}"><span>➜</span> ${state.direction===1?'CLOCKWISE':'COUNTER-CLOCKWISE'}</div></div><div class="table-cards"><div class="pile-wrap"><div class="draw-stack"><div class="playing-card card-back" role="img" aria-label="Draw pile"><img src="${backImage}" alt="Draw pile" draggable="false"></div></div><span>Draw<br><small>${state.drawPile.length} cards</small></span></div><div class="pile-wrap"><div class="played-slot">${top?cardElement(top,false,'last-card'):'<span class="empty-slot">PLAY HERE</span>'}</div><span>Discard<br><small>${top?`Top: ${cardDisplayRank(top)}`:'No cards'}</small></span></div></div></div></div>
+    <div class="game-layout"><section class="arena" aria-label="Game table"><div class="table-rim"><div class="table-felt"><div class="energy-system ${totalClass}" style="--energy-angle:${energy * 3.6}deg;--energy-level:${energy / 100}"><div class="energy-ring"><span class="direction-spark ${state.direction===-1?'ccw':''}" aria-hidden="true"></span></div><div class="cauldron"><div class="cauldron-steam"><i></i><i></i><i></i></div><div class="cauldron-liquid"></div><div class="cauldron-body"><span class="cauldron-eye left"></span><span class="cauldron-eye right"></span><span class="cauldron-mouth"></span></div><span class="cauldron-handle left"></span><span class="cauldron-handle right"></span><span class="cauldron-foot left"></span><span class="cauldron-foot right"></span></div><div class="total-wrap ${totalClass}"><span class="total-caption">CURRENT TOTAL</span><div class="total-number" role="status" aria-live="polite" aria-label="Shared total">${state.total}</div><div class="total-max">/ 100</div></div><div class="direction-indicator ${state.direction===-1?'ccw':''}"><span>➜</span> ${state.direction===1?'CLOCKWISE':'COUNTER-CLOCKWISE'}</div></div><div class="table-cards"><div class="pile-wrap"><div class="draw-stack"><div class="playing-card card-back" role="img" aria-label="Draw pile"><img src="${backImage}" alt="Draw pile" draggable="false"></div></div><span>Draw<br><small>${state.drawPile.length} cards</small></span></div><div class="pile-wrap"><div class="played-slot">${top?cardElement(top,false,'last-card'):'<span class="empty-slot">PLAY HERE</span>'}</div><span>Discard<br><small>${top?`Top: ${cardDisplayRank(top)}`:'No cards'}</small></span></div></div></div></div>
       <div class="seat-layer">${state.players.map((player,i)=>seatHtml(player,i,state!.players.length)).join('')}</div>
       ${state.phase==='target'&&canControlActor()?'<div class="target-hint">Choose another player to take a forced turn</div>':''}
     </section><aside class="side-panel"><div class="side-card"><div class="eyebrow">AT THE TABLE</div><h3>${state.phase==='target'?'Choosing a target: ':state.forced?'Forced play: ':'Now playing: '}${escapeHtml(active.name)}</h3><div class="side-direction">${state.direction===1?'↻':'↺'} ${state.direction===1?'Clockwise':'Counter-clockwise'} · ${state.players.length} players</div></div><div class="side-card log-card"><div class="card-heading"><h3>Game Log</h3><span>RECENT MOVES</span></div><ul>${state.log.slice(0,7).map(gameLogLine).join('')}</ul></div></aside></div>
     ${otherLocalTurn ? `<div class="shared-turn" role="region" aria-label="${escapeHtml(active.name)}'s local turn"><strong>Pass the device to ${escapeHtml(active.name)}</strong><span>${state.phase === 'target' ? 'Tap a highlighted player at the table.' : 'Choose a card and play it.'}</span><div class="shared-hand">${state.phase === 'playing' ? active.hand.map(card=>cardElement(card,selectedCard===card.id,'hand-card')).join('') : ''}</div><button class="primary-button" data-action="play-selected" ${!selectedCard||state.phase!=='playing'?'disabled':''}>PLAY CARD ➜</button></div>` : ''}
-    <footer class="hand-dock"><div class="dock-prompt ${myTurn?'my-turn':''}">${myTurn?'<span class="your-turn-bubble">YOUR TURN!</span>':''}<img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${hand.length} cards · ${mine ? `${moodSymbols[mine.mood]} ${mine.mood}` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><button class="primary-button play-button" data-action="play-selected" ${!selectedCard||!myTurn||state.phase!=='playing'?'disabled':''}>PLAY CARD <span>✦</span></button><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Tap a card or flick it upward' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><div class="emote-menu ${emotesOpen?'open':''}"><button class="emote-trigger" data-action="emotes" aria-label="Choose emote" aria-expanded="${emotesOpen}">☺<small>EMOTE</small></button><div class="emote-wheel" aria-label="Emotes">${MOODS.slice(0,6).map(m=>`<button data-emote="${m}" title="${m}">${moodSymbols[m]}</button>`).join('')}</div></div><button class="info-fab" data-action="rules" aria-label="Game information">i<small>INFO</small></button><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
+    <footer class="hand-dock"><div class="dock-prompt ${myTurn?'my-turn':''}">${myTurn?'<span class="your-turn-bubble">YOUR TURN!</span>':''}<img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${hand.length} cards · ${mine ? `${moodSymbols[mine.mood]} ${mine.mood}` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><button class="primary-button play-button" data-action="play-selected" ${!selectedCard||!myTurn||state.phase!=='playing'?'disabled':''}>PLAY CARD <span>✦</span></button><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Tap a card or flick it upward' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><div class="emote-menu ${emotesOpen?'open':''}"><button class="emote-trigger" data-action="emotes" aria-label="Choose emote" aria-expanded="${emotesOpen}">☺<small>EMOTE</small></button><div class="emote-wheel" aria-label="Emotes" ${emotesOpen?'':'inert aria-hidden="true"'}>${(['Happy','Excited','Confused','Angry','Sad','Smug','Scared','Thinking'] as const).map(m=>`<button data-emote="${m}" title="${m}" aria-label="${m}">${moodSymbols[m]}</button>`).join('')}</div></div><button class="info-fab" data-action="rules" aria-label="Game information">i<small>INFO</small></button><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
     ${state.phase==='ended'?resultView():''}</main>`;
 }
 function resultView(): string {
@@ -357,11 +384,11 @@ function resultView(): string {
 }
 function modalView(): string {
   if (!modal) return '';
-  const body = modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 busts; everyone else survives.</p><div class="rules-grid"><div><strong>A, 2–6</strong><span>Add face value</span></div><div><strong>J, Q, K</strong><span>Add 10</span></div><div><strong>7 · CHOOSE</strong><span>Make another player play immediately. Their normal turn stays in place.</span></div><div><strong>8 · REVERSE</strong><span>Reverse direction. In a two-player game, play again.</span></div><div><strong>9 · ZERO</strong><span>Add nothing.</span></div><div><strong>10 · MINUS</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Bust for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. You can also tap a card, then press Play Card.</p>`
-  : modal==='settings' ? `<h2>Settings</h2><div class="modal-setting"><label for="volume">Sound volume <strong>${Math.round(settings.volume*100)}%</strong></label><input id="volume" type="range" min="0" max="1" step="0.01" value="${settings.volume}"></div><div class="modal-setting"><label for="graphics">Graphics</label><select id="graphics"><option value="high" ${settings.graphics==='high'?'selected':''}>High · enhanced 3D lighting</option><option value="low" ${settings.graphics==='low'?'selected':''}>Low · performance mode</option></select></div><p>Settings save on this device.</p>`
-  : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Busts',stats.busts],['Cards played',stats.cards],['7s used',stats.sevens],['8s used',stats.eights],['9s used',stats.nines],['10s used',stats.tens],['Test rating',stats.rating],['Currency',stats.currency]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Statistics, rating, and currency are local to this device. Currency does not affect gameplay.</p>`
+  const body = modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 busts; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play immediately. Their normal turn stays in place.</span></div><div><strong>REVERSE</strong><span>Reverse direction. In a two-player game, play again.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Bust for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. You can also tap a card, then press Play Card.</p>`
+  : modal==='settings' ? `<h2>Make yourself at home</h2><div class="modal-setting"><label for="graphics">Visual quality</label><select id="graphics">${(['ultra','high','medium','mobile'] as const).map(tier=>`<option value="${tier}" ${settings.graphics===tier?'selected':''}>${tier.charAt(0).toUpperCase()+tier.slice(1)}</option>`).join('')}</select><small>Ultra adds richer shadows, reflections and glow. Mobile keeps the same world with lighter effects.</small></div>${[['volume','Master volume',settings.volume],['sfxVolume','Sound effects',settings.sfxVolume],['musicVolume','Music',settings.musicVolume],['ambienceVolume','Ambience',settings.ambienceVolume]].map(([id,label,value])=>`<div class="modal-setting"><label for="${id}">${label}<output for="${id}">${Math.round(Number(value)*100)}%</output></label><input id="${id}" type="range" min="0" max="1" step=".01" value="${value}"></div>`).join('')}<label class="setting-toggle"><input id="muted" type="checkbox" ${settings.muted?'checked':''}>Mute all sounds</label><label class="setting-toggle"><input id="reducedMotion" type="checkbox" ${settings.reducedMotion?'checked':''}>Reduced motion</label><div class="modal-setting"><label for="uiScale">Interface size <output for="uiScale">${Math.round(settings.uiScale*100)}%</output></label><input id="uiScale" type="range" min=".85" max="1.2" step=".05" value="${settings.uiScale}"></div><p>Settings save on this device.</p>`
+  : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Busts',stats.busts],['Cards played',stats.cards],['Choose Player',stats.sevens],['Reverse',stats.eights],['Zero',stats.nines],['Minus Ten',stats.tens],['Test rating',stats.rating],['Currency',stats.currency]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Statistics, rating, and currency are local to this device. Currency does not affect gameplay.</p>`
   : modal==='history' ? `<h2>Game history</h2><p>Recent moves at this table.</p><ul class="history-list">${state?.log.length ? state.log.map(gameLogLine).join('') : '<li>No cards have been played yet.</li>'}</ul>`
-  : `<h2>Game menu</h2><p>Round ${state?.round || 1} · ${state?.players.length || settings.playerCount} players</p><div class="menu-actions">${!online || (online.isHost && !(online instanceof HostedRoom)) ? '<button class="secondary-button" data-action="restart">Restart round</button>' : ''}<button class="secondary-button" data-action="${online?'leave-room':'new-game'}">${online?'Leave online room':'Return to setup'}</button><button class="secondary-button" data-action="stats">Local statistics</button></div>`;
+  : `<h2>Game menu</h2><p>Round ${state?.round || 1} · ${state?.players.length || settings.playerCount} players</p><div class="menu-actions">${!online || (online.isHost && !(online instanceof HostedRoom)) ? '<button class="secondary-button" data-action="restart">Restart round</button>' : ''}<button class="secondary-button" data-action="${online?'leave-room':'new-game'}">${online?'Leave online room':'Return to setup'}</button><button class="secondary-button" data-action="settings">Sound & display</button><button class="secondary-button" data-action="history">Table activity</button><button class="secondary-button" data-action="stats">Local statistics</button></div>`;
   return `<div class="overlay modal-overlay" data-action="close-modal"><section class="modal-panel" role="dialog" aria-modal="true"><button class="close-button" data-action="close-modal" aria-label="Close">×</button>${body}</section></div>`;
 }
 function render(): void {
@@ -372,6 +399,10 @@ function render(): void {
     total: state?.total ?? 0,
     direction: state?.direction ?? 1,
     event: state?.event ?? 'none',
+    eventKey: state ? `${state.round}:${state.log[0]}` : '',
+    activeSeat: state?.current??0,
+    drawCount: state?.drawPile.length??0,
+    discardCount: state?.played.length??0,
     playerCount: state?.players.length ?? 0,
     localSeat: state ? localSeat() : 0,
     drawCardUrl: backImage,
@@ -401,7 +432,7 @@ app.addEventListener('click', event => {
     if (action === 'new-game') { clearCpu(); state = null; selectedCard = null; render(); }
     if (action === 'rules' || action === 'settings' || action === 'stats' || action === 'history') { modal = action; emotesOpen = false; render(); }
     if (action === 'menu') { modal = 'menu'; render(); }
-    if (action === 'emotes') { emotesOpen = !emotesOpen; render(); }
+    if (action === 'emotes') { if(emoteHeld){emoteHeld=false;}else{emotesOpen = !emotesOpen; render();} }
     if (action === 'close-modal') { modal = null; render(); }
     if (action === 'play-selected' && selectedCard) void animatePlay(selectedCard, document.querySelector<HTMLElement>(`.hand-card[data-card="${selectedCard}"]`) || undefined);
     return;
@@ -409,6 +440,7 @@ app.addEventListener('click', event => {
   const emote = target.closest<HTMLElement>('[data-emote]')?.dataset.emote as PlayerConfig['mood'] | undefined;
   if (emote && state) {
     const seat = localSeat();
+    audio.play('emote');
     emotesOpen = false;
     if (online) online.setMood(seat, emote);
     else { state.players[seat].mood = emote; settings.seats[seat].mood = emote; save(); render(); }
@@ -433,66 +465,67 @@ app.addEventListener('change', event => {
   if (el.dataset.seatName) setSeat(Number(el.dataset.seatName), { name: el.value });
   if (el.id === 'live-mood' && state) { const seat = localSeat(); if (online) online.setMood(seat, el.value as PlayerConfig['mood']); else { state.players[seat].mood = el.value as PlayerConfig['mood']; settings.seats[seat].mood = el.value as PlayerConfig['mood']; save(); render(); } }
   if (el.id === 'graphics') { settings.graphics = el.value as Settings['graphics']; save(); }
+  if (el.id === 'muted' || el.id === 'reducedMotion') { settings[el.id]=(el as HTMLInputElement).checked;save(); }
 });
 app.addEventListener('input', event => {
   const el = event.target as HTMLInputElement;
   if (el.id === 'room-code') joinCode = el.value;
-  if (el.id === 'volume') { settings.volume = Number(el.value); save(); document.querySelector('.modal-setting strong')!.textContent = `${Math.round(settings.volume*100)}%`; }
+  if (['volume','sfxVolume','musicVolume','ambienceVolume','uiScale'].includes(el.id)) { const key=el.id as 'volume'|'sfxVolume'|'musicVolume'|'ambienceVolume'|'uiScale';settings[key]=Number(el.value);save();const output=document.querySelector(`output[for="${el.id}"]`);if(output)output.textContent=`${Math.round(Number(el.value)*100)}%`; }
 });
 app.addEventListener('keydown', event => {
   const target = event.target as HTMLElement;
-  if (event.key === 'Enter' && target.matches('.hand-card:not(.waiting-hand)') && canControlActor()) { selectedCard = target.dataset.card || null; render(); }
+  if ((event.key === 'Enter'||event.key===' ') && target.matches('.hand-card:not(.waiting-hand)') && canControlActor()) { event.preventDefault();selectedCard = target.dataset.card || null; render();document.querySelector<HTMLButtonElement>('[data-action="play-selected"]')?.focus(); }
   if (event.key === 'Escape' && modal) { modal = null; render(); }
 });
 
-let drag: { element: HTMLElement; id: string; x: number; y: number; time: number; lastX: number; lastY: number; lastTime: number; moved: boolean } | null = null;
-app.addEventListener('pointerdown', event => {
-  const card = (event.target as HTMLElement).closest<HTMLElement>('.hand-card');
-  if (!card || card.classList.contains('waiting-hand') || !state || locked || state.phase !== 'playing' || !canControlActor()) return;
-  drag = { element: card, id: card.dataset.card!, x: event.clientX, y: event.clientY, time: performance.now(), lastX: event.clientX, lastY: event.clientY, lastTime: performance.now(), moved: false };
-  card.setPointerCapture(event.pointerId); card.classList.add('dragging'); audio.play('pickup');
+type CardDrag = {element:HTMLElement;id:string;x:number;y:number;time:number;lastX:number;lastY:number;lastTime:number;vx:number;vy:number;moved:boolean;inspecting:boolean;pointerId:number;holdTimer:number;baseTransform:string};
+let drag:CardDrag|null=null;
+let lastHover='';
+app.addEventListener('pointerover',event=>{
+  const card=(event.target as HTMLElement).closest<HTMLElement>('.hand-card');
+  if(card && card.dataset.card!==lastHover && !card.classList.contains('waiting-hand')){lastHover=card.dataset.card!;audio.play('card-hover');}
 });
-app.addEventListener('pointermove', event => {
-  if (!drag) return;
-  const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
-  drag.moved ||= Math.hypot(dx,dy) > 8;
-  drag.element.classList.toggle('flick-ready', Math.hypot(dx, dy) >= CONFIG.CARD_THROW_MIN_DISTANCE && dy <= -10);
-  const tiltX = Math.max(-17, Math.min(17, -dy * .075));
-  const tiltY = Math.max(-20, Math.min(20, dx * .085));
-  const turn = Math.max(-8, Math.min(8, dx * .025));
-  drag.element.style.transform = `perspective(900px) translate3d(${dx}px, ${dy}px, 62px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) rotateZ(${turn}deg) scale(1.055)`;
-  drag.lastX = event.clientX; drag.lastY = event.clientY; drag.lastTime = performance.now();
+app.addEventListener('pointerdown',event=>{
+  audio.unlock();
+  if((event.target as HTMLElement).closest('[data-action="emotes"]')){emoteHeld=false;emoteHoldTimer=window.setTimeout(()=>{emoteHeld=true;emotesOpen=true;render();},350);}
+  const card=(event.target as HTMLElement).closest<HTMLElement>('.hand-card');
+  if(!card||!state||locked||drag||event.button!==0)return;
+  const now=performance.now();
+  const current:CardDrag={element:card,id:card.dataset.card!,x:event.clientX,y:event.clientY,time:now,lastX:event.clientX,lastY:event.clientY,lastTime:now,vx:0,vy:0,moved:false,inspecting:false,pointerId:event.pointerId,holdTimer:0,baseTransform:getComputedStyle(card).transform};
+  current.holdTimer=window.setTimeout(()=>{if(drag!==current||current.moved)return;current.inspecting=true;card.classList.add('inspecting');card.classList.remove('dragging');audio.play('card-select');},380);
+  drag=current;card.setPointerCapture(event.pointerId);audio.play('pickup');
 });
-function endDrag(event: PointerEvent): void {
-  if (!drag) return;
-  const current = drag; drag = null;
-  const dx = event.clientX-current.x, dy = event.clientY-current.y;
-  const dist = Math.hypot(dx,dy);
-  const elapsed = Math.max(1,performance.now()-current.time);
-  const velocity = dist / elapsed;
-  const zone = document.querySelector<HTMLElement>('.table-felt')?.getBoundingClientRect();
-  const towardX = (zone?.left || innerWidth/2)+(zone?.width || 0)/2-current.x;
-  const towardY = (zone?.top || innerHeight/2)+(zone?.height || 0)/2-current.y;
-  const toward = (dx*towardX+dy*towardY)/(Math.max(1,dist)*Math.max(1,Math.hypot(towardX,towardY)));
-  const shortUpwardFlick = dist >= CONFIG.CARD_THROW_MIN_DISTANCE && dy <= -10 && toward > .05;
-  const quickUpwardFlick = dist >= 14 && dy <= -8 && velocity >= CONFIG.CARD_THROW_MIN_VELOCITY && toward > 0;
-  current.element.classList.remove('dragging', 'flick-ready');
-  if (shortUpwardFlick || quickUpwardFlick) {
-    current.element.style.transform = '';
-    void animatePlay(current.id, current.element);
-  } else {
-    current.element.style.transform = '';
-    if (dist < 12) { selectedCard = current.id; render(); }
-    else {
-      const tiltX = Math.max(-17, Math.min(17, -dy * .075));
-      const tiltY = Math.max(-20, Math.min(20, dx * .085));
-      const turn = Math.max(-8, Math.min(8, dx * .025));
-      current.element.animate([
-        { transform:`perspective(900px) translate3d(${dx}px, ${dy}px, 62px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) rotateZ(${turn}deg) scale(1.055)` },
-        { transform:'perspective(900px) translate3d(0,0,0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1)' },
-      ],{duration:300,easing:'cubic-bezier(.2,.72,.2,1)'});
-    }
+app.addEventListener('pointermove',event=>{
+  if(!drag||event.pointerId!==drag.pointerId)return;
+  const dx=event.clientX-drag.x,dy=event.clientY-drag.y,now=performance.now();
+  if(Math.hypot(dx,dy)>8){drag.moved=true;clearTimeout(drag.holdTimer);drag.inspecting=false;drag.element.classList.remove('inspecting');drag.element.classList.add('dragging');}
+  if(!drag.moved)return;
+  const elapsed=Math.max(8,now-drag.lastTime);drag.vx=(event.clientX-drag.lastX)/elapsed;drag.vy=(event.clientY-drag.lastY)/elapsed;
+  const tx=settings.reducedMotion?0:Math.max(-17,Math.min(17,-dy*.07+drag.vy*-3));
+  const ty=settings.reducedMotion?0:Math.max(-20,Math.min(20,dx*.07+drag.vx*3));
+  const turn=settings.reducedMotion?0:Math.max(-9,Math.min(9,dx*.025));
+  drag.element.dataset.tiltX=String(tx*Math.PI/180);drag.element.dataset.tiltY=String(ty*Math.PI/180);drag.element.dataset.turn=String(turn*Math.PI/180);
+  drag.element.classList.toggle('flick-ready',dy<=-18 && Math.abs(dy)>Math.abs(dx)*.32 && canControlActor());
+  drag.element.style.transform=`translate3d(${dx}px,${dy}px,24px) ${drag.baseTransform==='none'?'':drag.baseTransform}`;
+  drag.lastX=event.clientX;drag.lastY=event.clientY;drag.lastTime=now;
+});
+function endDrag(event:PointerEvent):void{
+  clearTimeout(emoteHoldTimer);
+  if(!drag||event.pointerId!==drag.pointerId)return;
+  const current=drag;drag=null;clearTimeout(current.holdTimer);
+  const dx=event.clientX-current.x,dy=event.clientY-current.y,dist=Math.hypot(dx,dy);
+  const canceled=event.type==='pointercancel'||!current.element.isConnected;
+  const shouldPlay=isPlayGesture({dx,dy,duration:performance.now()-current.time,canceled,inspecting:current.inspecting,canPlay:canControlActor()&&state?.phase==='playing'});
+  if(current.element.hasPointerCapture(event.pointerId))current.element.releasePointerCapture(event.pointerId);
+  current.element.classList.remove('dragging','flick-ready','inspecting');
+  if(shouldPlay){audio.play('card-flick');void animatePlay(current.id,current.element);}
+  else{
+    const from=current.element.style.transform;
+    current.element.style.transform='';
+    delete current.element.dataset.tiltX;delete current.element.dataset.tiltY;delete current.element.dataset.turn;
+    if(!canceled && (dist<12||current.inspecting)){selectedCard=current.id;render();}
+    else if(current.element.isConnected && !settings.reducedMotion)current.element.animate([{transform:from||current.baseTransform},{transform:current.baseTransform}],{duration:340,easing:'cubic-bezier(.18,.85,.25,1.12)'});
   }
 }
-app.addEventListener('pointerup', endDrag);
-app.addEventListener('pointercancel', endDrag);
+app.addEventListener('pointerup',endDrag);
+app.addEventListener('pointercancel',endDrag);
