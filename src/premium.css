@@ -177,3 +177,20 @@ button:active { translate:0 1px; }
 /* These screen-wide gradients also covered the hand; the 3D room supplies its
    own atmospheric depth without tinting the printed card colors. */
 .world3d-active .game-page::before,.world3d-active .game-page::after {background:none!important;}
+
+/* The portraits stay still and sit directly over their chairs. */
+.game-page .seat .character-head,
+.game-page .seat .character-head img,
+.game-page .seat.active,
+.game-page .seat.reacting .character-head,
+.game-page .dock-avatar {animation:none!important;}
+.game-page .seat {transition:none!important;}
+.game-page .seat:hover {transform:translate(-50%,-50%)!important;}
+.game-page .seat.active::before,
+.game-page .seat .character-head::after {display:none!important;}
+.game-page .seat .character-head,
+.world3d-active .seat.active .character-head {border:0!important;outline:0!important;background:transparent!important;box-shadow:0 5px 12px #0009!important;}
+.game-page .dock-avatar {border:0!important;box-shadow:0 5px 12px #0009!important;}
+/* The fallback table keeps a static pot, without an orbit or moving liquid. */
+.game-page .energy-ring {display:none!important;}
+.game-page .cauldron-liquid {animation:none!important;}

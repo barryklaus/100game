@@ -22,23 +22,23 @@ Landing **exactly 100** scores a local +3 test-rating event and play continues. 
 
 ## Play controls
 
-- **Mouse or touch:** a short upward flick plays a card. Dragging tilts the physical card; releasing sideways or downward returns it to the hand.
+- **Mouse or touch:** a short upward flick plays a card. Start the flick at an edge or corner to spin it. Dragging tilts the physical card; releasing sideways or downward returns it to the hand.
 - **Inspect:** hold a card briefly without moving to lift and enlarge it.
-- **Alternate:** select a card, then press **Play Card**.
-- **Keyboard:** focus a card and press Enter or Space to select it, then activate **Play Card**.
+- **Double-click or double-tap:** play a card directly. A single tap lifts it for inspection.
+- **Keyboard:** focus a card and press Enter or Space to play it.
 - **Emotes:** tap or hold the Emote button to open the reaction wheel.
 
 Invalid throws return to your hand. After CHOOSE PLAYER lands, choose a highlighted player.
 
 ## 3D presentation
 
-The live game is a Three.js scene: eight fixed chairs, a layered wood-and-cloth table, a sculpted energy well, an extruded gold total, physical card meshes and stacks, candlelit props, and a layered nighttime city beyond the windows. Original card faces retain their aspect ratio and printed borders, with no added frame, foil, glow, lighting tint, or reflection overlay. Cards render independently of room bloom and ambient occlusion while keeping correct depth and movement. Thin paper edges follow the artwork's transparency. Each pile contains one physical layer per card, rests on the cloth, and grows or shrinks with its actual count.
+The live game is a Three.js scene: eight fixed chairs, a layered wood-and-cloth table, a sculpted pot with still liquid, an extruded gold total, physical card meshes and stacks, candlelit props, and a layered nighttime city beyond the windows. Original card faces retain their aspect ratio and printed borders, with no added frame, foil, glow, lighting tint, or reflection overlay. Cards render independently of room bloom and ambient occlusion while keeping correct depth and movement. Thin paper edges follow the artwork's transparency. Each pile contains one physical layer per card, rests on the cloth, and grows or shrinks with its actual count. Soft contact shadows sit beneath both piles.
 
-Cards travel from the hand to the discard stack and from the draw stack back to the hand. Opponents' public plays animate from their seats; their hidden card faces are never used. Portrait and landscape have separate camera and hand layouts, with avatar and pile labels anchored to the world.
+Cards travel from the hand to the discard stack and from the draw stack back to the hand. Opponents' public plays animate from their seats; their hidden card faces are never used. Portrait and landscape have separate camera and hand layouts, with still portraits anchored to their chairs.
 
 **Settings** offers Ultra, High, Medium, and Mobile quality, reduced motion, interface text size, mute, and independent master, SFX, music, and ambience volumes. Mobile removes real-time shadows and bloom and reduces resolution, particles, and lights. Ultra adds ambient occlusion. Browser viewport testing is included in the visual checks; real phone performance should also be measured before release.
 
-`AudioManager` includes procedural interaction cues and replaceable clip hooks, separate audio buses, and optional positional sound. Music and ambience remain silent until finished recordings are registered. `AvatarAnimator` supports reaction poses and future sprite atlases; the supplied portraits currently use subtle movement and lighting, rather than fabricated facial frames.
+`AudioManager` includes procedural interaction cues and replaceable clip hooks, separate audio buses, and optional positional sound. Music and ambience remain silent until finished recordings are registered. The supplied avatar portraits remain still.
 
 ## Play online
 
@@ -81,4 +81,4 @@ Open the local URL shown by Wrangler. Create a room in one browser, then open th
 
 100 is built with **TypeScript, Three.js, PeerJS, Cloudflare Workers, Durable Objects, HTML, CSS, and Vite**. Settings, statistics, rating, and cosmetic currency live in LocalStorage on each device. Currency and the Ranked Match banner are presentation only: there are no purchases or competitive matchmaking. The supplied card artwork remains unchanged in its source files; optimized copies power the website. The rules retain their original internal rank identifiers for saved/network compatibility. See [GAME_RULES.md](GAME_RULES.md) for complete rules and [ASSET_MANIFEST.md](ASSET_MANIFEST.md) for asset provenance.
 
-Automated checks cover rules, private online views, room reconnection, settings migration, short flick recognition, canceled/inspection gestures, player-facing card names, physical piles, and clean card materials. Production builds type-check both browser and Worker code. With the development server running, open `/100game/scripts/test-game-view.html` to check portrait continuity across 24 turns, hand updates, turn panels, and modal changes. Game updates preserve existing portrait elements, animation state, and projected chair positions.
+Automated checks cover rules, private online views, room reconnection, settings migration, short flick recognition, double taps, edge grips, canceled/inspection gestures, player-facing card names, physical piles, and clean card materials. Production builds type-check both browser and Worker code. With the development server running, open `/100game/scripts/test-game-view.html` to check portrait continuity across 24 turns, hand updates, turn panels, and modal changes. Game updates preserve existing portrait elements and projected chair positions.

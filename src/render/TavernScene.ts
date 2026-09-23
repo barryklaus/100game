@@ -29,14 +29,6 @@ type SceneState = {
   discardCards?: string[];
 };
 
-type EnergyMaterial = THREE.ShaderMaterial & {
-  uniforms: {
-    uTime: { value: number };
-    uPower: { value: number };
-    uDirection: { value: number };
-  };
-};
-
 const wood = (color: number, roughness = .72): THREE.MeshStandardMaterial =>
   new THREE.MeshStandardMaterial({ color, roughness, metalness: .05 });
 
@@ -62,8 +54,6 @@ export class TavernScene {
   private lastEventKey = '';
   private eventKind = 'none';
   private impact = 0;
-  private liquid!: THREE.Mesh;
-  private ripple!: THREE.Mesh;
   private candleFlames: THREE.Mesh[] = [];
   private fill = new THREE.DirectionalLight(0xffddad, 1.7);
   private roomDust!: THREE.Points;
@@ -80,21 +70,20 @@ export class TavernScene {
   private smoothPointer = new THREE.Vector2();
   private world = new THREE.Group();
   private energyGroup = new THREE.Group();
-  private energyMaterial: EnergyMaterial;
+  private wellPower = .16;
   private centerLight = new THREE.PointLight(0xffb339, 7, 13, 1.45);
   private particles: THREE.Points;
   private particleBase: Float32Array;
   private floatingIslands: THREE.Group[] = [];
   private lanterns: THREE.Group[] = [];
-  private stationMaterials: THREE.MeshStandardMaterial[] = [];
   private stationChairs: THREE.Group[] = [];
-  private stationMarkers: THREE.Group[] = [];
   private textureLoader = new THREE.TextureLoader();
   private textureCache = new Map<string, Promise<THREE.Texture>>();
   private deckPile!: CardPile;
   private discardPile!: CardPile;
   private deckStack!: THREE.Group;
   private discardStack!: THREE.Group;
+  private pileShadows: THREE.Mesh[] = [];
   private drawCardUrl = '';
   private playerCount = 0;
   private localSeat = 0;
@@ -116,7 +105,6 @@ export class TavernScene {
 
     this.scene.background = new THREE.Color(0x080a17);
     this.scene.fog = new THREE.FogExp2(0x090a16, .019);
-    this.energyMaterial = this.makeEnergyMaterial();
     const particleSystem = this.makeParticles();
     this.particles = particleSystem.points;
     this.particleBase = particleSystem.base;
@@ -170,13 +158,9 @@ export class TavernScene {
     this.localSeat = next.localSeat;
     this.activeSeat=next.activeSeat??0;
     this.number.set(next.total);
-    this.stationMaterials.forEach((material, index) => {
-      const occupied = Array.from({length:next.playerCount},(_,i)=>(8-Math.round(i*8/next.playerCount))%8).includes(index);
-      const activeStation=(8-Math.round(((this.activeSeat-this.localSeat+this.playerCount)%this.playerCount)*8/this.playerCount))%8;
-      material.emissiveIntensity = index===activeStation?.55:occupied?.1:.035;
-      material.opacity = occupied ? 1 : .58;
-    });
     this.drawCardUrl = next.drawCardUrl;
+    this.pileShadows[0].visible = (next.drawCount ?? 0) > 0;
+    this.pileShadows[1].visible = (next.discardCount ?? 0) > 0;
     void this.deckPile.setCards(Array.from({length:next.drawCount??0},()=>next.drawCardUrl),next.drawCardUrl).catch(()=>undefined);
     void this.discardPile.setCards(next.discardCards??(next.discardCardUrl?[next.discardCardUrl]:[]),next.drawCardUrl).catch(()=>undefined);
     const key=next.eventKey??`${next.total}:${next.discardCardUrl}:${next.event}`;
@@ -187,43 +171,6 @@ export class TavernScene {
     this.renderer.domElement.hidden = !next.active||this.contextLost;
     document.documentElement.classList.toggle('world3d-active', next.active&&!this.contextLost);
     document.documentElement.classList.toggle('world3d-total', next.active&&!this.contextLost);
-  }
-
-  private makeEnergyMaterial(): EnergyMaterial {
-    return new THREE.ShaderMaterial({
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-      side: THREE.DoubleSide,
-      uniforms: {
-        uTime: { value: 0 },
-        uPower: { value: .2 },
-        uDirection: { value: 1 },
-      },
-      vertexShader: `
-        varying vec2 vUv;
-        void main(){
-          vUv=uv;
-          gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);
-        }
-      `,
-      fragmentShader: `
-        varying vec2 vUv;
-        uniform float uTime;
-        uniform float uPower;
-        uniform float uDirection;
-        void main(){
-          float flow=sin((vUv.x*22.0-uTime*1.9*uDirection)*6.28318)*.5+.5;
-          float fine=sin((vUv.x*53.0+uTime*.72*uDirection)*6.28318)*.5+.5;
-          float edge=smoothstep(0.0,.22,vUv.y)*smoothstep(1.0,.78,vUv.y);
-          vec3 amber=vec3(1.0,.35,.035);
-          vec3 gold=vec3(1.0,.92,.31);
-          vec3 color=mix(amber,gold,flow*.74+fine*.16);
-          float alpha=edge*(.42+flow*.42+fine*.12)*(.42+uPower*.58);
-          gl_FragColor=vec4(color,alpha);
-        }
-      `,
-    }) as EnergyMaterial;
   }
 
   private buildWorld(): void {
@@ -382,22 +329,20 @@ export class TavernScene {
     base.position.y=-.3;base.castShadow=true;base.receiveShadow=true;this.world.add(base);
     const top=new THREE.Mesh(new THREE.CylinderGeometry(5.71,5.73,.17,96),cloth);
     top.position.y=.2;top.receiveShadow=true;this.world.add(top);
-    const inset=new THREE.Mesh(new THREE.CylinderGeometry(3.55,3.59,.075,96),cloth);
+    const inset=new THREE.Mesh(new THREE.CylinderGeometry(5.68,5.68,.075,96),cloth);
     inset.position.y=.31;inset.receiveShadow=true;this.world.add(inset);
     [[6.1,.22,.19],[6.2,.12,-.43],[5.77,.12,.27]].forEach(([radius,tube,y])=>{
       const rim=new THREE.Mesh(new THREE.TorusGeometry(radius,tube,16,112),wood);rim.rotation.x=Math.PI/2;rim.position.y=y;rim.castShadow=true;rim.receiveShadow=true;this.world.add(rim);
     });
-    [[5.89,.025,.39],[6.23,.018,.23],[5.58,.014,.305],[3.58,.034,.36]].forEach(([radius,tube,y])=>{
+    [[5.89,.025,.39],[6.23,.018,.23],[5.58,.014,.305]].forEach(([radius,tube,y])=>{
       const rim=new THREE.Mesh(new THREE.TorusGeometry(radius,tube,8,112),brass);rim.rotation.x=Math.PI/2;rim.position.y=y;this.world.add(rim);
     });
     const inlay=new THREE.InstancedMesh(new THREE.BoxGeometry(.035,.013,.17),brass,80);
     for(let i=0;i<80;i++){const a=i/80*Math.PI*2;const m=new THREE.Matrix4().makeRotationY(a);m.setPosition(Math.sin(a)*5.93,.423,Math.cos(a)*5.93);inlay.setMatrixAt(i,m);}this.world.add(inlay);
-    // Broad, quiet engraved tracery, kept outside the central play area.
-    const tracery=new THREE.MeshStandardMaterial({color:0xb49a6d,roughness:.8,metalness:.15,transparent:true,opacity:.2});
+    // Small inset studs mark the table edge without circles beneath the seats.
     for(let i=0;i<8;i++){
       const a=i/8*Math.PI*2;
       const jewel=new THREE.Mesh(new THREE.OctahedronGeometry(.1),brass);jewel.scale.y=.25;jewel.position.set(Math.sin(a)*5.82,.43,Math.cos(a)*5.82);this.world.add(jewel);
-      const arc=new THREE.Mesh(new THREE.TorusGeometry(.62,.01,5,24,Math.PI),tracery);arc.rotation.set(Math.PI/2,0,a);arc.position.set(Math.sin(a)*4.66,.3,Math.cos(a)*4.66);this.world.add(arc);
     }
     const floor=new THREE.Mesh(new THREE.CylinderGeometry(14,14,.1,64),wood);floor.position.y=-1.1;floor.receiveShadow=true;this.world.add(floor);
   }
@@ -446,54 +391,23 @@ export class TavernScene {
       this.stationChairs.push(chair);
       this.world.add(chair);
 
-      const stationMaterial = new THREE.MeshStandardMaterial({
-        color: 0xb17434,
-        emissive: 0xff9d2d,
-        emissiveIntensity: .12,
-        roughness: .38,
-        metalness: .58,
-        transparent: true,
-        opacity: .58,
-      });
-      const marker = new THREE.Group();
-      const ring = new THREE.Mesh(new THREE.RingGeometry(.45, .48, 32), stationMaterial);
-      ring.rotation.x = -Math.PI / 2;
-      marker.add(ring);
-      const notch = new THREE.Mesh(new THREE.ConeGeometry(.12, .28, 3), stationMaterial);
-      notch.rotation.x = Math.PI / 2;
-      notch.position.z = -.64;
-      marker.add(notch);
-      marker.position.set(Math.sin(angle) * 5.2, .37, Math.cos(angle) * 5.2);
-      marker.rotation.y = angle;
-      this.stationMaterials.push(stationMaterial);
-      this.stationMarkers.push(marker);
-      this.world.add(marker);
     }
   }
 
   private addWell(): void {
-    this.energyGroup.position.set(0,.43,-.28);this.world.add(this.energyGroup);
+    this.energyGroup.position.set(0,.40,-.28);this.world.add(this.energyGroup);
     const brass=this.materials.brass;
     const darkMetal=new THREE.MeshPhysicalMaterial({color:0x302333,roughness:.34,metalness:.56,clearcoat:.3,clearcoatRoughness:.36});
-    const foundation=new THREE.Mesh(new THREE.CylinderGeometry(1.86,1.96,.16,96),darkMetal);foundation.position.y=-.035;foundation.receiveShadow=true;this.energyGroup.add(foundation);
-    [1.45,1.88].forEach(radius=>{const rim=new THREE.Mesh(new THREE.TorusGeometry(radius,.055,12,96),brass);rim.rotation.x=Math.PI/2;rim.position.y=.1;this.energyGroup.add(rim);});
-    const channel=new THREE.Mesh(new THREE.TorusGeometry(1.67,.17,14,128),this.energyMaterial);channel.rotation.x=Math.PI/2;channel.position.y=.045;this.energyGroup.add(channel);
-    for(let i=0;i<24;i++){const a=i/24*Math.PI*2;const rune=new THREE.Mesh(new THREE.BoxGeometry(.024,.018,.12),brass);rune.position.set(Math.sin(a)*1.89,.11,Math.cos(a)*1.89);rune.rotation.y=a;this.energyGroup.add(rune);}
     const profile=[new THREE.Vector2(.55,0),new THREE.Vector2(.83,.045),new THREE.Vector2(1.08,.16),new THREE.Vector2(1.23,.4),new THREE.Vector2(1.26,.65),new THREE.Vector2(1.2,.9),new THREE.Vector2(1.06,1.15),new THREE.Vector2(.96,1.28),new THREE.Vector2(.96,1.33),new THREE.Vector2(.88,1.33),new THREE.Vector2(.88,1.14)];
     const pot=new THREE.Mesh(new THREE.LatheGeometry(profile,72),darkMetal);pot.position.y=.15;pot.castShadow=true;pot.receiveShadow=true;this.energyGroup.add(pot);
     [[.98,.07,1.48],[1.07,.025,1.32],[.85,.04,.2]].forEach(([radius,tube,y])=>{const lip=new THREE.Mesh(new THREE.TorusGeometry(radius,tube,12,80),brass);lip.rotation.x=Math.PI/2;lip.position.y=y;this.energyGroup.add(lip);});
-    this.liquid=new THREE.Mesh(new THREE.CircleGeometry(.89,80),new THREE.ShaderMaterial({
-      uniforms:{uTime:{value:0},uPower:{value:.2},uDirection:{value:1}},side:THREE.DoubleSide,
-      vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-      fragmentShader:`varying vec2 vUv;uniform float uTime;uniform float uPower;uniform float uDirection;void main(){vec2 p=(vUv-.5)*2.;float r=length(p);float a=atan(p.y,p.x);float wave=sin(r*24.-uTime*2.2+sin(a*4.+uTime*uDirection)*1.2);float filigree=pow(.5+.5*sin(r*38.+a*3.-uTime*1.8*uDirection),8.);vec3 gold=mix(vec3(.95,.26,.025),vec3(1.8,1.25,.38),.5+.5*wave);gold+=filigree*vec3(.8,.5,.12);gold*=.7+uPower*.3;gl_FragColor=vec4(gold*(1.-r*.15),1.);}`
-    }));this.liquid.rotation.x=-Math.PI/2;this.liquid.position.y=1.405;this.energyGroup.add(this.liquid);
     [-1,1].forEach(side=>{const handle=new THREE.Mesh(new THREE.TorusGeometry(.35,.08,12,36),brass);handle.position.set(side*1.21,.97,0);handle.rotation.y=.22*side;this.energyGroup.add(handle);});
     for(let i=0;i<4;i++){const a=Math.PI/4+i*Math.PI/2;const foot=new THREE.Mesh(new THREE.SphereGeometry(.24,18,12),brass);foot.scale.set(.8,.6,1.4);foot.position.set(Math.sin(a)*.8,.1,Math.cos(a)*.8);this.energyGroup.add(foot);}
     // A small engraved crest gives the ancient vessel personality without a cartoon face.
     const crest=new THREE.Mesh(new THREE.TorusGeometry(.22,.016,8,32),brass);crest.position.set(0,.85,1.21);this.energyGroup.add(crest);
     const gem=new THREE.Mesh(new THREE.OctahedronGeometry(.105),new THREE.MeshStandardMaterial({color:0xffe5ac,emissive:0xffa134,emissiveIntensity:1.1,roughness:.19,metalness:.3}));gem.scale.y=1.25;gem.position.set(0,.85,1.255);this.energyGroup.add(gem);
-    const rippleMaterial=new THREE.MeshBasicMaterial({color:0xffd788,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending});
-    this.ripple=new THREE.Mesh(new THREE.RingGeometry(1.98,2.015,100),rippleMaterial);this.ripple.rotation.x=-Math.PI/2;this.ripple.position.y=.012;this.energyGroup.add(this.ripple);
+    const liquid=new THREE.Mesh(new THREE.CircleGeometry(.89,80),new THREE.MeshStandardMaterial({color:0xf7c370,emissive:0x794012,emissiveIntensity:.18,roughness:.48,metalness:.12,side:THREE.DoubleSide}));
+    liquid.rotation.x=-Math.PI/2;liquid.position.y=1.405;this.energyGroup.add(liquid);
     this.energyGroup.add(this.particles);
     this.deckPile=new CardPile(true,url=>this.loadTexture(url));
     this.discardPile=new CardPile(false,url=>this.loadTexture(url));
@@ -501,6 +415,24 @@ export class TavernScene {
     this.deckStack.position.set(-2.82,0,-.06);this.deckStack.rotation.y=-.06;
     this.discardStack.position.set(2.82,0,-.06);this.discardStack.rotation.y=.06;
     this.world.add(this.deckStack,this.discardStack);
+    const pixels=new Uint8Array(64*64*4);
+    for(let y=0;y<64;y++)for(let x=0;x<64;x++){
+      const radius=Math.hypot((x-31.5)/31.5,(y-31.5)/31.5);
+      const index=(y*64+x)*4;
+      pixels[index+3]=Math.round(165*Math.pow(Math.max(0,1-radius),1.4));
+    }
+    const texture=new THREE.DataTexture(pixels,64,64,THREE.RGBAFormat);
+    texture.magFilter=THREE.LinearFilter;texture.minFilter=THREE.LinearFilter;texture.needsUpdate=true;
+    const shadowMaterial=new THREE.MeshBasicMaterial({map:texture,transparent:true,depthWrite:false,toneMapped:false});
+    const shadowGeometry=new THREE.PlaneGeometry(1.75,2.25);
+    for(const stack of [this.deckStack,this.discardStack]){
+      const shadow=new THREE.Mesh(shadowGeometry,shadowMaterial);
+      shadow.rotation.x=-Math.PI/2;
+      shadow.position.set(stack.position.x,.3485,stack.position.z);
+      shadow.visible=false;
+      this.pileShadows.push(shadow);
+      this.world.add(shadow);
+    }
   }
 
   private loadTexture(url: string): Promise<THREE.Texture> {
@@ -561,8 +493,9 @@ export class TavernScene {
     startScale: number;
     endScale: number;
     draw: boolean;
+    spin?: number;
   }): Promise<void> {
-    const { root, visual, start, end, startQuaternion, endQuaternion, startScale, endScale, draw } = options;
+    const { root, visual, start, end, startQuaternion, endQuaternion, startScale, endScale, draw, spin=0 } = options;
     const control = start.clone().lerp(end, .5);
     control.y += draw ? .85 : .65;
     control.z += draw ? .45 : -.3;
@@ -587,7 +520,7 @@ export class TavernScene {
         root.quaternion.slerpQuaternions(startQuaternion, endQuaternion, t);
         root.scale.setScalar(THREE.MathUtils.lerp(startScale, endScale, t));
         visual.rotation.y = draw ? Math.PI * (1 - t) : Math.sin(raw * Math.PI) * .24;
-        visual.rotation.z = Math.sin(raw * Math.PI) * (draw ? -.16 : .24);
+        visual.rotation.z = spin*Math.PI*2*t + Math.sin(raw * Math.PI) * (draw ? -.16 : .24);
         if (raw < 1) requestAnimationFrame(step);
         else {
           this.scene.remove(root);
@@ -605,7 +538,7 @@ export class TavernScene {
     });
   }
 
-  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect): Promise<void> {
+  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin=0): Promise<void> {
     const { root, visual } = await this.makeFlyingCard(frontUrl);
     const distance = innerHeight > innerWidth * 1.08 ? 4.9 : 5.35;
     const start = this.screenPoint(sourceRect, distance);
@@ -613,7 +546,7 @@ export class TavernScene {
     const end = landing.position;
     const startQuaternion = this.camera.quaternion.clone();
     const endQuaternion = landing.quaternion;
-    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: this.screenScale(sourceRect, distance), endScale: 1, draw: false });
+    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: this.screenScale(sourceRect, distance), endScale: 1, draw: false, spin });
   }
 
   async drawCardToHand(frontUrl: string, targetRect: DOMRect): Promise<void> {
@@ -761,8 +694,6 @@ export class TavernScene {
       pile.style.setProperty('--pile-label-x',`${(point.x*.5+.5)*innerWidth}px`);
       pile.style.setProperty('--pile-label-y',`${(-point.y*.5+.5)*innerHeight+7}px`);
     });
-    const directionPoint=this.tablePoint(0,.45,1.93).project(this.camera);
-    document.documentElement.style.setProperty('--direction-y',`${(-directionPoint.y*.5+.5)*innerHeight}px`);
     for (let playerIndex = 0; playerIndex < this.playerCount; playerIndex++) {
       const seat = layer.querySelector<HTMLElement>(`.seat[data-seat="${playerIndex}"]`);
       if (!seat || playerIndex === this.localSeat) continue;
@@ -799,14 +730,12 @@ export class TavernScene {
       const pileZ = portrait ? 2.05 : -.06;
       this.deckStack.position.set(-pileX, 0, pileZ);
       this.discardStack.position.set(pileX, 0, pileZ);
+      this.pileShadows[0].position.set(-pileX,.3485,pileZ);
+      this.pileShadows[1].position.set(pileX,.3485,pileZ);
     }
     this.stationChairs.forEach((chair, index) => {
       const angle = index / 8 * Math.PI * 2;
       chair.position.set(Math.sin(angle) * (portrait ? 4.05 : 6), -.12, Math.cos(angle) * (portrait ? 6.15 : 6.95));
-    });
-    this.stationMarkers.forEach((marker, index) => {
-      const angle = index / 8 * Math.PI * 2;
-      marker.position.set(Math.sin(angle) * (portrait ? 3.25 : 5.2), .37, Math.cos(angle) * (portrait ? 4.35 : 5.2));
     });
   };
 
@@ -826,25 +755,16 @@ export class TavernScene {
     this.hand.update(delta);
 
     this.eventPulse = Math.max(0, this.eventPulse - delta * 1.4);
-    const power = THREE.MathUtils.lerp(this.energyMaterial.uniforms.uPower.value, this.targetPower + this.eventPulse, 1 - Math.pow(.004, delta));
-    this.energyMaterial.uniforms.uPower.value = power;
-    this.energyMaterial.uniforms.uTime.value = this.reducedMotion?0:time;
-    this.energyMaterial.uniforms.uDirection.value = this.direction;
-    const liquidMat=this.liquid.material as THREE.ShaderMaterial;
-    liquidMat.uniforms.uTime.value=this.reducedMotion?0:time;
-    liquidMat.uniforms.uPower.value=power;liquidMat.uniforms.uDirection.value=this.direction;
+    const power = this.wellPower = THREE.MathUtils.lerp(this.wellPower, this.targetPower + this.eventPulse, 1 - Math.pow(.004, delta));
     this.impact=Math.max(0,this.impact-delta*1.35);
     const drain=this.eventKind==='minus'||this.eventKind==='zero';
-    const ringScale=drain?1+this.impact*1.05:1+(1-this.impact)*1.05;
-    this.ripple.scale.setScalar(ringScale);
-    (this.ripple.material as THREE.MeshBasicMaterial).opacity=this.reducedMotion?0:Math.sin(this.impact*Math.PI)*.48;
     this.fill.intensity=1.6+power*.45-(drain?this.impact*.45:0);
     this.candleFlames.forEach((flame,i)=>{flame.scale.y=this.reducedMotion?1:1+Math.sin(time*9+i*2)*.14;});
     if(this.roomDust){this.roomDust.rotation.y=this.reducedMotion?0:time*.009;}
     document.documentElement.style.setProperty('--well-light',String(.15+Math.min(power,1)*.25));
     this.centerLight.intensity = 4.8 + power * 7.5 - (drain?this.impact*3.5:0);
     this.centerLight.color.setHSL(.095 - Math.min(.035, this.total / 4000), .98, .58);
-    this.energyGroup.position.y = .43;
+    this.energyGroup.position.y = .40;
     this.energyGroup.scale.setScalar(1);
 
     const pos = this.particles.geometry.getAttribute('position') as THREE.BufferAttribute;

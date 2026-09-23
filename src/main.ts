@@ -11,12 +11,10 @@ import { AudioManager } from './audio/AudioManager';
 import { TavernScene } from './render/TavernScene';
 import { OnlineRoom, newRoomId } from './game/online';
 import { HostedRoom } from './game/hosted';
-import { isPlayGesture } from './ui/cardGesture';
-import { AvatarAnimator, avatarPose } from './ui/AvatarAnimator';
+import { isCardEdgeGrip, isDoubleCardTap, isPlayGesture, type CardTap } from './ui/cardGesture';
 import { updateGameView } from './ui/updateGameView';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
-const avatars = new AvatarAnimator(app);
 let settings: Settings = loadSettings();
 let stats: Stats = loadStats();
 let state: GameState | null = null;
@@ -116,7 +114,6 @@ function connectOnline(mode: 'host' | 'join'): void {
 }
 function applyPreferences(): void {
   audio.configure(settings);
-  avatars.configure(settings.reducedMotion);
   tavern?.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion});
   document.documentElement.classList.toggle('reduce-motion',settings.reducedMotion);
   document.documentElement.style.setProperty('--ui-scale',String(settings.uiScale));
@@ -247,7 +244,7 @@ function resolveCard(cardId: string): void {
   if (drawnForLocal) void animateDrawToHand(drawnForLocal);
   scheduleCpu();
 }
-async function animatePlay(cardId: string, source?: HTMLElement): Promise<void> {
+async function animatePlay(cardId: string, source?: HTMLElement, spin = 0): Promise<void> {
   if (!state || locked || state.phase !== 'playing') return;
   locked = true; clearCpu();
   const card = state.players[state.current].hand.find(item => item.id === cardId);
@@ -258,7 +255,7 @@ async function animatePlay(cardId: string, source?: HTMLElement): Promise<void> 
   if (tavern && !settings.reducedMotion) {
     source?.classList.add('card-departing');
     try {
-      await tavern.playCardToDiscard(cardImage(card), start);
+      await tavern.playCardToDiscard(cardImage(card), start, spin);
       audio.play('slap');
       locked = false;
       resolveCard(cardId);
@@ -289,9 +286,9 @@ async function animatePlay(cardId: string, source?: HTMLElement): Promise<void> 
   const dy = target.top + target.height / 2 - (start.top + start.height / 2);
   await flying.animate([
     { transform:'translate(0, 0) scale(1) rotate(0deg)', offset:0 },
-    { transform:`translate(${dx*.62}px, ${dy*.62 - 28}px) scale(1.13) rotate(${dx > 0 ? 7 : -7}deg)`, offset:.65 },
-    { transform:`translate(${dx}px, ${dy + 7}px) scale(.97) rotate(2deg)`, offset:.9 },
-    { transform:`translate(${dx}px, ${dy}px) scale(1) rotate(0deg)`, offset:1 },
+    { transform:`translate(${dx*.62}px, ${dy*.62 - 28}px) scale(1.13) rotate(${spin*235+(dx > 0 ? 7 : -7)}deg)`, offset:.65 },
+    { transform:`translate(${dx}px, ${dy + 7}px) scale(.97) rotate(${spin*340+2}deg)`, offset:.9 },
+    { transform:`translate(${dx}px, ${dy}px) scale(1) rotate(${spin*360}deg)`, offset:1 },
   ], { duration: 410, easing:'cubic-bezier(.2,.8,.2,1)', fill:'forwards' }).finished.catch(() => undefined);
   audio.play('slap'); flying.remove();
   locked = false; resolveCard(cardId);
@@ -351,7 +348,7 @@ function seatHtml(player: GameState['players'][number], index: number, count: nu
   const active = state.phase === 'target' ? state.pendingSevens.at(-1) === index : state.current === index;
   const targetable = state.phase === 'target' && canControlActor() && index !== state.pendingSevens.at(-1);
   const suit = ['fire','water','leaf','sun'][index%4] as keyof typeof suitSymbols;
-  return `<button class="seat ${index===localSeat()?'local-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit} mood-${player.mood.toLowerCase()}" data-seat="${index}" style="--seat-x:${x}%;--seat-y:${y}%;--seat-index:${index}" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards, mood ${player.mood}"><span class="reaction-bubble">${reaction[index]||''}</span><span class="character"><span class="character-head" data-avatar-id="${player.avatar}" data-avatar-pose="${avatarPose(player.mood,active,state.phase==='ended',state.bust===index)}"><img src="${avatarImage(player.avatar)}" alt=""></span><span class="seat-count" aria-hidden="true">${player.hand.length}</span></span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)}</span><span class="seat-meta">★ ${player.kind==='cpu'?'CPU':'PLAYER'}</span></span><span class="seat-suit" aria-hidden="true">${suitSymbols[suit]}</span></button>`;
+  return `<button class="seat ${index===localSeat()?'local-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit} mood-${player.mood.toLowerCase()}" data-seat="${index}" style="--seat-x:${x}%;--seat-y:${y}%;--seat-index:${index}" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards, mood ${player.mood}"><span class="reaction-bubble">${reaction[index]||''}</span><span class="character"><span class="character-head" ><img src="${avatarImage(player.avatar)}" alt=""></span><span class="seat-count" aria-hidden="true">${player.hand.length}</span></span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)}</span><span class="seat-meta">★ ${player.kind==='cpu'?'CPU':'PLAYER'}</span></span><span class="seat-suit" aria-hidden="true">${suitSymbols[suit]}</span></button>`;
 }
 function gameLogLine(item: string): string {
   const playerIndex = state?.players.findIndex(player => item.startsWith(`${player.name} `)) ?? -1;
@@ -370,12 +367,12 @@ function gameView(): string {
   const totalClass = state.total>100?'busted':state.total===100?'at100':state.total>=CONFIG.TOTAL_WARNING_3?'danger':state.total>=CONFIG.TOTAL_WARNING_2?'warning-2':state.total>=CONFIG.TOTAL_WARNING_1?'warning-1':'';
   const energy = Math.max(0, Math.min(100, state.total));
   return `<main class="game-page" data-event="${state.event}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>SIMPLE NUMBERS.<br>BIG REACTIONS.</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>Ranked Match</strong><small>Good friends. Higher numbers.</small></div></div><div class="header-wallet" aria-label="Player rewards"><span class="wallet-pill"><b>★</b>${stats.currency.toLocaleString()}</span><span class="wallet-pill gem"><b>◆</b>${stats.rating.toLocaleString()}</span></div><div class="header-status"><span class="round-pill">Round ${state.round} / Unlimited</span><span class="turn-pill">${escapeHtml(active.name)}'s ${state.phase==='target'?'choice':'turn'}</span></div><div class="header-actions"><button data-action="history" aria-label="Game history">▤</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}
-    <div class="game-layout"><section class="arena" aria-label="Game table"><div class="table-rim"><div class="table-felt"><div class="energy-system ${totalClass}" style="--energy-angle:${energy * 3.6}deg;--energy-level:${energy / 100}"><div class="energy-ring"><span class="direction-spark ${state.direction===-1?'ccw':''}" aria-hidden="true"></span></div><div class="cauldron"><div class="cauldron-steam"><i></i><i></i><i></i></div><div class="cauldron-liquid"></div><div class="cauldron-body"><span class="cauldron-eye left"></span><span class="cauldron-eye right"></span><span class="cauldron-mouth"></span></div><span class="cauldron-handle left"></span><span class="cauldron-handle right"></span><span class="cauldron-foot left"></span><span class="cauldron-foot right"></span></div><div class="total-wrap ${totalClass}"><span class="total-caption">CURRENT TOTAL</span><div class="total-number" role="status" aria-live="polite" aria-label="Shared total">${state.total}</div><div class="total-max">/ 100</div></div><div class="direction-indicator ${state.direction===-1?'ccw':''}"><span>➜</span> ${state.direction===1?'CLOCKWISE':'COUNTER-CLOCKWISE'}</div></div><div class="table-cards"><div class="pile-wrap"><div class="draw-stack"><div class="playing-card card-back" role="img" aria-label="Draw pile"><img src="${backImage}" alt="Draw pile" draggable="false"></div></div><span>Draw<br><small>${state.drawPile.length} cards</small></span></div><div class="pile-wrap"><div class="played-slot">${top?cardElement(top,false,'last-card'):'<span class="empty-slot">PLAY HERE</span>'}</div><span>Discard<br><small>${top?`Top: ${cardDisplayRank(top)}`:'No cards'}</small></span></div></div></div></div>
+    <div class="game-layout"><section class="arena" aria-label="Game table"><div class="table-rim"><div class="table-felt"><div class="energy-system ${totalClass}" style="--energy-angle:${energy * 3.6}deg;--energy-level:${energy / 100}"><div class="cauldron"><div class="cauldron-steam"><i></i><i></i><i></i></div><div class="cauldron-liquid"></div><div class="cauldron-body"><span class="cauldron-eye left"></span><span class="cauldron-eye right"></span><span class="cauldron-mouth"></span></div><span class="cauldron-handle left"></span><span class="cauldron-handle right"></span><span class="cauldron-foot left"></span><span class="cauldron-foot right"></span></div><div class="total-wrap ${totalClass}"><span class="total-caption">CURRENT TOTAL</span><div class="total-number" role="status" aria-live="polite" aria-label="Shared total">${state.total}</div><div class="total-max">/ 100</div></div></div><div class="table-cards"><div class="pile-wrap"><div class="draw-stack"><div class="playing-card card-back" role="img" aria-label="Draw pile"><img src="${backImage}" alt="Draw pile" draggable="false"></div></div></div><div class="pile-wrap"><div class="played-slot">${top?cardElement(top,false,'last-card'):'<span class="empty-slot">PLAY HERE</span>'}</div></div></div></div></div>
       <div class="seat-layer">${state.players.map((player,i)=>seatHtml(player,i,state!.players.length)).join('')}</div>
       ${state.phase==='target'&&canControlActor()?'<div class="target-hint">Choose another player to take a forced turn</div>':''}
-    </section><aside class="side-panel"><div class="side-card"><div class="eyebrow">AT THE TABLE</div><h3>${state.phase==='target'?'Choosing a target: ':state.forced?'Forced play: ':'Now playing: '}${escapeHtml(active.name)}</h3><div class="side-direction">${state.direction===1?'↻':'↺'} ${state.direction===1?'Clockwise':'Counter-clockwise'} · ${state.players.length} players</div></div><div class="side-card log-card"><div class="card-heading"><h3>Game Log</h3><span>RECENT MOVES</span></div><ul>${state.log.slice(0,7).map(gameLogLine).join('')}</ul></div></aside></div>
-    ${otherLocalTurn ? `<div class="shared-turn" role="region" aria-label="${escapeHtml(active.name)}'s local turn"><strong>Pass the device to ${escapeHtml(active.name)}</strong><span>${state.phase === 'target' ? 'Tap a highlighted player at the table.' : 'Choose a card and play it.'}</span><div class="shared-hand">${state.phase === 'playing' ? active.hand.map(card=>cardElement(card,selectedCard===card.id,'hand-card')).join('') : ''}</div><button class="primary-button" data-action="play-selected" ${!selectedCard||state.phase!=='playing'?'disabled':''}>PLAY CARD ➜</button></div>` : ''}
-    <footer class="hand-dock"><div class="dock-prompt ${myTurn?'my-turn':''}">${myTurn?'<span class="your-turn-bubble">YOUR TURN!</span>':''}<img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${hand.length} cards · ${mine ? `${moodSymbols[mine.mood]} ${mine.mood}` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><button class="primary-button play-button" data-action="play-selected" ${!selectedCard||!myTurn||state.phase!=='playing'?'disabled':''}>PLAY CARD <span>✦</span></button><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Tap a card or flick it upward' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><div class="emote-menu ${emotesOpen?'open':''}"><button class="emote-trigger" data-action="emotes" aria-label="Choose emote" aria-expanded="${emotesOpen}">☺<small>EMOTE</small></button><div class="emote-wheel" aria-label="Emotes" ${emotesOpen?'':'inert aria-hidden="true"'}>${(['Happy','Excited','Confused','Angry','Sad','Smug','Scared','Thinking'] as const).map(m=>`<button data-emote="${m}" title="${m}" aria-label="${m}">${moodSymbols[m]}</button>`).join('')}</div></div><button class="info-fab" data-action="rules" aria-label="Game information">i<small>INFO</small></button><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
+    </section><aside class="side-panel"><div class="side-card"><div class="eyebrow">AT THE TABLE</div><h3>${state.phase==='target'?'Choosing a target: ':state.forced?'Forced play: ':'Now playing: '}${escapeHtml(active.name)}</h3></div><div class="side-card log-card"><div class="card-heading"><h3>Game Log</h3><span>RECENT MOVES</span></div><ul>${state.log.slice(0,7).map(gameLogLine).join('')}</ul></div></aside></div>
+    ${otherLocalTurn ? `<div class="shared-turn" role="region" aria-label="${escapeHtml(active.name)}'s local turn"><strong>Pass the device to ${escapeHtml(active.name)}</strong><span>${state.phase === 'target' ? 'Tap a highlighted player at the table.' : 'Double-tap a card or flick it toward the table.'}</span><div class="shared-hand">${state.phase === 'playing' ? active.hand.map(card=>cardElement(card,selectedCard===card.id,'hand-card')).join('') : ''}</div></div>` : ''}
+    <footer class="hand-dock"><div class="dock-prompt ${myTurn?'my-turn':''}">${myTurn?'<span class="your-turn-bubble">YOUR TURN!</span>':''}<img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${hand.length} cards · ${mine ? `${moodSymbols[mine.mood]} ${mine.mood}` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Double-tap a card or flick it upward' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><div class="emote-menu ${emotesOpen?'open':''}"><button class="emote-trigger" data-action="emotes" aria-label="Choose emote" aria-expanded="${emotesOpen}">☺<small>EMOTE</small></button><div class="emote-wheel" aria-label="Emotes" ${emotesOpen?'':'inert aria-hidden="true"'}>${(['Happy','Excited','Confused','Angry','Sad','Smug','Scared','Thinking'] as const).map(m=>`<button data-emote="${m}" title="${m}" aria-label="${m}">${moodSymbols[m]}</button>`).join('')}</div></div><button class="info-fab" data-action="rules" aria-label="Game information">i<small>INFO</small></button><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
     ${state.phase==='ended'?resultView():''}</main>`;
 }
 function resultView(): string {
@@ -385,7 +382,7 @@ function resultView(): string {
 }
 function modalView(): string {
   if (!modal) return '';
-  const body = modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 busts; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play immediately. Their normal turn stays in place.</span></div><div><strong>REVERSE</strong><span>Reverse direction. In a two-player game, play again.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Bust for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. You can also tap a card, then press Play Card.</p>`
+  const body = modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 busts; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play immediately. Their normal turn stays in place.</span></div><div><strong>REVERSE</strong><span>Reverse direction. In a two-player game, play again.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Bust for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Flick from an edge or corner to spin it into the discard pile.</p>`
   : modal==='settings' ? `<h2>Make yourself at home</h2><div class="modal-setting"><label for="graphics">Visual quality</label><select id="graphics">${(['ultra','high','medium','mobile'] as const).map(tier=>`<option value="${tier}" ${settings.graphics===tier?'selected':''}>${tier.charAt(0).toUpperCase()+tier.slice(1)}</option>`).join('')}</select><small>Ultra adds richer shadows, reflections and glow. Mobile keeps the same world with lighter effects.</small></div>${[['volume','Master volume',settings.volume],['sfxVolume','Sound effects',settings.sfxVolume],['musicVolume','Music',settings.musicVolume],['ambienceVolume','Ambience',settings.ambienceVolume]].map(([id,label,value])=>`<div class="modal-setting"><label for="${id}">${label}<output for="${id}">${Math.round(Number(value)*100)}%</output></label><input id="${id}" type="range" min="0" max="1" step=".01" value="${value}"></div>`).join('')}<label class="setting-toggle"><input id="muted" type="checkbox" ${settings.muted?'checked':''}>Mute all sounds</label><label class="setting-toggle"><input id="reducedMotion" type="checkbox" ${settings.reducedMotion?'checked':''}>Reduced motion</label><div class="modal-setting"><label for="uiScale">Interface size <output for="uiScale">${Math.round(settings.uiScale*100)}%</output></label><input id="uiScale" type="range" min=".85" max="1.2" step=".05" value="${settings.uiScale}"></div><p>Settings save on this device.</p>`
   : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Busts',stats.busts],['Cards played',stats.cards],['Choose Player',stats.sevens],['Reverse',stats.eights],['Zero',stats.nines],['Minus Ten',stats.tens],['Test rating',stats.rating],['Currency',stats.currency]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Statistics, rating, and currency are local to this device. Currency does not affect gameplay.</p>`
   : modal==='history' ? `<h2>Game history</h2><p>Recent moves at this table.</p><ul class="history-list">${state?.log.length ? state.log.map(gameLogLine).join('') : '<li>No cards have been played yet.</li>'}</ul>`
@@ -436,7 +433,6 @@ app.addEventListener('click', event => {
     if (action === 'menu') { modal = 'menu'; render(); }
     if (action === 'emotes') { if(emoteHeld){emoteHeld=false;}else{emotesOpen = !emotesOpen; render();} }
     if (action === 'close-modal') { modal = null; render(); }
-    if (action === 'play-selected' && selectedCard) void animatePlay(selectedCard, document.querySelector<HTMLElement>(`.hand-card[data-card="${selectedCard}"]`) || undefined);
     return;
   }
   const emote = target.closest<HTMLElement>('[data-emote]')?.dataset.emote as PlayerConfig['mood'] | undefined;
@@ -476,12 +472,13 @@ app.addEventListener('input', event => {
 });
 app.addEventListener('keydown', event => {
   const target = event.target as HTMLElement;
-  if ((event.key === 'Enter'||event.key===' ') && target.matches('.hand-card:not(.waiting-hand)') && canControlActor()) { event.preventDefault();selectedCard = target.dataset.card || null; render();document.querySelector<HTMLButtonElement>('[data-action="play-selected"]')?.focus(); }
+  if ((event.key === 'Enter'||event.key===' ') && target.matches('.hand-card:not(.waiting-hand)') && canControlActor()) { event.preventDefault();void animatePlay(target.dataset.card!, target); }
   if (event.key === 'Escape' && modal) { modal = null; render(); }
 });
 
-type CardDrag = {element:HTMLElement;id:string;x:number;y:number;time:number;lastX:number;lastY:number;lastTime:number;vx:number;vy:number;moved:boolean;inspecting:boolean;pointerId:number;holdTimer:number;baseTransform:string};
+type CardDrag = {element:HTMLElement;id:string;x:number;y:number;time:number;lastX:number;lastY:number;lastTime:number;vx:number;vy:number;moved:boolean;inspecting:boolean;edgeGrip:boolean;pointerId:number;holdTimer:number;baseTransform:string};
 let drag:CardDrag|null=null;
+let lastCardTap:CardTap|null=null;
 let lastHover='';
 app.addEventListener('pointerover',event=>{
   const card=(event.target as HTMLElement).closest<HTMLElement>('.hand-card');
@@ -491,9 +488,9 @@ app.addEventListener('pointerdown',event=>{
   audio.unlock();
   if((event.target as HTMLElement).closest('[data-action="emotes"]')){emoteHeld=false;emoteHoldTimer=window.setTimeout(()=>{emoteHeld=true;emotesOpen=true;render();},350);}
   const card=(event.target as HTMLElement).closest<HTMLElement>('.hand-card');
-  if(!card||!state||locked||drag||event.button!==0)return;
+  if(!card||card.classList.contains('waiting-hand')||!state||locked||drag||event.button!==0)return;
   const now=performance.now();
-  const current:CardDrag={element:card,id:card.dataset.card!,x:event.clientX,y:event.clientY,time:now,lastX:event.clientX,lastY:event.clientY,lastTime:now,vx:0,vy:0,moved:false,inspecting:false,pointerId:event.pointerId,holdTimer:0,baseTransform:getComputedStyle(card).transform};
+  const current:CardDrag={element:card,id:card.dataset.card!,x:event.clientX,y:event.clientY,time:now,lastX:event.clientX,lastY:event.clientY,lastTime:now,vx:0,vy:0,moved:false,inspecting:false,edgeGrip:isCardEdgeGrip(card.getBoundingClientRect(),event.clientX,event.clientY),pointerId:event.pointerId,holdTimer:0,baseTransform:getComputedStyle(card).transform};
   current.holdTimer=window.setTimeout(()=>{if(drag!==current||current.moved)return;current.inspecting=true;card.classList.add('inspecting');card.classList.remove('dragging');audio.play('card-select');},380);
   drag=current;card.setPointerCapture(event.pointerId);audio.play('pickup');
 });
@@ -520,12 +517,22 @@ function endDrag(event:PointerEvent):void{
   const shouldPlay=isPlayGesture({dx,dy,duration:performance.now()-current.time,canceled,inspecting:current.inspecting,canPlay:canControlActor()&&state?.phase==='playing'});
   if(current.element.hasPointerCapture(event.pointerId))current.element.releasePointerCapture(event.pointerId);
   current.element.classList.remove('dragging','flick-ready','inspecting');
-  if(shouldPlay){audio.play('card-flick');void animatePlay(current.id,current.element);}
+  if(shouldPlay){
+    lastCardTap=null;
+    audio.play('card-flick');
+    const spin=current.edgeGrip?(dx>3?1:dx< -3?-1:current.x<current.element.getBoundingClientRect().left+current.element.offsetWidth/2?-1:1):0;
+    void animatePlay(current.id,current.element,spin);
+  }
   else{
     const from=current.element.style.transform;
     current.element.style.transform='';
     delete current.element.dataset.tiltX;delete current.element.dataset.tiltY;delete current.element.dataset.turn;
-    if(!canceled && (dist<12||current.inspecting)){selectedCard=current.id;render();}
+    if(!canceled && dist<12 && !current.inspecting && canControlActor() && state?.phase==='playing'){
+      const tap={id:current.id,x:event.clientX,y:event.clientY,time:performance.now()};
+      if(isDoubleCardTap(lastCardTap,tap)){lastCardTap=null;audio.play('card-flick');void animatePlay(current.id,current.element);}
+      else {lastCardTap=tap;selectedCard=current.id;render();}
+    }
+    else if(!canceled && current.inspecting){lastCardTap=null;selectedCard=current.id;render();}
     else if(current.element.isConnected && !settings.reducedMotion)current.element.animate([{transform:from||current.baseTransform},{transform:current.baseTransform}],{duration:340,easing:'cubic-bezier(.18,.85,.25,1.12)'});
   }
 }
