@@ -874,6 +874,24 @@
   pointer-events: none;
 }
 .world3d-active .hand-card img { transform: translateZ(2px); }
+.world3d-active .playing-card::after,
+.world3d-active .hand-card::before { display: none !important; }
+.world3d-active .hand-card {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.world3d-active .hand-card img {
+  filter: drop-shadow(0 16px 12px #000b);
+  transform: none;
+}
+
+.world3d-active .seat {
+  left: var(--seat-chair-x, var(--seat-x)) !important;
+  top: var(--seat-chair-y, var(--seat-y)) !important;
+}
 .world3d-active .energy-system .total-wrap { top: 0; }
 .world3d-active .energy-system .total-number {
   font-size: clamp(9.6rem, 14vw, 14rem);

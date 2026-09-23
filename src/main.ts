@@ -7,7 +7,6 @@ import { chooseCpuCard, chooseCpuTarget } from './game/cpu';
 import { createGame, playCard, selectTarget } from './game/rules';
 import type { Card, GameState, PlayerConfig } from './game/types';
 import { AudioManager } from './audio/AudioManager';
-import { HoloShader } from './render/HoloShader';
 import { TavernScene } from './render/TavernScene';
 import { OnlineRoom, newRoomId } from './game/online';
 import { HostedRoom } from './game/hosted';
@@ -36,8 +35,6 @@ let observedOnlineHand = new Set<string>();
 let observedOnlineRound = 0;
 const audio = new AudioManager();
 audio.volume = settings.volume;
-let holo: HoloShader | undefined;
-try { holo = new HoloShader(); holo.enabled = settings.graphics === 'high'; } catch { /* Cards remain fully playable without motion effects. */ }
 let tavern: TavernScene | undefined;
 try { tavern = new TavernScene(); tavern.qualityHigh = settings.graphics === 'high'; } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
 
@@ -98,7 +95,7 @@ function connectOnline(mode: 'host' | 'join'): void {
   if (mode === 'host') { online.setCpuCount(roomCpuCount); history.replaceState(null, '', `${location.pathname}?room=${code}`); }
   render();
 }
-function save(): void { saveSettings(settings); saveStats(stats); audio.volume = settings.volume; if (holo) holo.enabled = settings.graphics === 'high'; if (tavern) tavern.qualityHigh = settings.graphics === 'high'; }
+function save(): void { saveSettings(settings); saveStats(stats); audio.volume = settings.volume; if (tavern) tavern.qualityHigh = settings.graphics === 'high'; }
 function clearCpu(): void { if (cpuTimer) clearTimeout(cpuTimer); cpuTimer = undefined; }
 function flash(text: string, kind = ''): void {
   document.querySelector('.event-toast')?.remove();
@@ -361,7 +358,7 @@ function resultView(): string {
 function modalView(): string {
   if (!modal) return '';
   const body = modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 busts; everyone else survives.</p><div class="rules-grid"><div><strong>A, 2–6</strong><span>Add face value</span></div><div><strong>J, Q, K</strong><span>Add 10</span></div><div><strong>7 · CHOOSE</strong><span>Make another player play immediately. Their normal turn stays in place.</span></div><div><strong>8 · REVERSE</strong><span>Reverse direction. In a two-player game, play again.</span></div><div><strong>9 · ZERO</strong><span>Add nothing.</span></div><div><strong>10 · MINUS</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Bust for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. You can also tap a card, then press Play Card.</p>`
-  : modal==='settings' ? `<h2>Settings</h2><div class="modal-setting"><label for="volume">Sound volume <strong>${Math.round(settings.volume*100)}%</strong></label><input id="volume" type="range" min="0" max="1" step="0.01" value="${settings.volume}"></div><div class="modal-setting"><label for="graphics">Graphics</label><select id="graphics"><option value="high" ${settings.graphics==='high'?'selected':''}>High · special-card border foil</option><option value="low" ${settings.graphics==='low'?'selected':''}>Low · static cards</option></select></div><p>Settings save on this device.</p>`
+  : modal==='settings' ? `<h2>Settings</h2><div class="modal-setting"><label for="volume">Sound volume <strong>${Math.round(settings.volume*100)}%</strong></label><input id="volume" type="range" min="0" max="1" step="0.01" value="${settings.volume}"></div><div class="modal-setting"><label for="graphics">Graphics</label><select id="graphics"><option value="high" ${settings.graphics==='high'?'selected':''}>High · enhanced 3D lighting</option><option value="low" ${settings.graphics==='low'?'selected':''}>Low · performance mode</option></select></div><p>Settings save on this device.</p>`
   : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Busts',stats.busts],['Cards played',stats.cards],['7s used',stats.sevens],['8s used',stats.eights],['9s used',stats.nines],['10s used',stats.tens],['Test rating',stats.rating],['Currency',stats.currency]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Statistics, rating, and currency are local to this device. Currency does not affect gameplay.</p>`
   : modal==='history' ? `<h2>Game history</h2><p>Recent moves at this table.</p><ul class="history-list">${state?.log.length ? state.log.map(gameLogLine).join('') : '<li>No cards have been played yet.</li>'}</ul>`
   : `<h2>Game menu</h2><p>Round ${state?.round || 1} · ${state?.players.length || settings.playerCount} players</p><div class="menu-actions">${!online || (online.isHost && !(online instanceof HostedRoom)) ? '<button class="secondary-button" data-action="restart">Restart round</button>' : ''}<button class="secondary-button" data-action="${online?'leave-room':'new-game'}">${online?'Leave online room':'Return to setup'}</button><button class="secondary-button" data-action="stats">Local statistics</button></div>`;
@@ -376,6 +373,7 @@ function render(): void {
     direction: state?.direction ?? 1,
     event: state?.event ?? 'none',
     playerCount: state?.players.length ?? 0,
+    localSeat: state ? localSeat() : 0,
     drawCardUrl: backImage,
     discardCardUrl: discard ? cardImage(discard) : undefined,
   });
@@ -459,7 +457,10 @@ app.addEventListener('pointermove', event => {
   const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
   drag.moved ||= Math.hypot(dx,dy) > 8;
   drag.element.classList.toggle('flick-ready', Math.hypot(dx, dy) >= CONFIG.CARD_THROW_MIN_DISTANCE && dy <= -10);
-  drag.element.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.max(-12,Math.min(12,dx*.045))}deg) scale(1.08)`;
+  const tiltX = Math.max(-17, Math.min(17, -dy * .075));
+  const tiltY = Math.max(-20, Math.min(20, dx * .085));
+  const turn = Math.max(-8, Math.min(8, dx * .025));
+  drag.element.style.transform = `perspective(900px) translate3d(${dx}px, ${dy}px, 62px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) rotateZ(${turn}deg) scale(1.055)`;
   drag.lastX = event.clientX; drag.lastY = event.clientY; drag.lastTime = performance.now();
 });
 function endDrag(event: PointerEvent): void {
@@ -482,7 +483,15 @@ function endDrag(event: PointerEvent): void {
   } else {
     current.element.style.transform = '';
     if (dist < 12) { selectedCard = current.id; render(); }
-    else current.element.animate([{transform:`translate(${dx}px, ${dy}px) rotate(${Math.max(-12,Math.min(12,dx*.045))}deg) scale(1.08)`},{transform:'translate(0,0) rotate(0deg) scale(1)'}],{duration:240,easing:'ease-out'});
+    else {
+      const tiltX = Math.max(-17, Math.min(17, -dy * .075));
+      const tiltY = Math.max(-20, Math.min(20, dx * .085));
+      const turn = Math.max(-8, Math.min(8, dx * .025));
+      current.element.animate([
+        { transform:`perspective(900px) translate3d(${dx}px, ${dy}px, 62px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) rotateZ(${turn}deg) scale(1.055)` },
+        { transform:'perspective(900px) translate3d(0,0,0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1)' },
+      ],{duration:300,easing:'cubic-bezier(.2,.72,.2,1)'});
+    }
   }
 }
 app.addEventListener('pointerup', endDrag);

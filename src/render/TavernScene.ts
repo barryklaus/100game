@@ -6,6 +6,7 @@ type SceneState = {
   direction: 1 | -1;
   event: string;
   playerCount: number;
+  localSeat: number;
   drawCardUrl: string;
   discardCardUrl?: string;
 };
@@ -55,6 +56,8 @@ export class TavernScene {
   private discardStack!: THREE.Group;
   private drawCardUrl = '';
   private discardCardUrl = '';
+  private playerCount = 0;
+  private localSeat = 0;
 
   constructor() {
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
@@ -93,6 +96,8 @@ export class TavernScene {
     this.total = Math.max(0, next.total);
     this.targetPower = .16 + Math.min(1, this.total / 100) * .78;
     this.direction = next.direction;
+    this.playerCount = next.playerCount;
+    this.localSeat = next.localSeat;
     this.stationMaterials.forEach((material, index) => {
       const occupied = index < next.playerCount;
       material.emissiveIntensity = occupied ? .62 : .12;
@@ -675,6 +680,27 @@ export class TavernScene {
     this.pointer.set(event.clientX / innerWidth - .5, event.clientY / innerHeight - .5);
   };
 
+  private positionSeatOverlays(): void {
+    if (!this.active || !this.playerCount) return;
+    const layer = document.querySelector<HTMLElement>('.seat-layer');
+    if (!layer) return;
+    const bounds = layer.getBoundingClientRect();
+    for (let playerIndex = 0; playerIndex < this.playerCount; playerIndex++) {
+      const seat = layer.querySelector<HTMLElement>(`.seat[data-seat="${playerIndex}"]`);
+      if (!seat || playerIndex === this.localSeat) continue;
+      const relativeIndex = (playerIndex - this.localSeat + this.playerCount) % this.playerCount;
+      const stationIndex = (8 - Math.round(relativeIndex * 8 / this.playerCount)) % 8;
+      const chair = this.stationChairs[stationIndex];
+      if (!chair) continue;
+      const anchor = chair.localToWorld(new THREE.Vector3(0, 2.03, 0)).project(this.camera);
+      const projectedX = (anchor.x * .5 + .5) * innerWidth - bounds.left;
+      const edgePadding = innerWidth < 600 ? 48 : 62;
+      const safeX = Math.max(edgePadding, Math.min(bounds.width - edgePadding, projectedX));
+      seat.style.setProperty('--seat-chair-x', `${safeX}px`);
+      seat.style.setProperty('--seat-chair-y', `${(-anchor.y * .5 + .5) * innerHeight - bounds.top}px`);
+    }
+  }
+
   private resize = (): void => {
     const portrait = innerHeight > innerWidth * 1.08;
     this.camera.aspect = innerWidth / innerHeight;
@@ -693,7 +719,7 @@ export class TavernScene {
     }
     this.stationChairs.forEach((chair, index) => {
       const angle = index / 8 * Math.PI * 2;
-      chair.position.set(Math.sin(angle) * (portrait ? 4.05 : 6.95), -.12, Math.cos(angle) * (portrait ? 6.15 : 6.95));
+      chair.position.set(Math.sin(angle) * (portrait ? 4.05 : 6), -.12, Math.cos(angle) * (portrait ? 6.15 : 6.95));
     });
     this.stationMarkers.forEach((marker, index) => {
       const angle = index / 8 * Math.PI * 2;
@@ -711,6 +737,8 @@ export class TavernScene {
     this.camera.position.y = baseY - this.smoothPointer.y * .13;
     this.camera.position.z = baseZ;
     this.camera.lookAt(this.smoothPointer.x * .1, portrait ? 1.35 : .82, -.45);
+    this.camera.updateMatrixWorld();
+    this.positionSeatOverlays();
 
     this.eventPulse = Math.max(0, this.eventPulse - delta * 1.4);
     const power = THREE.MathUtils.lerp(this.energyMaterial.uniforms.uPower.value, this.targetPower + this.eventPulse, 1 - Math.pow(.004, delta));
