@@ -150,3 +150,30 @@ button:active { translate:0 1px; }
 @media(orientation:landscape) and (max-height:520px) {
  .world3d-active .seat.active::before {width:50px;height:50px;}
 }
+
+/* Printed art stays clean in the WebGL scene and the DOM fallback. Motion is
+   the selection feedback; neither path adds a colored glow or reflective layer. */
+.playing-card,
+.playing-card:is(.special,.selected,.flick-ready,.dragging,.inspecting),
+.playing-card:hover,
+.world3d-active .hand-card,
+.world3d-active .hand-card:is(.selected,.flick-ready,.dragging,.inspecting) {
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+.playing-card img,
+.playing-card:is(.special,.selected,.flick-ready,.dragging,.inspecting) img,
+.playing-card:hover img,
+.world3d-active .hand-card img,
+.world3d-active .hand-card:is(.selected,.flick-ready,.dragging,.inspecting) img {
+  filter:none!important;
+  box-shadow:none!important;
+  border:0!important;
+}
+.playing-card::before,.playing-card::after,
+.world3d-active .hand-card::before,.world3d-active .hand-card::after {display:none!important;}
+/* These screen-wide gradients also covered the hand; the 3D room supplies its
+   own atmospheric depth without tinting the printed card colors. */
+.world3d-active .game-page::before,.world3d-active .game-page::after {background:none!important;}

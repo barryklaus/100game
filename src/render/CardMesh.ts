@@ -2,6 +2,8 @@ import * as THREE from 'three';
 
 /** Physical thickness at the standard 1.43-unit artwork height. */
 export const CARD_THICKNESS = .006;
+/** A second camera pass draws printed artwork after room post-processing. */
+export const CLEAN_CARD_LAYER = 1;
 const STANDARD_HEIGHT = 1.43;
 const outlines = new WeakMap<THREE.Texture, THREE.Vector2[]>();
 const preparedTextures = new WeakMap<THREE.Texture, THREE.Texture>();
@@ -173,32 +175,34 @@ export function createCardMesh(front: THREE.Texture, back: THREE.Texture, _speci
   const thickness = CARD_THICKNESS * (height / STANDARD_HEIGHT);
   const root = new THREE.Group();
   const edge = new THREE.Mesh(createPaperEdge(front, height, thickness),
-    new THREE.MeshStandardMaterial({ color: 0x30231e, roughness: .86, metalness: 0, side: THREE.DoubleSide }));
+    new THREE.MeshBasicMaterial({ color: 0x30231e, side: THREE.DoubleSide, toneMapped: false, fog: false }));
   edge.name = 'card-paper-edge';
   edge.castShadow = true;
   edge.receiveShadow = true;
   root.add(edge);
 
-  const face = new THREE.Mesh(createCardSurfaceGeometry(front, height), new THREE.MeshPhysicalMaterial({
-    map: prepareCardTexture(front), color: 0xffffff, emissiveMap: prepareCardTexture(front), emissive: 0xffffff, emissiveIntensity: .15,
-    envMapIntensity: .16, roughness: .8, metalness: 0, clearcoat: .035, clearcoatRoughness: .65,
-    alphaTest: .5,
+  const face = new THREE.Mesh(createCardSurfaceGeometry(front, height), new THREE.MeshBasicMaterial({
+    map: prepareCardTexture(front), color: 0xffffff, alphaTest: .5, toneMapped: false, fog: false,
   }));
   face.name = 'card-front';
   face.position.z = thickness / 2;
   face.castShadow = true;
-  face.receiveShadow = true;
+  face.receiveShadow = false;
   root.add(face);
 
-  const reverse = new THREE.Mesh(createCardSurfaceGeometry(back, height), new THREE.MeshStandardMaterial({
-    map: prepareCardTexture(back), roughness: .77, metalness: .025, alphaTest: .5,
+  const reverse = new THREE.Mesh(createCardSurfaceGeometry(back, height), new THREE.MeshBasicMaterial({
+    map: prepareCardTexture(back), color: 0xffffff, alphaTest: .5, toneMapped: false, fog: false,
   }));
   reverse.name = 'card-back';
   reverse.position.z = -thickness / 2;
   reverse.rotation.y = Math.PI;
   reverse.castShadow = true;
-  reverse.receiveShadow = true;
+  reverse.receiveShadow = false;
   root.add(reverse);
+  root.children.forEach(surface => {
+    surface.userData.cleanCard = true;
+    surface.layers.enable(CLEAN_CARD_LAYER);
+  });
   root.userData.cardHeight = height;
   root.userData.cardWidth = width;
   root.userData.cardThickness = thickness;

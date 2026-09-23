@@ -13,6 +13,7 @@ import { OnlineRoom, newRoomId } from './game/online';
 import { HostedRoom } from './game/hosted';
 import { isPlayGesture } from './ui/cardGesture';
 import { AvatarAnimator, avatarPose } from './ui/AvatarAnimator';
+import { updateGameView } from './ui/updateGameView';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const avatars = new AvatarAnimator(app);
@@ -392,7 +393,7 @@ function modalView(): string {
   return `<div class="overlay modal-overlay" data-action="close-modal"><section class="modal-panel" role="dialog" aria-modal="true"><button class="close-button" data-action="close-modal" aria-label="Close">×</button>${body}</section></div>`;
 }
 function render(): void {
-  app.innerHTML = (online && online.status !== 'playing' ? lobbyView() : state ? gameView() : onlineMode ? onlineView() : setupView()) + modalView();
+  updateGameView(app, (online && online.status !== 'playing' ? lobbyView() : state ? gameView() : onlineMode ? onlineView() : setupView()) + modalView());
   const discard = state?.played.at(-1);
   tavern?.update({
     active: !!state && (!online || online.status === 'playing'),

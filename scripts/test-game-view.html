@@ -1,0 +1,46 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>100 — avatar continuity regression</title>
+<style>
+  body {font:16px system-ui;padding:24px;background:#121522;color:#eee}
+  #fixture {position:fixed;left:0;top:200px;opacity:0;pointer-events:none}
+  .character-head img {animation:idle 8s linear infinite}
+  @keyframes idle {50% {transform:translateY(2px)}}
+</style>
+<h1>Avatar continuity regression</h1>
+<p id="result">Running…</p><div id="fixture"></div>
+<script type="module">
+  // Open /100game/scripts/test-game-view.html through `pnpm dev`.
+  import {updateGameView} from '../src/ui/updateGameView.ts';
+  const root=document.querySelector('#fixture');
+  const check=(condition,message)=>{if(!condition)throw new Error(message)};
+  const image='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/%3E';
+  const view=(turn,modal=false)=>`<main class="game-page"><header class="game-header">Turn ${turn}</header><div class="game-layout"><section class="arena"><div class="table-rim">${turn}</div><div class="seat-layer">${Array.from({length:8},(_,i)=>`<button class="seat ${i===turn%8?'active':''}" data-seat="${i}" style="--seat-index:${i}"><span class="reaction-bubble"></span><span class="character"><span class="character-head" data-avatar-pose="idle"><img src='${image}'></span><span class="seat-count">${i===turn%8?1:2}</span></span><span class="seat-info">Player ${i}</span></button>`).join('')}</div>${turn%3===0?'<div class="target-hint">Choose a player</div>':''}</section></div>${turn%2?'<div class="shared-turn">Other player</div>':''}<footer class="hand-dock"><div class="dock-prompt">${turn%2?'':'<span class="your-turn-bubble">Your turn</span>'}<img class="dock-avatar" src='${image}'><div class="dock-person">You</div></div><div class="local-hand"><div class="hand-card" data-card="${turn}">${turn}</div></div></footer></main>${modal?'<div class="overlay modal-overlay">Settings</div>':''}`;
+  try {
+    updateGameView(root,view(0));
+    await new Promise(requestAnimationFrame);
+    const portraits=[...root.querySelectorAll('.character-head img,.dock-avatar')];
+    const seats=[...root.querySelectorAll('.seat')];
+    seats.forEach((seat,i)=>{seat.style.setProperty('--seat-chair-x',`${i*90}px`);seat.style.setProperty('--seat-chair-y','120px')});
+    const animations=portraits.map(node=>node.getAnimations()[0]);
+    const observer=new MutationObserver(()=>{});observer.observe(root,{subtree:true,childList:true});
+    for(let turn=1;turn<=24;turn++) {
+      updateGameView(root,view(turn,turn%4===0));
+      const current=[...root.querySelectorAll('.character-head img,.dock-avatar')];
+      check(current.every((node,i)=>node===portraits[i]),'An avatar image was recreated');
+      check(seats.every((seat,i)=>seat.style.getPropertyValue('--seat-chair-x')===`${i*90}px`),'A chair position reset');
+      check(root.querySelector('.seat.active').dataset.seat===String(turn%8),'Active seat did not update');
+      check(root.querySelector('.hand-card').dataset.card===String(turn),'Hand stopped updating');
+      check(animations.every((animation,i)=>!animation||portraits[i].getAnimations()[0]===animation),'An idle animation restarted');
+    }
+    const removed=observer.takeRecords().flatMap(record=>[...record.removedNodes]);
+    check(!removed.some(node=>portraits.some(image=>node===image||node.contains(image))),'An avatar was temporarily detached');
+    observer.disconnect();
+    updateGameView(root,'<main class="setup-page">Setup</main>');
+    check(root.querySelectorAll('.seat').length===0,'Leaving the table retained old players');
+    document.querySelector('#result').textContent='PASS — 24 game updates preserve all 9 avatar images, idle animations and chair coordinates; turn, hand, panel and screen changes update correctly.';
+  } catch(error) {
+    document.querySelector('#result').textContent=`FAIL — ${error.message}`;
+    throw error;
+  }
+</script>

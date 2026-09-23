@@ -17,8 +17,24 @@ assert.deepEqual([...labels],['1','2','3','4','5','6','CHOOSE PLAYER','REVERSE',
 const totalFont=JSON.parse(readFileSync('src/render/totalFont.json','utf8'));
 for(const total of [-40,-10,-1,0,99,100,110])for(const character of String(total))assert(totalFont.glyphs[character]?.o,`Total ${total} has a missing glyph: ${character}`);
 const {CardPile,CARD_TABLE_HEIGHT}=await load('src/render/CardPile.ts');
-const {CARD_THICKNESS}=await load('src/render/CardMesh.ts');
+const {CARD_THICKNESS,CLEAN_CARD_LAYER,createCardMesh,disposeCardMesh}=await load('src/render/CardMesh.ts');
 const texture={image:{width:511,height:711},isTexture:true};
+for(const special of [false,true]) {
+  const card=createCardMesh(texture,texture,special);
+  assert.deepEqual(card.children.map(surface=>surface.name),['card-paper-edge','card-front','card-back']);
+  for(const surface of card.children) {
+    const material=surface.material;
+    assert.equal(material.isMeshBasicMaterial,true,`${surface.name} must show clean, unlit card color`);
+    assert.equal(material.toneMapped,false,'Room tone mapping must not change printed artwork');
+    assert.equal(material.fog,false,'Room fog must not wash out printed artwork');
+    assert.equal(material.envMap,null,'Cards must not receive environment reflection overlays');
+    assert.equal(material.emissive,undefined,'Cards must not emit added glow');
+    assert.equal(material.clearcoat,undefined,'Cards must not receive reflective clearcoat');
+    assert.equal(surface.userData.cleanCard,true,'Every card surface must be excluded from room effects');
+    assert(surface.layers.isEnabled(CLEAN_CARD_LAYER),'Every card surface must render in the clean card pass');
+  }
+  disposeCardMesh(card);
+}
 const pile=new CardPile(false,async()=>texture);
 await pile.setCards([], 'back');
 assert.equal(pile.group.children.length,0,'An empty discard has no platform');
@@ -39,3 +55,4 @@ assert.equal(pile.group.children.length,1,'Recycling removes old layers');
 pile.dispose();
 console.log('Presentation checks passed: settings migration, short flicks, canceled gestures, inspection, card language, and negative-to-bust numeral coverage.');
 console.log('Physical pile checks passed: empty, single, multiple cards, landing/draw alignment, and recycling.');
+console.log('Clean card checks passed: normal and special cards use unlit artwork with no glow, tint, reflections, fog, or tone mapping.');

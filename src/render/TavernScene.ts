@@ -10,7 +10,7 @@ import { QUALITY_PRESETS, type QualityPreset } from './quality';
 import { makeWorldMaterials, glowTexture } from './WorldMaterials';
 import { ManifestedTotal } from './ManifestedTotal';
 import { PhysicalHand } from './PhysicalHand';
-import { createCardMesh } from './CardMesh';
+import { CLEAN_CARD_LAYER, createCardMesh } from './CardMesh';
 import { CardPile } from './CardPile';
 
 type SceneState = {
@@ -54,6 +54,7 @@ export class TavernScene {
   private composer!: EffectComposer;
   private bloom!: UnrealBloomPass;
   private ao!: SSAOPass;
+  private cardMasks = new WeakMap<THREE.Material, THREE.Material>();
   private materials = makeWorldMaterials();
   private number = new ManifestedTotal();
   private hand!: PhysicalHand;
@@ -863,6 +864,81 @@ export class TavernScene {
     this.lanterns.forEach((lantern, i) => { const light = lantern.children.find(child => child instanceof THREE.PointLight) as THREE.PointLight | undefined; if (light) light.intensity = 2.3 + (this.reducedMotion?0:Math.sin(time * 7.2 + i * 2.1) * .28); });
   }
 
+  /** Keep bloom/AO on the room while drawing the printed cards without either. */
+  private renderWithCleanCards(): void {
+    const cards: { mesh: THREE.Mesh; material: THREE.Material | THREE.Material[]; visible: boolean }[] = [];
+    this.scene.traverse(object => {
+      if (!(object instanceof THREE.Mesh) || !object.userData.cleanCard) return;
+      cards.push({ mesh: object, material: object.material, visible: object.visible });
+      const mask = (material: THREE.Material): THREE.Material => {
+        let cached = this.cardMasks.get(material);
+        if (!cached) {
+          // Retain the artwork alpha silhouette/depth, but contribute no light
+          // or color to bloom. The original artwork is drawn below afterward.
+          const black = material.clone() as THREE.MeshBasicMaterial;
+          black.color.set(0x000000);
+          black.toneMapped = false;
+          this.cardMasks.set(material, black);
+          const disposeMask = () => {
+            black.dispose();
+            this.cardMasks.delete(material);
+            material.removeEventListener('dispose', disposeMask);
+          };
+          material.addEventListener('dispose', disposeMask);
+          cached = black;
+        }
+        return cached;
+      };
+      object.material = Array.isArray(object.material) ? object.material.map(mask) : mask(object.material);
+    });
+    try {
+      this.composer.render();
+    } finally {
+      cards.forEach(card => { card.mesh.material = card.material; });
+    }
+    if (!cards.length) return;
+
+    const colorWrites = new Map<THREE.Material, boolean>();
+    const background = this.scene.background;
+    const cameraLayers = this.camera.layers.mask;
+    const autoClear = this.renderer.autoClear;
+    const shadowUpdate = this.renderer.shadowMap.autoUpdate;
+    const shadowNeedsUpdate = this.renderer.shadowMap.needsUpdate;
+    try {
+      // The composer output has no usable room depth on the default framebuffer.
+      // Rebuild depth without changing its color, then draw only the clean cards.
+      // This keeps a flying card correctly hidden behind the vessel and chairs.
+      this.renderer.setRenderTarget(null);
+      this.renderer.autoClear = false;
+      this.renderer.shadowMap.autoUpdate = false;
+      this.renderer.shadowMap.needsUpdate = false;
+      this.scene.background = null;
+      cards.forEach(card => { card.mesh.visible = false; });
+      this.scene.traverse(object => {
+        const material = (object as THREE.Mesh).material;
+        if (!material || object.userData.cleanCard) return;
+        const materials = Array.isArray(material) ? material : [material];
+        materials.forEach(entry => {
+          if (!colorWrites.has(entry)) colorWrites.set(entry, entry.colorWrite);
+          entry.colorWrite = false;
+        });
+      });
+      this.renderer.clearDepth();
+      this.renderer.render(this.scene, this.camera);
+      cards.forEach(card => { card.mesh.visible = card.visible; });
+      this.camera.layers.set(CLEAN_CARD_LAYER);
+      this.renderer.render(this.scene, this.camera);
+    } finally {
+      cards.forEach(card => { card.mesh.visible = card.visible; });
+      colorWrites.forEach((value, material) => { material.colorWrite = value; });
+      this.camera.layers.mask = cameraLayers;
+      this.scene.background = background;
+      this.renderer.autoClear = autoClear;
+      this.renderer.shadowMap.autoUpdate = shadowUpdate;
+      this.renderer.shadowMap.needsUpdate = shadowNeedsUpdate;
+    }
+  }
+
   private loop = (): void => {
     this.frame = requestAnimationFrame(this.loop);
     if (!this.active || document.hidden || this.contextLost) { this.clock.getDelta(); return; }
@@ -872,7 +948,7 @@ export class TavernScene {
     const time = this.clock.elapsedTime;
     this.animate(time, delta);
     this.renderer.info.reset();
-    if(QUALITY_PRESETS[this.quality].bloom)this.composer.render();else this.renderer.render(this.scene, this.camera);
+    if(QUALITY_PRESETS[this.quality].bloom)this.renderWithCleanCards();else this.renderer.render(this.scene, this.camera);
     if(time-this.profileTime>1){this.renderer.domElement.dataset.frameMs=(this.profileDelta/this.profileFrames*1000).toFixed(1);this.renderer.domElement.dataset.drawCalls=String(this.renderer.info.render.calls);this.renderer.domElement.dataset.triangles=String(this.renderer.info.render.triangles);this.profileFrames=0;this.profileDelta=0;this.profileTime=time;}
   };
 
