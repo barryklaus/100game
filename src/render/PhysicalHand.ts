@@ -37,6 +37,9 @@ export class PhysicalHand {
       void Promise.all([this.loadTexture(front),this.loadTexture(back)]).then(([face,reverse]) => {
         if(this.disposed || this.cards.get(id)!==item) return;
         item.mesh=createCardMesh(face,reverse,element.classList.contains('special'));
+        // The hand floats in front of the camera; its moving shadow cannot land
+        // naturally on the table and would force a full shadow-map redraw.
+        item.mesh.traverse(object => { if (object instanceof THREE.Mesh) object.castShadow = false; });
         item.mesh.renderOrder=10;
         this.scene.add(item.mesh);
         item.loading=false;

@@ -22,7 +22,7 @@ export class ManifestedTotal {
     this.geometry=new TextGeometry(String(total),{font:this.font,size:1.1,depth:.1,curveSegments:7,bevelEnabled:true,bevelThickness:.019,bevelSize:.012,bevelSegments:3});
     this.geometry.computeBoundingBox();const bounds=this.geometry.boundingBox!;
     this.geometry.translate(-(bounds.max.x+bounds.min.x)/2,-bounds.min.y,0);
-    this.mesh=new THREE.Mesh(this.geometry,[this.faces,this.sides]);this.mesh.castShadow=true;
+    this.mesh=new THREE.Mesh(this.geometry,[this.faces,this.sides]);
     this.group.add(this.mesh);
   }
   update(time:number,delta:number,camera:THREE.Camera,reduced:boolean):void{

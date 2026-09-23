@@ -36,7 +36,7 @@ The live game is a Three.js scene: eight fixed chairs, a layered wood-and-cloth 
 
 Cards travel from the hand to the discard stack and from the draw stack back to the hand. Opponents' public plays animate from their seats; their hidden card faces are never used. Portrait and landscape have separate camera and hand layouts, with still portraits anchored to their chairs.
 
-**Settings** offers Ultra, High, Medium, and Mobile quality, reduced motion, interface text size, mute, and independent master, SFX, music, and ambience volumes. Mobile removes real-time shadows and bloom and reduces resolution, particles, and lights. Ultra adds ambient occlusion. Browser viewport testing is included in the visual checks; real phone performance should also be measured before release.
+**Settings** offers Ultra, High, Medium, and Mobile quality, reduced motion, interface text size, mute, and independent master, SFX, music, and ambience volumes. High is the default on desktop and mobile and targets 60 FPS with lighting, real-time shadows, and reflections. The renderer reuses static shadows, combines hidden pile cards, caps rendered pixels, and adjusts resolution if the device cannot hold the frame target. Mobile removes shadows and reduces resolution, particles, and lights. Ultra adds bloom and ambient occlusion. Browser viewport testing is included in the visual checks; real phone performance should also be measured before release.
 
 `AudioManager` includes procedural interaction cues and replaceable clip hooks, separate audio buses, and optional positional sound. Music and ambience remain silent until finished recordings are registered. The supplied avatar portraits remain still.
 

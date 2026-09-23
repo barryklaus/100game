@@ -38,14 +38,19 @@ export class TavernScene {
   private camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, .1, 80);
   private clock = new THREE.Clock();
   private frame = 0;
+  private lastRafTime = 0;
+  private frameAccumulator = 0;
+  private renderScale = 1;
+  private fastSamples = 0;
+  private activeFlights = 0;
   private active = false;
   private contextLost=false;
   private quality: QualityPreset = 'high';
   private reducedMotion = false;
   private qualityConfigured = false;
-  private composer!: EffectComposer;
-  private bloom!: UnrealBloomPass;
-  private ao!: SSAOPass;
+  private composer?: EffectComposer;
+  private bloom?: UnrealBloomPass;
+  private ao?: SSAOPass;
   private cardMasks = new WeakMap<THREE.Material, THREE.Material>();
   private materials = makeWorldMaterials();
   private number = new ManifestedTotal();
@@ -58,6 +63,8 @@ export class TavernScene {
   private fill = new THREE.DirectionalLight(0xffddad, 1.7);
   private roomDust!: THREE.Points;
   private lastSeatUpdate = -1;
+  private seatProjectionDirty = true;
+  private lastProjectedPointer = new THREE.Vector2(Number.NaN, Number.NaN);
   private activeSeat = 0;
   private profileTime=0;
   private profileFrames=0;
@@ -67,6 +74,7 @@ export class TavernScene {
   private eventPulse = 0;
   private direction: 1 | -1 = 1;
   private pointer = new THREE.Vector2();
+  private zeroPointer = new THREE.Vector2();
   private smoothPointer = new THREE.Vector2();
   private world = new THREE.Group();
   private energyGroup = new THREE.Group();
@@ -96,6 +104,7 @@ export class TavernScene {
     this.renderer.toneMappingExposure = 1.05;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.shadowMap.autoUpdate = false;
     this.renderer.setClearColor(0x080a17, 1);
     this.renderer.domElement.className = 'world3d-canvas';
     this.renderer.domElement.setAttribute('aria-hidden', 'true');
@@ -116,14 +125,9 @@ export class TavernScene {
     this.scene.environment=this.environment.texture;
     this.scene.environmentIntensity=.32;
     room.dispose();pmrem.dispose();
-    this.composer=new EffectComposer(this.renderer);
-    this.composer.addPass(new RenderPass(this.scene,this.camera));
-    this.ao=new SSAOPass(this.scene,this.camera,innerWidth,innerHeight);this.ao.kernelRadius=4;this.ao.minDistance=.003;this.ao.maxDistance=.045;this.ao.enabled=false;this.composer.addPass(this.ao);
-    this.bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),.16,.38,1.65);
-    this.composer.addPass(this.bloom);
-    this.composer.addPass(new OutputPass());
     this.hand=new PhysicalHand(this.scene,this.camera,url=>this.loadTexture(url));
     this.resize();
+    this.renderer.shadowMap.needsUpdate = true;
     addEventListener('resize', this.resize, { passive: true });
     addEventListener('pointermove', this.onPointerMove, { passive: true });
     this.loop();
@@ -131,22 +135,45 @@ export class TavernScene {
 
   set qualityHigh(value: boolean) { this.configure({quality:value?'high':'mobile',reducedMotion:this.reducedMotion}); }
 
+  private configurePostProcessing(budget: typeof QUALITY_PRESETS[QualityPreset]): void {
+    if (!budget.bloom) {
+      this.composer?.dispose();this.bloom?.dispose();this.ao?.dispose();
+      this.composer=undefined;this.bloom=undefined;this.ao=undefined;
+      return;
+    }
+    if (!this.composer) {
+      this.composer=new EffectComposer(this.renderer);
+      this.composer.addPass(new RenderPass(this.scene,this.camera));
+      this.ao=new SSAOPass(this.scene,this.camera,innerWidth,innerHeight);
+      this.ao.kernelRadius=4;this.ao.minDistance=.003;this.ao.maxDistance=.045;
+      this.composer.addPass(this.ao);
+      this.bloom=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),budget.bloomStrength,.38,1.65);
+      this.composer.addPass(this.bloom);
+      this.composer.addPass(new OutputPass());
+    }
+    this.bloom!.strength=budget.bloomStrength;
+    this.ao!.enabled=budget.ambientOcclusion;
+  }
+
   configure(options: {quality:QualityPreset; reducedMotion:boolean}): void {
     if(this.qualityConfigured && this.quality===options.quality && this.reducedMotion===options.reducedMotion) return;
+    const qualityChanged = !this.qualityConfigured || this.quality !== options.quality;
     this.qualityConfigured=true;
     this.quality=options.quality;
     this.reducedMotion=options.reducedMotion;
+    if (qualityChanged) this.renderScale = 1;
     const budget=QUALITY_PRESETS[this.quality];
-    this.bloom.strength=budget.bloomStrength;this.ao.enabled=budget.ambientOcclusion;
+    if (qualityChanged) this.configurePostProcessing(budget);
     this.scene.environmentIntensity=budget.reflections?.32:.18;
     let dynamic=0;
     this.scene.traverse(object=>{
       if(object instanceof THREE.PointLight && object!==this.centerLight) object.visible=dynamic++<budget.dynamicLights-1;
-      if(object instanceof THREE.DirectionalLight && object.castShadow){object.shadow.mapSize.set(budget.shadowMapSize,budget.shadowMapSize);object.shadow.map?.dispose();object.shadow.map=null;}
+      if(qualityChanged && object instanceof THREE.DirectionalLight && object.castShadow){object.shadow.mapSize.set(budget.shadowMapSize,budget.shadowMapSize);object.shadow.map?.dispose();object.shadow.map=null;}
     });
     this.hand.configure(options.reducedMotion);
     this.particles.geometry.setDrawRange(0,budget.particleCount);
     this.resize();
+    this.renderer.shadowMap.needsUpdate = true;
   }
 
   update(next: SceneState): void {
@@ -156,13 +183,14 @@ export class TavernScene {
     this.direction = next.direction;
     this.playerCount = next.playerCount;
     this.localSeat = next.localSeat;
+    this.seatProjectionDirty = true;
     this.activeSeat=next.activeSeat??0;
     this.number.set(next.total);
     this.drawCardUrl = next.drawCardUrl;
     this.pileShadows[0].visible = (next.drawCount ?? 0) > 0;
     this.pileShadows[1].visible = (next.discardCount ?? 0) > 0;
-    void this.deckPile.setCards(Array.from({length:next.drawCount??0},()=>next.drawCardUrl),next.drawCardUrl).catch(()=>undefined);
-    void this.discardPile.setCards(next.discardCards??(next.discardCardUrl?[next.discardCardUrl]:[]),next.drawCardUrl).catch(()=>undefined);
+    void this.deckPile.setCards(Array.from({length:next.drawCount??0},()=>next.drawCardUrl),next.drawCardUrl).then(()=>{this.renderer.shadowMap.needsUpdate=true;}).catch(()=>undefined);
+    void this.discardPile.setCards(next.discardCards??(next.discardCardUrl?[next.discardCardUrl]:[]),next.drawCardUrl).then(()=>{this.renderer.shadowMap.needsUpdate=true;}).catch(()=>undefined);
     const key=next.eventKey??`${next.total}:${next.discardCardUrl}:${next.event}`;
     if(key!==this.lastEventKey){
       if(this.lastEventKey){this.eventPulse=next.event==='exact'?1.6:next.event==='bust'?1.25:.8;this.impact=1;this.eventKind=next.event;}
@@ -506,6 +534,7 @@ export class TavernScene {
     const started = performance.now();
     const duration = this.reducedMotion ? 80 : draw ? 520 : 440;
     return new Promise(resolve => {
+      this.activeFlights++;
       const step = (now: number): void => {
         const raw = Math.min(1, (now - started) / duration);
         const flightT = draw ? raw : Math.min(1,raw/.86);
@@ -523,6 +552,8 @@ export class TavernScene {
         visual.rotation.z = spin*Math.PI*2*t + Math.sin(raw * Math.PI) * (draw ? -.16 : .24);
         if (raw < 1) requestAnimationFrame(step);
         else {
+          this.activeFlights--;
+          this.renderer.shadowMap.needsUpdate = true;
           this.scene.remove(root);
           root.traverse(object => {
             if (object instanceof THREE.Mesh) {
@@ -720,11 +751,17 @@ export class TavernScene {
     this.camera.position.set(0, portrait ? 8.8 : 7.3, portrait ? 14.7 : 12.4);
     this.camera.lookAt(0, portrait ? 1.35 : .82, portrait ? -.75 : -.45);
     this.camera.updateProjectionMatrix();
-    this.renderer.setPixelRatio(Math.min(devicePixelRatio, QUALITY_PRESETS[this.quality].pixelRatio));
+    const budget = QUALITY_PRESETS[this.quality];
+    const pixelBudget = Math.sqrt((this.quality === 'ultra' ? 6_000_000 : 4_000_000) / Math.max(1, innerWidth * innerHeight));
+    const pixelRatio = Math.min(devicePixelRatio, budget.pixelRatio * this.renderScale, pixelBudget);
+    this.renderer.setPixelRatio(pixelRatio);
     this.renderer.setSize(innerWidth, innerHeight, false);
-    this.renderer.shadowMap.enabled = QUALITY_PRESETS[this.quality].shadows;
-    this.composer?.setPixelRatio(Math.min(devicePixelRatio,QUALITY_PRESETS[this.quality].pixelRatio));
+    this.renderer.shadowMap.enabled = budget.shadows;
+    this.composer?.setPixelRatio(pixelRatio);
     this.composer?.setSize(innerWidth,innerHeight);
+    this.renderer.domElement.dataset.pixelRatio = pixelRatio.toFixed(2);
+    this.renderer.shadowMap.needsUpdate = true;
+    this.seatProjectionDirty = true;
     if (this.deckStack && this.discardStack) {
       const pileX = portrait ? 1.15 : 2.82;
       const pileZ = portrait ? 2.05 : -.06;
@@ -740,7 +777,7 @@ export class TavernScene {
   };
 
   private animate(time: number, delta: number): void {
-    this.smoothPointer.lerp(this.reducedMotion?new THREE.Vector2():this.pointer, 1 - Math.pow(.0008, delta));
+    this.smoothPointer.lerp(this.reducedMotion?this.zeroPointer:this.pointer, 1 - Math.pow(.0008, delta));
     const portrait = innerHeight > innerWidth * 1.08;
     const baseX = 0;
     const baseY = portrait ? 8.8 : 7.3;
@@ -750,7 +787,9 @@ export class TavernScene {
     this.camera.position.z = baseZ - (!this.reducedMotion && (this.eventKind==='exact'||this.eventKind==='bust')?this.impact*.13:0);
     this.camera.lookAt(this.smoothPointer.x * .1, portrait ? 1.35 : .82, portrait ? -.75 : -.45);
     this.camera.updateMatrixWorld();
-    if(time-this.lastSeatUpdate>.04){this.positionSeatOverlays();this.lastSeatUpdate=time;}
+    if(time-this.lastSeatUpdate>.08 && (this.seatProjectionDirty || this.smoothPointer.distanceToSquared(this.lastProjectedPointer)>.000016)){
+      this.positionSeatOverlays();this.lastSeatUpdate=time;this.lastProjectedPointer.copy(this.smoothPointer);this.seatProjectionDirty=false;
+    }
     this.number.update(time,delta,this.camera,this.reducedMotion);
     this.hand.update(delta);
 
@@ -812,7 +851,7 @@ export class TavernScene {
       object.material = Array.isArray(object.material) ? object.material.map(mask) : mask(object.material);
     });
     try {
-      this.composer.render();
+      this.composer!.render();
     } finally {
       cards.forEach(card => { card.mesh.material = card.material; });
     }
@@ -859,22 +898,40 @@ export class TavernScene {
     }
   }
 
-  private loop = (): void => {
+  private loop = (stamp = performance.now()): void => {
     this.frame = requestAnimationFrame(this.loop);
-    if (!this.active || document.hidden || this.contextLost) { this.clock.getDelta(); return; }
+    if (!this.active || document.hidden || this.contextLost) { this.clock.getDelta();this.lastRafTime=stamp;this.frameAccumulator=0;return; }
+    const sinceLast = this.lastRafTime ? Math.min(50,stamp-this.lastRafTime) : 1000/60;
+    this.lastRafTime=stamp;
+    this.frameAccumulator=Math.min(50,this.frameAccumulator+sinceLast);
+    if(this.frameAccumulator < 1000/60-1) return;
+    this.frameAccumulator %= 1000/60;
     const realDelta=this.clock.getDelta();
     const delta = Math.min(.05, realDelta);
     this.profileFrames++;this.profileDelta+=realDelta;
     const time = this.clock.elapsedTime;
     this.animate(time, delta);
+    if (this.activeFlights) this.renderer.shadowMap.needsUpdate = true;
     this.renderer.info.reset();
     if(QUALITY_PRESETS[this.quality].bloom)this.renderWithCleanCards();else this.renderer.render(this.scene, this.camera);
-    if(time-this.profileTime>1){this.renderer.domElement.dataset.frameMs=(this.profileDelta/this.profileFrames*1000).toFixed(1);this.renderer.domElement.dataset.drawCalls=String(this.renderer.info.render.calls);this.renderer.domElement.dataset.triangles=String(this.renderer.info.render.triangles);this.profileFrames=0;this.profileDelta=0;this.profileTime=time;}
+    if(time-this.profileTime>2.4){
+      const frameMs=this.profileDelta/this.profileFrames*1000;
+      this.renderer.domElement.dataset.frameMs=frameMs.toFixed(1);
+      this.renderer.domElement.dataset.drawCalls=String(this.renderer.info.render.calls);
+      this.renderer.domElement.dataset.triangles=String(this.renderer.info.render.triangles);
+      if(frameMs>19.5 && this.renderScale>.66){
+        this.renderScale=Math.max(.65,this.renderScale-(frameMs>28?.15:.1));
+        this.fastSamples=0;this.resize();
+      } else if(frameMs<17.5 && this.renderScale<1){
+        if(++this.fastSamples>=2){this.renderScale=Math.min(1,this.renderScale+.05);this.fastSamples=0;this.resize();}
+      } else this.fastSamples=0;
+      this.profileFrames=0;this.profileDelta=0;this.profileTime=time;
+    }
   };
 
   dispose(): void {
     cancelAnimationFrame(this.frame);
-    this.hand.dispose();this.number.dispose();this.composer.dispose();this.bloom.dispose();this.ao.dispose();this.environment.dispose();
+    this.hand.dispose();this.number.dispose();this.composer?.dispose();this.bloom?.dispose();this.ao?.dispose();this.environment.dispose();
     this.deckPile.dispose();this.discardPile.dispose();
     removeEventListener('resize', this.resize);
     removeEventListener('pointermove', this.onPointerMove);
