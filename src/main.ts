@@ -218,7 +218,7 @@ function finishRound(): void {
   save();
 }
 function resolveCard(cardId: string): void {
-  if (!state || state.phase !== 'playing') return;
+  if (!state || state.phase !== 'playing' || awaitingNetwork) return;
   const actor = state.current;
   const card = state.players[actor].hand.find(item => item.id === cardId);
   if (!card) return;
@@ -231,7 +231,9 @@ function resolveCard(cardId: string): void {
       if (card.rank === '10') stats.tens++;
       save();
     }
-    selectedCard = null; awaitingNetwork = !online.isHost || online instanceof HostedRoom; pendingLog = state.log[0]; online.play(cardId); return;
+    selectedCard = null; awaitingNetwork = !online.isHost || online instanceof HostedRoom; pendingLog = state.log[0];
+    if (awaitingNetwork) render();
+    online.play(cardId); return;
   }
   const previousLocalHand = new Set(state.players[localSeat()].hand.map(item => item.id));
   playCard(state, cardId);
@@ -257,7 +259,7 @@ function resolveCard(cardId: string): void {
   scheduleCpu();
 }
 async function animatePlay(cardId: string, source?: HTMLElement, spin = 0): Promise<void> {
-  if (!state || locked || state.phase !== 'playing') return;
+  if (!state || locked || awaitingNetwork || state.phase !== 'playing') return;
   locked = true; clearCpu();
   const card = state.players[state.current].hand.find(item => item.id === cardId);
   if (!card) { locked = false; return; }
@@ -306,7 +308,7 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin = 0): Prom
   locked = false; resolveCard(cardId);
 }
 function chooseTarget(target: number): void {
-  if (!state || state.phase !== 'target' || locked) return;
+  if (!state || state.phase !== 'target' || locked || awaitingNetwork) return;
   const chooser = state.pendingSevens.at(-1)!;
   if (online) { awaitingNetwork = !online.isHost || online instanceof HostedRoom; pendingLog = state.log[0]; online.target(target); render(); return; }
   selectTarget(state, target);
@@ -377,7 +379,7 @@ function gameView(): string {
   const actor = state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current;
   const active = state.players[actor];
   const mine = state.players[localSeat()];
-  const myTurn = state.phase !== 'ended' && active.kind === 'human' && actor === localSeat();
+  const myTurn = state.phase !== 'ended' && !awaitingNetwork && active.kind === 'human' && actor === localSeat();
   const otherLocalTurn = !online && active.kind === 'human' && actor !== localSeat();
   const hand = mine?.kind === 'human' ? mine.hand : [];
   const totalClass = state.total>100?'busted':state.total===100?'at100':state.total>=CONFIG.TOTAL_WARNING_3?'danger':state.total>=CONFIG.TOTAL_WARNING_2?'warning-2':state.total>=CONFIG.TOTAL_WARNING_1?'warning-1':'';
@@ -388,7 +390,7 @@ function gameView(): string {
       ${state.phase==='target'&&canControlActor()?'<div class="target-hint">Choose another player to take a forced turn</div>':''}
     </section><aside class="side-panel"><div class="side-card"><div class="eyebrow">AT THE TABLE</div><h3>${state.phase==='target'?'Choosing a target: ':state.forced?'Forced play: ':'Now playing: '}${escapeHtml(active.name)}</h3></div><div class="side-card log-card"><div class="card-heading"><h3>Game Log</h3><span>RECENT MOVES</span></div><ul>${state.log.slice(0,7).map(gameLogLine).join('')}</ul></div></aside></div>
     ${otherLocalTurn ? `<div class="shared-turn" role="region" aria-label="${escapeHtml(active.name)}'s local turn"><strong>Pass the device to ${escapeHtml(active.name)}</strong><span>${state.phase === 'target' ? 'Tap a highlighted player at the table.' : 'Double-tap a card or flick it toward the table.'}</span><div class="shared-hand">${state.phase === 'playing' ? active.hand.map(card=>cardElement(card,selectedCard===card.id,'hand-card')).join('') : ''}</div></div>` : ''}
-    <footer class="hand-dock"><div class="dock-prompt ${myTurn?'my-turn':''}">${myTurn?'<span class="your-turn-bubble">YOUR TURN!</span>':''}<img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${hand.length} cards · ${mine ? `${moodSymbols[mine.mood]} ${mine.mood}` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Double-tap a card or flick it upward' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><div class="emote-menu ${emotesOpen?'open':''}"><button class="emote-trigger" data-action="emotes" aria-label="Choose emote" aria-expanded="${emotesOpen}">☺<small>EMOTE</small></button><div class="emote-wheel" aria-label="Emotes" ${emotesOpen?'':'inert aria-hidden="true"'}>${(['Happy','Excited','Confused','Angry','Sad','Smug','Scared','Thinking'] as const).map(m=>`<button data-emote="${m}" title="${m}" aria-label="${m}">${moodSymbols[m]}</button>`).join('')}</div></div><button class="info-fab" data-action="rules" aria-label="Game information">i<small>INFO</small></button><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
+    <footer class="hand-dock"><div class="dock-prompt ${myTurn?'my-turn':''}">${myTurn?'<span class="your-turn-bubble">YOUR TURN!</span>':''}<img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${hand.length} cards · ${mine ? `${moodSymbols[mine.mood]} ${mine.mood}` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Double-tap a card or flick it upward' : awaitingNetwork ? 'Confirming your move…' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><div class="emote-menu ${emotesOpen?'open':''}"><button class="emote-trigger" data-action="emotes" aria-label="Choose emote" aria-expanded="${emotesOpen}">☺<small>EMOTE</small></button><div class="emote-wheel" aria-label="Emotes" ${emotesOpen?'':'inert aria-hidden="true"'}>${(['Happy','Excited','Confused','Angry','Sad','Smug','Scared','Thinking'] as const).map(m=>`<button data-emote="${m}" title="${m}" aria-label="${m}">${moodSymbols[m]}</button>`).join('')}</div></div><button class="info-fab" data-action="rules" aria-label="Game information">i<small>INFO</small></button><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
     ${state.phase==='ended'?resultView():''}</main>`;
 }
 function resultView(): string {
@@ -398,7 +400,7 @@ function resultView(): string {
 }
 function modalView(): string {
   if (!modal) return '';
-  const body = modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 busts; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play immediately. Their normal turn stays in place.</span></div><div><strong>REVERSE</strong><span>Reverse direction. In a two-player game, play again.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Bust for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Flick from an edge or corner to spin it into the discard pile.</p>`
+  const body = modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 busts; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. They cannot play twice in a row.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Bust for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Flick from an edge or corner to spin it into the discard pile.</p>`
   : modal==='settings' ? `<h2>Make yourself at home</h2><div class="modal-setting"><label for="graphics">Visual quality</label><select id="graphics">${(['ultra','high','medium','mobile'] as const).map(tier=>`<option value="${tier}" ${settings.graphics===tier?'selected':''}>${tier.charAt(0).toUpperCase()+tier.slice(1)}</option>`).join('')}</select><small>Ultra adds richer shadows, reflections and glow. Mobile keeps the same world with lighter effects.</small></div>${[['volume','Master volume',settings.volume],['sfxVolume','Sound effects',settings.sfxVolume],['musicVolume','Music',settings.musicVolume],['ambienceVolume','Ambience',settings.ambienceVolume]].map(([id,label,value])=>`<div class="modal-setting"><label for="${id}">${label}<output for="${id}">${Math.round(Number(value)*100)}%</output></label><input id="${id}" type="range" min="0" max="1" step=".01" value="${value}"></div>`).join('')}<label class="setting-toggle"><input id="muted" type="checkbox" ${settings.muted?'checked':''}>Mute all sounds</label><label class="setting-toggle"><input id="reducedMotion" type="checkbox" ${settings.reducedMotion?'checked':''}>Reduced motion</label><div class="modal-setting gyro-setting"><label>Phone tilt</label><button class="secondary-button" data-action="gyro-enable" ${!gyro.available || settings.reducedMotion ? 'disabled' : ''}>${gyro.status === 'on' ? 'Recenter phone tilt' : gyro.status === 'waiting' ? 'Waiting for motion…' : 'Enable phone tilt'}</button><small id="gyro-status">${settings.reducedMotion ? 'Turn off Reduced motion to use phone tilt.' : gyro.status === 'on' ? 'Move your phone gently to tilt the cards. Dragging a card takes control.' : gyro.status === 'denied' ? 'Motion access was denied. You can still drag cards to tilt them.' : gyro.available ? 'Available on supported phones.' : 'Motion sensors are unavailable in this browser.'}</small></div><div class="modal-setting"><label for="uiScale">Interface size <output for="uiScale">${Math.round(settings.uiScale*100)}%</output></label><input id="uiScale" type="range" min=".85" max="1.2" step=".05" value="${settings.uiScale}"></div><p>Settings save on this device.</p>`
   : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Busts',stats.busts],['Cards played',stats.cards],['Choose Player',stats.sevens],['Reverse',stats.eights],['Zero',stats.nines],['Minus Ten',stats.tens],['Test rating',stats.rating],['Currency',stats.currency]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Statistics, rating, and currency are local to this device. Currency does not affect gameplay.</p>`
   : modal==='history' ? `<h2>Game history</h2><p>Recent moves at this table.</p><ul class="history-list">${state?.log.length ? state.log.map(gameLogLine).join('') : '<li>No cards have been played yet.</li>'}</ul>`
@@ -510,7 +512,7 @@ app.addEventListener('pointerdown',event=>{
   void audio.loadCardClips();
   if((event.target as HTMLElement).closest('[data-action="emotes"]')){emoteHeld=false;emoteHoldTimer=window.setTimeout(()=>{emoteHeld=true;emotesOpen=true;render();},350);}
   const card=(event.target as HTMLElement).closest<HTMLElement>('.hand-card');
-  if(!card||card.classList.contains('waiting-hand')||!state||locked||drag||event.button!==0)return;
+  if(!card||card.classList.contains('waiting-hand')||!state||locked||awaitingNetwork||drag||event.button!==0)return;
   const now=performance.now();
   const current:CardDrag={element:card,id:card.dataset.card!,x:event.clientX,y:event.clientY,time:now,lastX:event.clientX,lastY:event.clientY,lastTime:now,vx:0,vy:0,moved:false,inspecting:false,edgeGrip:isCardEdgeGrip(card.getBoundingClientRect(),event.clientX,event.clientY),pointerId:event.pointerId,holdTimer:0,baseTransform:getComputedStyle(card).transform};
   current.holdTimer=window.setTimeout(()=>{if(drag!==current||current.moved)return;current.inspecting=true;card.classList.add('inspecting');card.classList.remove('dragging');},380);

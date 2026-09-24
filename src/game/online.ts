@@ -7,7 +7,7 @@ import { projectForSeat } from './projection';
 export { projectForSeat } from './projection';
 
 type Profile = Pick<PlayerConfig, 'name' | 'avatar' | 'mood'>;
-type GuestCommand = { type: 'hello'; profile: Profile } | { type: 'play'; cardId: string } | { type: 'target'; seat: number } | { type: 'mood'; mood: PlayerConfig['mood'] };
+type GuestCommand = { type: 'hello'; profile: Profile } | { type: 'play'; cardId: string; turn?: number } | { type: 'target'; seat: number; turn?: number } | { type: 'mood'; mood: PlayerConfig['mood'] };
 type HostMessage = { type: 'snapshot'; seat: number; seats: PlayerConfig[]; state: GameState | null; roomId: string; cpuCount: number } | { type: 'error'; message: string; fatal?: boolean };
 const CONNECTION_TIMEOUT_MS = 20_000;
 const MOVE_TIMEOUT_MS = 10_000;
@@ -158,8 +158,10 @@ export class OnlineRoom {
     if (!this.state || this.state.players[seat]?.kind !== 'human') return;
     try {
       if (command.type === 'play' && this.state.phase === 'playing' && this.state.current === seat && typeof command.cardId === 'string') {
+        if (command.turn !== undefined && command.turn !== (this.state.turn ?? 0)) throw new Error('Stale turn');
         playCard(this.state, command.cardId); this.broadcast();
       } else if (command.type === 'target' && this.state.phase === 'target' && this.state.pendingSevens.at(-1) === seat && Number.isInteger(command.seat)) {
+        if (command.turn !== undefined && command.turn !== (this.state.turn ?? 0)) throw new Error('Stale turn');
         selectTarget(this.state, command.seat); this.broadcast();
       }
     } catch { connection.send({ type: 'error', message: 'That move was rejected. Please check the current turn.' } satisfies HostMessage); }
@@ -197,14 +199,14 @@ export class OnlineRoom {
   play(cardId: string): void {
     if (!this.state || this.state.phase !== 'playing') return;
     if (this.isHost ? this.state.current !== this.localSeat && this.state.players[this.state.current].kind !== 'cpu' : this.state.current !== this.localSeat) return;
-    if (!this.isHost) { this.sendCommand({ type: 'play', cardId }); return; }
+    if (!this.isHost) { this.sendCommand({ type: 'play', cardId, turn: this.state.turn ?? 0 }); return; }
     try { playCard(this.state, cardId); this.broadcast(); } catch { this.error = 'That card is no longer available.'; this.notify(); }
   }
   target(seat: number): void {
     if (!this.state || this.state.phase !== 'target') return;
     const chooser = this.state.pendingSevens.at(-1);
     if (chooser !== this.localSeat && !(this.isHost && this.state.players[chooser!].kind === 'cpu')) return;
-    if (!this.isHost) { this.sendCommand({ type: 'target', seat }); return; }
+    if (!this.isHost) { this.sendCommand({ type: 'target', seat, turn: this.state.turn ?? 0 }); return; }
     try { selectTarget(this.state, seat); this.broadcast(); } catch { this.error = 'Choose another player.'; this.notify(); }
   }
   setMood(seat: number, mood: PlayerConfig['mood']): void {

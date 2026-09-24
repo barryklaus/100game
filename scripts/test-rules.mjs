@@ -33,15 +33,35 @@ async function load(entry) {
     selectTarget(game,3); playCard(game,'fire-8');
     assert.equal(game.direction,-1);
     assert.equal(game.phase,'playing');
-    assert.equal(game.current,3); // Original P0 turn resumes counter-clockwise.
+    assert.equal(game.current,2); // The final chosen player played the turn; direction now runs backward from P3.
     assert(game.players.every(p=>p.hand.length===2));
   }
   {
     const game=createGame(players(2),1,()=>0);
     game.current=0;game.rootTurn=0;game.players[0].hand=[card('8'),card('A')];
     playCard(game,'fire-8');
-    assert.equal(game.direction,-1);assert.equal(game.current,0);
+    assert.equal(game.direction,-1);assert.equal(game.current,1);
     assert.equal(game.players[0].hand.length,2);
+  }
+  {
+    const game=createGame(players(3),1,()=>0);
+    game.current=0;game.rootTurn=0;
+    game.players[0].hand=[card('7'),card('2')];
+    game.players[1].hand=[card('3'),card('4')];
+    playCard(game,'fire-7');
+    selectTarget(game,1);
+    playCard(game,'fire-3');
+    assert.equal(game.current,2,'A chosen player must not immediately get a second ordinary play');
+  }
+  {
+    const game=createGame(players(4),1,()=>0);
+    game.current=0;game.rootTurn=0;
+    game.players[0].hand=[card('7'),card('2')];
+    game.players[2].hand=[card('3'),card('4')];
+    playCard(game,'fire-7');
+    selectTarget(game,2);
+    playCard(game,'fire-3');
+    assert.equal(game.current,1,'A distant target must not skip the other seats in normal order');
   }
   {
     const game=createGame(players(2),1,()=>0);

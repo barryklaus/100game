@@ -8,8 +8,8 @@ export type Profile = Pick<PlayerConfig, 'name' | 'avatar' | 'mood'>;
 export type RoomCommand =
   | { type: 'cpu-count'; count: number }
   | { type: 'start'; round?: number }
-  | { type: 'play'; cardId: string }
-  | { type: 'target'; seat: number }
+  | { type: 'play'; cardId: string; turn?: number }
+  | { type: 'target'; seat: number; turn?: number }
   | { type: 'mood'; mood: PlayerConfig['mood'] }
   | { type: 'leave' };
 export interface Member { token: string; seat: number; profile: Profile; disconnectedAt: number | null }
@@ -167,10 +167,12 @@ export function applyCommand(room: RoomData, seat: number, command: RoomCommand,
     runCpuTurns(room);
   } else if (command.type === 'play') {
     if (!room.state || room.state.phase !== 'playing' || room.state.current !== seat || typeof command.cardId !== 'string') throw new RoomError('It is not your turn.', 409);
+    if (command.turn !== undefined && command.turn !== (room.state.turn ?? 0)) throw new RoomError('That turn has already changed. Wait for the updated table.', 409);
     playCard(room.state, command.cardId);
     runCpuTurns(room);
   } else if (command.type === 'target') {
     if (!room.state || room.state.phase !== 'target' || room.state.pendingSevens.at(-1) !== seat || !Number.isInteger(command.seat)) throw new RoomError('You cannot choose a target now.', 409);
+    if (command.turn !== undefined && command.turn !== (room.state.turn ?? 0)) throw new RoomError('That turn has already changed. Wait for the updated table.', 409);
     selectTarget(room.state, command.seat);
     runCpuTurns(room);
   } else throw new RoomError('Unknown command.');

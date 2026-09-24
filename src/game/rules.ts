@@ -24,7 +24,7 @@ export function createGame(configs: PlayerConfig[], round = 1, random = Math.ran
   const drawPile = shuffle(makeDeck(), random);
   const players = configs.map((config, id) => ({ ...config, id, hand: drawPile.splice(0, CONFIG.HAND_SIZE), ratingDelta: 0, exacts: 0 }));
   const start = Math.floor(random() * players.length);
-  return { players, drawPile, played: [], total: 0, direction: 1, current: start, phase: 'playing', pendingSevens: [], rootTurn: start, forced: false, round, exactEvents: [], bust: null, log: [`Round ${round} begins. ${players[start].name} plays first.`], event: 'none' };
+  return { players, drawPile, played: [], total: 0, direction: 1, current: start, turn: 0, phase: 'playing', pendingSevens: [], rootTurn: start, forced: false, round, exactEvents: [], bust: null, log: [`Round ${round} begins. ${players[start].name} plays first.`], event: 'none' };
 }
 
 function drawReplacement(state: GameState, playerIndex: number, random = Math.random): void {
@@ -42,15 +42,16 @@ function drawReplacement(state: GameState, playerIndex: number, random = Math.ra
 
 function finishPlay(state: GameState, actor: number): void {
   drawReplacement(state, actor);
-  // A forced card completes the newest 7, then any earlier 7 in the chain.
+  // Clear each CHOOSE PLAYER in the chain once its chosen player has acted.
   while (state.pendingSevens.length) {
     const chooser = state.pendingSevens.pop()!;
     drawReplacement(state, chooser);
   }
   state.forced = false;
-  state.current = state.players.length === 2 && actor === state.rootTurn && state.played.at(-1)?.rank === '8'
-    ? state.rootTurn
-    : nextSeat(state, state.rootTurn);
+  // Resume the ordinary order after a chosen player's forced card. If that
+  // player would be next anyway, skip their immediate repeat play.
+  const next = nextSeat(state, state.rootTurn);
+  state.current = next === actor ? nextSeat(state, actor) : next;
   state.rootTurn = state.current;
   state.phase = 'playing';
 }
@@ -60,6 +61,7 @@ export function playCard(state: GameState, cardId: string): GameState {
   const player = state.players[state.current];
   const index = player.hand.findIndex(card => card.id === cardId);
   if (index < 0) throw new Error('Card is not in the active hand');
+  state.turn = (state.turn ?? 0) + 1;
   const [card] = player.hand.splice(index, 1);
   state.played.push(card);
   const previousTotal = state.total;
@@ -108,6 +110,7 @@ export function selectTarget(state: GameState, target: number): GameState {
   if (state.phase !== 'target') throw new Error('No target selection now');
   const chooser = state.pendingSevens.at(-1)!;
   if (target === chooser || !state.players[target]) throw new Error('Choose another player');
+  state.turn = (state.turn ?? 0) + 1;
   state.current = target;
   state.forced = true;
   state.phase = 'playing';

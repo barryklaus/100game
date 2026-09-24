@@ -11,6 +11,8 @@ export interface GameState {
   total: number;
   direction: 1 | -1;
   current: number;
+  /** Increments after each accepted play or target choice; rejects stale online input. */
+  turn: number;
   phase: Phase;
   pendingSevens: number[];
   rootTurn: number;

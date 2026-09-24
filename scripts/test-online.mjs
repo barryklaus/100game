@@ -10,7 +10,7 @@ const full = {
     { id: 1, name: 'Guest', kind: 'human', avatar: 1, mood: 'Happy', hand: [card('guest-one'), card('guest-two')], exacts: 0, ratingDelta: 0 },
   ],
   drawPile: [card('deck-secret-one'), card('deck-secret-two')], played: [card('public-card')], total: 0, direction: 1,
-  current: 1, phase: 'playing', pendingSevens: [], rootTurn: 1, forced: false, round: 1,
+  current: 1, turn: 4, phase: 'playing', pendingSevens: [], rootTurn: 1, forced: false, round: 1,
   exactEvents: [], bust: null, log: [], event: 'none',
 };
 const guest = projectForSeat(full, 1);
@@ -73,8 +73,10 @@ try {
 
   const playingGuest = new OnlineRoom('guest', '100-123456789abc', profile, () => updates++);
   playingGuest.receiveHost({ type: 'snapshot', seat: 1, seats: [], state: structuredClone(full), roomId: '100-123456789abc', cpuCount: 0 });
-  playingGuest.hostConnection = { open: true, send() {} };
+  let sentMove;
+  playingGuest.hostConnection = { open: true, send(command) { sentMove = command; } };
   playingGuest.play('guest-one');
+  assert.deepEqual(sentMove, { type:'play', cardId:'guest-one', turn:4 });
   const moveTimeout = [...timers.values()].find(timer => timer.delay === 10_000);
   assert(moveTimeout, 'an unconfirmed move should have a deadline');
   moveTimeout.fn();

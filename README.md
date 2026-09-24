@@ -13,8 +13,8 @@ Every player holds **exactly two cards**. Play one card every turn, then draw ba
 | 1 | +1 |
 | 2–6 | Face value |
 | Normal 10 (three artworks per suit) | +10 |
-| CHOOSE PLAYER | Choose another player to play immediately |
-| REVERSE | Reverse direction; with two players, play again |
+| CHOOSE PLAYER | Make another player play immediately, then continue without an immediate repeat |
+| REVERSE | Reverse direction; then pass the turn to the next player |
 | ZERO | +0 |
 | MINUS TEN | −10 |
 
