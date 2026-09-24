@@ -19,7 +19,7 @@ The authoritative card artwork is the user supplied `CARD DESIGN/FINAL/HIGH-RESO
 
 All four suits map into `public/assets/cards/{suit}-{rank}.webp`. Source `*-1.png` maps to game rank A; `*-10A.png`, `*-10B.png`, and `*-10C.png` map to game ranks J, Q, and K respectively. The source files remain unchanged.
 
-The source artwork stays unchanged. At display time each front gets a thick suit-colored frame, top-left and rotated bottom-right rank indices, and a printed instruction band for ranks 7–10. The 3D surface and thin paper edge share one rounded card outline; a shader ring follows the border only. All card fronts use saturated holographic metal, with deeper spectral color and sharper glints on ranks 7–10. Reflected glints respond to card movement and tilt, with no automatic animation. The HTML fallback uses matching clipped CSS border effects. The alternate 10 artworks used by Jack, Queen, and King display as normal 10s (+10). Rank 10 itself is MINUS TEN (−10), not a normal 10.
+The source artwork stays unchanged. At display time each front gets a thick suit-colored frame, top-left and rotated bottom-right rank indices, and a printed instruction band for ranks 7–10. The 3D surface and thin paper edge share one rounded card outline; a shader ring follows the border only. Each suit has its own metallic palette and repeating etched motif: flame, water droplet and ripple, leaf, or sunburst. Ranks 7–10 receive stronger highlights in their suit color. Motifs glitter only as cards move or tilt, with no idle animation. The HTML fallback uses matching clipped CSS border effects. The alternate 10 artworks used by Jack, Queen, and King display as normal 10s (+10). Rank 10 itself is MINUS TEN (−10), not a normal 10.
 
 ## Supplied card sounds
 
@@ -32,7 +32,7 @@ All eight recordings in `CARD DESIGN/FINAL/SOUND EFFECTS` are copied unchanged t
 | `public/assets/scene/tavern.webp` | WebP | 1400 × 636 | Setup screen ambience derived from the original card sheet. |
 | `public/assets/scene/fantasy-table.jpg` | JPEG | 1536 × 1024 | Legacy illustrated fallback when the 3D world is unavailable. |
 
-The legacy fallback background was generated with the built-in imagegen tool using the user-supplied `GAME and UI.png` as a visual reference. Prompt direction: “Recreate the cozy fantasy tavern at night, with a large empty oval blue marble and gold game table, warm lanterns, moonlit town, and fantasy characters around the table. Keep central and lower table space clear for live UI. No words, numbers, logos, badges, cards, buttons, menus, or watermark.” The active room, table, chairs, cards, well, energy channel, props, lighting, city layers, and effects are rendered as interactive 3D geometry.
+The legacy fallback background was generated with the built-in imagegen tool using the user-supplied `GAME and UI.png` as a visual reference. Prompt direction: “Recreate the cozy fantasy tavern at night, with a large empty oval blue marble and gold game table, warm lanterns, moonlit town, and fantasy characters around the table. Keep central and lower table space clear for live UI. No words, numbers, logos, badges, cards, buttons, menus, or watermark.” The active room, table, chairs, cards, well, props, lighting, and city layers are rendered as interactive 3D geometry. The pot uses a static dark surface without its old glow or particle system. One ceiling spotlight lights the table, with dim ambient fill for legibility.
 
 ## Procedural materials and numeral font
 

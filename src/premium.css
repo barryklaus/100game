@@ -1,5 +1,5 @@
 /* Screen-space UI sits above a single lit, physical game world. */
-:root { --ui-scale: 1; --well-light: .25; }
+:root { --ui-scale: 1; }
 .world3d-total .total-wrap { position:absolute!important;width:1px!important;height:1px!important;clip-path:inset(50%);overflow:hidden;white-space:nowrap; }
 .world3d-active .hand-card.mesh-ready img { opacity:0!important;filter:none!important; }
 .world3d-active .hand-card.mesh-ready { outline:0;filter:none!important; }
@@ -10,8 +10,8 @@
 .world3d-active .hand-card.dragging { transition:none!important;z-index:30; }
 .world3d-active .hand-card.selected:not(.dragging) { transform:translateY(-25px) rotate(0deg); }
 .world3d-active .hand-card:focus-visible { outline:2px solid #ffe3a4;outline-offset:8px;border-radius:8%; }
-.world3d-active .seat .character-head { border:3px solid #242035;outline:2px solid #bea471;box-shadow:0 4px 12px #15101c88,0 0 14px rgb(255 179 58 / var(--well-light)); }
-.world3d-active .seat .character-head::after { content:'';position:absolute;inset:0;border-radius:50%;pointer-events:none;background:linear-gradient(175deg,#91adff17,transparent 55%,rgb(255 177 65 / var(--well-light)));mix-blend-mode:soft-light; }
+.world3d-active .seat .character-head { border:3px solid #242035;outline:2px solid #bea471;box-shadow:0 4px 12px #15101c88; }
+.world3d-active .seat .character-head::after { content:'';position:absolute;inset:0;border-radius:50%;pointer-events:none;background:linear-gradient(175deg,#91adff17,transparent 55%,#f5b34919);mix-blend-mode:soft-light; }
 .world3d-active .seat .character-head img { animation:portrait-life 7s ease-in-out infinite;animation-delay:calc(var(--seat-index,0)*-.73s); }
 .world3d-active .seat .seat-info { border:0;background:linear-gradient(#302637d9,#161622ed);box-shadow:0 4px 12px #100c1844; }
 .world3d-active .seat.active { filter:drop-shadow(0 0 5px #f2b65888); }
@@ -208,15 +208,17 @@ button:active { translate:0 1px; }
    rule band. Container units let the print scale with the card in every seat. */
 .playing-card:not(.card-back) {
   --card-accent:#ecc26a;
+  --foil-dark:#342009;--foil-mid:#ba6716;--foil-bright:#ffdb69;
+  --foil-motif:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 6v20M6 16h20M9 9l14 14M23 9 9 23' stroke='%23ffe5a0' stroke-width='1.5' opacity='.55'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23ffe5a0' opacity='.55'/%3E%3C/svg%3E");
   position:relative;
   container-type:inline-size;
   overflow:hidden;
   border-radius:5.5% / 3.95%!important;
   background:var(--card-accent)!important;
 }
-.playing-card.suit-fire {--card-accent:#f09069;}
-.playing-card.suit-water {--card-accent:#83d0e9;}
-.playing-card.suit-leaf {--card-accent:#a5cc82;}
+.playing-card.suit-fire {--card-accent:#f09069;--foil-dark:#351016;--foil-mid:#b72d14;--foil-bright:#ffab42;--foil-motif:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 4c4 7-1 7 4 13 3-2 4-4 4-6 4 8 2 17-8 17S4 20 9 11c0 4 2 5 4 5-1-5 3-8 3-12Z' fill='%23ffd27a' opacity='.54'/%3E%3C/svg%3E");}
+.playing-card.suit-water {--card-accent:#83d0e9;--foil-dark:#082440;--foil-mid:#1877b9;--foil-bright:#7eeeff;--foil-motif:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 5c4 6 8 10 8 14a8 8 0 0 1-16 0c0-4 4-8 8-14Z' fill='none' stroke='%23b5f6ff' stroke-width='1.6' opacity='.62'/%3E%3Cpath d='M5 27q5-3 11 0t11 0' fill='none' stroke='%23b5f6ff' stroke-width='1.2' opacity='.48'/%3E%3C/svg%3E");}
+.playing-card.suit-leaf {--card-accent:#a5cc82;--foil-dark:#102b16;--foil-mid:#318a35;--foil-bright:#a5f46b;--foil-motif:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M6 25C5 12 15 7 27 6c-1 12-7 21-21 19Z' fill='none' stroke='%23c9ffa1' stroke-width='1.5' opacity='.65'/%3E%3Cpath d='M7 24 25 8M13 18l-2-7m7 2 7 2' fill='none' stroke='%23c9ffa1' stroke-width='1' opacity='.55'/%3E%3C/svg%3E");}
 .playing-card.suit-sun {--card-accent:#f0c66a;}
 .playing-card:not(.card-back)>img {
   position:absolute;
@@ -272,9 +274,11 @@ button:active { translate:0 1px; }
   padding:5.1%;
   pointer-events:none;
   background:
-    radial-gradient(circle at var(--holo-x,50%) var(--holo-y,50%),rgb(255 255 245 / var(--foil-motion,0)) 0,transparent 27%),
-    repeating-linear-gradient(119deg,#07102d22 0 1px,#ffffff30 1px 2px,transparent 2px 7px),
-    conic-gradient(from var(--foil-angle,35deg) at 48% 52%,#122342,#04bdd7 13%,#dcefff 19%,#5128ae 29%,#d01893 41%,#a86d10 54%,#06ae9e 69%,#18325f 83%,#8950dc 93%,#122342);
+    radial-gradient(circle at var(--holo-x,50%) var(--holo-y,50%),rgb(255 255 230 / var(--foil-motion,0)) 0,transparent 27%),
+    var(--foil-motif) 0 0/32px 32px repeat,
+    repeating-linear-gradient(119deg,#080b1d30 0 1px,#ffffff18 1px 2px,transparent 2px 8px),
+    conic-gradient(from var(--foil-angle,35deg) at 48% 52%,var(--foil-dark),var(--foil-mid) 17%,var(--foil-bright) 27%,var(--foil-mid) 39%,var(--foil-dark) 52%,var(--foil-bright) 70%,var(--foil-mid) 83%,var(--foil-dark));
+  background-blend-mode:screen,screen,soft-light,normal;
   mix-blend-mode:normal;
   opacity:.96!important;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
@@ -284,14 +288,11 @@ button:active { translate:0 1px; }
 }
 .playing-card.special::after,
 .world3d-active .hand-card.special::after {
-  background:
-    radial-gradient(circle at var(--holo-x,50%) var(--holo-y,50%),rgb(255 255 255 / var(--foil-motion,0)) 0,transparent 25%),
-    repeating-linear-gradient(123deg,#07103f22 0 1px,#ffffff38 1px 2px,transparent 2px 6px),
-    conic-gradient(from var(--foil-angle,35deg) at 48% 52%,#111d53,#00d6f4 11%,#f8fdff 17%,#5023d5 27%,#f000a9 41%,#f9b400 54%,#0bcfbb 68%,#1932ad 82%,#db38f2 92%,#111d53);
   opacity:1!important;
+  filter:saturate(1.23) contrast(1.12);
   animation:none!important;
 }
-.playing-card[data-foil-moving]::after {filter:saturate(1.28) brightness(1.12);}
+.playing-card[data-foil-moving]::after {filter:saturate(1.38) brightness(1.18);}
 .playing-card:is(.flying-card,.draw-front)::after {--foil-motion:.82;}
 .world3d-active .hand-card.mesh-ready {background:transparent!important;overflow:visible;}
 .world3d-active .hand-card.mesh-ready .card-print {visibility:hidden;}

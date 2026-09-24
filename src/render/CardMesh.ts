@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import type { Suit } from '../data/config';
 
 /** Physical thickness at the standard 1.43-unit artwork height. */
 export const CARD_THICKNESS = .006;
@@ -74,13 +75,15 @@ const foilNormal = new THREE.Vector3();
 const foilPosition = new THREE.Vector3();
 const cameraRight = new THREE.Vector3();
 const cameraUp = new THREE.Vector3();
-function cardFoilMaterial(special: boolean): THREE.ShaderMaterial {
+const foilSuitIndex: Record<Suit, number> = { fire: 0, water: 1, leaf: 2, sun: 3 };
+
+function cardFoilMaterial(special: boolean, suit: Suit): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
     name: special ? 'prismatic-special-border' : 'metallic-card-border',
-    transparent: true,
-    depthWrite: false,
+    transparent: false,
+    depthWrite: true,
     toneMapped: false,
-    uniforms: { uTilt: { value: 0 }, uMotion: { value: 0 }, uSpecial: { value: special ? 1 : 0 } },
+    uniforms: { uTilt: { value: 0 }, uMotion: { value: 0 }, uSpecial: { value: special ? 1 : 0 }, uSuit: { value: foilSuitIndex[suit] } },
     vertexShader: `
       varying vec2 vUv;
       void main() {
@@ -93,24 +96,59 @@ function cardFoilMaterial(special: boolean): THREE.ShaderMaterial {
       uniform float uTilt;
       uniform float uMotion;
       uniform float uSpecial;
+      uniform float uSuit;
+      float motif(vec2 uv) {
+        vec2 p = fract(uv * vec2(16.0, 22.0)) - 0.5;
+        if (uSuit < 0.5) { // Repeating little flame tongues.
+          float flame = abs(p.x + 0.16 * sin(p.y * 10.0)) + p.y * 0.27;
+          return (1.0 - smoothstep(0.12, 0.18, flame)) * smoothstep(-0.43, -0.12, p.y);
+        }
+        if (uSuit < 1.5) { // Droplets with a fine ripple beneath them.
+          float drop = length(vec2(p.x * 1.15, p.y * 0.85 + 0.07));
+          float ripple = abs(length(vec2(p.x, p.y + 0.30)) - 0.24);
+          return 1.0 - min(1.0, smoothstep(0.13, 0.18, drop) * smoothstep(0.025, 0.055, ripple));
+        }
+        if (uSuit < 2.5) { // Tiny diagonal leaves with an etched vein.
+          vec2 leaf = vec2(p.x + p.y * 0.48, p.y - p.x * 0.48);
+          float blade = abs(leaf.x) + 0.65 * abs(leaf.y);
+          float shape = 1.0 - smoothstep(0.15, 0.20, blade);
+          float vein = 1.0 - smoothstep(0.012, 0.035, abs(leaf.x));
+          return shape * (0.65 + 0.35 * vein);
+        }
+        // Eight pointed sunbursts.
+        float rays = min(min(abs(p.x), abs(p.y)), min(abs(p.x + p.y), abs(p.x - p.y)) * 0.71);
+        return (1.0 - smoothstep(0.018, 0.045, rays)) * (1.0 - smoothstep(0.18, 0.32, length(p)));
+      }
       void main() {
-        // Deep spectral metal is visible at rest. The narrow silver flash is
-        // driven by actual card motion, never by elapsed time.
-        float phase = vUv.x * 0.91 + vUv.y * 0.56 + uTilt * 0.76;
-        vec3 spectrum = 0.5 + 0.5 * cos(6.2831853 * (phase * 2.45 + vec3(0.0, 0.34, 0.68)));
-        spectrum = pow(spectrum, vec3(1.38)) * 1.34;
-        float grooves = 0.5 + 0.5 * sin(phase * 45.0);
-        float metal = smoothstep(0.13, 0.88, grooves);
-        float fine = 0.5 + 0.5 * sin(vUv.x * 258.0 + vUv.y * 179.0);
-        vec3 shadowMetal = mix(vec3(0.035, 0.055, 0.12), vec3(0.16, 0.07, 0.15), uSpecial);
-        float colorWeight = mix(0.76, 0.93, uSpecial) * (0.38 + 0.62 * metal);
-        vec3 foil = mix(shadowMetal, spectrum, colorWeight);
-        foil *= 0.88 + 0.12 * fine;
-        float streak = pow(max(0.0, sin((phase + uTilt * 0.16) * 20.0)), 25.0);
-        float sparks = pow(max(0.0, sin(vUv.x * 149.0 + vUv.y * 211.0 + uTilt * 8.0)), 55.0);
-        float glint = uMotion * (streak * 0.88 + sparks * 0.24);
-        foil = mix(foil, vec3(1.0, 0.96, 0.84), min(1.0, glint * mix(0.9, 1.25, uSpecial)));
-        gl_FragColor = vec4(foil, mix(0.94, 0.99, uSpecial));
+        vec3 darkMetal = vec3(0.17, 0.035, 0.027);
+        vec3 colorMetal = vec3(0.78, 0.15, 0.045);
+        vec3 brightMetal = vec3(1.0, 0.65, 0.21);
+        if (uSuit > 0.5 && uSuit < 1.5) {
+          darkMetal = vec3(0.025, 0.10, 0.20);
+          colorMetal = vec3(0.025, 0.42, 0.82);
+          brightMetal = vec3(0.36, 0.90, 1.0);
+        } else if (uSuit > 1.5 && uSuit < 2.5) {
+          darkMetal = vec3(0.035, 0.14, 0.065);
+          colorMetal = vec3(0.11, 0.53, 0.16);
+          brightMetal = vec3(0.60, 0.95, 0.31);
+        } else if (uSuit > 2.5) {
+          darkMetal = vec3(0.20, 0.10, 0.015);
+          colorMetal = vec3(0.77, 0.39, 0.035);
+          brightMetal = vec3(1.0, 0.85, 0.39);
+        }
+        // A fixed tilt changes the reflection; no clock or idle animation is used.
+        float phase = vUv.x * 1.0 + vUv.y * 0.61 + uTilt * 0.68;
+        float band = 0.5 + 0.5 * cos(phase * 18.0);
+        float groove = 0.5 + 0.5 * sin(phase * 48.0);
+        vec3 foil = mix(darkMetal, colorMetal, 0.42 + 0.42 * band);
+        foil = mix(foil, brightMetal, pow(band, mix(7.0, 4.0, uSpecial)) * (0.37 + 0.26 * uSpecial));
+        foil *= 0.84 + 0.16 * groove;
+        float etching = motif(vUv);
+        foil = mix(foil, brightMetal, etching * (0.13 + uMotion * (0.35 + 0.16 * uSpecial)));
+        float sweep = pow(max(0.0, sin(phase * 22.0)), 30.0);
+        float glitter = etching * pow(max(0.0, sin(vUv.x * 171.0 + vUv.y * 233.0 + uTilt * 8.0)), 12.0);
+        foil = mix(foil, brightMetal, min(1.0, uMotion * (sweep * 0.58 + glitter * (0.65 + 0.25 * uSpecial))));
+        gl_FragColor = vec4(foil, 1.0);
         #include <colorspace_fragment>
       }
     `,
@@ -166,8 +204,9 @@ export function createCardMesh(front: THREE.Texture, back: THREE.Texture, specia
   reverse.rotation.y = Math.PI;
   reverse.castShadow = true;
   root.add(reverse);
-  const isSpecial = Boolean((front.userData?.cardFace as { special?: boolean } | undefined)?.special ?? special);
-  const foil = new THREE.Mesh(createCardFoilGeometry(front, height), cardFoilMaterial(isSpecial));
+  const faceInfo = front.userData?.cardFace as { special?: boolean; suit?: Suit } | undefined;
+  const isSpecial = Boolean(faceInfo?.special ?? special);
+  const foil = new THREE.Mesh(createCardFoilGeometry(front, height), cardFoilMaterial(isSpecial, faceInfo?.suit ?? 'sun'));
   foil.name = 'card-border-foil';
   foil.position.z = thickness / 2 + .00035;
   let hasFoilPose = false;

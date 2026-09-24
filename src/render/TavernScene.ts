@@ -62,8 +62,7 @@ export class TavernScene {
   private eventKind = 'none';
   private impact = 0;
   private candleFlames: THREE.Mesh[] = [];
-  private fill = new THREE.DirectionalLight(0xffddad, 1.7);
-  private roomDust!: THREE.Points;
+  private ceilingLight = new THREE.SpotLight(0xffd7a5, 105, 23, .93, .72, 1.3);
   private lastSeatUpdate = -1;
   private seatProjectionDirty = true;
   private lastProjectedPointer = new THREE.Vector2(Number.NaN, Number.NaN);
@@ -71,21 +70,12 @@ export class TavernScene {
   private profileTime=0;
   private profileFrames=0;
   private profileDelta=0;
-  private total = 0;
-  private targetPower = .16;
-  private eventPulse = 0;
-  private direction: 1 | -1 = 1;
   private pointer = new THREE.Vector2();
   private zeroPointer = new THREE.Vector2();
   private smoothPointer = new THREE.Vector2();
   private world = new THREE.Group();
   private energyGroup = new THREE.Group();
-  private wellPower = .16;
-  private centerLight = new THREE.PointLight(0xffb339, 7, 13, 1.45);
-  private particles: THREE.Points;
-  private particleBase: Float32Array;
   private floatingIslands: THREE.Group[] = [];
-  private lanterns: THREE.Group[] = [];
   private stationChairs: THREE.Group[] = [];
   private textureLoader = new THREE.TextureLoader();
   private textureCache = new Map<string, Promise<THREE.Texture>>();
@@ -119,9 +109,6 @@ export class TavernScene {
 
     this.scene.background = new THREE.Color(0x080a17);
     this.scene.fog = new THREE.FogExp2(0x090a16, .019);
-    const particleSystem = this.makeParticles();
-    this.particles = particleSystem.points;
-    this.particleBase = particleSystem.base;
     this.buildWorld();
     this.world.add(this.number.group);
     const pmrem=new THREE.PMREMGenerator(this.renderer);
@@ -170,22 +157,18 @@ export class TavernScene {
     const budget=QUALITY_PRESETS[this.quality];
     if (qualityChanged) this.configurePostProcessing(budget);
     this.scene.environmentIntensity=budget.reflections?.32:.18;
-    let dynamic=0;
-    this.scene.traverse(object=>{
-      if(object instanceof THREE.PointLight && object!==this.centerLight) object.visible=dynamic++<budget.dynamicLights-1;
-      if(qualityChanged && object instanceof THREE.DirectionalLight && object.castShadow){object.shadow.mapSize.set(budget.shadowMapSize,budget.shadowMapSize);object.shadow.map?.dispose();object.shadow.map=null;}
-    });
+    if (qualityChanged) {
+      this.ceilingLight.shadow.mapSize.set(budget.shadowMapSize,budget.shadowMapSize);
+      this.ceilingLight.shadow.map?.dispose();
+      this.ceilingLight.shadow.map=null;
+    }
     this.hand.configure(options.reducedMotion);
-    this.particles.geometry.setDrawRange(0,budget.particleCount);
     this.resize();
     this.renderer.shadowMap.needsUpdate = true;
   }
 
   update(next: SceneState): void {
     this.active = next.active;
-    this.total = Math.max(0, next.total);
-    this.targetPower = .16 + Math.min(1, this.total / 100) * .78;
-    this.direction = next.direction;
     this.playerCount = next.playerCount;
     this.localSeat = next.localSeat;
     this.seatProjectionDirty = true;
@@ -203,7 +186,7 @@ export class TavernScene {
     });
     const key=next.eventKey??`${next.total}:${next.discardCardUrl}:${next.event}`;
     if(key!==this.lastEventKey){
-      if(this.lastEventKey){this.eventPulse=next.event==='exact'?1.6:next.event==='bust'?1.25:.8;this.impact=1;this.eventKind=next.event;}
+      if(this.lastEventKey){this.impact=1;this.eventKind=next.event;}
       this.lastEventKey=key;
     }
     this.renderer.domElement.hidden = !next.active||this.contextLost;
@@ -223,22 +206,15 @@ export class TavernScene {
   }
 
   private addLighting(): void {
-    this.scene.add(new THREE.HemisphereLight(0x98afe5, 0x815345, 2.1));
-    const moon = new THREE.DirectionalLight(0x8ba9ff, 2.15);
-    moon.position.set(-4, 9, -5);
-    moon.castShadow = true;
-    moon.shadow.mapSize.set(1024, 1024);
-    moon.shadow.bias=-.0004;moon.shadow.normalBias=.045;moon.shadow.radius=3;
-    moon.shadow.camera.left = -8; moon.shadow.camera.right = 8;
-    moon.shadow.camera.top = 7; moon.shadow.camera.bottom = -5;
-    this.scene.add(moon);
-    const warm = new THREE.DirectionalLight(0xffad63, 2.9);
-    warm.position.set(5, 6, 6);
-    this.scene.add(warm);
-    this.fill.position.set(0,5,10);this.scene.add(this.fill);
-    this.centerLight.position.set(0, 2.1, -.65);
-    this.centerLight.castShadow = false;
-    this.scene.add(this.centerLight);
+    this.scene.add(new THREE.HemisphereLight(0x8390b3, 0x39291f, .82));
+    this.ceilingLight.position.set(0, 8.5, 1.2);
+    this.ceilingLight.target.position.set(0, .35, -.25);
+    this.ceilingLight.castShadow = true;
+    this.ceilingLight.shadow.mapSize.set(1024, 1024);
+    this.ceilingLight.shadow.bias = -.00035;
+    this.ceilingLight.shadow.normalBias = .035;
+    this.ceilingLight.shadow.radius = 4;
+    this.scene.add(this.ceilingLight, this.ceilingLight.target);
   }
 
   private addSkyAndArchitecture(): void {
@@ -443,10 +419,9 @@ export class TavernScene {
     for(let i=0;i<4;i++){const a=Math.PI/4+i*Math.PI/2;const foot=new THREE.Mesh(new THREE.SphereGeometry(.24,18,12),brass);foot.scale.set(.8,.6,1.4);foot.position.set(Math.sin(a)*.8,.1,Math.cos(a)*.8);this.energyGroup.add(foot);}
     // A small engraved crest gives the ancient vessel personality without a cartoon face.
     const crest=new THREE.Mesh(new THREE.TorusGeometry(.22,.016,8,32),brass);crest.position.set(0,.85,1.21);this.energyGroup.add(crest);
-    const gem=new THREE.Mesh(new THREE.OctahedronGeometry(.105),new THREE.MeshStandardMaterial({color:0xffe5ac,emissive:0xffa134,emissiveIntensity:1.1,roughness:.19,metalness:.3}));gem.scale.y=1.25;gem.position.set(0,.85,1.255);this.energyGroup.add(gem);
-    const liquid=new THREE.Mesh(new THREE.CircleGeometry(.89,80),new THREE.MeshStandardMaterial({color:0xf7c370,emissive:0x794012,emissiveIntensity:.18,roughness:.48,metalness:.12,side:THREE.DoubleSide}));
+    const gem=new THREE.Mesh(new THREE.OctahedronGeometry(.105),new THREE.MeshStandardMaterial({color:0xc7a06b,roughness:.38,metalness:.48}));gem.scale.y=1.25;gem.position.set(0,.85,1.255);this.energyGroup.add(gem);
+    const liquid=new THREE.Mesh(new THREE.CircleGeometry(.89,80),new THREE.MeshStandardMaterial({color:0x352735,roughness:.4,metalness:.4,side:THREE.DoubleSide}));
     liquid.rotation.x=-Math.PI/2;liquid.position.y=1.405;this.energyGroup.add(liquid);
-    this.energyGroup.add(this.particles);
     this.deckPile=new CardPile(true,url=>this.loadTexture(url));
     this.discardPile=new CardPile(false,url=>this.loadTexture(url));
     this.deckStack=this.deckPile.group;this.discardStack=this.discardPile.group;
@@ -636,22 +611,6 @@ export class TavernScene {
     await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: 1, endScale: this.screenScale(targetRect, distance), draw: true });
   }
 
-  private makeParticles(): { points: THREE.Points; base: Float32Array } {
-    const count = 210;
-    const positions = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const radius = .55 + Math.random() * 1.3;
-      positions[i * 3] = Math.cos(angle) * radius;
-      positions[i * 3 + 1] = .25 + Math.random() * 1.8;
-      positions[i * 3 + 2] = Math.sin(angle) * radius;
-    }
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions.slice(), 3));
-    const points = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0xffd75a, map:glowTexture(), size: .11, transparent: true, opacity: .82, depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true }));
-    return { points, base: positions };
-  }
-
   private addProps(): void {
     const shelfMat = this.materials.wood;
     [-6.7, 6.7].forEach((x, sideIndex) => {
@@ -718,11 +677,8 @@ export class TavernScene {
     // Foreground floor boards and window-side bevels catch practical warm light.
     const arches=this.materials.brass;
     [-2.85,0,2.85].forEach(x=>{const ledge=new THREE.Mesh(new RoundedBoxGeometry(2.28,.15,.6,2,.045),wood);ledge.position.set(x,.62,-6.9);ledge.receiveShadow=true;this.world.add(ledge);const latch=new THREE.Mesh(new THREE.BoxGeometry(.035,3.1,.08),arches);latch.position.set(x,2.8,-7.13);this.world.add(latch);});
-    const dustGeometry=new THREE.BufferGeometry();const dust=new Float32Array(100*3);for(let i=0;i<100;i++){dust[i*3]=Math.sin(i*43.13)*7;dust[i*3+1]=.8+(i%29)/29*5;dust[i*3+2]=Math.cos(i*17.71)*6;}
-    dustGeometry.setAttribute('position',new THREE.BufferAttribute(dust,3));this.roomDust=new THREE.Points(dustGeometry,new THREE.PointsMaterial({map:glowTexture(),size:.07,color:0xc9d1ef,transparent:true,opacity:.28,depthWrite:false}));this.world.add(this.roomDust);
     const moon=new THREE.Mesh(new THREE.SphereGeometry(.55,24,20),new THREE.MeshBasicMaterial({color:0xacc6ff}));moon.position.set(2.1,5.1,-8.15);this.world.add(moon);
     const aura=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTexture(),color:0x727dff,transparent:true,opacity:.18,blending:THREE.AdditiveBlending,depthWrite:false}));aura.position.copy(moon.position);aura.scale.set(4,4,4);this.world.add(aura);
-    this.particles.geometry.setDrawRange(0,QUALITY_PRESETS[this.quality].particleCount);
   }
 
   private addLantern(x: number, y: number, z: number): void {
@@ -733,9 +689,6 @@ export class TavernScene {
     const top = new THREE.Mesh(new THREE.ConeGeometry(.3, .22, 6), frame); top.position.y = .38; group.add(top);
     const bottom = new THREE.Mesh(new THREE.CylinderGeometry(.25, .25, .08, 6), frame); bottom.position.y = -.32; group.add(bottom);
     group.position.set(x, y, z);
-    const light = new THREE.PointLight(0xff9745, 2.6, 5, 1.7);
-    group.add(light);
-    this.lanterns.push(group);
     this.world.add(group);
   }
 
@@ -838,34 +791,11 @@ export class TavernScene {
     this.number.update(time,delta,this.camera,this.reducedMotion);
     this.hand.update(delta);
 
-    this.eventPulse = Math.max(0, this.eventPulse - delta * 1.4);
-    const power = this.wellPower = THREE.MathUtils.lerp(this.wellPower, this.targetPower + this.eventPulse, 1 - Math.pow(.004, delta));
     this.impact=Math.max(0,this.impact-delta*1.35);
-    const drain=this.eventKind==='minus'||this.eventKind==='zero';
-    this.fill.intensity=1.6+power*.45-(drain?this.impact*.45:0);
     this.candleFlames.forEach((flame,i)=>{flame.scale.y=this.reducedMotion?1:1+Math.sin(time*9+i*2)*.14;});
-    if(this.roomDust){this.roomDust.rotation.y=this.reducedMotion?0:time*.009;}
-    document.documentElement.style.setProperty('--well-light',String(.15+Math.min(power,1)*.25));
-    this.centerLight.intensity = 4.8 + power * 7.5 - (drain?this.impact*3.5:0);
-    this.centerLight.color.setHSL(.095 - Math.min(.035, this.total / 4000), .98, .58);
     this.energyGroup.position.y = .40;
     this.energyGroup.scale.setScalar(1);
-
-    const pos = this.particles.geometry.getAttribute('position') as THREE.BufferAttribute;
-    const array = pos.array as Float32Array;
-    for (let i = 0; i < pos.count; i++) {
-      const baseYParticle = this.particleBase[i * 3 + 1];
-      array[i * 3 + 1] = .2 + ((baseYParticle + time * (.2 + power * .32) + i * .031) % 2.05);
-      const angle = time * .18 * this.direction + i * .37;
-      const radius = Math.hypot(this.particleBase[i * 3], this.particleBase[i * 3 + 2]);
-      array[i * 3] = Math.cos(angle) * radius;
-      array[i * 3 + 2] = Math.sin(angle) * radius;
-    }
-    pos.needsUpdate = true;
-    this.particles.visible=!this.reducedMotion;
-    (this.particles.material as THREE.PointsMaterial).opacity = .28 + Math.min(1, power) * .65;
     this.floatingIslands.forEach((island, i) => { island.position.y = 5.2-i*.42+(this.reducedMotion?0:Math.sin(time*.55+i)*.025); island.rotation.y = this.reducedMotion?0:Math.sin(time * .08 + i) * .08; });
-    this.lanterns.forEach((lantern, i) => { const light = lantern.children.find(child => child instanceof THREE.PointLight) as THREE.PointLight | undefined; if (light) light.intensity = 2.3 + (this.reducedMotion?0:Math.sin(time * 7.2 + i * 2.1) * .28); });
   }
 
   /** Keep bloom/AO on the room while drawing the printed cards without either. */

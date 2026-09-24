@@ -77,6 +77,12 @@ for(const special of [false,true]) {
   assert.equal(face.material.alphaTest,0,'Card edges must not use a jagged hard alpha cutoff');
   disposeCardMesh(card);
 }
+for (const [suit, index] of [['fire',0],['water',1],['leaf',2],['sun',3]]) {
+  const themed={image:{width:511,height:711},isTexture:true,userData:{cardFace:{suit,special:true}}};
+  const card=createCardMesh(themed,texture);
+  assert.equal(card.children[3].material.uniforms.uSuit.value,index,`${suit} foil must use its own palette and motif`);
+  disposeCardMesh(card);
+}
 const pile=new CardPile(false,async()=>texture);
 await pile.setCards([], 'back');
 assert.equal(pile.group.children.length,0,'An empty discard has no platform');
