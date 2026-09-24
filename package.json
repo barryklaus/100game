@@ -7,7 +7,7 @@
     "dev": "vite --host 0.0.0.0",
     "build": "tsc --noEmit && vite build",
     "build:cloudflare": "tsc --noEmit && tsc --noEmit -p tsconfig.worker.json && vite build --mode cloudflare",
-    "test": "node scripts/test-rules.mjs && node scripts/test-online.mjs && node scripts/test-hosted.mjs && node scripts/test-presentation.mjs",
+    "test": "node scripts/test-rules.mjs && node scripts/test-online.mjs && node scripts/test-hosted.mjs && node scripts/test-presentation.mjs && node scripts/test-gyro.mjs",
     "preview": "vite preview --host 0.0.0.0",
     "dev:cloudflare": "wrangler dev --local",
     "deploy:cloudflare": "pnpm build:cloudflare && wrangler deploy"

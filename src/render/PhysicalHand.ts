@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { createCardMesh, disposeCardMesh } from './CardMesh';
+import { prefersLosslessHand } from '../game/deck';
 
 type HandObject = { id: string; element: HTMLElement; mesh?: THREE.Group; loading: boolean; rotation: THREE.Euler; };
 
@@ -11,14 +12,36 @@ export class PhysicalHand {
   private temp = new THREE.Vector3();
   private rotation = new THREE.Quaternion();
   private reducedMotion = false;
+  private crispMobile = prefersLosslessHand();
   constructor(private scene: THREE.Scene, private camera: THREE.PerspectiveCamera, private loadTexture: (url: string) => Promise<THREE.Texture>) {
     this.observer = new MutationObserver(() => this.sync());
     this.observer.observe(document.querySelector('#app')!, { childList: true, subtree: true });
+    document.documentElement.classList.toggle('crisp-mobile-hand', this.crispMobile);
+    addEventListener('resize', this.onResize, { passive: true });
     this.sync();
   }
   configure(reducedMotion: boolean): void { this.reducedMotion = reducedMotion; }
+  private onResize = (): void => {
+    const crispMobile = prefersLosslessHand();
+    if (crispMobile === this.crispMobile) return;
+    this.crispMobile = crispMobile;
+    document.documentElement.classList.toggle('crisp-mobile-hand', crispMobile);
+    this.sync();
+  };
   private sync(): void {
     const elements = Array.from(document.querySelectorAll<HTMLElement>('.local-hand .hand-card'));
+    if (this.crispMobile) {
+      for (const item of this.cards.values()) if (item.mesh) {
+        this.scene.remove(item.mesh); disposeCardMesh(item.mesh);
+      }
+      this.cards.clear();
+      for (const element of elements) {
+        element.classList.remove('mesh-ready');
+        const image = element.querySelector<HTMLImageElement>('img');
+        if (image?.dataset.fullSrc && image.getAttribute('src') !== image.dataset.fullSrc) image.src = image.dataset.fullSrc;
+      }
+      return;
+    }
     const ids = new Set(elements.map(element => element.dataset.card!));
     for (const [id, item] of this.cards) {
       if (ids.has(id)) continue;
@@ -26,6 +49,8 @@ export class PhysicalHand {
       this.cards.delete(id);
     }
     for (const element of elements) {
+      const image = element.querySelector<HTMLImageElement>('img');
+      if (image?.dataset.standardSrc && image.getAttribute('src') !== image.dataset.standardSrc) image.src = image.dataset.standardSrc;
       const id = element.dataset.card!;
       const existing = this.cards.get(id);
       if (existing) { existing.element = element; if(existing.mesh) element.classList.add('mesh-ready'); continue; }
@@ -48,6 +73,7 @@ export class PhysicalHand {
     }
   }
   update(delta: number): void {
+    if (this.crispMobile) return;
     this.camera.updateMatrixWorld();
     for (const item of this.cards.values()) {
       const {element,mesh}=item;
@@ -82,6 +108,8 @@ export class PhysicalHand {
   dispose(): void {
     this.disposed=true;
     this.observer.disconnect();
+    removeEventListener('resize', this.onResize);
+    document.documentElement.classList.remove('crisp-mobile-hand');
     for(const item of this.cards.values()) if(item.mesh){this.scene.remove(item.mesh);disposeCardMesh(item.mesh);}
     this.cards.clear();
   }

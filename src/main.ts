@@ -3,7 +3,7 @@ import './game-presentation.css';
 import './premium.css';
 import { CONFIG, MOODS, moodSymbols, suitSymbols } from './data/config';
 import { defaultSeats, loadSettings, loadStats, saveSettings, saveStats, type Settings, type Stats } from './data/storage';
-import { backImage, cardDisplayRank, cardImage } from './game/deck';
+import { backImage, cardDisplayRank, cardImage, cardImageLossless, prefersLosslessHand } from './game/deck';
 import { cardFace } from './game/cardFace';
 import { chooseCpuCard, chooseCpuTarget } from './game/cpu';
 import { createGame, playCard, selectTarget } from './game/rules';
@@ -15,6 +15,7 @@ import { OnlineRoom, newRoomId } from './game/online';
 import { HostedRoom } from './game/hosted';
 import { isCardEdgeGrip, isDoubleCardTap, isPlayGesture, type CardTap } from './ui/cardGesture';
 import { updateGameView } from './ui/updateGameView';
+import { GyroHand } from './ui/GyroHand';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 let settings: Settings = loadSettings();
@@ -44,6 +45,16 @@ let observedOnlineHand = new Set<string>();
 let observedOnlineRound = 0;
 const audio = new AudioManager();
 const holo = new HoloShader();
+const gyro = new GyroHand();
+gyro.onStatusChange = () => {
+  const button = document.querySelector<HTMLButtonElement>('[data-action="gyro-enable"]');
+  if (button) {
+    button.textContent = gyro.status === 'on' ? 'Recenter phone tilt' : gyro.status === 'waiting' ? 'Waiting for motion…' : 'Enable phone tilt';
+    button.disabled = gyro.status === 'waiting';
+  }
+  const message = document.querySelector<HTMLElement>('#gyro-status');
+  if (message) message.textContent = gyro.status === 'denied' ? 'Motion access was denied. You can still drag cards to tilt them.' : gyro.status === 'unavailable' ? 'Motion sensors are unavailable in this browser.' : gyro.status === 'on' ? 'Move your phone gently to tilt the cards. Dragging a card takes control.' : 'Available on supported phones.';
+};
 audio.configure(settings);
 let tavern: TavernScene | undefined;
 try { tavern = new TavernScene(); tavern.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion}); } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
@@ -120,6 +131,7 @@ function applyPreferences(): void {
   tavern?.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion});
   holo.enabled = !settings.reducedMotion;
   document.documentElement.classList.toggle('reduce-motion',settings.reducedMotion);
+  if (settings.reducedMotion) gyro.stop();
   document.documentElement.style.setProperty('--ui-scale',String(settings.uiScale));
 }
 function save(): void { saveSettings(settings); saveStats(stats); applyPreferences(); }
@@ -320,7 +332,10 @@ function cardElement(card: Card, selected = false, extra = ''): string {
   const special = face.special;
   const interactive = extra.includes('hand-card') && !extra.includes('waiting-hand');
   const rank = cardDisplayRank(card);
-  return `<div class="playing-card suit-${face.suit} ${special ? 'special' : 'standard'} ${selected ? 'selected' : ''} ${extra}" data-card="${card.id}" role="${interactive?'button':'img'}" ${interactive?'tabindex="0"':''} aria-label="${rank} of ${card.suit}${special ? ', special card' : ''}"><img src="${cardImage(card)}" alt="${rank} of ${card.suit}" draggable="false"><span class="card-print" aria-hidden="true"><span class="card-index top">${face.index}</span>${special ? `<span class="card-action"><strong>${face.title}</strong><small>${face.detail}</small></span>` : ''}<span class="card-index bottom">${face.index}</span></span></div>`;
+  const hand = extra.includes('hand-card');
+  const handSources = hand ? ` data-standard-src="${cardImage(card)}" data-full-src="${cardImageLossless(card)}"` : '';
+  const image = hand && prefersLosslessHand() ? cardImageLossless(card) : cardImage(card);
+  return `<div class="playing-card suit-${face.suit} ${special ? 'special' : 'standard'} ${selected ? 'selected' : ''} ${extra}" data-card="${card.id}" role="${interactive?'button':'img'}" ${interactive?'tabindex="0"':''} aria-label="${rank} of ${card.suit}${special ? ', special card' : ''}"><img src="${image}"${handSources} alt="${rank} of ${card.suit}" draggable="false"><span class="card-print" aria-hidden="true"><span class="card-index top">${face.index}</span>${special ? `<span class="card-action"><strong>${face.title}</strong><small>${face.detail}</small></span>` : ''}<span class="card-index bottom">${face.index}</span></span></div>`;
 }
 function setupView(): string {
   return `<main class="setup-page">
@@ -384,7 +399,7 @@ function resultView(): string {
 function modalView(): string {
   if (!modal) return '';
   const body = modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 busts; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play immediately. Their normal turn stays in place.</span></div><div><strong>REVERSE</strong><span>Reverse direction. In a two-player game, play again.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Bust for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Flick from an edge or corner to spin it into the discard pile.</p>`
-  : modal==='settings' ? `<h2>Make yourself at home</h2><div class="modal-setting"><label for="graphics">Visual quality</label><select id="graphics">${(['ultra','high','medium','mobile'] as const).map(tier=>`<option value="${tier}" ${settings.graphics===tier?'selected':''}>${tier.charAt(0).toUpperCase()+tier.slice(1)}</option>`).join('')}</select><small>Ultra adds richer shadows, reflections and glow. Mobile keeps the same world with lighter effects.</small></div>${[['volume','Master volume',settings.volume],['sfxVolume','Sound effects',settings.sfxVolume],['musicVolume','Music',settings.musicVolume],['ambienceVolume','Ambience',settings.ambienceVolume]].map(([id,label,value])=>`<div class="modal-setting"><label for="${id}">${label}<output for="${id}">${Math.round(Number(value)*100)}%</output></label><input id="${id}" type="range" min="0" max="1" step=".01" value="${value}"></div>`).join('')}<label class="setting-toggle"><input id="muted" type="checkbox" ${settings.muted?'checked':''}>Mute all sounds</label><label class="setting-toggle"><input id="reducedMotion" type="checkbox" ${settings.reducedMotion?'checked':''}>Reduced motion</label><div class="modal-setting"><label for="uiScale">Interface size <output for="uiScale">${Math.round(settings.uiScale*100)}%</output></label><input id="uiScale" type="range" min=".85" max="1.2" step=".05" value="${settings.uiScale}"></div><p>Settings save on this device.</p>`
+  : modal==='settings' ? `<h2>Make yourself at home</h2><div class="modal-setting"><label for="graphics">Visual quality</label><select id="graphics">${(['ultra','high','medium','mobile'] as const).map(tier=>`<option value="${tier}" ${settings.graphics===tier?'selected':''}>${tier.charAt(0).toUpperCase()+tier.slice(1)}</option>`).join('')}</select><small>Ultra adds richer shadows, reflections and glow. Mobile keeps the same world with lighter effects.</small></div>${[['volume','Master volume',settings.volume],['sfxVolume','Sound effects',settings.sfxVolume],['musicVolume','Music',settings.musicVolume],['ambienceVolume','Ambience',settings.ambienceVolume]].map(([id,label,value])=>`<div class="modal-setting"><label for="${id}">${label}<output for="${id}">${Math.round(Number(value)*100)}%</output></label><input id="${id}" type="range" min="0" max="1" step=".01" value="${value}"></div>`).join('')}<label class="setting-toggle"><input id="muted" type="checkbox" ${settings.muted?'checked':''}>Mute all sounds</label><label class="setting-toggle"><input id="reducedMotion" type="checkbox" ${settings.reducedMotion?'checked':''}>Reduced motion</label><div class="modal-setting gyro-setting"><label>Phone tilt</label><button class="secondary-button" data-action="gyro-enable" ${!gyro.available || settings.reducedMotion ? 'disabled' : ''}>${gyro.status === 'on' ? 'Recenter phone tilt' : gyro.status === 'waiting' ? 'Waiting for motion…' : 'Enable phone tilt'}</button><small id="gyro-status">${settings.reducedMotion ? 'Turn off Reduced motion to use phone tilt.' : gyro.status === 'on' ? 'Move your phone gently to tilt the cards. Dragging a card takes control.' : gyro.status === 'denied' ? 'Motion access was denied. You can still drag cards to tilt them.' : gyro.available ? 'Available on supported phones.' : 'Motion sensors are unavailable in this browser.'}</small></div><div class="modal-setting"><label for="uiScale">Interface size <output for="uiScale">${Math.round(settings.uiScale*100)}%</output></label><input id="uiScale" type="range" min=".85" max="1.2" step=".05" value="${settings.uiScale}"></div><p>Settings save on this device.</p>`
   : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Busts',stats.busts],['Cards played',stats.cards],['Choose Player',stats.sevens],['Reverse',stats.eights],['Zero',stats.nines],['Minus Ten',stats.tens],['Test rating',stats.rating],['Currency',stats.currency]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Statistics, rating, and currency are local to this device. Currency does not affect gameplay.</p>`
   : modal==='history' ? `<h2>Game history</h2><p>Recent moves at this table.</p><ul class="history-list">${state?.log.length ? state.log.map(gameLogLine).join('') : '<li>No cards have been played yet.</li>'}</ul>`
   : `<h2>Game menu</h2><p>Round ${state?.round || 1} · ${state?.players.length || settings.playerCount} players</p><div class="menu-actions">${!online || (online.isHost && !(online instanceof HostedRoom)) ? '<button class="secondary-button" data-action="restart">Restart round</button>' : ''}<button class="secondary-button" data-action="${online?'leave-room':'new-game'}">${online?'Leave online room':'Return to setup'}</button><button class="secondary-button" data-action="settings">Sound & display</button><button class="secondary-button" data-action="history">Table activity</button><button class="secondary-button" data-action="stats">Local statistics</button></div>`;
@@ -434,6 +449,10 @@ app.addEventListener('click', event => {
     if (action === 'menu') { modal = 'menu'; render(); }
     if (action === 'emotes') { if(emoteHeld){emoteHeld=false;}else{emotesOpen = !emotesOpen; render();} }
     if (action === 'close-modal') { modal = null; render(); }
+    if (action === 'gyro-enable') {
+      if (gyro.status === 'on') gyro.recenter();
+      else void gyro.enable();
+    }
     return;
   }
   const emote = target.closest<HTMLElement>('[data-emote]')?.dataset.emote as PlayerConfig['mood'] | undefined;
@@ -464,7 +483,7 @@ app.addEventListener('change', event => {
   if (el.dataset.seatName) setSeat(Number(el.dataset.seatName), { name: el.value });
   if (el.id === 'live-mood' && state) { const seat = localSeat(); if (online) online.setMood(seat, el.value as PlayerConfig['mood']); else { state.players[seat].mood = el.value as PlayerConfig['mood']; settings.seats[seat].mood = el.value as PlayerConfig['mood']; save(); render(); } }
   if (el.id === 'graphics') { settings.graphics = el.value as Settings['graphics']; save(); }
-  if (el.id === 'muted' || el.id === 'reducedMotion') { settings[el.id]=(el as HTMLInputElement).checked;save(); }
+  if (el.id === 'muted' || el.id === 'reducedMotion') { settings[el.id]=(el as HTMLInputElement).checked;save(); if (el.id === 'reducedMotion') render(); }
 });
 app.addEventListener('input', event => {
   const el = event.target as HTMLInputElement;
@@ -508,7 +527,8 @@ app.addEventListener('pointermove',event=>{
   const turn=settings.reducedMotion?0:Math.max(-9,Math.min(9,dx*.025));
   drag.element.dataset.tiltX=String(tx*Math.PI/180);drag.element.dataset.tiltY=String(ty*Math.PI/180);drag.element.dataset.turn=String(turn*Math.PI/180);
   drag.element.classList.toggle('flick-ready',dy<=-18 && Math.abs(dy)>Math.abs(dx)*.32 && canControlActor());
-  drag.element.style.transform=`translate3d(${dx}px,${dy}px,24px) ${drag.baseTransform==='none'?'':drag.baseTransform}`;
+  const crispTilt=document.documentElement.classList.contains('crisp-mobile-hand') ? ` rotateX(${-tx}deg) rotateY(${-ty}deg) rotateZ(${-turn}deg)` : '';
+  drag.element.style.transform=`translate3d(${dx}px,${dy}px,24px) ${drag.baseTransform==='none'?'':drag.baseTransform}${crispTilt}`;
   drag.lastX=event.clientX;drag.lastY=event.clientY;drag.lastTime=now;
 });
 function endDrag(event:PointerEvent):void{

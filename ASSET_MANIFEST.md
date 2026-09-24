@@ -1,6 +1,8 @@
 # Asset manifest
 
-The authoritative card artwork is the user supplied `CARD DESIGN/FINAL/HIGH-RESOLUTION` set. All 52 fronts and the back are used. Source PNG files remain unchanged outside the repository. The game uses quality-94 WebP copies at their supplied approximately 1063–1064 × 1478–1480 dimensions. Rounded corners are cut by 3D geometry and CSS at display time, so no artwork is cropped or painted over in the files.
+The authoritative card artwork is the user supplied `CARD DESIGN/FINAL/HIGH-RESOLUTION` set. All 52 fronts and the back are used. Source PNG files remain unchanged outside the repository. The game uses quality-94 WebP copies for the 3D table and flights, plus byte-for-byte copies of the original lossless PNG fronts in `public/assets/cards/full/` for the visible mobile hand. Both sets retain their supplied approximately 1063–1064 × 1478–1480 dimensions. Rounded corners are cut by 3D geometry and CSS at display time, so no artwork is cropped or painted over in the files. The mobile hand uses native browser image rendering to remain sharp even when the room's WebGL resolution is reduced for performance. Only the two visible hand PNGs load initially; subsequent cards load as drawn.
+
+On supported phones, Settings has an **Enable phone tilt** control. It requests orientation access from the button gesture where the browser requires permission, calibrates to the phone's current angle, and applies a subtle tilt to the native-resolution hand images and their border foil. Dragging a card takes control until release. Reduced motion disables phone tilt, and the cards remain fully playable if sensor access is unavailable.
 
 ## Final card texture mapping
 
