@@ -19,7 +19,7 @@ The authoritative card artwork is the user supplied `CARD DESIGN/FINAL/HIGH-RESO
 
 All four suits map into `public/assets/cards/{suit}-{rank}.webp`. Source `*-1.png` maps to game rank A; `*-10A.png`, `*-10B.png`, and `*-10C.png` map to game ranks J, Q, and K respectively. The source files remain unchanged.
 
-The source artwork stays unchanged. At display time each front gets a thick suit-colored frame, top-left and rotated bottom-right rank indices, and a printed instruction band for ranks 7–10. The 3D surface and thin paper edge share one rounded card outline; a shader ring follows the border only. Ordinary cards use a restrained metallic sheen; ranks 7–10 use stronger prismatic foil. Reflected glints respond to card movement and tilt, with no automatic animation. The HTML fallback uses matching clipped CSS border effects. The alternate 10 artworks used by Jack, Queen, and King display as normal 10s (+10). Rank 10 itself is MINUS TEN (−10), not a normal 10.
+The source artwork stays unchanged. At display time each front gets a thick suit-colored frame, top-left and rotated bottom-right rank indices, and a printed instruction band for ranks 7–10. The 3D surface and thin paper edge share one rounded card outline; a shader ring follows the border only. All card fronts use saturated holographic metal, with deeper spectral color and sharper glints on ranks 7–10. Reflected glints respond to card movement and tilt, with no automatic animation. The HTML fallback uses matching clipped CSS border effects. The alternate 10 artworks used by Jack, Queen, and King display as normal 10s (+10). Rank 10 itself is MINUS TEN (−10), not a normal 10.
 
 ## Supplied card sounds
 

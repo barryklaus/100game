@@ -272,11 +272,11 @@ button:active { translate:0 1px; }
   padding:5.1%;
   pointer-events:none;
   background:
-    radial-gradient(circle at var(--holo-x,50%) var(--holo-y,50%),rgb(255 255 247 / var(--foil-motion,0)) 0,transparent 31%),
-    repeating-linear-gradient(115deg,#fff5 0 1px,transparent 1px 5px),
-    linear-gradient(122deg,#77522a,#fff5ca 18%,#b08045 41%,#fff5d5 52%,#9c7038 72%,#f5ddb0);
+    radial-gradient(circle at var(--holo-x,50%) var(--holo-y,50%),rgb(255 255 245 / var(--foil-motion,0)) 0,transparent 27%),
+    repeating-linear-gradient(119deg,#07102d22 0 1px,#ffffff30 1px 2px,transparent 2px 7px),
+    conic-gradient(from var(--foil-angle,35deg) at 48% 52%,#122342,#04bdd7 13%,#dcefff 19%,#5128ae 29%,#d01893 41%,#a86d10 54%,#06ae9e 69%,#18325f 83%,#8950dc 93%,#122342);
   mix-blend-mode:normal;
-  opacity:.60!important;
+  opacity:.96!important;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;
   mask-composite:exclude;
@@ -285,13 +285,14 @@ button:active { translate:0 1px; }
 .playing-card.special::after,
 .world3d-active .hand-card.special::after {
   background:
-    radial-gradient(circle at var(--holo-x,50%) var(--holo-y,50%),rgb(255 255 255 / var(--foil-motion,0)) 0,transparent 29%),
-    repeating-linear-gradient(120deg,#fff7 0 1px,transparent 1px 5px),
-    conic-gradient(from 34deg at 47% 52%,#f7e9a0,#75edff,#a889ff,#ff8cbd,#fff4bb,#72e6eb,#d6b5ff,#f7e9a0);
-  opacity:.82!important;
+    radial-gradient(circle at var(--holo-x,50%) var(--holo-y,50%),rgb(255 255 255 / var(--foil-motion,0)) 0,transparent 25%),
+    repeating-linear-gradient(123deg,#07103f22 0 1px,#ffffff38 1px 2px,transparent 2px 6px),
+    conic-gradient(from var(--foil-angle,35deg) at 48% 52%,#111d53,#00d6f4 11%,#f8fdff 17%,#5023d5 27%,#f000a9 41%,#f9b400 54%,#0bcfbb 68%,#1932ad 82%,#db38f2 92%,#111d53);
+  opacity:1!important;
   animation:none!important;
 }
-.playing-card.special[data-foil-moving]::after {opacity:.96!important;}
+.playing-card[data-foil-moving]::after {filter:saturate(1.28) brightness(1.12);}
+.playing-card:is(.flying-card,.draw-front)::after {--foil-motion:.82;}
 .world3d-active .hand-card.mesh-ready {background:transparent!important;overflow:visible;}
 .world3d-active .hand-card.mesh-ready .card-print {visibility:hidden;}
 .world3d-active .hand-card.mesh-ready::after {display:none!important;}

@@ -94,22 +94,23 @@ function cardFoilMaterial(special: boolean): THREE.ShaderMaterial {
       uniform float uMotion;
       uniform float uSpecial;
       void main() {
-        // Pearl and spectral color are fixed on a resting card. Only its real
-        // position or orientation change brings out the sharp moving glint.
-        float phase = vUv.x * 0.83 + vUv.y * 0.49 + uTilt * 0.68;
-        float grain = 0.5 + 0.5 * sin(vUv.x * 231.0 + vUv.y * 173.0);
-        float threads = 0.5 + 0.5 * sin((vUv.x + vUv.y * 0.66) * 85.0);
-        vec3 rainbow = 0.56 + 0.44 * cos(6.2831853 * (phase * 2.3 + vec3(0.0, 0.33, 0.67)));
-        vec3 pearl = vec3(0.95, 0.91, 0.82);
-        vec3 specialFoil = mix(pearl, rainbow, 0.72 + 0.10 * threads);
-        vec3 normalFoil = mix(vec3(0.53, 0.34, 0.13), vec3(1.0, 0.91, 0.64), 0.35 + 0.35 * threads);
-        float stripe = pow(max(0.0, sin((phase + uTilt * 0.22) * 19.0)), 24.0);
-        float sparkle = pow(max(0.0, sin(vUv.x * 133.0 + vUv.y * 193.0 + uTilt * 7.0)), 48.0);
-        float glint = uMotion * (stripe * 0.84 + sparkle * 0.16);
-        vec3 foil = mix(normalFoil, specialFoil, uSpecial);
-        foil = mix(foil, vec3(1.0, 0.98, 0.91), glint);
-        float opacity = mix(0.48, 0.84, uSpecial) + grain * 0.035 + glint * 0.12;
-        gl_FragColor = vec4(foil, min(opacity, 1.0));
+        // Deep spectral metal is visible at rest. The narrow silver flash is
+        // driven by actual card motion, never by elapsed time.
+        float phase = vUv.x * 0.91 + vUv.y * 0.56 + uTilt * 0.76;
+        vec3 spectrum = 0.5 + 0.5 * cos(6.2831853 * (phase * 2.45 + vec3(0.0, 0.34, 0.68)));
+        spectrum = pow(spectrum, vec3(1.38)) * 1.34;
+        float grooves = 0.5 + 0.5 * sin(phase * 45.0);
+        float metal = smoothstep(0.13, 0.88, grooves);
+        float fine = 0.5 + 0.5 * sin(vUv.x * 258.0 + vUv.y * 179.0);
+        vec3 shadowMetal = mix(vec3(0.035, 0.055, 0.12), vec3(0.16, 0.07, 0.15), uSpecial);
+        float colorWeight = mix(0.76, 0.93, uSpecial) * (0.38 + 0.62 * metal);
+        vec3 foil = mix(shadowMetal, spectrum, colorWeight);
+        foil *= 0.88 + 0.12 * fine;
+        float streak = pow(max(0.0, sin((phase + uTilt * 0.16) * 20.0)), 25.0);
+        float sparks = pow(max(0.0, sin(vUv.x * 149.0 + vUv.y * 211.0 + uTilt * 8.0)), 55.0);
+        float glint = uMotion * (streak * 0.88 + sparks * 0.24);
+        foil = mix(foil, vec3(1.0, 0.96, 0.84), min(1.0, glint * mix(0.9, 1.25, uSpecial)));
+        gl_FragColor = vec4(foil, mix(0.94, 0.99, uSpecial));
         #include <colorspace_fragment>
       }
     `,
@@ -179,7 +180,7 @@ export function createCardMesh(front: THREE.Texture, back: THREE.Texture, specia
     cameraRight.setFromMatrixColumn(camera.matrixWorld, 0);
     cameraUp.setFromMatrixColumn(camera.matrixWorld, 1);
     shader.uniforms.uTilt.value = foilNormal.dot(cameraRight) * .8 + foilNormal.dot(cameraUp) * .5;
-    const motion = hasFoilPose ? Math.min(1, foilPosition.distanceTo(lastPosition) * 10 + foilNormal.distanceTo(lastNormal) * 5) : 0;
+    const motion = hasFoilPose ? Math.min(1, foilPosition.distanceTo(lastPosition) * 28 + foilNormal.distanceTo(lastNormal) * 14) : 0;
     shader.uniforms.uMotion.value = document.documentElement.classList.contains('reduce-motion') ? 0 : motion;
     lastPosition.copy(foilPosition); lastNormal.copy(foilNormal); hasFoilPose = true;
   };

@@ -27,6 +27,7 @@ export class HoloShader {
     this.active.style.removeProperty('--card-tilt-y');
     this.active.style.removeProperty('--holo-x');
     this.active.style.removeProperty('--holo-y');
+    this.active.style.removeProperty('--foil-angle');
     this.active.style.removeProperty('--foil-motion');
     this.active.removeAttribute('data-card-hover');
     this.active.removeAttribute('data-card-pressed');
@@ -50,6 +51,7 @@ export class HoloShader {
     card.style.setProperty('--card-tilt-y', `${((x - .5) * 9).toFixed(2)}deg`);
     card.style.setProperty('--holo-x', `${(x * 100).toFixed(1)}%`);
     card.style.setProperty('--holo-y', `${(y * 100).toFixed(1)}%`);
+    card.style.setProperty('--foil-angle',`${(35+(x-.5)*90+(y-.5)*36).toFixed(1)}deg`);
     const travel=this.lastPointer ? Math.hypot(event.clientX-this.lastPointer.x,event.clientY-this.lastPointer.y) : 0;
     this.lastPointer={x:event.clientX,y:event.clientY};
     const motion=Math.min(.9,travel/18);
