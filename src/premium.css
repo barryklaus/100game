@@ -189,9 +189,22 @@ button:active { translate:0 1px; }
 .game-page .seat:hover {transform:translate(-50%,-50%)!important;}
 .game-page .seat.active::before,
 .game-page .seat .character-head::after {display:none!important;}
-.game-page .seat .character-head,
-.world3d-active .seat.active .character-head {border:0!important;outline:0!important;background:transparent!important;box-shadow:0 5px 12px #0009!important;}
-.game-page .dock-avatar {border:0!important;box-shadow:0 5px 12px #0009!important;}
+.game-page .seat .character-head {
+  border:3px solid #302239!important;
+  outline:2px solid #e5be6d!important;
+  background:#191622!important;
+  box-shadow:inset 0 0 0 1px #fff1bc66,0 5px 12px #000b!important;
+}
+.game-page .seat.active .character-head {
+  border-color:#fff3bb!important;
+  outline:3px solid #ffc342!important;
+  box-shadow:0 0 0 3px #ffe19c,0 0 16px 6px #ffd34d,0 0 34px 13px #ffad3ba8,0 5px 12px #000b!important;
+}
+.game-page .dock-avatar {border:3px solid #e5be6d!important;box-shadow:0 0 0 2px #322638,0 5px 12px #000b!important;}
+.game-page .dock-prompt.my-turn .dock-avatar {
+  border-color:#fff3bb!important;
+  box-shadow:0 0 0 3px #ffc342,0 0 16px 6px #ffd34d,0 0 34px 13px #ffad3ba8,0 5px 12px #000b!important;
+}
 /* The fallback table keeps a static pot, without an orbit or moving liquid. */
 .game-page .energy-ring {display:none!important;}
 .game-page .cauldron-liquid {animation:none!important;}

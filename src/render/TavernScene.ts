@@ -339,24 +339,27 @@ export class TavernScene {
 
   private addTable(): void {
     const {wood,cloth,brass}=this.materials;
+    const tableSurface = new THREE.Group();
+    tableSurface.scale.set(.86, 1, .86);
+    this.world.add(tableSurface);
     const base = new THREE.Mesh(new THREE.CylinderGeometry(6.15,6.35,.65,96),wood);
-    base.position.y=-.3;base.castShadow=true;base.receiveShadow=true;this.world.add(base);
+    base.position.y=-.3;base.castShadow=true;base.receiveShadow=true;tableSurface.add(base);
     const top=new THREE.Mesh(new THREE.CylinderGeometry(5.71,5.73,.17,96),cloth);
-    top.position.y=.2;top.receiveShadow=true;this.world.add(top);
+    top.position.y=.2;top.receiveShadow=true;tableSurface.add(top);
     const inset=new THREE.Mesh(new THREE.CylinderGeometry(5.68,5.68,.075,96),cloth);
-    inset.position.y=.31;inset.receiveShadow=true;this.world.add(inset);
+    inset.position.y=.31;inset.receiveShadow=true;tableSurface.add(inset);
     [[6.1,.22,.19],[6.2,.12,-.43],[5.77,.12,.27]].forEach(([radius,tube,y])=>{
-      const rim=new THREE.Mesh(new THREE.TorusGeometry(radius,tube,16,112),wood);rim.rotation.x=Math.PI/2;rim.position.y=y;rim.castShadow=true;rim.receiveShadow=true;this.world.add(rim);
+      const rim=new THREE.Mesh(new THREE.TorusGeometry(radius,tube,16,112),wood);rim.rotation.x=Math.PI/2;rim.position.y=y;rim.castShadow=true;rim.receiveShadow=true;tableSurface.add(rim);
     });
     [[5.89,.025,.39],[6.23,.018,.23],[5.58,.014,.305]].forEach(([radius,tube,y])=>{
-      const rim=new THREE.Mesh(new THREE.TorusGeometry(radius,tube,8,112),brass);rim.rotation.x=Math.PI/2;rim.position.y=y;this.world.add(rim);
+      const rim=new THREE.Mesh(new THREE.TorusGeometry(radius,tube,8,112),brass);rim.rotation.x=Math.PI/2;rim.position.y=y;tableSurface.add(rim);
     });
     const inlay=new THREE.InstancedMesh(new THREE.BoxGeometry(.035,.013,.17),brass,80);
-    for(let i=0;i<80;i++){const a=i/80*Math.PI*2;const m=new THREE.Matrix4().makeRotationY(a);m.setPosition(Math.sin(a)*5.93,.423,Math.cos(a)*5.93);inlay.setMatrixAt(i,m);}this.world.add(inlay);
+    for(let i=0;i<80;i++){const a=i/80*Math.PI*2;const m=new THREE.Matrix4().makeRotationY(a);m.setPosition(Math.sin(a)*5.93,.423,Math.cos(a)*5.93);inlay.setMatrixAt(i,m);}tableSurface.add(inlay);
     // Small inset studs mark the table edge without circles beneath the seats.
     for(let i=0;i<8;i++){
       const a=i/8*Math.PI*2;
-      const jewel=new THREE.Mesh(new THREE.OctahedronGeometry(.1),brass);jewel.scale.y=.25;jewel.position.set(Math.sin(a)*5.82,.43,Math.cos(a)*5.82);this.world.add(jewel);
+      const jewel=new THREE.Mesh(new THREE.OctahedronGeometry(.1),brass);jewel.scale.y=.25;jewel.position.set(Math.sin(a)*5.82,.43,Math.cos(a)*5.82);tableSurface.add(jewel);
     }
     const floor=new THREE.Mesh(new THREE.CylinderGeometry(14,14,.1,64),wood);floor.position.y=-1.1;floor.receiveShadow=true;this.world.add(floor);
   }
@@ -400,7 +403,7 @@ export class TavernScene {
         leg.castShadow = true;
         chair.add(leg);
       });
-      chair.position.set(Math.sin(angle) * 6.95, -.12, Math.cos(angle) * 6.95);
+      chair.position.set(Math.sin(angle) * 6, -.12, Math.cos(angle) * 6);
       chair.rotation.y = angle;
       this.stationChairs.push(chair);
       this.world.add(chair);
@@ -425,8 +428,8 @@ export class TavernScene {
     this.deckPile=new CardPile(true,url=>this.loadTexture(url));
     this.discardPile=new CardPile(false,url=>this.loadTexture(url));
     this.deckStack=this.deckPile.group;this.discardStack=this.discardPile.group;
-    this.deckStack.position.set(-2.82,0,-.06);this.deckStack.rotation.y=-.06;
-    this.discardStack.position.set(2.82,0,-.06);this.discardStack.rotation.y=.06;
+    this.deckStack.position.set(-2.42,0,-.06);this.deckStack.rotation.y=-.06;
+    this.discardStack.position.set(2.42,0,-.06);this.discardStack.rotation.y=.06;
     this.world.add(this.deckStack,this.discardStack);
     const pixels=new Uint8Array(64*64*4);
     for(let y=0;y<64;y++)for(let x=0;x<64;x++){
@@ -643,7 +646,7 @@ export class TavernScene {
     const {wood,brass}=this.materials;
     const candleWax=new THREE.MeshStandardMaterial({color:0xffd799,roughness:.62,emissive:0x7d3408,emissiveIntensity:.12});
     const flameMaterial=new THREE.MeshBasicMaterial({color:0xffd681});
-    const candleSpots=[[-5.4,.58,2.4],[5.4,.58,2.4],[-4.9,.58,-3.2],[4.9,.58,-3.2],[-6.9,2.3,-5.4],[6.9,3.65,-5.4]];
+    const candleSpots=[[-4.65,.58,2.1],[4.65,.58,2.1],[-4.2,.58,-2.6],[4.2,.58,-2.6],[-6.9,2.3,-5.4],[6.9,3.65,-5.4]];
     candleSpots.forEach(([x,y,z],i)=>{
       const group=new THREE.Group();group.position.set(x,y,z);
       const dish=new THREE.Mesh(new THREE.CylinderGeometry(.29,.24,.07,24),brass);group.add(dish);
@@ -667,8 +670,8 @@ export class TavernScene {
       }
       const mug=new THREE.Group();const cup=new THREE.Mesh(new THREE.CylinderGeometry(.22,.18,.44,24,1,true),new THREE.MeshStandardMaterial({color:sideIndex?0x486879:0x875139,roughness:.3}));cup.position.y=.22;cup.castShadow=true;mug.add(cup);
       const coffee=new THREE.Mesh(new THREE.CircleGeometry(.2,24),new THREE.MeshStandardMaterial({color:0x251311,roughness:.22}));coffee.rotation.x=-Math.PI/2;coffee.position.y=.39;mug.add(coffee);
-      const handle=new THREE.Mesh(new THREE.TorusGeometry(.17,.038,10,20),brass);handle.position.set(.24,.26,0);mug.add(handle);mug.position.set(sideIndex?5:-5,.45,1.6);this.world.add(mug);
-      const scroll=new THREE.Mesh(new THREE.PlaneGeometry(.54,.8),new THREE.MeshStandardMaterial({color:0xc3a978,roughness:1,side:THREE.DoubleSide}));scroll.rotation.set(-Math.PI/2,0,sideIndex?.3:-.3);scroll.position.set(sideIndex?4.7:-4.7,.43,2.5);scroll.receiveShadow=true;this.world.add(scroll);
+      const handle=new THREE.Mesh(new THREE.TorusGeometry(.17,.038,10,20),brass);handle.position.set(.24,.26,0);mug.add(handle);mug.position.set(sideIndex?4.35:-4.35,.45,1.4);this.world.add(mug);
+      const scroll=new THREE.Mesh(new THREE.PlaneGeometry(.54,.8),new THREE.MeshStandardMaterial({color:0xc3a978,roughness:1,side:THREE.DoubleSide}));scroll.rotation.set(-Math.PI/2,0,sideIndex?.3:-.3);scroll.position.set(sideIndex?4.1:-4.1,.43,2.2);scroll.receiveShadow=true;this.world.add(scroll);
       const signCanvas=document.createElement('canvas');signCanvas.width=512;signCanvas.height=256;const ctx=signCanvas.getContext('2d')!;
       ctx.fillStyle='#291c24';ctx.fillRect(0,0,512,256);ctx.strokeStyle='#b99157';ctx.lineWidth=5;ctx.strokeRect(15,15,482,226);ctx.fillStyle='#efd6a4';ctx.textAlign='center';ctx.font='italic 32px Georgia';ctx.fillText(sideIndex?'Curious people':'Same game.',256,98);ctx.fillText(sideIndex?'play here.':'Brighter days.',256,146);ctx.font='20px Georgia';ctx.fillText('✦',256,203);
       const signTexture=new THREE.CanvasTexture(signCanvas);signTexture.colorSpace=THREE.SRGBColorSpace;
@@ -761,7 +764,7 @@ export class TavernScene {
     this.renderer.shadowMap.needsUpdate = true;
     this.seatProjectionDirty = true;
     if (this.deckStack && this.discardStack) {
-      const pileX = portrait ? 1.15 : 2.82;
+      const pileX = portrait ? 1.15 : 2.42;
       const pileZ = portrait ? 2.05 : -.06;
       this.deckStack.position.set(-pileX, 0, pileZ);
       this.discardStack.position.set(pileX, 0, pileZ);
@@ -770,7 +773,7 @@ export class TavernScene {
     }
     this.stationChairs.forEach((chair, index) => {
       const angle = index / 8 * Math.PI * 2;
-      chair.position.set(Math.sin(angle) * (portrait ? 4.05 : 6), -.12, Math.cos(angle) * (portrait ? 6.15 : 6.95));
+      chair.position.set(Math.sin(angle) * (portrait ? 3.65 : 5.2), -.12, Math.cos(angle) * (portrait ? 5.4 : 6));
     });
   };
 
