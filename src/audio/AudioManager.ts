@@ -4,6 +4,17 @@ type Channel = 'sfx'|'music'|'ambience'|'ui';
 type AudioOptions = {position?:{x:number;y:number;z:number};intensity?:number;volume?:number};
 type SoundSettings = {volume:number;sfxVolume:number;musicVolume:number;ambienceVolume:number;muted:boolean};
 const aliases:Record<LegacyCue,AudioCue>={pickup:'card-select',slap:'card-impact',draw:'card-draw',target:'avatar-reaction',minus:'minus-ten',exact:'win',bust:'loss',click:'button'};
+const cardClips: readonly [string, string][] = [
+  ['take', 'SOUND-CARD-TAKE.mp3'],
+  ['deal-1', 'SOUND-CARD-DEAL1.wav'], ['deal-2', 'SOUND-CARD-DEAL2.wav'], ['deal-3', 'SOUND-CARD-DEAL3.wav'],
+  ['flick-1', 'SOUND-CARD-FLICK.wav'], ['flick-2', 'SOUND-CARD-FLICK2.wav'],
+  ['placed-1', 'SOUND-CARD-PLACED.wav'], ['placed-2', 'SOUND-CARD-PLACED-2.wav'],
+];
+const cardCueClips: Partial<Record<AudioCue, readonly string[]>> = {
+  'card-select': ['take'], 'draw-pile': ['take'],
+  'card-draw': ['deal-1', 'deal-2', 'deal-3'], 'shuffle': ['deal-1', 'deal-2', 'deal-3'],
+  'card-flick': ['flick-1', 'flick-2'], 'card-impact': ['placed-1', 'placed-2'],
+};
 
 /** Replace procedural cues with licensed clips through registerClip without touching gameplay. */
 export class AudioManager extends EventTarget {
@@ -12,6 +23,8 @@ export class AudioManager extends EventTarget {
   private channels=new Map<Channel,GainNode>();
   private clips=new Map<string,{buffer:AudioBuffer;channel:Channel;loop:boolean}>();
   private loops=new Map<string,AudioBufferSourceNode>();
+  private cardClipLoad?:Promise<void>;
+  private previousClip=new Map<AudioCue,string>();
   private settings:SoundSettings={volume:.55,sfxVolume:.8,musicVolume:.45,ambienceVolume:.3,muted:false};
   get volume():number{return this.settings.volume;}
   set volume(value:number){this.settings.volume=value;this.applyGains();}
@@ -33,6 +46,12 @@ export class AudioManager extends EventTarget {
   async registerClip(name:string,url:string,options:{channel?:Channel;loop?:boolean}={}):Promise<void>{
     this.unlock();const response=await fetch(url);if(!response.ok)throw new Error(`Sound could not be loaded: ${name}`);
     const buffer=await this.context!.decodeAudioData(await response.arrayBuffer());this.clips.set(name,{buffer,channel:options.channel??'sfx',loop:options.loop??false});
+  }
+  /** Decode the supplied card recordings after the first user gesture. */
+  loadCardClips():Promise<void>{
+    return this.cardClipLoad ??= Promise.allSettled(cardClips.map(([name,file]) =>
+      this.registerClip(name,`${import.meta.env.BASE_URL}assets/sfx/${file}`)
+    )).then(() => undefined);
   }
   stop(name:string):void{const source=this.loops.get(name);if(source){source.stop();this.loops.delete(name);}}
   private output(channel:Channel,options:AudioOptions):AudioNode{
@@ -56,7 +75,12 @@ export class AudioManager extends EventTarget {
     const cue=aliases[name as LegacyCue]??name as AudioCue;
     this.dispatchEvent(new CustomEvent('cue',{detail:{name:cue,...options}}));
     this.unlock();if(this.settings.muted||!this.volume)return;
-    const clip=this.clips.get(cue);
+    const choices=cardCueClips[cue]?.filter(key=>this.clips.has(key));
+    const previous=this.previousClip.get(cue);
+    const candidates=choices && choices.length>1 ? choices.filter(key=>key!==previous) : choices;
+    const chosen=candidates?.[Math.floor(Math.random()*candidates.length)] ?? cue;
+    if(choices?.length)this.previousClip.set(cue,chosen);
+    const clip=this.clips.get(chosen);
     if(clip){if(clip.loop&&this.loops.has(cue))return;const source=this.context!.createBufferSource();source.buffer=clip.buffer;source.loop=clip.loop;const output=this.output(clip.channel,options);source.connect(output);source.start();if(clip.loop)this.loops.set(cue,source);source.onended=()=>{source.disconnect();output.disconnect();this.loops.delete(cue);};return;}
     if(cue==='card-hover')this.tone(430,.04,'sine',.014,1.06,options);
     else if(cue==='card-select'){this.paper(.07,options);this.tone(320,.07,'sine',.028,1.16,options);}

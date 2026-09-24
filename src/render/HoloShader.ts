@@ -3,6 +3,8 @@
 export class HoloShader {
   private isEnabled = true;
   private active: HTMLElement | null = null;
+  private lastPointer: {x:number;y:number}|null = null;
+  private stillTimer = 0;
 
   constructor() {
     window.addEventListener('pointermove', this.onPointerMove, { passive: true });
@@ -19,14 +21,18 @@ export class HoloShader {
   }
 
   private clearActive(): void {
+    clearTimeout(this.stillTimer);
     if (!this.active) return;
     this.active.style.removeProperty('--card-tilt-x');
     this.active.style.removeProperty('--card-tilt-y');
     this.active.style.removeProperty('--holo-x');
     this.active.style.removeProperty('--holo-y');
+    this.active.style.removeProperty('--foil-motion');
     this.active.removeAttribute('data-card-hover');
     this.active.removeAttribute('data-card-pressed');
+    this.active.removeAttribute('data-foil-moving');
     this.active = null;
+    this.lastPointer = null;
   }
 
   private onPointerMove = (event: PointerEvent): void => {
@@ -44,6 +50,16 @@ export class HoloShader {
     card.style.setProperty('--card-tilt-y', `${((x - .5) * 9).toFixed(2)}deg`);
     card.style.setProperty('--holo-x', `${(x * 100).toFixed(1)}%`);
     card.style.setProperty('--holo-y', `${(y * 100).toFixed(1)}%`);
+    const travel=this.lastPointer ? Math.hypot(event.clientX-this.lastPointer.x,event.clientY-this.lastPointer.y) : 0;
+    this.lastPointer={x:event.clientX,y:event.clientY};
+    const motion=Math.min(.9,travel/18);
+    card.style.setProperty('--foil-motion',motion.toFixed(2));
+    card.toggleAttribute('data-foil-moving',motion>.08);
+    clearTimeout(this.stillTimer);
+    this.stillTimer=window.setTimeout(()=>{
+      card.style.setProperty('--foil-motion','0');
+      card.removeAttribute('data-foil-moving');
+    },90);
     card.dataset.cardHover = 'true';
   };
 
@@ -54,6 +70,8 @@ export class HoloShader {
 
   private onPointerUp = (): void => {
     this.active?.removeAttribute('data-card-pressed');
+    this.active?.style.setProperty('--foil-motion','0');
+    this.active?.removeAttribute('data-foil-moving');
   };
 
   dispose(): void {

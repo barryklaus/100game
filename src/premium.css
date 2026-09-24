@@ -259,8 +259,8 @@ button:active { translate:0 1px; }
 .playing-card .card-action strong {font:400 6.9cqw/1 'Luckiest Guy',system-ui,sans-serif;letter-spacing:.015em;}
 .playing-card .card-action small {font:700 3.8cqw/1.15 system-ui,sans-serif;color:#5a4c55;margin-top:1cqw;}
 
-/* Both effects are masked to the thick border. The special cards get stronger
-   rainbow interference; all other fronts have a restrained metallic glint. */
+/* The foil is cut to the printed frame. Color remains on a still card, while
+   the sharp reflected light appears only as the card moves or tilts. */
 .playing-card:not(.card-back)::after,
 .world3d-active .hand-card:not(.card-back)::after {
   content:'';
@@ -271,26 +271,29 @@ button:active { translate:0 1px; }
   border-radius:5.5% / 3.95%;
   padding:5.1%;
   pointer-events:none;
-  background:linear-gradient(118deg,#70512d,#fff3c6 17%,#bd8845 36%,#fff8df 50%,#a46e32 68%,#fff2c4 86%,#70512d);
-  background-size:220% 220%;
-  mix-blend-mode:screen;
-  opacity:.47!important;
+  background:
+    radial-gradient(circle at var(--holo-x,50%) var(--holo-y,50%),rgb(255 255 247 / var(--foil-motion,0)) 0,transparent 31%),
+    repeating-linear-gradient(115deg,#fff5 0 1px,transparent 1px 5px),
+    linear-gradient(122deg,#77522a,#fff5ca 18%,#b08045 41%,#fff5d5 52%,#9c7038 72%,#f5ddb0);
+  mix-blend-mode:normal;
+  opacity:.60!important;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;
   mask-composite:exclude;
-  animation:card-foil-roll 5.7s ease-in-out infinite alternate;
+  animation:none!important;
 }
 .playing-card.special::after,
 .world3d-active .hand-card.special::after {
-  background:radial-gradient(circle at var(--holo-x,50%) var(--holo-y,50%),#fff 0 2%,transparent 35%),conic-gradient(from 15deg,#f5e27c,#ef65ac,#8887f3,#6bdbf8,#9ee2a1,#fff49a,#f5e27c);
-  background-size:160% 160%,210% 210%;
-  opacity:.77!important;
-  animation:card-foil-roll 3.1s ease-in-out infinite alternate!important;
+  background:
+    radial-gradient(circle at var(--holo-x,50%) var(--holo-y,50%),rgb(255 255 255 / var(--foil-motion,0)) 0,transparent 29%),
+    repeating-linear-gradient(120deg,#fff7 0 1px,transparent 1px 5px),
+    conic-gradient(from 34deg at 47% 52%,#f7e9a0,#75edff,#a889ff,#ff8cbd,#fff4bb,#72e6eb,#d6b5ff,#f7e9a0);
+  opacity:.82!important;
+  animation:none!important;
 }
-.playing-card.special:is(:hover,.dragging,[data-card-pressed])::after {opacity:.95!important;}
+.playing-card.special[data-foil-moving]::after {opacity:.96!important;}
 .world3d-active .hand-card.mesh-ready {background:transparent!important;overflow:visible;}
 .world3d-active .hand-card.mesh-ready .card-print {visibility:hidden;}
 .world3d-active .hand-card.mesh-ready::after {display:none!important;}
-@keyframes card-foil-roll {from{background-position:8% 52%;filter:hue-rotate(0deg)}to{background-position:92% 48%;filter:hue-rotate(32deg)}}
-.reduce-motion .playing-card::after {animation:none!important;}
+.reduce-motion .playing-card::after {--foil-motion:0!important;}
 .draw-flight .playing-card.draw-front {width:100%;height:100%;}

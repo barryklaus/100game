@@ -139,12 +139,13 @@ function react(ids: number[], text: string): void {
 }
 
 async function animateDrawToHand(card: Card): Promise<void> {
+  audio.play('draw-pile');
   const pile = document.querySelector<HTMLElement>('.draw-stack .card-back');
   const target = document.querySelector<HTMLElement>(`.local-hand .hand-card[data-card="${card.id}"]`);
-  if (!pile || !target || settings.reducedMotion) return;
+  if (!pile || !target || settings.reducedMotion) { audio.play('card-draw'); return; }
   const start = pile.getBoundingClientRect();
   const end = target.getBoundingClientRect();
-  if (start.width < 2 || end.width < 2) return;
+  if (start.width < 2 || end.width < 2) { audio.play('card-draw'); return; }
 
   target.classList.add('receiving-card');
   if (tavern) {
@@ -154,6 +155,7 @@ async function animateDrawToHand(card: Card): Promise<void> {
         target.classList.remove('receiving-card');
         target.animate([{ opacity: 0, filter: 'brightness(1.7)' }, { opacity: 1, filter: 'brightness(1)' }], { duration: 170, easing: 'ease-out' });
       }
+      audio.play('card-draw');
       return;
     } catch {
       target.classList.remove('receiving-card');
@@ -177,6 +179,7 @@ async function animateDrawToHand(card: Card): Promise<void> {
     { transform: `translate(${dx}px, ${dy}px) scale(${scale}) rotateY(180deg) rotateZ(0deg)`, offset: 1 },
   ], { duration: 520, easing: 'cubic-bezier(.2,.76,.22,1)', fill: 'forwards' }).finished.catch(() => undefined);
   flight.remove();
+  audio.play('card-draw');
   if (target.isConnected) {
     target.classList.remove('receiving-card');
     target.animate([{ opacity: 0, filter: 'brightness(1.7)' }, { opacity: 1, filter: 'brightness(1)' }], { duration: 170, easing: 'ease-out' });
@@ -469,6 +472,7 @@ app.addEventListener('input', event => {
   if (['volume','sfxVolume','musicVolume','ambienceVolume','uiScale'].includes(el.id)) { const key=el.id as 'volume'|'sfxVolume'|'musicVolume'|'ambienceVolume'|'uiScale';settings[key]=Number(el.value);save();const output=document.querySelector(`output[for="${el.id}"]`);if(output)output.textContent=`${Math.round(Number(el.value)*100)}%`; }
 });
 app.addEventListener('keydown', event => {
+  audio.unlock(); void audio.loadCardClips();
   const target = event.target as HTMLElement;
   if ((event.key === 'Enter'||event.key===' ') && target.matches('.hand-card:not(.waiting-hand)') && canControlActor()) { event.preventDefault();void animatePlay(target.dataset.card!, target); }
   if (event.key === 'Escape' && modal) { modal = null; render(); }
@@ -484,12 +488,13 @@ app.addEventListener('pointerover',event=>{
 });
 app.addEventListener('pointerdown',event=>{
   audio.unlock();
+  void audio.loadCardClips();
   if((event.target as HTMLElement).closest('[data-action="emotes"]')){emoteHeld=false;emoteHoldTimer=window.setTimeout(()=>{emoteHeld=true;emotesOpen=true;render();},350);}
   const card=(event.target as HTMLElement).closest<HTMLElement>('.hand-card');
   if(!card||card.classList.contains('waiting-hand')||!state||locked||drag||event.button!==0)return;
   const now=performance.now();
   const current:CardDrag={element:card,id:card.dataset.card!,x:event.clientX,y:event.clientY,time:now,lastX:event.clientX,lastY:event.clientY,lastTime:now,vx:0,vy:0,moved:false,inspecting:false,edgeGrip:isCardEdgeGrip(card.getBoundingClientRect(),event.clientX,event.clientY),pointerId:event.pointerId,holdTimer:0,baseTransform:getComputedStyle(card).transform};
-  current.holdTimer=window.setTimeout(()=>{if(drag!==current||current.moved)return;current.inspecting=true;card.classList.add('inspecting');card.classList.remove('dragging');audio.play('card-select');},380);
+  current.holdTimer=window.setTimeout(()=>{if(drag!==current||current.moved)return;current.inspecting=true;card.classList.add('inspecting');card.classList.remove('dragging');},380);
   drag=current;card.setPointerCapture(event.pointerId);audio.play('pickup');
 });
 app.addEventListener('pointermove',event=>{

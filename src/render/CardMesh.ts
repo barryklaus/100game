@@ -71,41 +71,45 @@ export function createCardFoilGeometry(texture: THREE.Texture, height = STANDARD
 }
 
 const foilNormal = new THREE.Vector3();
+const foilPosition = new THREE.Vector3();
+const cameraRight = new THREE.Vector3();
+const cameraUp = new THREE.Vector3();
 function cardFoilMaterial(special: boolean): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
     name: special ? 'prismatic-special-border' : 'metallic-card-border',
     transparent: true,
     depthWrite: false,
     toneMapped: false,
-    uniforms: { uTime: { value: 0 }, uTilt: { value: 0 }, uSpecial: { value: special ? 1 : 0 } },
+    uniforms: { uTilt: { value: 0 }, uMotion: { value: 0 }, uSpecial: { value: special ? 1 : 0 } },
     vertexShader: `
       varying vec2 vUv;
-      varying float vFacing;
       void main() {
         vUv = uv;
-        vec3 worldNormal = normalize(mat3(modelMatrix) * normal);
-        vec3 worldPoint = (modelMatrix * vec4(position, 1.0)).xyz;
-        vFacing = dot(worldNormal, normalize(cameraPosition - worldPoint));
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
     `,
     fragmentShader: `
       varying vec2 vUv;
-      varying float vFacing;
-      uniform float uTime;
       uniform float uTilt;
+      uniform float uMotion;
       uniform float uSpecial;
       void main() {
-        float direction = vUv.x * 0.86 + vUv.y * 0.67 + uTilt * 0.74;
-        float band = pow(max(0.0, sin((direction - uTime * (uSpecial > 0.5 ? 0.17 : 0.07)) * 13.0)), 14.0);
-        float fine = 0.5 + 0.5 * sin((vUv.x * 1.1 - vUv.y * 0.75 + uTilt * 0.5) * 58.0);
-        float angle = clamp(vFacing, 0.0, 1.0);
-        vec3 normalFoil = mix(vec3(0.52, 0.38, 0.17), vec3(1.0, 0.96, 0.76), 0.42 + 0.38 * fine + 0.2 * band);
-        float phase = direction * 0.8 - uTime * 0.08 + (1.0 - angle) * 0.6;
-        vec3 prism = 0.58 + 0.42 * cos(6.2831853 * (phase + vec3(0.0, 0.33, 0.67)));
-        vec3 specialFoil = mix(prism, vec3(1.0), band * 0.52);
-        float opacity = mix(0.38 + 0.24 * band, 0.58 + 0.3 * band, uSpecial);
-        gl_FragColor = vec4(mix(normalFoil, specialFoil, uSpecial), opacity);
+        // Pearl and spectral color are fixed on a resting card. Only its real
+        // position or orientation change brings out the sharp moving glint.
+        float phase = vUv.x * 0.83 + vUv.y * 0.49 + uTilt * 0.68;
+        float grain = 0.5 + 0.5 * sin(vUv.x * 231.0 + vUv.y * 173.0);
+        float threads = 0.5 + 0.5 * sin((vUv.x + vUv.y * 0.66) * 85.0);
+        vec3 rainbow = 0.56 + 0.44 * cos(6.2831853 * (phase * 2.3 + vec3(0.0, 0.33, 0.67)));
+        vec3 pearl = vec3(0.95, 0.91, 0.82);
+        vec3 specialFoil = mix(pearl, rainbow, 0.72 + 0.10 * threads);
+        vec3 normalFoil = mix(vec3(0.53, 0.34, 0.13), vec3(1.0, 0.91, 0.64), 0.35 + 0.35 * threads);
+        float stripe = pow(max(0.0, sin((phase + uTilt * 0.22) * 19.0)), 24.0);
+        float sparkle = pow(max(0.0, sin(vUv.x * 133.0 + vUv.y * 193.0 + uTilt * 7.0)), 48.0);
+        float glint = uMotion * (stripe * 0.84 + sparkle * 0.16);
+        vec3 foil = mix(normalFoil, specialFoil, uSpecial);
+        foil = mix(foil, vec3(1.0, 0.98, 0.91), glint);
+        float opacity = mix(0.48, 0.84, uSpecial) + grain * 0.035 + glint * 0.12;
+        gl_FragColor = vec4(foil, min(opacity, 1.0));
         #include <colorspace_fragment>
       }
     `,
@@ -165,11 +169,19 @@ export function createCardMesh(front: THREE.Texture, back: THREE.Texture, specia
   const foil = new THREE.Mesh(createCardFoilGeometry(front, height), cardFoilMaterial(isSpecial));
   foil.name = 'card-border-foil';
   foil.position.z = thickness / 2 + .00035;
-  foil.onBeforeRender = (_renderer, _scene, _camera, _geometry, material) => {
+  let hasFoilPose = false;
+  const lastNormal = new THREE.Vector3();
+  const lastPosition = new THREE.Vector3();
+  foil.onBeforeRender = (_renderer, _scene, camera, _geometry, material) => {
     const shader = material as THREE.ShaderMaterial;
     foilNormal.set(0, 0, 1).transformDirection(foil.matrixWorld);
-    shader.uniforms.uTilt.value = foilNormal.x * .7 + foilNormal.y * .45;
-    shader.uniforms.uTime.value = document.documentElement.classList.contains('reduce-motion') ? 0 : performance.now() * .001;
+    foilPosition.setFromMatrixPosition(foil.matrixWorld);
+    cameraRight.setFromMatrixColumn(camera.matrixWorld, 0);
+    cameraUp.setFromMatrixColumn(camera.matrixWorld, 1);
+    shader.uniforms.uTilt.value = foilNormal.dot(cameraRight) * .8 + foilNormal.dot(cameraUp) * .5;
+    const motion = hasFoilPose ? Math.min(1, foilPosition.distanceTo(lastPosition) * 10 + foilNormal.distanceTo(lastNormal) * 5) : 0;
+    shader.uniforms.uMotion.value = document.documentElement.classList.contains('reduce-motion') ? 0 : motion;
+    lastPosition.copy(foilPosition); lastNormal.copy(foilNormal); hasFoilPose = true;
   };
   foil.userData.cardFoil = true;
   root.add(foil);
