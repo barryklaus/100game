@@ -16,7 +16,7 @@ import { ObservatoryScene } from './render/ObservatoryScene';
 import { HoloShader } from './render/HoloShader';
 import { OnlineRoom, newRoomId } from './game/online';
 import { HostedRoom } from './game/hosted';
-import { isCardEdgeGrip, isDoubleCardTap, isPlayGesture, type CardTap } from './ui/cardGesture';
+import { cardGrip, cardFlickSpin, isDoubleCardTap, isPlayGesture, type CardTap, type CardGrip, type CardSpin } from './ui/cardGesture';
 import { updateGameView } from './ui/updateGameView';
 import { GyroHand } from './ui/GyroHand';
 
@@ -263,7 +263,7 @@ function resolveCard(cardId: string): void {
   if (drawnForLocal) void animateDrawToHand(drawnForLocal);
   scheduleCpu();
 }
-async function animatePlay(cardId: string, source?: HTMLElement, spin = 0): Promise<void> {
+async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin): Promise<void> {
   if(openingDeal)return;
   if (!state || locked || awaitingNetwork || state.phase !== 'playing') return;
   locked = true; clearCpu();
@@ -304,12 +304,12 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin = 0): Prom
   const target = document.querySelector<HTMLElement>('.played-slot')!.getBoundingClientRect();
   const dx = target.left + target.width / 2 - (start.left + start.width / 2);
   const dy = target.top + target.height / 2 - (start.top + start.height / 2);
-  await flying.animate([
-    { transform:'translate(0, 0) scale(1) rotate(0deg)', offset:0 },
-    { transform:`translate(${dx*.62}px, ${dy*.62 - 28}px) scale(1.13) rotate(${spin*235+(dx > 0 ? 7 : -7)}deg)`, offset:.65 },
-    { transform:`translate(${dx}px, ${dy + 7}px) scale(.97) rotate(${spin*340+2}deg)`, offset:.9 },
-    { transform:`translate(${dx}px, ${dy}px) scale(1) rotate(${spin*360}deg)`, offset:1 },
-  ], { duration: 410, easing:'cubic-bezier(.2,.8,.2,1)', fill:'forwards' }).finished.catch(() => undefined);
+  const rotation=(t:number)=>spin?`rotate3d(${-spin.x},${spin.y},${-spin.z},${spin.turns*360*t}deg)`:`rotate(${Math.sin(t*Math.PI)*8}deg)`;
+  const frames=Array.from({length:25},(_,i)=>{
+    const t=i/24;
+    return {transform:`perspective(900px) translate(${dx*t}px,${dy*t-Math.sin(t*Math.PI)*35}px) scale(${1+Math.sin(t*Math.PI)*.1}) ${rotation(t)}`,offset:t};
+  });
+  await flying.animate(frames, { duration:spin?(spin.turns===2?720:560):410, easing:'cubic-bezier(.2,.8,.2,1)', fill:'forwards' }).finished.catch(() => undefined);
   audio.play('slap'); flying.remove();
   locked = false; resolveCard(cardId);
 }
@@ -405,7 +405,7 @@ function resultView(): string {
 }
 function modalView(): string {
   if (!modal) return '';
-  const body = modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. They cannot play twice in a row.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Flick from an edge or corner to spin it into the discard pile.</p>`
+  const body = modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. They cannot play twice in a row.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Flick the right edge left or the left edge right to flip it. Flick upward from the top edge or double-tap the top edge for a somersault. Corners tumble diagonally; slow sideways drags stay in your hand.</p>`
   : modal==='settings' ? `<h2>Table settings</h2><div class="modal-setting"><label for="graphics">Visual quality</label><select id="graphics">${(['ultra','high','medium','mobile'] as const).map(tier=>`<option value="${tier}" ${settings.graphics===tier?'selected':''}>${tier==='mobile'?'Lite / Mobile':tier.charAt(0).toUpperCase()+tier.slice(1)}</option>`).join('')}</select><small>Ultra adds richer shadows, reflections and glow. Mobile keeps the same world with lighter effects.</small></div>${[['volume','Master volume',settings.volume],['sfxVolume','Sound effects',settings.sfxVolume],['musicVolume','Music',settings.musicVolume],['ambienceVolume','Ambience',settings.ambienceVolume]].map(([id,label,value])=>`<div class="modal-setting"><label for="${id}">${label}<output for="${id}">${Math.round(Number(value)*100)}%</output></label><input id="${id}" type="range" min="0" max="1" step=".01" value="${value}"></div>`).join('')}<label class="setting-toggle"><input id="muted" type="checkbox" ${settings.muted?'checked':''}>Mute all sounds</label><label class="setting-toggle"><input id="reducedMotion" type="checkbox" ${settings.reducedMotion?'checked':''}>Reduced motion</label><div class="modal-setting gyro-setting"><label>Phone tilt</label><button class="secondary-button" data-action="gyro-enable" ${!gyro.available || settings.reducedMotion ? 'disabled' : ''}>${gyro.status === 'on' ? 'Recenter phone tilt' : gyro.status === 'waiting' ? 'Waiting for motion…' : 'Enable phone tilt'}</button><small id="gyro-status">${settings.reducedMotion ? 'Turn off Reduced motion to use phone tilt.' : gyro.status === 'on' ? 'Move your phone gently to tilt the cards. Dragging a card takes control.' : gyro.status === 'denied' ? 'Motion access was denied. You can still drag cards to tilt them.' : gyro.available ? 'Available on supported phones.' : 'Motion sensors are unavailable in this browser.'}</small></div><div class="modal-setting"><label for="uiScale">Interface size <output for="uiScale">${Math.round(settings.uiScale*100)}%</output></label><input id="uiScale" type="range" min=".85" max="1.2" step=".05" value="${settings.uiScale}"></div><p>Settings save on this device.</p>`
   : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Overflows',stats.busts],['Cards played',stats.cards],['Choose Player',stats.sevens],['Reverse',stats.eights],['Zero',stats.nines],['Minus Ten',stats.tens],['Test rating',stats.rating],['Currency',stats.currency]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Statistics, rating, and currency are local to this device. Currency does not affect gameplay.</p>`
   : modal==='history' ? `<h2>Game history</h2><p>Recent moves at this table.</p><ul class="history-list">${state?.log.length ? state.log.map(gameLogLine).join('') : '<li>No cards have been played yet.</li>'}</ul>`
@@ -530,7 +530,7 @@ app.addEventListener('keydown', event => {
   if (event.key === 'Escape' && modal) { modal = null; render(); }
 });
 
-type CardDrag = {element:HTMLElement;id:string;x:number;y:number;time:number;lastX:number;lastY:number;lastTime:number;vx:number;vy:number;moved:boolean;inspecting:boolean;edgeGrip:boolean;pointerId:number;holdTimer:number;baseTransform:string};
+type CardDrag = {element:HTMLElement;id:string;x:number;y:number;time:number;lastX:number;lastY:number;lastTime:number;vx:number;vy:number;moved:boolean;inspecting:boolean;grip:CardGrip;pointerId:number;holdTimer:number;baseTransform:string};
 let drag:CardDrag|null=null;
 let lastCardTap:CardTap|null=null;
 let lastHover='';
@@ -545,7 +545,7 @@ app.addEventListener('pointerdown',event=>{
   const card=(event.target as HTMLElement).closest<HTMLElement>('.hand-card');
   if(openingDeal||!card||card.classList.contains('waiting-hand')||!state||locked||awaitingNetwork||drag||event.button!==0)return;
   const now=performance.now();
-  const current:CardDrag={element:card,id:card.dataset.card!,x:event.clientX,y:event.clientY,time:now,lastX:event.clientX,lastY:event.clientY,lastTime:now,vx:0,vy:0,moved:false,inspecting:false,edgeGrip:isCardEdgeGrip(card.getBoundingClientRect(),event.clientX,event.clientY),pointerId:event.pointerId,holdTimer:0,baseTransform:getComputedStyle(card).transform};
+  const current:CardDrag={element:card,id:card.dataset.card!,x:event.clientX,y:event.clientY,time:now,lastX:event.clientX,lastY:event.clientY,lastTime:now,vx:0,vy:0,moved:false,inspecting:false,grip:cardGrip(card.getBoundingClientRect(),event.clientX,event.clientY),pointerId:event.pointerId,holdTimer:0,baseTransform:getComputedStyle(card).transform};
   current.holdTimer=window.setTimeout(()=>{if(drag!==current||current.moved)return;current.inspecting=true;card.classList.add('inspecting');card.classList.remove('dragging');},380);
   drag=current;card.setPointerCapture(event.pointerId);audio.play('pickup');
 });
@@ -559,7 +559,7 @@ app.addEventListener('pointermove',event=>{
   const ty=settings.reducedMotion?0:Math.max(-20,Math.min(20,dx*.07+drag.vx*3));
   const turn=settings.reducedMotion?0:Math.max(-9,Math.min(9,dx*.025));
   drag.element.dataset.tiltX=String(tx*Math.PI/180);drag.element.dataset.tiltY=String(ty*Math.PI/180);drag.element.dataset.turn=String(turn*Math.PI/180);
-  drag.element.classList.toggle('flick-ready',dy<=-18 && Math.abs(dy)>Math.abs(dx)*.32 && canControlActor());
+  drag.element.classList.toggle('flick-ready',isPlayGesture({dx,dy,duration:now-drag.time,canceled:false,inspecting:false,canPlay:canControlActor(),grip:drag.grip,releaseVX:drag.vx}));
   const crispTilt=document.documentElement.classList.contains('crisp-mobile-hand') ? ` rotateX(${-tx}deg) rotateY(${-ty}deg) rotateZ(${-turn}deg)` : '';
   drag.element.style.transform=`translate3d(${dx}px,${dy}px,24px) ${drag.baseTransform==='none'?'':drag.baseTransform}${crispTilt}`;
   drag.lastX=event.clientX;drag.lastY=event.clientY;drag.lastTime=now;
@@ -570,13 +570,16 @@ function endDrag(event:PointerEvent):void{
   const current=drag;drag=null;clearTimeout(current.holdTimer);
   const dx=event.clientX-current.x,dy=event.clientY-current.y,dist=Math.hypot(dx,dy);
   const canceled=event.type==='pointercancel'||!current.element.isConnected;
-  const shouldPlay=isPlayGesture({dx,dy,duration:performance.now()-current.time,canceled,inspecting:current.inspecting,canPlay:canControlActor()&&state?.phase==='playing'});
+  const releasedAt=performance.now();
+  const freshVelocity=releasedAt-current.lastTime<100;
+  const vx=freshVelocity?current.vx:0,vy=freshVelocity?current.vy:0;
+  const shouldPlay=isPlayGesture({dx,dy,duration:releasedAt-current.time,canceled,inspecting:current.inspecting,canPlay:canControlActor()&&state?.phase==='playing',grip:current.grip,releaseVX:vx});
   if(current.element.hasPointerCapture(event.pointerId))current.element.releasePointerCapture(event.pointerId);
   current.element.classList.remove('dragging','flick-ready','inspecting');
   if(shouldPlay){
     lastCardTap=null;
     audio.play('card-flick');
-    const spin=current.edgeGrip?(dx>3?1:dx< -3?-1:current.x<current.element.getBoundingClientRect().left+current.element.offsetWidth/2?-1:1):0;
+    const spin=cardFlickSpin(current.grip,dx,dy,Math.hypot(vx,vy));
     void animatePlay(current.id,current.element,spin);
   }
   else{
@@ -584,8 +587,8 @@ function endDrag(event:PointerEvent):void{
     current.element.style.transform='';
     delete current.element.dataset.tiltX;delete current.element.dataset.tiltY;delete current.element.dataset.turn;
     if(!canceled && dist<12 && !current.inspecting && canControlActor() && state?.phase==='playing'){
-      const tap={id:current.id,x:event.clientX,y:event.clientY,time:performance.now()};
-      if(isDoubleCardTap(lastCardTap,tap)){lastCardTap=null;audio.play('card-flick');void animatePlay(current.id,current.element);}
+      const tap={id:current.id,x:event.clientX,y:event.clientY,time:performance.now(),grip:current.grip};
+      if(isDoubleCardTap(lastCardTap,tap)){const spin=cardFlickSpin(lastCardTap?.grip??current.grip,0,0);lastCardTap=null;audio.play('card-flick');void animatePlay(current.id,current.element,spin);}
       else {lastCardTap=tap;selectedCard=current.id;render();}
     }
     else if(!canceled && current.inspecting){lastCardTap=null;selectedCard=current.id;render();}

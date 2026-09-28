@@ -1,3 +1,4 @@
+import type { CardSpin } from '../ui/cardGesture';
 import { avatarAnchor } from '../ui/avatarLayout';
 import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -317,9 +318,9 @@ export class ObservatoryScene {
     startScale: number;
     endScale: number;
     draw: boolean;
-    spin?: number;
+    spin?: CardSpin;
   }): Promise<void> {
-    const { root, visual, start, end, startQuaternion, endQuaternion, startScale, endScale, draw, spin=0 } = options;
+    const { root, visual, start, end, startQuaternion, endQuaternion, startScale, endScale, draw, spin } = options;
     const control = start.clone().lerp(end, .5);
     control.y += draw ? .85 : .65;
     control.z += draw ? .45 : -.3;
@@ -329,7 +330,9 @@ export class ObservatoryScene {
     visual.rotation.y = draw ? Math.PI : 0;
     const flex=flyingCardFlex(visual);
     const started = performance.now();
-    const duration = this.reducedMotion ? 80 : draw ? 520 : 440;
+    const duration = this.reducedMotion ? 80 : draw ? 520 : spin ? (spin.turns===2?720:560) : 440;
+    const spinAxis=spin?new THREE.Vector3(spin.x,spin.y,spin.z):undefined;
+    const spinRotation=new THREE.Quaternion();
     return new Promise(resolve => {
       this.activeFlights++;
       const step = (now: number): void => {
@@ -346,8 +349,11 @@ export class ObservatoryScene {
         root.quaternion.slerpQuaternions(startQuaternion, endQuaternion, t);
         root.scale.setScalar(THREE.MathUtils.lerp(startScale, endScale, t));
         flex(this.reducedMotion?0:Math.sin(raw*Math.PI)*(draw?.09:.2));
-        visual.rotation.y = draw ? Math.PI * (1 - t) : Math.sin(raw * Math.PI) * .24;
-        visual.rotation.z = spin*Math.PI*2*t + Math.sin(raw * Math.PI) * (draw ? -.16 : .24);
+        visual.rotation.set(0,draw ? Math.PI * (1 - t) : Math.sin(raw * Math.PI) * .24,Math.sin(raw * Math.PI) * (draw ? -.16 : .24));
+        if(spin && spinAxis && !this.reducedMotion){
+          spinRotation.setFromAxisAngle(spinAxis,spin.turns*Math.PI*2*t);
+          visual.quaternion.premultiply(spinRotation);
+        }
         if (raw < 1) requestAnimationFrame(step);
         else {
           this.activeFlights--;
@@ -368,7 +374,7 @@ export class ObservatoryScene {
     });
   }
 
-  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin=0, cardId?:string): Promise<void> {
+  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin?:CardSpin, cardId?:string): Promise<void> {
     const { root, visual } = await this.makeFlyingCard(frontUrl);
     const distance = innerHeight > innerWidth * 1.08 ? 4.9 : 5.35;
     const pose=cardId?this.hand.cardPose(cardId):undefined;
