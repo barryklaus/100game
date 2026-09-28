@@ -117,11 +117,19 @@ console.log('Card face checks passed: rank indices, special instructions, clean 
 
 const {avatarAnchor}=await load('src/ui/avatarLayout.ts');
 for(const portrait of [false,true])for(let count=2;count<=8;count++)for(let local=0;local<count;local++){
-  const seats=[];
-  for(let i=1;i<count;i++)seats.push(avatarAnchor((local+i)%count,local,count,portrait));
+  const seats=Array.from({length:count},(_,i)=>avatarAnchor(i,local,count,portrait)).sort((a,b)=>a.x-b.x);
   seats.forEach((seat,i)=>{
-    assert(seat.x>.09&&seat.x<.91&&seat.y>.15&&seat.y<.6,'Seat remains inside the gameplay field');
-    assert(Math.abs(seat.x+seats[seats.length-1-i].x-1)<1e-6,'Seat composition stays symmetric for every local player');
+    assert(seat.x>=.069&&seat.x<=.931&&seat.y>.15&&seat.y<.33,'Every portrait remains inside the upper gameplay field');
+    const mirror=seats[count-1-i];
+    assert(Math.abs(seat.x+mirror.x-1)<1e-6&&Math.abs(seat.y-mirror.y)<1e-6,'All players, including the local player, form a symmetric arc');
+    if(i)assert(seat.x-seats[i-1].x>.1,'Eight portraits retain distinct horizontal slots');
   });
+  assert(Math.max(...seats.map(s=>s.y))-Math.min(...seats.map(s=>s.y))<.07,'The portrait arc stays shallow');
 }
-console.log('Observatory layout checks passed: symmetric 2–8 player tables, including every local seat.');
+const {separatedHandDepths}=await load('src/render/HandDepth.ts');
+for(const rear of [0,.015,.08,.3,.65])for(const front of [0,.015,.08,.3,.65]){
+  const distances=separatedHandDepths([rear,front]);
+  assert(distances.every(d=>d>0),'Tilted cards stay in front of the camera');
+  assert(distances[1]*(1+front)<distances[0]*(1-rear)-.04,'Complete tilted card volumes cannot intersect, in either stacking order');
+}
+console.log('Observatory layout checks passed: symmetric 2–8 player arcs including the local player; separate hand-card depth volumes.');

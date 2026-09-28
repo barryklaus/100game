@@ -122,7 +122,7 @@ export class CardPile {
     const angle = index === 0 ? 0 : Math.sin(index * 2.37) * (this.draw ? .002 : .42);
     const position = new THREE.Vector3(
       index === 0 ? 0 : Math.sin(index * 2.8) * spread,
-      CARD_TABLE_HEIGHT + CARD_THICKNESS / 2 + index * (this.draw ? CARD_PITCH : CARD_PITCH * 1.25),
+      CARD_TABLE_HEIGHT + CARD_THICKNESS / 2 + index * (this.draw ? CARD_PITCH : CARD_PITCH * 1.65),
       index === 0 ? 0 : Math.cos(index * 1.9) * spread,
     );
     const quaternion = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), angle)

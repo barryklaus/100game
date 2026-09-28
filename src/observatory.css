@@ -170,3 +170,21 @@
 .observatory-mode .seat.targetable::before,.observatory-mode .seat.targetable::after{display:none!important;}
 .observatory-mode .match-plaque small{display:block!important;}
 .observatory-mode .playing-card.standard::after{opacity:.64!important;}
+/* All players, including the local player, share the table's upper arc. */
+.observatory-mode .seat-layer .seat{display:flex!important;flex-direction:column;align-items:center;width:min(110px,calc(88vw / var(--player-count)));height:auto;transform:translate(-50%,-50%)!important;}
+.observatory-mode .seat-layer .seat .seat-info{width:100%;min-width:0;}
+.observatory-mode .seat-layer .seat .seat-name{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
+.observatory-mode .seat.local-seat .seat-meta{color:#d5bf8d;}
+.observatory-mode .game-page .dock-prompt{display:none!important;}
+.observatory-mode .game-page .seat.active .character-head{border:3px solid #fff1b6!important;outline:2px solid #ffc743!important;box-shadow:0 0 0 3px #ffe29b,0 0 17px 6px #ffd34d,0 0 34px 12px #ffb13b9e,0 5px 12px #000a!important;}
+.observatory-mode .game-page .seat.active .seat-name{color:#ffe7ac;}
+.observatory-mode .local-hand .hand-card:is(:hover,.selected,.dragging,.inspecting){z-index:5;}
+@media(orientation:portrait){
+ .observatory-mode .seat-layer .seat{width:calc(90vw / var(--player-count));}
+ .observatory-mode .seat-layer .seat .character,.observatory-mode .seat-layer .seat .character-head{width:clamp(28px,calc(86vw / var(--player-count) - 8px),54px);height:clamp(28px,calc(86vw / var(--player-count) - 8px),54px);}
+ .observatory-mode .seat-layer .seat .seat-info{padding-top:7px;}
+ .observatory-mode .seat-layer .seat .seat-name{font-size:clamp(7px,calc(60vw / var(--player-count) / 4),10px);}
+ .observatory-mode .seat-layer .seat .seat-meta{font-size:6px;white-space:nowrap;}
+ .observatory-mode .seat-layer .seat .seat-count{width:13px;height:16px;font-size:7px;line-height:14px;right:-2px;bottom:-2px;}
+ .observatory-mode .game-page .seat.active .character-head{border:2px solid #fff1b6!important;outline:1px solid #ffc743!important;box-shadow:0 0 0 2px #ffe29b,0 0 11px 4px #ffd34d,0 0 21px 7px #ffb13b9e!important;}
+}

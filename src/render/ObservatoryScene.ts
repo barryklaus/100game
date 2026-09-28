@@ -275,7 +275,8 @@ export class ObservatoryScene {
     const x = (rect.left + rect.width / 2) / innerWidth * 2 - 1;
     const y = -(rect.top + rect.height / 2) / innerHeight * 2 + 1;
     const direction = new THREE.Vector3(x, y, .35).unproject(this.camera).sub(this.camera.position).normalize();
-    return this.camera.position.clone().add(direction.multiplyScalar(distance));
+    const forward=new THREE.Vector3(0,0,-1).applyQuaternion(this.camera.quaternion);
+    return this.camera.position.clone().add(direction.multiplyScalar(distance/direction.dot(forward)));
   }
 
   private screenScale(rect: DOMRect, distance: number): number {
@@ -367,26 +368,29 @@ export class ObservatoryScene {
     });
   }
 
-  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin=0): Promise<void> {
+  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin=0, cardId?:string): Promise<void> {
     const { root, visual } = await this.makeFlyingCard(frontUrl);
     const distance = innerHeight > innerWidth * 1.08 ? 4.9 : 5.35;
-    const start = this.screenPoint(sourceRect, distance);
+    const pose=cardId?this.hand.cardPose(cardId):undefined;
+    const start = pose?.position??this.screenPoint(sourceRect, distance);
     const landing = this.discardPile.cardPose(this.discardPile.count);
     const end = landing.position;
-    const startQuaternion = this.camera.quaternion.clone();
+    const startQuaternion = pose?.quaternion??this.camera.quaternion.clone();
     const endQuaternion = landing.quaternion;
-    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: this.screenScale(sourceRect, distance), endScale: 1, draw: false, spin });
+    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: pose?.scale??this.screenScale(sourceRect, distance), endScale: 1, draw: false, spin });
   }
 
-  async drawCardToHand(frontUrl: string, targetRect: DOMRect): Promise<void> {
+  async drawCardToHand(frontUrl: string, targetRect: DOMRect, cardId?:string): Promise<void> {
     const { root, visual } = await this.makeFlyingCard(frontUrl);
     const distance = innerHeight > innerWidth * 1.08 ? 4.85 : 5.15;
     const drawn = this.deckPile.cardPose(this.deckPile.count);
     const start = drawn.position;
-    const end = this.screenPoint(targetRect, distance);
+    this.hand.update(0);
+    const pose=cardId?this.hand.cardPose(cardId):undefined;
+    const end = pose?.position??this.screenPoint(targetRect, distance);
     const startQuaternion = drawn.quaternion;
-    const endQuaternion = this.camera.quaternion.clone();
-    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: 1, endScale: this.screenScale(targetRect, distance), draw: true });
+    const endQuaternion = pose?.quaternion??this.camera.quaternion.clone();
+    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: 1, endScale: pose?.scale??this.screenScale(targetRect, distance), draw: true });
   }
 
   private positionSeatOverlays(): void {
@@ -405,7 +409,7 @@ export class ObservatoryScene {
     document.documentElement.style.setProperty('--total-y',`${(-total.y*.5+.5)*innerHeight}px`);
     for (let playerIndex=0;playerIndex<this.playerCount;playerIndex++) {
       const seat=layer.querySelector<HTMLElement>(`.seat[data-seat="${playerIndex}"]`);
-      if(!seat||playerIndex===this.localSeat)continue;
+      if(!seat)continue;
       const {x,y}=avatarAnchor(playerIndex,this.localSeat,this.playerCount,portrait);
       seat.style.setProperty('--seat-chair-x',`${x*innerWidth-bounds.left}px`);
       seat.style.setProperty('--seat-chair-y',`${y*innerHeight-bounds.top}px`);
@@ -416,7 +420,7 @@ export class ObservatoryScene {
     const portrait = innerHeight > innerWidth * 1.08;
     this.camera.aspect = innerWidth / innerHeight;
     this.camera.fov = portrait ? 46 : 42;
-    this.camera.position.set(0, portrait ? 10.8 : 9.1, portrait ? 13.8 : 11.7);
+    this.camera.position.set(0, portrait ? 10.8 : 7.4, portrait ? 13.8 : 9.4);
     this.camera.lookAt(0, portrait ? .6 : .45, portrait ? .1 : -.3);
     this.camera.updateProjectionMatrix();
     const budget = QUALITY_PRESETS[this.quality];
@@ -445,8 +449,8 @@ export class ObservatoryScene {
   private animate(time: number, delta: number): void {
     const portrait = innerHeight > innerWidth * 1.08;
     const baseX = 0;
-    const baseY = portrait ? 10.8 : 9.1;
-    const baseZ = portrait ? 13.8 : 11.7;
+    const baseY = portrait ? 10.8 : 7.4;
+    const baseZ = portrait ? 13.8 : 9.4;
     const beat=this.reducedMotion?0:Math.sin((1-this.impact)*Math.PI);
     const orbit=this.eventKind==='reverse'?beat*.12:0;
     const punch=['zero','minus','bust'].includes(this.eventKind)?beat*(this.eventKind==='bust'?.42:.2):0;
