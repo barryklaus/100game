@@ -15,7 +15,7 @@ function artworkSize(texture: THREE.Texture): { width: number; height: number } 
 }
 
 /** The artwork itself fills this traditional playing-card silhouette. */
-function roundedCardShape(width: number, height: number): THREE.Shape {
+export function roundedCardShape(width: number, height: number): THREE.Shape {
   const halfWidth = width / 2, halfHeight = height / 2;
   const radius = width * CORNER_RADIUS;
   const shape = new THREE.Shape();

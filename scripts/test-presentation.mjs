@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
 import {build} from 'esbuild';
 const load=async path=>{const result=await build({entryPoints:[path],bundle:true,platform:'node',format:'esm',write:false});return import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);};
 const {normalizeSettings}=await load('src/data/storage.ts');
@@ -34,8 +33,6 @@ assert.equal(cardFace({rank:'K',suit:'sun'}).index,'10');
 assert.deepEqual(['7','8','9','10'].map(rank=>cardFace({rank,suit:'fire'}).title),['CHOOSE A PLAYER','REVERSE','ZERO','−10']);
 assert.equal(cardFaceFromUrl('/assets/cards/water-9.webp')?.detail,'Total stays the same · +0');
 assert.equal(cardFaceFromUrl('/assets/cards/back.webp'),null);
-const totalFont=JSON.parse(readFileSync('src/render/totalFont.json','utf8'));
-for(const total of [-40,-10,-1,0,99,100,110])for(const character of String(total))assert(totalFont.glyphs[character]?.o,`Total ${total} has a missing glyph: ${character}`);
 const {CardPile,CARD_TABLE_HEIGHT}=await load('src/render/CardPile.ts');
 const {CARD_THICKNESS,CLEAN_CARD_LAYER,createCardMesh,disposeCardMesh}=await load('src/render/CardMesh.ts');
 const texture={image:{width:511,height:711},isTexture:true};
@@ -93,9 +90,11 @@ const landing=pile.cardPose(pile.count);
 await pile.setCards(['one','two'],'back');
 assert(pile.cardPose().position.distanceTo(landing.position)<1e-6,'Flight lands at the next card surface');
 await pile.setCards(Array.from({length:35},(_,i)=>String(i)),'back');
-assert.equal(pile.group.children.length,4,'Hidden cards share one paper block and only three top cards are drawn');
-assert.equal(pile.group.children.filter(child=>child.name==='pile-paper-body').length,1);
-assert.equal(pile.group.children.filter(child=>child.type==='Group').length,3);
+assert.equal(pile.group.children.length,15,'Discard retains fourteen textured layers and one batched group of buried edges');
+assert.equal(pile.group.children.filter(child=>child.name==='pile-paper-body').length,0,'Discard must never use a rectangular body');
+assert(pile.cardPose(8).position.distanceTo(pile.cardPose(9).position)>.1,'Discard edges have visible irregular offsets');
+assert(pile.cardPose(8).quaternion.angleTo(pile.cardPose(9).quaternion)>.1,'Discard orientations vary');
+assert(pile.cardPose(1).quaternion.angleTo(landing.quaternion)<1e-6,'A buried card retains its landing rotation');
 const previousTop=pile.cardPose();
 await pile.setCards(Array.from({length:34},(_,i)=>String(i)),'back');
 assert(pile.cardPose().position.y<previousTop.position.y,'Deck height falls after drawing');
@@ -103,7 +102,26 @@ assert(pile.cardPose(pile.count).position.distanceTo(previousTop.position)<1e-6,
 await pile.setCards(['recycled-top'],'back');
 assert.equal(pile.group.children.length,1,'Recycling removes old layers');
 pile.dispose();
-console.log('Presentation checks passed: settings migration, short flicks, canceled gestures, inspection, card language, and negative-to-bust numeral coverage.');
+const deck=new CardPile(true,async()=>texture);
+await deck.setCards(Array(35).fill('back'),'back');
+assert.equal(deck.group.children.length,4,'Draw deck retains efficient aligned paper body');
+const drawn=deck.cardPose();
+await deck.setCards(Array(34).fill('back'),'back');
+assert(deck.cardPose().position.y<drawn.position.y,'Draw deck shrinks after drawing');
+assert(deck.cardPose(deck.count).position.distanceTo(drawn.position)<1e-6,'Draw animation starts at the removed card');
+deck.dispose();
+console.log('Presentation checks passed: settings migration, short flicks, canceled gestures, inspection, card language, and observatory seat and score presentation.');
 console.log('Card input checks passed: quick same-card double taps and edge/corner spin grips.');
 console.log('Physical pile checks passed: empty, single, multiple cards, landing/draw alignment, and recycling.');
 console.log('Card face checks passed: rank indices, special instructions, clean art, and border-only normal/special foil.');
+
+const {avatarAnchor}=await load('src/ui/avatarLayout.ts');
+for(const portrait of [false,true])for(let count=2;count<=8;count++)for(let local=0;local<count;local++){
+  const seats=[];
+  for(let i=1;i<count;i++)seats.push(avatarAnchor((local+i)%count,local,count,portrait));
+  seats.forEach((seat,i)=>{
+    assert(seat.x>.09&&seat.x<.91&&seat.y>.15&&seat.y<.6,'Seat remains inside the gameplay field');
+    assert(Math.abs(seat.x+seats[seats.length-1-i].x-1)<1e-6,'Seat composition stays symmetric for every local player');
+  });
+}
+console.log('Observatory layout checks passed: symmetric 2–8 player tables, including every local seat.');

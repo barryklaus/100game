@@ -2,7 +2,7 @@
 .game-page {
   height: 100svh;
   min-height: 620px;
-  background: #10131b url('/assets/scene/fantasy-table.jpg') center / cover no-repeat;
+  background: #10131b linear-gradient(#070b13,#070b13) center / cover no-repeat;
 }
 .game-page::before {
   opacity: 1;

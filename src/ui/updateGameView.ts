@@ -69,6 +69,8 @@ function children(current: HTMLElement, next: HTMLElement): void {
 }
 
 export function updateGameView(root: HTMLElement, markup: string): void {
+  const handPositions=new Map(Array.from(root.querySelectorAll<HTMLElement>('.local-hand .hand-card')).map(card=>[card.dataset.card!,card.getBoundingClientRect()]));
+  const previousTotal=root.querySelector('.total-number')?.textContent;
   const template = document.createElement('template');
   template.innerHTML = markup;
   const next = template.content.firstElementChild;
@@ -79,4 +81,16 @@ export function updateGameView(root: HTMLElement, markup: string): void {
   const container = document.createElement('div');
   container.append(template.content);
   children(root, container);
+  if(!document.documentElement.classList.contains('reduce-motion')){
+    // CSS translate is independent of the existing fan and gyro transforms.
+    if(document.documentElement.classList.contains('crisp-mobile-hand')){
+      root.querySelectorAll<HTMLElement>('.local-hand .hand-card').forEach(card=>{
+        const before=handPositions.get(card.dataset.card!);if(!before)return;
+        const after=card.getBoundingClientRect();const x=before.left-after.left,y=before.top-after.top;
+        if(Math.abs(x)+Math.abs(y)>2)card.animate([{translate:`${x}px ${y}px`},{translate:'0 0'}],{duration:340,easing:'cubic-bezier(.2,.7,.3,1)'});
+      });
+    }
+    const total=root.querySelector<HTMLElement>('.total-number');
+    if(total&&previousTotal!==total.textContent)total.animate([{translate:'0 5px',opacity:.55},{translate:'0 0',opacity:1}],{duration:260,easing:'ease-out'});
+  }
 }

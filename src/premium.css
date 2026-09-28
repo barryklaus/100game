@@ -1,6 +1,5 @@
 /* Screen-space UI sits above a single lit, physical game world. */
 :root { --ui-scale: 1; }
-.world3d-total .total-wrap { position:absolute!important;width:1px!important;height:1px!important;clip-path:inset(50%);overflow:hidden;white-space:nowrap; }
 .world3d-active .hand-card.mesh-ready img { opacity:0!important;filter:none!important; }
 .world3d-active .hand-card.mesh-ready { outline:0;filter:none!important; }
 .world3d-active .hand-card { aspect-ratio:var(--card-aspect, .719718);height:clamp(310px,47vh,530px);width:auto;touch-action:none; }
@@ -54,7 +53,7 @@ button:active { translate:0 1px; }
 .setup-page { background:radial-gradient(ellipse at 14% 35%,#83522f40,transparent 52%),radial-gradient(ellipse at 65% 80%,#35326355,transparent 50%),#11121d; }
 .setup-panel { background:linear-gradient(130deg,#292532ed,#121721f5);border-left:1px solid #cfb17a33; }
 .setup-panel h2 { color:#eedab5;font-family:Georgia,serif; }
-.setup-hero { background:linear-gradient(#13121a50,#141520d9),url('../public/assets/scene/tavern.webp') center/cover; }
+.setup-hero { background:linear-gradient(#13121a50,#141520d9),linear-gradient(#070b13,#070b13) center/cover; }
 .seat-row { background:linear-gradient(90deg,#e0caa40b,#c4bad505);border-color:#bfb28c1c;border-radius:12px; }
 .seat-row input,.seat-row select { border-color:#a08a653d;background:#1118239c; }
 .primary-button { background:linear-gradient(#eacb88,#ba8744);border:1px solid #e9ca8a;color:#291e17;box-shadow:inset 0 1px #fff1cc99,0 8px 20px #0003; }

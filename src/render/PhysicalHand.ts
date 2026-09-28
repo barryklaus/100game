@@ -78,7 +78,7 @@ export class PhysicalHand {
     for (const item of this.cards.values()) {
       const {element,mesh}=item;
       if(!mesh) continue;
-      mesh.visible=element.isConnected && !element.classList.contains('card-departing') && !element.classList.contains('receiving-card');
+      mesh.visible=element.isConnected && element.closest('[data-phase]')?.getAttribute('data-phase')!=='ended' && !element.classList.contains('card-departing') && !element.classList.contains('receiving-card');
       if(!mesh.visible) continue;
       const rect=element.getBoundingClientRect();
       const dragging=element.classList.contains('dragging');
@@ -89,7 +89,9 @@ export class PhysicalHand {
       this.temp.set((rect.left+rect.width/2)/innerWidth*2-1,-(rect.top+rect.height/2)/innerHeight*2+1,.5).unproject(this.camera).sub(this.camera.position);
       const forward=new THREE.Vector3(0,0,-1).applyQuaternion(this.camera.quaternion);
       this.temp.multiplyScalar(distance/this.temp.dot(forward)).add(this.camera.position);
-      mesh.position.copy(this.temp);
+      if(mesh.userData.placed && !dragging && !this.reducedMotion) mesh.position.lerp(this.temp,1-Math.exp(-delta*18));
+      else mesh.position.copy(this.temp);
+      mesh.userData.placed=true;
       const fan=element===element.parentElement?.firstElementChild ? 7 : -7;
       const tx=Number(element.dataset.tiltX||0),ty=Number(element.dataset.tiltY||0),rz=Number(element.dataset.turn||0);
       const targetX=dragging ? -tx : inspecting ? 0 : hovering ? -.045 : -.025;
