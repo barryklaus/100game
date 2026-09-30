@@ -1,3 +1,4 @@
+import { CardHandoff } from './CardHandoff';
 import type { CardSpin } from '../ui/cardGesture';
 import { avatarAnchor } from '../ui/avatarLayout';
 import * as THREE from 'three';
@@ -17,6 +18,7 @@ import { CardPile } from './CardPile';
 import { flyingCardFlex } from './CardFlex';
 
 type SceneState = {
+  pendingPlay?: boolean;
   active: boolean;
   total: number;
   direction: 1 | -1;
@@ -43,6 +45,7 @@ export class ObservatoryScene {
   private renderScale = 1;
   private fastSamples = 0;
   private activeFlights = 0;
+  private handoff = new CardHandoff();
   private active = false;
   private contextLost=false;
   private quality: QualityPreset = 'high';
@@ -177,6 +180,8 @@ export class ObservatoryScene {
       this.pruneTimer=window.setTimeout(()=>this.pruneTextureCache(),300);
     });
     const key=next.eventKey??`${next.total}:${next.discardCardUrl}:${next.event}`;
+    if(!next.active)this.handoff.clear();
+    else void this.handoff.sync(key,!!next.pendingPlay,discardUpdate).catch(()=>undefined);
     if(key!==this.lastEventKey){
       if(this.lastEventKey){this.impact=1;this.eventKind=next.event;this.ring.trigger(next.event);}
       this.lastEventKey=key;
@@ -319,8 +324,10 @@ export class ObservatoryScene {
     endScale: number;
     draw: boolean;
     spin?: CardSpin;
+    onStart?: () => void;
+    onArrive?: () => void;
   }): Promise<void> {
-    const { root, visual, start, end, startQuaternion, endQuaternion, startScale, endScale, draw, spin } = options;
+    const { root, visual, start, end, startQuaternion, endQuaternion, startScale, endScale, draw, spin, onStart, onArrive } = options;
     const control = start.clone().lerp(end, .5);
     control.y += draw ? .85 : .65;
     control.z += draw ? .45 : -.3;
@@ -329,6 +336,8 @@ export class ObservatoryScene {
     root.scale.setScalar(startScale);
     visual.rotation.y = draw ? Math.PI : 0;
     const flex=flyingCardFlex(visual);
+    onStart?.();
+    this.hand.update(0);
     const started = performance.now();
     const duration = this.reducedMotion ? 80 : draw ? 520 : spin ? (spin.turns===2?720:560) : 440;
     const spinAxis=spin?new THREE.Vector3(spin.x,spin.y,spin.z):undefined;
@@ -358,15 +367,21 @@ export class ObservatoryScene {
         else {
           this.activeFlights--;
           this.renderer.shadowMap.needsUpdate = true;
-          this.scene.remove(root);
-          root.traverse(object => {
-            if (object instanceof THREE.Mesh) {
-              object.geometry.dispose();
-              const materials = Array.isArray(object.material) ? object.material : [object.material];
-              materials.forEach(material => material.dispose());
-            }
-          });
-          this.pruneTextureCache();
+          onArrive?.();
+          this.hand.update(0);
+          const release=()=>{
+            this.scene.remove(root);
+            root.traverse(object => {
+              if (object instanceof THREE.Mesh) {
+                object.geometry.dispose();
+                const materials=Array.isArray(object.material)?object.material:[object.material];
+                materials.forEach(material=>material.dispose());
+              }
+            });
+            this.pruneTextureCache();
+          };
+          if(draw)release();
+          else this.handoff.retain(this.lastEventKey,release);
           resolve();
         }
       };
@@ -374,7 +389,7 @@ export class ObservatoryScene {
     });
   }
 
-  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin?:CardSpin, cardId?:string): Promise<void> {
+  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin?:CardSpin, cardId?:string, onStart?:()=>void): Promise<void> {
     const { root, visual } = await this.makeFlyingCard(frontUrl);
     const distance = innerHeight > innerWidth * 1.08 ? 4.9 : 5.35;
     const pose=cardId?this.hand.cardPose(cardId):undefined;
@@ -383,10 +398,10 @@ export class ObservatoryScene {
     const end = landing.position;
     const startQuaternion = pose?.quaternion??this.camera.quaternion.clone();
     const endQuaternion = landing.quaternion;
-    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: pose?.scale??this.screenScale(sourceRect, distance), endScale: 1, draw: false, spin });
+    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: pose?.scale??this.screenScale(sourceRect, distance), endScale: 1, draw: false, spin, onStart });
   }
 
-  async drawCardToHand(frontUrl: string, targetRect: DOMRect, cardId?:string): Promise<void> {
+  async drawCardToHand(frontUrl: string, targetRect: DOMRect, cardId?:string, onArrive?:()=>void): Promise<void> {
     const { root, visual } = await this.makeFlyingCard(frontUrl);
     const distance = innerHeight > innerWidth * 1.08 ? 4.85 : 5.15;
     const drawn = this.deckPile.cardPose(this.deckPile.count);
@@ -396,7 +411,7 @@ export class ObservatoryScene {
     const end = pose?.position??this.screenPoint(targetRect, distance);
     const startQuaternion = drawn.quaternion;
     const endQuaternion = pose?.quaternion??this.camera.quaternion.clone();
-    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: 1, endScale: pose?.scale??this.screenScale(targetRect, distance), draw: true });
+    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: 1, endScale: pose?.scale??this.screenScale(targetRect, distance), draw: true, onArrive });
   }
 
   private positionSeatOverlays(): void {
@@ -582,6 +597,7 @@ export class ObservatoryScene {
   };
 
   dispose(): void {
+    this.handoff.clear();
     cancelAnimationFrame(this.frame);
     clearTimeout(this.pruneTimer);
     this.hand.dispose();this.composer?.dispose();this.bloom?.dispose();this.ao?.dispose();this.environment.dispose();

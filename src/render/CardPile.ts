@@ -52,6 +52,7 @@ export class CardPile {
   private requested: string[] = [];
   private backUrl = '';
   private revision = 0;
+  private pending: Promise<void> = Promise.resolve();
   private disposed = false;
   private visibleDiscards=DISCARD_VISIBLE_CARDS;
   private sideTexture = makePaperSide();
@@ -76,8 +77,13 @@ export class CardPile {
     if(back)void this.setCards([...this.requested],back);
   }
 
-  async setCards(fronts: string[], backUrl: string): Promise<void> {
-    if (backUrl === this.backUrl && fronts.length === this.count && fronts.every((url, i) => url === this.requested[i])) return;
+  setCards(fronts: string[], backUrl: string): Promise<void> {
+    if (backUrl === this.backUrl && fronts.length === this.count && fronts.every((url, i) => url === this.requested[i])) return this.pending;
+    this.pending = this.buildCards(fronts, backUrl);
+    return this.pending;
+  }
+
+  private async buildCards(fronts: string[], backUrl: string): Promise<void> {
     this.requested = [...fronts]; this.backUrl = backUrl;
     const revision = ++this.revision;
     const firstVisible = Math.max(0, fronts.length - (this.draw ? DRAW_VISIBLE_CARDS : this.visibleDiscards));

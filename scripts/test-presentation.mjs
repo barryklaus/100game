@@ -148,3 +148,34 @@ for(const rear of [0,.015,.08,.3,.65])for(const front of [0,.015,.08,.3,.65]){
   assert(distances[1]*(1+front)<distances[0]*(1-rear)-.04,'Complete tilted card volumes cannot intersect, in either stacking order');
 }
 console.log('Observatory layout checks passed: symmetric 2–8 player arcs including the local player; separate hand-card depth volumes.');
+
+const {CardHandoff}=await load('src/render/CardHandoff.ts');
+const handoff=new CardHandoff();
+let releases=0;
+handoff.retain('turn-1',()=>releases++);
+await handoff.sync('turn-1',true,Promise.resolve());
+assert.equal(releases,0,'A landed card stays visible while its play awaits the server');
+let ready;
+const pileReady=new Promise(resolve=>ready=resolve);
+const committing=handoff.sync('turn-2',false,pileReady);
+await Promise.resolve();
+assert.equal(releases,0,'Changing state cannot remove the flight before the pile texture is ready');
+ready();await committing;
+assert.equal(releases,1,'The landed flight is released only once its replacement is ready');
+handoff.retain('turn-2',()=>releases++);
+await handoff.sync('turn-2',false,Promise.resolve());
+assert.equal(releases,2,'Rejected moves clear the temporary landing when the hand is restored');
+let obsoleteReady;
+const obsolete=handoff.sync('turn-2',false,new Promise(resolve=>obsoleteReady=resolve));
+handoff.retain('turn-2',()=>releases++);
+obsoleteReady();await obsolete;
+assert.equal(releases,2,'An old render cannot release a later flight');
+handoff.clear();
+assert.equal(releases,3,'Leaving a game releases retained cards');
+let loadReady;
+const delayed=new CardPile(false,()=>new Promise(resolve=>loadReady=resolve));
+const first=delayed.setCards(['one'],'back');
+const repeated=delayed.setCards(['one'],'back');
+assert.equal(first,repeated,'Repeated renders must await the same unfinished pile update');
+loadReady(texture);await Promise.resolve();loadReady(texture);await first;delayed.dispose();
+console.log('Card handoff checks passed: delayed pile loading, online acknowledgment, rejected moves, repeated renders, and cleanup.');

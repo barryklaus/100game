@@ -26,6 +26,8 @@ let stats: Stats = loadStats();
 let state: GameState | null = null;
 let selectedCard: string | null = null;
 let locked = false;
+let departingCardId: string | null = null;
+const receivingCardIds = new Set<string>();
 let modal: 'rules' | 'settings' | 'stats' | 'history' | 'menu' | null = null;
 let emotesOpen = false;
 let emoteHoldTimer:number|undefined;
@@ -164,18 +166,20 @@ async function animateDrawToHand(card: Card): Promise<void> {
   const end = target.getBoundingClientRect();
   if (start.width < 2 || end.width < 2) { audio.play('card-draw'); return; }
 
+  receivingCardIds.add(card.id);
   target.classList.add('receiving-card');
+  const reveal=()=>{
+    receivingCardIds.delete(card.id);
+    document.querySelector<HTMLElement>(`.local-hand .hand-card[data-card="${card.id}"]`)?.classList.remove('receiving-card');
+  };
   if (observatory) {
     try {
-      await observatory.drawCardToHand(cardImage(card), end, card.id);
-      if (target.isConnected) {
-        target.classList.remove('receiving-card');
-        target.animate([{ opacity: 0, filter: 'none' }, { opacity: 1, filter: 'none' }], { duration: 170, easing: 'ease-out' });
-      }
+      await target.querySelector<HTMLImageElement>('img')?.decode().catch(()=>undefined);
+      await observatory.drawCardToHand(cardImage(card), end, card.id, reveal);
       audio.play('card-draw');
       return;
     } catch {
-      target.classList.remove('receiving-card');
+      reveal();
     }
   }
   const flight = document.createElement('div');
@@ -195,12 +199,9 @@ async function animateDrawToHand(card: Card): Promise<void> {
     { transform: `translate(${dx * .48}px, ${dy * .48 - 34}px) scale(${1 + (scale - 1) * .45}) rotateY(86deg) rotateZ(-6deg)`, offset: .48 },
     { transform: `translate(${dx}px, ${dy}px) scale(${scale}) rotateY(180deg) rotateZ(0deg)`, offset: 1 },
   ], { duration: 520, easing: 'cubic-bezier(.2,.76,.22,1)', fill: 'forwards' }).finished.catch(() => undefined);
+  reveal();
   flight.remove();
   audio.play('card-draw');
-  if (target.isConnected) {
-    target.classList.remove('receiving-card');
-    target.animate([{ opacity: 0, filter: 'none' }, { opacity: 1, filter: 'none' }], { duration: 170, easing: 'ease-out' });
-  }
 }
 function setSeat(index: number, update: Partial<PlayerConfig>): void {
   settings.seats[index] = { ...settings.seats[index], ...update };
@@ -273,14 +274,17 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   const origin = source || document.querySelector<HTMLElement>(`.seat[data-seat="${state.current}"]`) || document.querySelector<HTMLElement>('.draw-stack')!;
   const start = origin.getBoundingClientRect();
   if (observatory && !settings.reducedMotion) {
-    source?.classList.add('card-departing');
     try {
-      await observatory.playCardToDiscard(cardImage(card), start, spin, source?cardId:undefined);
+      await observatory.playCardToDiscard(cardImage(card), start, spin, source?cardId:undefined,()=>{
+        departingCardId=source?cardId:null;
+        source?.classList.add('card-departing');
+      });
       audio.play('slap');
       locked = false;
       resolveCard(cardId);
       return;
     } catch {
+      departingCardId=null;
       source?.classList.remove('card-departing');
     }
   }
@@ -432,8 +436,14 @@ async function dealOpeningHand(snapshot:GameState):Promise<void>{
 }
 function render(): void {
   updateGameView(app, (online && online.status !== 'playing' ? lobbyView() : state ? gameView() : onlineMode ? onlineView() : setupView()) + modalView());
+  if(!locked&&!awaitingNetwork)departingCardId=null;
+  for(const element of Array.from(document.querySelectorAll<HTMLElement>('.local-hand .hand-card'))){
+    if(element.dataset.card===departingCardId)element.classList.add('card-departing');
+    if(receivingCardIds.has(element.dataset.card!))element.classList.add('receiving-card');
+  }
   const discard = state?.played.at(-1);
   observatory?.update({
+    pendingPlay: locked || awaitingNetwork || remoteFlight,
     active: !!state && (!online || online.status === 'playing'),
     total: state?.total ?? 0,
     direction: state?.direction ?? 1,
