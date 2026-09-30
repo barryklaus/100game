@@ -346,7 +346,6 @@ export class ObservatoryScene {
     startScale: number;
     endScale: number;
     draw: boolean;
-    durationMs?: number;
     spin?: CardSpin;
     onStart?: () => void;
     onArrive?: () => void;
@@ -363,7 +362,7 @@ export class ObservatoryScene {
     onStart?.();
     this.hand.update(0);
     const started = performance.now();
-    const duration = this.reducedMotion ? 80 : draw ? 520 : spin ? (spin.turns===2?720:560) : (options.durationMs ?? 440);
+    const duration = this.reducedMotion ? 80 : draw ? 520 : spin ? (spin.turns===2?720:560) : 440;
     const spinAxis=spin?new THREE.Vector3(spin.x,spin.y,spin.z):undefined;
     const spinRotation=new THREE.Quaternion();
     return new Promise(resolve => {
@@ -422,7 +421,7 @@ export class ObservatoryScene {
     const end = landing.position;
     const startQuaternion = pose?.quaternion??this.camera.quaternion.clone();
     const endQuaternion = landing.quaternion;
-    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: pose?.scale??this.screenScale(sourceRect, distance), endScale: 1, draw: false, durationMs: cardId ? 440 : 650, spin, onStart });
+    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: pose?.scale??this.screenScale(sourceRect, distance), endScale: 1, draw: false, spin, onStart });
   }
 
   async drawCardToHand(frontUrl: string, targetRect: DOMRect, cardId?:string, onArrive?:()=>void): Promise<void> {

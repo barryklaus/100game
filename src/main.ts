@@ -378,7 +378,7 @@ function scheduleCpu(): void {
   if (online && !online.runsCpuLocally) return;
   const actor = state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current;
   if (state.players[actor].kind !== 'cpu') return;
-  const delay = cpuActionDelay(state);
+  const delay = cpuActionDelay();
   const scheduledState = state, turn = state.turn, phase = state.phase;
   cpuTimer = window.setTimeout(() => {
     if (state !== scheduledState || state.turn !== turn || state.phase !== phase || locked || awaitingNetwork) return;

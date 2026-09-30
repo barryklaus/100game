@@ -122,7 +122,7 @@ function cpuTurnKey(room: RoomData): string | null {
 export function scheduleCpuAction(room: RoomData, now = Date.now()): void {
   const key = cpuTurnKey(room);
   if (!key) { room.cpuAction = null; return; }
-  if (room.cpuAction?.key !== key) room.cpuAction = { key, dueAt: now + cpuActionDelay(room.state!) };
+  if (room.cpuAction?.key !== key) room.cpuAction = { key, dueAt: now + cpuActionDelay() };
 }
 
 /** Exactly one action per deadline, including a separate pause for choosing a player. */
