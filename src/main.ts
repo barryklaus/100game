@@ -1,3 +1,4 @@
+import { TotalPresentation } from './ui/TotalPresentation';
 import { totalMarkup } from './ui/totalFeedback';
 import { avatarAnchor } from './ui/avatarLayout';
 import { scoreTransition } from './ui/ScoreTransition';
@@ -63,8 +64,27 @@ gyro.onStatusChange = () => {
 };
 audio.configure(settings);
 document.documentElement.classList.add('observatory-mode');
+const presentedTotal = new TotalPresentation();
 let observatory: ObservatoryScene | undefined;
 try { observatory = new ObservatoryScene(); observatory.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion}); } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
+
+if (observatory) observatory.onCardArrival = key => {
+  if (!presentedTotal.arrive(key)) return;
+  // Update only the score, preserving an in-progress card drag and draw animation.
+  const total = document.querySelector('.total-number');
+  if (total) total.innerHTML = totalMarkup(presentedTotal.visible.total);
+  for (const selector of ['energy-system', 'total-wrap']) {
+    const element = document.querySelector(`.${selector}`);
+    if (element) element.className = `${selector} ${totalClass(presentedTotal.visible.total)}`;
+  }
+  const caption = document.querySelector('.total-event');
+  if (caption) caption.textContent = presentedTotal.visible.caption;
+  if (state?.phase === 'ended') render();
+};
+
+function totalClass(total: number): string {
+  return total>100?'busted':total===100?'at100':total>=CONFIG.TOTAL_WARNING_3?'danger':total>=CONFIG.TOTAL_WARNING_2?'warning-2':total>=CONFIG.TOTAL_WARNING_1?'warning-1':'';
+}
 
 const escapeHtml = (value: string): string => value.replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char]!);
 const avatarNames = ['Ember Scout', 'Tide Scholar', 'Grove Guardian', 'Sun Knight', 'Storm Pilot', 'Coral Bard', 'Mushroom Alchemist', 'Desert Ranger', 'Moon Seer', 'River Courier', 'Thorn Duelist', 'Forge Captain', 'Cloud Mechanic', 'Marsh Mystic', 'Wildwood Archer', 'Dawn Dancer'];
@@ -393,16 +413,16 @@ function gameView(): string {
   const myTurn = state.phase !== 'ended' && !awaitingNetwork && active.kind === 'human' && actor === localSeat();
   const otherLocalTurn = !online && active.kind === 'human' && actor !== localSeat();
   const hand = mine?.kind === 'human' ? mine.hand : [];
-  const totalClass = state.total>100?'busted':state.total===100?'at100':state.total>=CONFIG.TOTAL_WARNING_3?'danger':state.total>=CONFIG.TOTAL_WARNING_2?'warning-2':state.total>=CONFIG.TOTAL_WARNING_1?'warning-1':'';
+  const totalStyle = totalClass(presentedTotal.visible.total);
 
   return `<main class="game-page" data-event="${state.event}" data-phase="${state.phase}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>SIMPLE NUMBERS.<br>BIG REACTIONS.</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>100 <span>OBSERVATORY</span></strong><small>${online?'Private online table':'Local table'} · Round ${state.round}</small></div></div><div class="header-wallet" aria-label="Player rewards"><span class="wallet-pill"><b>★</b>${stats.currency.toLocaleString()}</span><span class="wallet-pill gem"><b>◆</b>${stats.rating.toLocaleString()}</span></div><div class="header-status"><span class="round-pill">Round ${state.round}</span><span class="turn-pill">${state.phase==='ended'?'Round scores':`${actor===localSeat()?'Your':escapeHtml(active.name)+'’s'} ${state.phase==='target'?'choice':'turn'}`}</span></div><div class="header-actions"><button data-action="history" aria-label="Game history">▤</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}
-    <div class="game-layout"><section class="arena" aria-label="Game table"><div class="table-rim"><div class="table-felt"><div class="energy-system ${totalClass}"><div class="total-wrap ${totalClass}"><span class="total-caption">SHARED TOTAL</span><div class="total-number" role="status" aria-live="polite" aria-label="Shared total">${totalMarkup(state.total)}</div><div class="total-event">${state.total>100?'OVERFLOW':state.event==='exact'?'EXACT 100 · +3':state.event==='zero'?'ZERO · TOTAL HELD':state.event==='minus'?'−10':state.phase==='target'?'CHOOSE A PLAYER':''}</div><div class="ring-direction" aria-label="${state.direction===1?'Clockwise':'Counterclockwise'} turn order">${state.direction===1?'› · › · ›':'‹ · ‹ · ‹'}</div></div></div><div class="table-cards"><div class="pile-wrap"><div class="draw-stack"><div class="playing-card card-back" role="img" aria-label="Draw pile"><img src="${backImage}" alt="Draw pile" draggable="false"></div></div></div><div class="pile-wrap"><div class="played-slot">${top?cardElement(top,false,'last-card'):'<span class="empty-slot">PLAY HERE</span>'}</div></div></div></div></div>
+    <div class="game-layout"><section class="arena" aria-label="Game table"><div class="table-rim"><div class="table-felt"><div class="energy-system ${totalStyle}"><div class="total-wrap ${totalStyle}"><span class="total-caption">SHARED TOTAL</span><div class="total-number" role="status" aria-live="polite" aria-label="Shared total">${totalMarkup(presentedTotal.visible.total)}</div><div class="total-event">${presentedTotal.visible.caption}</div><div class="ring-direction" aria-label="${state.direction===1?'Clockwise':'Counterclockwise'} turn order">${state.direction===1?'› · › · ›':'‹ · ‹ · ‹'}</div></div></div><div class="table-cards"><div class="pile-wrap"><div class="draw-stack"><div class="playing-card card-back" role="img" aria-label="Draw pile"><img src="${backImage}" alt="Draw pile" draggable="false"></div></div></div><div class="pile-wrap"><div class="played-slot">${top?cardElement(top,false,'last-card'):'<span class="empty-slot">PLAY HERE</span>'}</div></div></div></div></div>
       <div class="seat-layer" style="--player-count:${state.players.length}">${state.players.map((player,i)=>seatHtml(player,i,state!.players.length)).join('')}</div>
       ${state.phase==='target'&&canControlActor()?'<div class="target-hint">Select a portrait to pass the turn</div>':''}
     </section><aside class="side-panel"><div class="side-card"><div class="eyebrow">AT THE TABLE</div><h3>${state.phase==='target'?'Choosing a target: ':state.forced?'Forced play: ':'Now playing: '}${escapeHtml(active.name)}</h3></div><div class="side-card log-card"><div class="card-heading"><h3>Game Log</h3><span>RECENT MOVES</span></div><ul>${state.log.slice(0,7).map(gameLogLine).join('')}</ul></div></aside></div>
     ${otherLocalTurn ? `<div class="shared-turn" role="region" aria-label="${escapeHtml(active.name)}'s local turn"><strong>Pass the device to ${escapeHtml(active.name)}</strong><span>${state.phase === 'target' ? 'Tap a highlighted player at the table.' : 'Double-tap a card or flick it toward the table.'}</span><div class="shared-hand">${state.phase === 'playing' ? active.hand.map(card=>cardElement(card,selectedCard===card.id,'hand-card')).join('') : ''}</div></div>` : ''}
     <footer class="hand-dock"><div class="dock-prompt ${myTurn?'my-turn':''}">${myTurn?'<span class="your-turn-bubble">YOUR TURN</span>':''}<img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${mine ? `${mine.ratingDelta>=0?'+':''}${mine.ratingDelta} · Round score` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Double-tap a card or flick it upward' : awaitingNetwork ? 'Confirming your move…' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><div class="emote-menu ${emotesOpen?'open':''}"><button class="emote-trigger" data-action="emotes" aria-label="Choose emote" aria-expanded="${emotesOpen}">☺<small>EMOTE</small></button><div class="emote-wheel" aria-label="Emotes" ${emotesOpen?'':'inert aria-hidden="true"'}>${(['Happy','Excited','Confused','Angry','Sad','Smug','Scared','Thinking'] as const).map(m=>`<button data-emote="${m}" title="${m}" aria-label="${m}">${moodSymbols[m]}</button>`).join('')}</div></div><button class="info-fab" data-action="rules" aria-label="Game information">i<small>INFO</small></button><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
-    ${state.phase==='ended'?resultView():''}</main>`;
+    ${state.phase==='ended'&&!presentedTotal.pending?resultView():''}</main>`;
 }
 function resultView(): string {
   if (!state) return '';
@@ -436,16 +456,23 @@ async function dealOpeningHand(snapshot:GameState):Promise<void>{
   }
 }
 function render(): void {
+  const discard = state?.played.at(-1);
+  const playKey = state&&discard?`${state.round}:${discard.id}:${state.played.length}`:'';
+  const active = !!state && (!online || online.status === 'playing');
+  presentedTotal.sync(active?`${state!.round}:${state!.players.map(player=>player.name).join(':')}`:'', playKey, {
+    total: state?.total ?? 0,
+    caption: !state?'':state.total>100?'OVERFLOW':state.event==='exact'?'EXACT 100 · +3':state.event==='zero'?'ZERO · TOTAL HELD':state.event==='minus'?'−10':state.phase==='target'?'CHOOSE A PLAYER':'',
+  }, !!observatory?.canAnimate && !settings.reducedMotion);
   updateGameView(app, (online && online.status !== 'playing' ? lobbyView() : state ? gameView() : onlineMode ? onlineView() : setupView()) + modalView());
   if(!locked&&!awaitingNetwork)departingCardId=null;
   for(const element of Array.from(document.querySelectorAll<HTMLElement>('.local-hand .hand-card'))){
     if(element.dataset.card===departingCardId)element.classList.add('card-departing');
     if(receivingCardIds.has(element.dataset.card!))element.classList.add('receiving-card');
   }
-  const discard = state?.played.at(-1);
   observatory?.update({
     pendingPlay: locked || awaitingNetwork || remoteFlight,
-    playKey: state&&discard?`${state.round}:${discard.id}:${state.played.length}`:'',
+    playKey,
+    totalPending: presentedTotal.pending,
     active: !!state && (!online || online.status === 'playing'),
     total: state?.total ?? 0,
     direction: state?.direction ?? 1,

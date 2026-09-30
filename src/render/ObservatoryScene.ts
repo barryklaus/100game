@@ -23,6 +23,7 @@ import { flyingCardFlex } from './CardFlex';
 type SceneState = {
   pendingPlay?: boolean;
   playKey?: string;
+  totalPending?: boolean;
   active: boolean;
   total: number;
   direction: 1 | -1;
@@ -61,6 +62,10 @@ export class ObservatoryScene {
   private cardMasks = new WeakMap<THREE.Material, THREE.Material>();
   private table = new ObservatoryTable();
   private cardFlow = new CardImpactFlow();
+  private playKey = '';
+  private pendingOverflow = false;
+  onCardArrival?: (key: string) => void;
+  get canAnimate(): boolean { return !this.contextLost; }
   private totalPulse?: Animation;
   private ring = new ArcaneTotalRing();
   private fireworks = new OverflowFireworks();
@@ -108,7 +113,7 @@ export class ObservatoryScene {
     this.renderer.domElement.className = 'world3d-canvas';
     this.renderer.domElement.setAttribute('aria-hidden', 'true');
     document.body.prepend(this.renderer.domElement);
-    this.renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();this.contextLost=true;this.renderer.domElement.hidden=true;document.documentElement.classList.remove('world3d-active','world3d-total');});
+    this.renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();this.contextLost=true;this.onCardArrival?.(this.playKey);this.renderer.domElement.hidden=true;document.documentElement.classList.remove('world3d-active','world3d-total');});
     this.renderer.domElement.addEventListener('webglcontextrestored',()=>{this.contextLost=false;this.renderer.domElement.hidden=!this.active;document.documentElement.classList.toggle('world3d-active',this.active);document.documentElement.classList.toggle('world3d-total',this.active);});
 
     this.scene.background = new THREE.Color(0x03050a);
@@ -183,7 +188,9 @@ export class ObservatoryScene {
     this.ring.setDirection(next.direction);
     this.ring.setTotal(next.total);
     this.table.setTotal(next.total);
-    this.cardFlow.setCard(next.active?(next.playKey??''):'');
+    this.playKey = next.active?(next.playKey??''):'';
+    this.cardFlow.setCard(this.playKey);
+    if (!next.active || next.event === 'none') this.pendingOverflow = false;
     this.drawCardUrl = next.drawCardUrl;
     this.pileShadows[0].visible = (next.drawCount ?? 0) > 0;
     this.pileShadows[1].visible = (next.discardCount ?? 0) > 0;
@@ -199,7 +206,7 @@ export class ObservatoryScene {
     if(!next.active)this.handoff.clear();
     else void this.handoff.sync(key,!!next.pendingPlay,discardUpdate).catch(()=>undefined);
     if(key!==this.lastEventKey){
-      if(this.lastEventKey){if(next.total>100&&next.event==='bust'){this.overflowAge=0;this.fireworks.trigger(this.reducedMotion);}this.impact=1;this.eventKind=next.event;this.ring.trigger(next.event);}
+      if(this.lastEventKey){if(next.total>100&&next.event==='bust'){if(next.totalPending)this.pendingOverflow=true;else{this.overflowAge=0;this.fireworks.trigger(this.reducedMotion);}}this.impact=1;this.eventKind=next.event;this.ring.trigger(next.event);}
       this.lastEventKey=key;
     }
     this.renderer.domElement.hidden = !next.active||this.contextLost;
@@ -505,6 +512,10 @@ export class ObservatoryScene {
     const flow=this.cardFlow.update(delta,this.reducedMotion);
     this.table.setFlow(flow.progress,flow.strength);
     if(flow.arrival){
+      this.onCardArrival?.(this.playKey);
+      if (this.pendingOverflow) {
+        this.pendingOverflow=false;this.overflowAge=0;this.fireworks.trigger(this.reducedMotion);
+      }
       this.ring.receiveCard();
       const total=document.querySelector<HTMLElement>('.total-number');
       if(total&&!total.closest('.busted')){
