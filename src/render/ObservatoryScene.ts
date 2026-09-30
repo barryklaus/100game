@@ -1,3 +1,4 @@
+import { CardImpactFlow } from './CardImpactFlow';
 import { overflowQuake } from '../ui/totalFeedback';
 import { OverflowFireworks } from './OverflowFireworks';
 import { CardHandoff } from './CardHandoff';
@@ -21,6 +22,7 @@ import { flyingCardFlex } from './CardFlex';
 
 type SceneState = {
   pendingPlay?: boolean;
+  playKey?: string;
   active: boolean;
   total: number;
   direction: 1 | -1;
@@ -58,6 +60,8 @@ export class ObservatoryScene {
   private ao?: SSAOPass;
   private cardMasks = new WeakMap<THREE.Material, THREE.Material>();
   private table = new ObservatoryTable();
+  private cardFlow = new CardImpactFlow();
+  private totalPulse?: Animation;
   private ring = new ArcaneTotalRing();
   private fireworks = new OverflowFireworks();
   private overflowAge=4;
@@ -87,6 +91,8 @@ export class ObservatoryScene {
   private pileShadows: THREE.Mesh[] = [];
   private drawCardUrl = '';
   private playerCount = 0;
+  private currentTotal=0;
+  private flowColor():string{return `hsl(${43*(1-Math.max(0,Math.min(1,this.currentTotal/100)))} 100% 65%)`;}
   private localSeat = 0;
 
   constructor() {
@@ -171,11 +177,13 @@ export class ObservatoryScene {
   update(next: SceneState): void {
     this.active = next.active;
     this.playerCount = next.playerCount;
+    this.currentTotal=next.total;
     this.localSeat = next.localSeat;
     this.seatProjectionDirty = true;
     this.ring.setDirection(next.direction);
     this.ring.setTotal(next.total);
     this.table.setTotal(next.total);
+    this.cardFlow.setCard(next.active?(next.playKey??''):'');
     this.drawCardUrl = next.drawCardUrl;
     this.pileShadows[0].visible = (next.drawCount ?? 0) > 0;
     this.pileShadows[1].visible = (next.discardCount ?? 0) > 0;
@@ -494,6 +502,21 @@ export class ObservatoryScene {
     if(time-this.lastSeatUpdate>.04 && (this.seatProjectionDirty || this.impact>0 || this.overflowAge<2.4 || this.eventKind!=='none')){
       this.positionSeatOverlays();this.lastSeatUpdate=time;this.seatProjectionDirty=false;
     }
+    const flow=this.cardFlow.update(delta,this.reducedMotion);
+    this.table.setFlow(flow.progress,flow.strength);
+    if(flow.arrival){
+      this.ring.receiveCard();
+      const total=document.querySelector<HTMLElement>('.total-number');
+      if(total&&!total.closest('.busted')){
+        this.totalPulse?.cancel();
+        const color=this.flowColor();
+        this.totalPulse=total.animate([
+          {scale:'1',textShadow:`0 0 0 ${color}`},
+          {scale:'1.07',textShadow:`0 0 22px ${color},0 0 44px ${color}`,offset:.28},
+          {scale:'1',textShadow:'0 3px 0 #6a5a40,0 9px 20px #0009'}
+        ],{duration:360,easing:'ease-out'});
+      }
+    }
     this.ring.update(delta,this.reducedMotion);
     this.hand.update(delta);
     if(this.impact===0)this.eventKind='none';
@@ -610,6 +633,7 @@ export class ObservatoryScene {
 
   dispose(): void {
     this.handoff.clear();
+    this.totalPulse?.cancel();
     cancelAnimationFrame(this.frame);
     clearTimeout(this.pruneTimer);
     this.hand.dispose();this.composer?.dispose();this.bloom?.dispose();this.ao?.dispose();this.environment.dispose();

@@ -50,6 +50,8 @@ export class ObservatoryTable {
   private haze:THREE.Mesh;
   private metal=brass();
   private danger={value:0};
+  private flow={value:1};
+  private flowStrength={value:0};
   constructor(){
     const metal=this.metal;
     const edge=new THREE.MeshStandardMaterial({color:0x131620,metalness:.75,roughness:.38});
@@ -58,11 +60,22 @@ export class ObservatoryTable {
     const surface=top.material as THREE.MeshStandardMaterial;
     surface.onBeforeCompile=shader=>{
       shader.uniforms.uTableDanger=this.danger;
-      shader.fragmentShader='uniform float uTableDanger;\n'+shader.fragmentShader;
+      shader.uniforms.uTableFlow=this.flow;
+      shader.uniforms.uTableFlowStrength=this.flowStrength;
+      shader.fragmentShader='uniform float uTableDanger;uniform float uTableFlow;uniform float uTableFlowStrength;\n'+shader.fragmentShader;
       shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`#include <map_fragment>
+        float lineMask=smoothstep(.025,.095,max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)));
         float goldMask=smoothstep(.01,.055,diffuseColor.r-diffuseColor.b);
         vec3 heated=vec3(max(diffuseColor.r*1.9,.16),diffuseColor.g*.08,diffuseColor.b*.035);
         diffuseColor.rgb=mix(diffuseColor.rgb,heated,uTableDanger*goldMask);`);
+      shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>',`#include <emissivemap_fragment>
+        float radius=length(vMapUv-vec2(.5))*2.;
+        float waveRadius=1.03-uTableFlow*1.3;
+        float wave=1.-smoothstep(.025,.14,abs(radius-waveRadius));
+        float wake=smoothstep(0.,.06,radius-waveRadius)*(1.-smoothstep(.06,.32,radius-waveRadius));
+        float flash=pow(max(0.,1.-uTableFlow*5.),2.);
+        vec3 flowColor=mix(vec3(1.,.58,.12),vec3(1.,.045,.008),uTableDanger);
+        totalEmissiveRadiance+=flowColor*lineMask*uTableFlowStrength*(wave*3.2+wake*.18+flash*.9);`);
     };
     top.rotation.x=-Math.PI/2;top.position.y=.3475;top.receiveShadow=true;this.group.add(top);
     for(const [r,w,y] of [[5.02,.027,.335],[4.82,.008,.352],[4.37,.009,.351],[5.01,.015,.065]])this.group.add(ring(r,w,metal,y));
@@ -82,6 +95,11 @@ export class ObservatoryTable {
     const danger=totalDanger(total);this.danger.value=danger;
     this.metal.color.set(0x9b7844).lerp(HEAT_RED,danger);
     this.metal.emissive.set(0xff2310);this.metal.emissiveIntensity=danger*.32;
+  }
+  setFlow(progress:number,strength:number):void{
+    this.flow.value=progress;this.flowStrength.value=strength;
+    const rimPulse=Math.pow(Math.max(0,1-progress*4),2)*strength;
+    this.metal.emissive.copy(this.metal.color);this.metal.emissiveIntensity=this.danger.value*.32+rimPulse*2;
   }
   configure(quality:QualityPreset):void{
     this.haze.visible=quality==='ultra'||quality==='high';
@@ -113,6 +131,7 @@ export class ArcaneTotalRing {
   private elapsed=2;
   private event='none';
   private direction=1;
+  private arrival=0;
   private quality:QualityPreset='high';
   constructor(){
     this.group.position.set(0,0,-.65);
@@ -132,12 +151,15 @@ export class ArcaneTotalRing {
   configure(quality:QualityPreset):void{this.quality=quality;this.fragments.geometry.setDrawRange(0,quality==='ultra'?48:quality==='high'?20:quality==='medium'?8:0);}
   trigger(event:string):void {this.event=event;this.elapsed=0;}
   setTotal(total:number):void{this.danger=totalDanger(total);this.metal.color.set(0x9b7844).lerp(HEAT_RED,this.danger);}
+  receiveCard():void{this.arrival=1;}
   setDirection(direction:number):void {this.direction=direction;}
   update(delta:number,reduced:boolean):void{
     this.elapsed+=delta;const t=Math.min(1,this.elapsed/1.05);const strength=reduced?0:Math.sin(t*Math.PI);
     const burst=this.event==='bust';
     this.light.color.set(0xc99a4e).lerp(RING_RED,this.danger);
-    this.light.opacity=.26+this.danger*.5+strength*.2;
+    this.arrival=Math.max(0,this.arrival-delta*3);
+    this.light.opacity=Math.min(1,.26+this.danger*.5+strength*.2+this.arrival*.6);
+    this.metal.emissive.copy(this.light.color);this.metal.emissiveIntensity=reduced?0:this.arrival*1.8;
     this.sectors.children.forEach((sector,i)=>{sector.position.y=.376+(burst?strength*(i%3)*.13:0);sector.rotation.y=burst?Math.sin(i*4)*strength*.18:0;});
     this.orbit.rotation.y+=reduced?0:delta*.025*this.direction;
     this.orbit.scale.z=this.direction;

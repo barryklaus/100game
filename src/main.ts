@@ -445,6 +445,7 @@ function render(): void {
   const discard = state?.played.at(-1);
   observatory?.update({
     pendingPlay: locked || awaitingNetwork || remoteFlight,
+    playKey: state&&discard?`${state.round}:${discard.id}:${state.played.length}`:'',
     active: !!state && (!online || online.status === 'playing'),
     total: state?.total ?? 0,
     direction: state?.direction ?? 1,

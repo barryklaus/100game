@@ -196,3 +196,15 @@ fireworks.trigger(false);assert.equal(fireworks.points.visible,true);fireworks.u
 fireworks.trigger(true);assert.equal(fireworks.points.visible,false,'Reduced motion suppresses fireworks');
 fireworks.points.geometry.dispose();fireworks.points.material.dispose();
 console.log('Total feedback checks passed: danger progression, overflow fragments, bounded earthquake, reduced motion, and finite fireworks.');
+
+const {CardImpactFlow}=await load('src/render/CardImpactFlow.ts');
+const flow=new CardImpactFlow();
+assert.equal(flow.update(0,false).strength,0,'Table has no idle impact animation');
+flow.setCard('1:fire-4:1');assert.equal(flow.update(0,false).strength,1,'Every newly committed card starts a glow');
+const middle=flow.update(.4,false);flow.setCard('1:fire-4:1');assert.equal(flow.update(0,false).progress,middle.progress,'Renders and target selections cannot restart the same drop');
+assert.equal(flow.update(.43,false).arrival,true,'Inward wave reaches the number once');assert.equal(flow.update(.01,false).arrival,false);
+assert.equal(flow.update(1,false).strength,0,'Wave finishes with no lingering glow');
+flow.setCard('1:leaf-9:2');assert.equal(flow.update(0,false).strength,1,'A Zero card triggers even when the total is unchanged');
+assert.equal(flow.update(1,true).arrival,false,'Reduced motion suppresses the number pulse');assert.equal(flow.update(0,true).strength,0);
+flow.setCard('');assert.equal(flow.update(0,false).strength,0,'Leaving or starting a round clears the wave');
+console.log('Card impact flow checks passed: each discard, stable rerenders, unchanged totals, center arrival, cleanup, and reduced motion.');
