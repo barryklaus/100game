@@ -10,6 +10,7 @@ import { CONFIG, MOODS, moodSymbols, suitSymbols } from './data/config';
 import { defaultSeats, loadSettings, loadStats, saveSettings, saveStats, type Settings, type Stats } from './data/storage';
 import { backImage, cardDisplayRank, cardImage, cardImageLossless, prefersLosslessHand } from './game/deck';
 import { cardFace } from './game/cardFace';
+import { cpuActionDelay } from './game/cpuTiming';
 import { chooseCpuCard, chooseCpuTarget } from './game/cpu';
 import { createGame, playCard, selectTarget } from './game/rules';
 import type { Card, GameState, PlayerConfig } from './game/types';
@@ -48,6 +49,8 @@ let awaitingNetwork = false;
 let pendingLog = '';
 let remoteFlight=false;
 let remoteFlightKey='';
+let snapshotRoom: OnlineRoom | HostedRoom | null = null;
+const remoteSnapshots: GameState[] = [];
 let observedOnlineHand = new Set<string>();
 let observedOnlineRound = 0;
 const audio = new AudioManager();
@@ -80,6 +83,7 @@ if (observatory) observatory.onCardArrival = key => {
   const caption = document.querySelector('.total-event');
   if (caption) caption.textContent = presentedTotal.visible.caption;
   if (state?.phase === 'ended') render();
+  if (remoteSnapshots.length) queueMicrotask(() => roomChanged());
 };
 
 function totalClass(total: number): string {
@@ -90,7 +94,7 @@ const escapeHtml = (value: string): string => value.replace(/[&<>"']/g, char => 
 const avatarNames = ['Ember Scout', 'Tide Scholar', 'Grove Guardian', 'Sun Knight', 'Storm Pilot', 'Coral Bard', 'Mushroom Alchemist', 'Desert Ranger', 'Moon Seer', 'River Courier', 'Thorn Duelist', 'Forge Captain', 'Cloud Mechanic', 'Marsh Mystic', 'Wildwood Archer', 'Dawn Dancer'];
 const avatarImage = (index: number): string => `${import.meta.env.BASE_URL}assets/avatars/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.jpg`;
 const localSeat = (): number => online?.localSeat ?? Math.max(0, settings.seats.findIndex(seat => seat.kind === 'human'));
-const canControlActor = (): boolean => !!state && !awaitingNetwork && state.players[state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current]?.kind === 'human' && (!online || (state.phase === 'target' ? state.pendingSevens.at(-1) : state.current) === online.localSeat);
+const canControlActor = (): boolean => !!state && !awaitingNetwork && (!online || state.turn === online.state?.turn) && state.players[state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current]?.kind === 'human' && (!online || (state.phase === 'target' ? state.pendingSevens.at(-1) : state.current) === online.localSeat);
 function closeOnline(): void {
   online?.close(); online = null; state = null; onlineMode = null; selectedCard = null; recordedRound = 0; awaitingNetwork = false; pendingLog = ''; observedOnlineHand.clear(); observedOnlineRound = 0; clearCpu();
   history.replaceState(null, '', location.pathname);
@@ -107,16 +111,23 @@ function roomChanged(): void {
     roomCpuCount = Math.min(roomCpuCount, CONFIG.PLAYER_MAX - online.seats.filter(seat => seat.kind === 'human').length);
     if (online.cpuCount !== roomCpuCount) { online.setCpuCount(roomCpuCount); return; }
   }
+  if (snapshotRoom !== online || online.status !== 'playing') {
+    snapshotRoom = online;remoteSnapshots.length = 0;remoteFlightKey = '';
+  }
+  if (online.status === 'playing' && online.state && online.state !== state && !remoteSnapshots.includes(online.state)) remoteSnapshots.push(online.state);
   const previous = state;
-  const incoming=online.state;
+  const incoming=remoteSnapshots[0] ?? online.state;
   const incomingTop=incoming?.played.at(-1);
   const remoteKey=incoming?`${incoming.round}:${incoming.log[0]}`:'';
   if(remoteFlight && online.status==='playing')return;
+  // A delayed connection must not skip a CPU card or overwrite an unfinished score wave.
+  if (presentedTotal.pending && incomingTop && previous?.round === incoming?.round && incomingTop.id !== previous?.played.at(-1)?.id) return;
   if(observatory && !settings.reducedMotion && incomingTop && previous && incoming?.round===previous.round && incoming.log[0]!==previous.log[0] && incomingTop.id!==previous.played.at(-1)?.id && previous.current!==online.localSeat && remoteKey!==remoteFlightKey){
     const seat=document.querySelector<HTMLElement>(`.seat[data-seat="${previous.current}"]`);
     if(seat){const room=online;remoteFlight=true;remoteFlightKey=remoteKey;void observatory.playCardToDiscard(cardImage(incomingTop),seat.getBoundingClientRect()).catch(()=>undefined).finally(()=>{remoteFlight=false;if(online===room)roomChanged();});return;}
   }
-  state = online.state;
+  state = incoming;
+  if (remoteSnapshots[0] === incoming) remoteSnapshots.shift();
   const drawnForLocal = state && observedOnlineRound === state.round
     ? state.players[online.localSeat]?.hand.find(card => !observedOnlineHand.has(card.id))
     : undefined;
@@ -137,6 +148,10 @@ function roomChanged(): void {
   if (state?.phase === 'ended' && recordedRound !== state.round) { recordedRound = state.round; finishRound(); }
   render();
   if (drawnForLocal) void animateDrawToHand(drawnForLocal);
+  if (previous && state && previous.round === state.round && previous.played.at(-1)?.id !== state.played.at(-1)?.id && state.phase !== 'ended') {
+    const actor = previous.current;
+    if (actor !== online.localSeat && state.players[actor]?.hand.length >= previous.players[actor].hand.length) animateOpponentDraw(actor);
+  }
   scheduleCpu();
 }
 function connectOnline(mode: 'host' | 'join'): void {
@@ -176,6 +191,15 @@ function react(ids: number[], text: string): void {
   ids.forEach(id => reaction[id] = text);
   render();
   window.setTimeout(() => { ids.forEach(id => delete reaction[id]); if (!locked) render(); }, 1500);
+}
+
+function animateOpponentDraw(seatIndex: number): void {
+  if (!observatory?.canAnimate || settings.reducedMotion) return;
+  const seat = document.querySelector<HTMLElement>(`.seat[data-seat="${seatIndex}"] .character-head`);
+  if (!seat) return;
+  // Both sides use the back artwork: other players' replacement cards stay private.
+  audio.play('draw-pile');
+  void observatory.drawCardToHand(backImage, seat.getBoundingClientRect()).catch(() => undefined);
 }
 
 async function animateDrawToHand(card: Card): Promise<void> {
@@ -283,11 +307,12 @@ function resolveCard(cardId: string): void {
   if ((state as GameState).phase === 'ended') finishRound();
   render();
   if (drawnForLocal) void animateDrawToHand(drawnForLocal);
+  if (actor !== localSeat() && (state as GameState).phase !== 'ended' && state.players[actor].hand.length === CONFIG.HAND_SIZE) animateOpponentDraw(actor);
   scheduleCpu();
 }
 async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin): Promise<void> {
   if(openingDeal)return;
-  if (!state || locked || awaitingNetwork || state.phase !== 'playing') return;
+  if (!state || locked || awaitingNetwork || state.phase !== 'playing' || (online && state.turn !== online.state?.turn)) return;
   locked = true; clearCpu();
   const card = state.players[state.current].hand.find(item => item.id === cardId);
   if (!card) { locked = false; return; }
@@ -339,7 +364,7 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   locked = false; resolveCard(cardId);
 }
 function chooseTarget(target: number): void {
-  if (!state || state.phase !== 'target' || locked || awaitingNetwork) return;
+  if (!state || state.phase !== 'target' || locked || awaitingNetwork || (online && state.turn !== online.state?.turn)) return;
   const chooser = state.pendingSevens.at(-1)!;
   if (online) { awaitingNetwork = !online.isHost || online instanceof HostedRoom; pendingLog = state.log[0]; online.target(target); render(); return; }
   selectTarget(state, target);
@@ -353,9 +378,10 @@ function scheduleCpu(): void {
   if (online && !online.runsCpuLocally) return;
   const actor = state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current;
   if (state.players[actor].kind !== 'cpu') return;
-  const delay = 420 + Math.random() * 440;
+  const delay = cpuActionDelay(state);
+  const scheduledState = state, turn = state.turn, phase = state.phase;
   cpuTimer = window.setTimeout(() => {
-    if (!state) return;
+    if (state !== scheduledState || state.turn !== turn || state.phase !== phase || locked || awaitingNetwork) return;
     if (state.phase === 'target') chooseTarget(chooseCpuTarget(state, settings.difficulty));
     else if (state.phase === 'playing') void animatePlay(chooseCpuCard(state, settings.difficulty).id);
   }, delay);
@@ -495,6 +521,7 @@ function render(): void {
       const snapshot=state;requestAnimationFrame(()=>{if(state===snapshot)void dealOpeningHand(snapshot);});
     }
   }
+  if (remoteSnapshots.length && !presentedTotal.pending && !remoteFlight) queueMicrotask(() => roomChanged());
 }
 render();
 if (import.meta.env.MODE === 'cloudflare' && onlineMode === 'join' && /^100-[a-z0-9]{12}$/.test(joinCode) && localStorage.getItem(`100game:room:${joinCode}`)) connectOnline('join');

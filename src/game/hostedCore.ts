@@ -1,3 +1,4 @@
+import { cpuActionDelay } from './cpuTiming';
 import { CONFIG, MOODS } from '../data/config';
 import { chooseCpuCard, chooseCpuTarget } from './cpu';
 import { projectForSeat } from './projection';
@@ -22,6 +23,8 @@ export interface RoomData {
   state: GameState | null;
   revision: number;
   updatedAt: number;
+  /** Persisted across worker sleep/restarts; absent in rooms created by older versions. */
+  cpuAction?: { key: string; dueAt: number } | null;
 }
 
 const CPU_NAMES = ['Mira', 'Kai', 'Luma', 'Sol', 'Ren', 'Ari', 'Nova'];
@@ -48,7 +51,7 @@ function rebuildLobby(room: RoomData): void {
   room.seats = [...room.members.map(member => human(member.profile)), ...Array.from({ length: room.cpuCount }, (_, i) => cpu(i))];
 }
 
-function touch(room: RoomData, now: number): void { room.revision++; room.updatedAt = now; }
+function touch(room: RoomData, now: number): void { room.revision++; room.updatedAt = now; scheduleCpuAction(room, now); }
 
 export function createRoom(id: string, profile: unknown, token: string, now = Date.now()): RoomData {
   const first = cleanProfile(profile);
@@ -108,17 +111,40 @@ function removeLobbyMember(room: RoomData, seat: number): void {
   rebuildLobby(room);
 }
 
-export function runCpuTurns(room: RoomData): void {
-  if (!room.state) return;
-  if (!room.state.players.some(player => player.kind === 'human')) return;
-  let steps = 0;
-  while (room.state.phase !== 'ended' && steps++ < 500) {
-    const actor = room.state.phase === 'target' ? room.state.pendingSevens.at(-1)! : room.state.current;
-    if (room.state.players[actor].kind !== 'cpu') return;
-    if (room.state.phase === 'target') selectTarget(room.state, chooseCpuTarget(room.state, 'normal'));
-    else playCard(room.state, chooseCpuCard(room.state, 'normal').id);
-  }
-  if (steps >= 500) throw new RoomError('The automatic turn limit was reached.', 500);
+function cpuTurnKey(room: RoomData): string | null {
+  const state = room.state;
+  if (!state || state.phase === 'ended' || !state.players.some(player => player.kind === 'human')) return null;
+  const actor = state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current;
+  return state.players[actor]?.kind === 'cpu' ? `${state.round}:${state.turn ?? 0}:${state.phase}:${actor}` : null;
+}
+
+/** Repeated snapshots, moods and reconnects must not restart a CPU's thinking time. */
+export function scheduleCpuAction(room: RoomData, now = Date.now()): void {
+  const key = cpuTurnKey(room);
+  if (!key) { room.cpuAction = null; return; }
+  if (room.cpuAction?.key !== key) room.cpuAction = { key, dueAt: now + cpuActionDelay(room.state!) };
+}
+
+/** Exactly one action per deadline, including a separate pause for choosing a player. */
+export function advanceCpu(room: RoomData, now = Date.now()): boolean {
+  scheduleCpuAction(room, now);
+  if (!room.cpuAction || room.cpuAction.dueAt > now) return false;
+  room.cpuAction = null;
+  const state = room.state!;
+  if (state.phase === 'target') selectTarget(state, chooseCpuTarget(state, 'normal'));
+  else playCard(state, chooseCpuCard(state, 'normal').id);
+  touch(room, now);
+  return true;
+}
+
+/** CPU actions share the room alarm with reconnect grace and room expiry. */
+export function roomAlarmAt(room: RoomData, now = Date.now()): number {
+  const deadlines = room.members
+    .filter(member => member.disconnectedAt !== null && (!room.state || room.seats[member.seat]?.kind === 'human'))
+    .map(member => member.disconnectedAt! + DISCONNECT_GRACE_MS);
+  deadlines.push(room.updatedAt + ROOM_EXPIRY_MS);
+  if (room.cpuAction) deadlines.push(room.cpuAction.dueAt);
+  return Math.max(now + 100, Math.min(...deadlines));
 }
 
 export function sweepDisconnected(room: RoomData, now = Date.now()): boolean {
@@ -134,7 +160,6 @@ export function sweepDisconnected(room: RoomData, now = Date.now()): boolean {
       room.state.log.unshift(`${room.state.players[member.seat].name} disconnected; CPU takes over.`);
       room.state.log = room.state.log.slice(0, 24);
     }
-    runCpuTurns(room);
   }
   if (room.hostSeat >= 0 && room.members.find(member => member.seat === room.hostSeat)?.disconnectedAt !== null) promoteHost(room);
   touch(room, now);
@@ -164,17 +189,14 @@ export function applyCommand(room: RoomData, seat: number, command: RoomCommand,
     if (room.state && room.state.phase !== 'ended') throw new RoomError('Finish the current round first.', 409);
     const nextRound = room.state ? room.state.round + 1 : 1;
     room.state = createGame(room.seats, nextRound);
-    runCpuTurns(room);
   } else if (command.type === 'play') {
     if (!room.state || room.state.phase !== 'playing' || room.state.current !== seat || typeof command.cardId !== 'string') throw new RoomError('It is not your turn.', 409);
     if (command.turn !== undefined && command.turn !== (room.state.turn ?? 0)) throw new RoomError('That turn has already changed. Wait for the updated table.', 409);
     playCard(room.state, command.cardId);
-    runCpuTurns(room);
   } else if (command.type === 'target') {
     if (!room.state || room.state.phase !== 'target' || room.state.pendingSevens.at(-1) !== seat || !Number.isInteger(command.seat)) throw new RoomError('You cannot choose a target now.', 409);
     if (command.turn !== undefined && command.turn !== (room.state.turn ?? 0)) throw new RoomError('That turn has already changed. Wait for the updated table.', 409);
     selectTarget(room.state, command.seat);
-    runCpuTurns(room);
   } else throw new RoomError('Unknown command.');
   touch(room, now);
 }

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 
 const result = await build({ entryPoints: ['src/game/hostedCore.ts'], bundle: true, platform: 'node', format: 'esm', write: false });
-const { createRoom, joinRoom, setConnected, sweepDisconnected, applyCommand, snapshotForSeat, DISCONNECT_GRACE_MS } =
+const { createRoom, joinRoom, setConnected, sweepDisconnected, applyCommand, snapshotForSeat, DISCONNECT_GRACE_MS, scheduleCpuAction, advanceCpu, roomAlarmAt } =
   await import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);
 
 const host = { name: 'Host', avatar: 0, mood: 'Normal' };
@@ -57,7 +57,11 @@ fastRoom.state.players[0].hand = [{ id:'fire-2', suit:'fire', rank:'2' }, { id:'
 fastRoom.state.players[1].hand = [{ id:'sun-A', suit:'sun', rank:'A' }, { id:'leaf-A', suit:'leaf', rank:'A' }];
 const staleTurn = fastRoom.state.turn;
 applyCommand(fastRoom, 0, { type:'play', cardId:'fire-2', turn:staleTurn }, 1503);
-assert.equal(fastRoom.state.current, 0, 'The CPU should finish before the next human turn');
+assert.equal(fastRoom.state.current, 1, 'The CPU turn must be visible before it plays');
+assert.equal(fastRoom.state.played.length, 1, 'The human move is published on its own');
+assert.equal(advanceCpu(fastRoom, fastRoom.cpuAction.dueAt - 1), false);
+assert.equal(advanceCpu(fastRoom, fastRoom.cpuAction.dueAt), true);
+assert.equal(fastRoom.state.current, 0);
 assert.throws(() => applyCommand(fastRoom, 0, { type:'play', cardId:'water-3', turn:staleTurn }, 1504), /turn has already changed/);
 const round = room.state.round;
 setConnected(room, 0, false, 2000);
@@ -75,3 +79,70 @@ const reclaimed = joinRoom(room, host, 'host-secret', 'unused', 35000);
 assert.equal(reclaimed.seat, 0);
 assert.equal(room.seats[0].kind, 'human');
 console.log('Hosted room checks passed: private cards, server turns, host refresh, CPU takeover, and seat recovery.');
+
+// Mixed table: each CPU advances just one action and broadcasts a distinct state.
+const paced = createRoom('100-paced-test', host, 'paced-host', 10000);
+joinRoom(paced, guest, null, 'paced-guest', 10001);
+applyCommand(paced, 0, {type:'cpu-count',count:3}, 10002);
+applyCommand(paced, 0, {type:'start'}, 10003);
+Object.assign(paced.state,{current:1,rootTurn:1,phase:'playing',direction:1,total:0,played:[],pendingSevens:[]});
+for(const player of paced.state.players)player.hand=[{id:`test-${player.id}-a`,suit:'fire',rank:'A'},{id:`test-${player.id}-b`,suit:'leaf',rank:'A'}];
+applyCommand(paced, 1, {type:'play',cardId:'test-1-a'}, 11000);
+assert.equal(paced.state.played.length,1);
+assert.equal(paced.state.current,2);
+assert(paced.cpuAction.dueAt>=13600&&paced.cpuAction.dueAt<=14400,'CPU pause leaves time for throw, draw and total wave');
+const firstDue=paced.cpuAction.dueAt;
+applyCommand(paced,0,{type:'mood',mood:'Happy'},11500);
+setConnected(paced,0,true,11600);
+assert.equal(paced.cpuAction.dueAt,firstDue,'Unrelated updates do not postpone CPU turns');
+const restarted=structuredClone(paced);
+const before=restarted.revision;
+assert.equal(advanceCpu(restarted,firstDue),true,'Persisted deadline survives a worker restart');
+assert.equal(restarted.revision,before+1);
+assert.equal(restarted.state.played.length,2);
+assert.equal(restarted.state.current,3);
+assert.equal(advanceCpu(restarted,firstDue),false,'A repeated alarm cannot play twice');
+assert.equal(snapshotForSeat(restarted,0).state.played.length,2);
+assert.equal(snapshotForSeat(restarted,1).state.played.length,2);
+const late=restarted.cpuAction.dueAt+20000;
+assert.equal(advanceCpu(restarted,late),true);
+assert.equal(restarted.state.played.length,3,'A late alarm must not fast-forward missed turns');
+assert(restarted.cpuAction.dueAt>=late+2600,'The next action gets a full pause after a late alarm');
+assert.equal(advanceCpu(restarted,restarted.cpuAction.dueAt),true);
+assert.equal(restarted.state.current,0);
+assert.equal(restarted.cpuAction,null,'Human turns stop automatic actions');
+
+Object.assign(paced.state,{current:2,rootTurn:2,phase:'playing',total:0,pendingSevens:[]});
+paced.state.players[2].hand=[{id:'fire-7',suit:'fire',rank:'7'},{id:'sun-10',suit:'sun',rank:'10'}];
+scheduleCpuAction(paced,20000);
+advanceCpu(paced,paced.cpuAction.dueAt);
+assert.equal(paced.state.phase,'target','Choose-player selection is a separate visible action');
+const choiceDue=paced.cpuAction.dueAt, choicePlayed=paced.state.played.length;
+assert.equal(advanceCpu(paced,choiceDue-1),false);
+assert.equal(advanceCpu(paced,choiceDue),true);
+assert.equal(paced.state.phase,'playing');
+assert.equal(paced.state.played.length,choicePlayed,'Choosing a target cannot also play a card');
+assert.equal(paced.state.players[paced.state.current].kind,'human');
+assert.equal(paced.cpuAction,null);
+
+Object.assign(paced.state,{current:0,rootTurn:0,phase:'playing',pendingSevens:[]});
+setConnected(paced,0,false,30000);
+sweepDisconnected(paced,30000+DISCONNECT_GRACE_MS);
+assert(paced.cpuAction,'CPU takeover starts a delayed action');
+const takeoverDue=paced.cpuAction.dueAt;
+joinRoom(paced,host,'paced-host','unused',takeoverDue-1);
+assert.equal(paced.cpuAction,null,'Reclaiming a seat cancels its pending CPU action');
+assert.equal(advanceCpu(paced,takeoverDue),false);
+for(const player of paced.state.players)player.kind='cpu';
+scheduleCpuAction(paced,70000);
+assert.equal(paced.cpuAction,null,'An abandoned all-CPU table does not run forever');
+const opening=structuredClone(restarted);
+Object.assign(opening.state,{current:2,rootTurn:2,turn:0,played:[],phase:'playing'});
+scheduleCpuAction(opening,80000);
+assert(opening.cpuAction.dueAt>=83400,'Opening deal has time to finish');
+assert.equal(roomAlarmAt(opening,80000),opening.cpuAction.dueAt);
+opening.members[0].disconnectedAt=51000;
+assert.equal(roomAlarmAt(opening,80000),81000,'Disconnect grace and CPU deadlines share the alarm');
+opening.state.phase='ended';scheduleCpuAction(opening,80000);
+assert.equal(opening.cpuAction,null,'Round end cancels pending CPU work');
+console.log('CPU pacing checks passed: mixed tables, individual snapshots, target choices, stable deadlines, restarts, retries, late alarms and seat recovery.');

@@ -1,5 +1,5 @@
 import {
-  applyCommand, createRoom, DISCONNECT_GRACE_MS, joinRoom, ROOM_EXPIRY_MS,
+  advanceCpu, applyCommand, createRoom, joinRoom, ROOM_EXPIRY_MS, roomAlarmAt, scheduleCpuAction,
   RoomError, seatForToken, setConnected, snapshotForSeat, sweepDisconnected,
   type RoomCommand, type RoomData,
 } from '../src/game/hostedCore';
@@ -27,17 +27,14 @@ export class GameRoom {
   }
 
   private async save(): Promise<void> {
-    if (this.room) await this.ctx.storage.put('room', this.room);
-    await this.scheduleAlarm();
-  }
-
-  private async scheduleAlarm(): Promise<void> {
     if (!this.room) return;
-    const deadlines = this.room.members
-      .filter(member => member.disconnectedAt !== null && (!this.room!.state || this.room!.seats[member.seat]?.kind === 'human'))
-      .map(member => member.disconnectedAt! + DISCONNECT_GRACE_MS);
-    deadlines.push(this.room.updatedAt + ROOM_EXPIRY_MS);
-    await this.ctx.storage.setAlarm(Math.max(Date.now() + 1000, Math.min(...deadlines)));
+    scheduleCpuAction(this.room);
+    // The new turn and its next wake-up are committed together, before broadcasting.
+    const room = this.room;
+    await this.ctx.storage.transaction(async storage => {
+      await storage.put('room', room);
+      await storage.setAlarm(roomAlarmAt(room));
+    });
   }
 
   private broadcast(): void {
@@ -148,14 +145,11 @@ export class GameRoom {
         this.room = null;
         return;
       }
-      if (sweepDisconnected(this.room)) { await this.save(); this.broadcast(); }
-      else {
-        if (this.ctx.getWebSockets().length) {
-          this.room.updatedAt = Date.now();
-          await this.ctx.storage.put('room', this.room);
-        }
-        await this.scheduleAlarm();
-      }
+      const disconnected = sweepDisconnected(this.room);
+      const acted = advanceCpu(this.room);
+      if (this.ctx.getWebSockets().length) this.room.updatedAt = Date.now();
+      await this.save();
+      if (disconnected || acted) this.broadcast();
     });
   }
 }
