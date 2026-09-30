@@ -66,6 +66,8 @@ gyro.onStatusChange = () => {
   if (message) message.textContent = gyro.status === 'denied' ? 'Motion access was denied. You can still drag cards to tilt them.' : gyro.status === 'unavailable' ? 'Motion sensors are unavailable in this browser.' : gyro.status === 'on' ? 'Move your phone gently to tilt the cards. Dragging a card takes control.' : 'Available on supported phones.';
 };
 audio.configure(settings);
+audio.setBackgrounded(document.hidden);
+document.addEventListener('visibilitychange',()=>audio.setBackgrounded(document.hidden));
 document.documentElement.classList.add('observatory-mode');
 const presentedTotal = new TotalPresentation();
 let observatory: ObservatoryScene | undefined;
@@ -82,6 +84,7 @@ if (observatory) observatory.onCardArrival = key => {
   }
   const caption = document.querySelector('.total-event');
   if (caption) caption.textContent = presentedTotal.visible.caption;
+  audio.setSuspenseTotal(presentedTotal.visible.total);
   if (state?.phase === 'ended') render();
   if (remoteSnapshots.length) queueMicrotask(() => roomChanged());
 };
@@ -490,6 +493,8 @@ function render(): void {
     caption: !state?'':state.total>100?'OVERFLOW':state.event==='exact'?'EXACT 100 · +3':state.event==='zero'?'ZERO · TOTAL HELD':state.event==='minus'?'−10':state.phase==='target'?'CHOOSE A PLAYER':'',
   }, !!observatory?.canAnimate && !settings.reducedMotion);
   updateGameView(app, (online && online.status !== 'playing' ? lobbyView() : state ? gameView() : onlineMode ? onlineView() : setupView()) + modalView());
+  // Use the held score during the wave, and the immediate score in motion/HTML fallback.
+  audio.setSuspenseTotal(active?presentedTotal.visible.total:null);
   if(!locked&&!awaitingNetwork)departingCardId=null;
   for(const element of Array.from(document.querySelectorAll<HTMLElement>('.local-hand .hand-card'))){
     if(element.dataset.card===departingCardId)element.classList.add('card-departing');

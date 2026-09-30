@@ -1,3 +1,5 @@
+import {SuspenseTrack} from './SuspenseTrack';
+
 export type AudioCue = 'card-hover'|'card-select'|'card-flick'|'card-impact'|'card-draw'|'draw-pile'|'shuffle'|'center-energy'|'total-increase'|'reverse'|'zero'|'minus-ten'|'win'|'loss'|'avatar-reaction'|'emote'|'button'|'tavern-ambience'|'fire-ambience'|'city-ambience';
 type LegacyCue = 'pickup'|'slap'|'draw'|'target'|'minus'|'exact'|'bust'|'click';
 type Channel = 'sfx'|'music'|'ambience'|'ui';
@@ -24,24 +26,44 @@ export class AudioManager extends EventTarget {
   private clips=new Map<string,{buffer:AudioBuffer;channel:Channel;loop:boolean}>();
   private loops=new Map<string,AudioBufferSourceNode>();
   private cardClipLoad?:Promise<void>;
+  private suspense?:SuspenseTrack;
+  private suspenseLoad?:Promise<void>;
+  private suspenseTotal:number|null=null;
+  private backgrounded=false;
+  private disposed=false;
   private previousClip=new Map<AudioCue,string>();
   private settings:SoundSettings={volume:.55,sfxVolume:.8,musicVolume:.45,ambienceVolume:.3,muted:false};
   get volume():number{return this.settings.volume;}
   set volume(value:number){this.settings.volume=value;this.applyGains();}
   configure(settings:SoundSettings):void{this.settings={...settings};this.applyGains();}
   unlock():void{
+    if(this.disposed)return;
     if(!this.context){
       this.context=new AudioContext();this.master=this.context.createGain();this.master.connect(this.context.destination);
       for(const channel of ['sfx','music','ambience','ui'] as const){const gain=this.context.createGain();gain.connect(this.master);this.channels.set(channel,gain);}
+      this.suspense=new SuspenseTrack(this.context,this.channels.get('music')!);
       this.applyGains();
     }
     if(this.context.state==='suspended')void this.context.resume();
+    // Preload on the first interaction, well before the table normally reaches 70.
+    this.suspenseLoad ??= fetch(`${import.meta.env.BASE_URL}assets/sfx/Cartoon-Suspense-X.wav`)
+      .then(response=>{if(!response.ok)throw new Error('Suspense recording unavailable');return response.arrayBuffer();})
+      .then(bytes=>this.context!.decodeAudioData(bytes))
+      .then(buffer=>this.suspense?.setBuffer(buffer))
+      .catch(()=>undefined); // An unavailable recording must never interrupt a game.
+  }
+  setSuspenseTotal(total:number|null):void{this.suspenseTotal=total;this.syncSuspense();}
+  setBackgrounded(hidden:boolean):void{this.backgrounded=hidden;this.syncSuspense();}
+  private syncSuspense():void{
+    const audible=!this.backgrounded&&!this.settings.muted&&this.settings.volume>0&&this.settings.musicVolume>0;
+    this.suspense?.setTotal(audible?this.suspenseTotal:null);
   }
   private applyGains():void{
     if(!this.context||!this.master)return;
     const now=this.context.currentTime;
     this.master.gain.setTargetAtTime(this.settings.muted?0:this.settings.volume,now,.03);
     for(const [channel,gain] of this.channels)gain.gain.setTargetAtTime(channel==='music'?this.settings.musicVolume:channel==='ambience'?this.settings.ambienceVolume:this.settings.sfxVolume,now,.03);
+    this.syncSuspense();
   }
   async registerClip(name:string,url:string,options:{channel?:Channel;loop?:boolean}={}):Promise<void>{
     this.unlock();const response=await fetch(url);if(!response.ok)throw new Error(`Sound could not be loaded: ${name}`);
@@ -97,5 +119,5 @@ export class AudioManager extends EventTarget {
     else if(cue==='total-increase'||cue==='center-energy')this.tone(170,.2,'sine',.035,1.3,options);
     // Ambience and music are independent loop buses, silent until a real clip is registered.
   }
-  dispose():void{for(const source of this.loops.values())source.stop();this.loops.clear();void this.context?.close();}
+  dispose():void{this.disposed=true;this.suspense?.dispose();for(const source of this.loops.values())source.stop();this.loops.clear();void this.context?.close();}
 }
