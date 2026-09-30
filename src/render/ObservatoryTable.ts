@@ -1,8 +1,11 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { glowTexture } from './WorldMaterials';
+import { totalDanger } from '../ui/totalFeedback';
 import type { QualityPreset } from './quality';
 
+const HEAT_RED=new THREE.Color(0xff2718);
+const RING_RED=new THREE.Color(0xff2318);
 const brass = () => new THREE.MeshStandardMaterial({color:0x9b7844,metalness:.82,roughness:.36});
 function ring(radius:number, width:number, material:THREE.Material, y:number):THREE.Mesh {
   const mesh=new THREE.Mesh(new THREE.TorusGeometry(radius,width,6,128),material);
@@ -45,11 +48,22 @@ export class ObservatoryTable {
   readonly group=new THREE.Group();
   readonly cradle=new THREE.Group();
   private haze:THREE.Mesh;
+  private metal=brass();
+  private danger={value:0};
   constructor(){
-    const metal=brass();
+    const metal=this.metal;
     const edge=new THREE.MeshStandardMaterial({color:0x131620,metalness:.75,roughness:.38});
     const base=new THREE.Mesh(new THREE.CylinderGeometry(5.05,4.94,.28,128),edge);base.position.y=.19;base.receiveShadow=true;this.group.add(base);
     const top=new THREE.Mesh(new THREE.CircleGeometry(4.99,128),new THREE.MeshStandardMaterial({map:engraving(),roughness:.62,metalness:.38}));
+    const surface=top.material as THREE.MeshStandardMaterial;
+    surface.onBeforeCompile=shader=>{
+      shader.uniforms.uTableDanger=this.danger;
+      shader.fragmentShader='uniform float uTableDanger;\n'+shader.fragmentShader;
+      shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`#include <map_fragment>
+        float goldMask=smoothstep(.01,.055,diffuseColor.r-diffuseColor.b);
+        vec3 heated=vec3(max(diffuseColor.r*1.9,.16),diffuseColor.g*.08,diffuseColor.b*.035);
+        diffuseColor.rgb=mix(diffuseColor.rgb,heated,uTableDanger*goldMask);`);
+    };
     top.rotation.x=-Math.PI/2;top.position.y=.3475;top.receiveShadow=true;this.group.add(top);
     for(const [r,w,y] of [[5.02,.027,.335],[4.82,.008,.352],[4.37,.009,.351],[5.01,.015,.065]])this.group.add(ring(r,w,metal,y));
     const studs=new THREE.InstancedMesh(new THREE.OctahedronGeometry(.055,0),metal,24);
@@ -63,6 +77,11 @@ export class ObservatoryTable {
       vertexShader:`varying vec2 vUv;varying float vFacing;void main(){vUv=uv;vec4 view=modelViewMatrix*vec4(position,1.);vFacing=abs(dot(normalize(normalMatrix*normal),normalize(-view.xyz)));gl_Position=projectionMatrix*view;}`,
       fragmentShader:`varying vec2 vUv;varying float vFacing;uniform float opacity;void main(){float soft=pow(sin(vUv.y*3.14159),2.);float bands=.72+.28*sin(vUv.x*37.);gl_FragColor=vec4(.48,.49,.68,soft*bands*opacity*pow(vFacing,2.));}`
     }));this.haze.position.set(-.25,4.12,0);this.group.add(this.haze);
+  }
+  setTotal(total:number):void{
+    const danger=totalDanger(total);this.danger.value=danger;
+    this.metal.color.set(0x9b7844).lerp(HEAT_RED,danger);
+    this.metal.emissive.set(0xff2310);this.metal.emissiveIntensity=danger*.32;
   }
   configure(quality:QualityPreset):void{
     this.haze.visible=quality==='ultra'||quality==='high';
@@ -85,6 +104,8 @@ export class ObservatoryTable {
 export class ArcaneTotalRing {
   readonly group=new THREE.Group();
   private orbit=new THREE.Group();
+  private metal=brass();
+  private danger=0;
   private sectors=new THREE.Group();
   private light=new THREE.MeshBasicMaterial({color:0x858ce0,transparent:true,opacity:.55,depthWrite:false});
   private pulse:THREE.Mesh;
@@ -95,7 +116,7 @@ export class ArcaneTotalRing {
   private quality:QualityPreset='high';
   constructor(){
     this.group.position.set(0,0,-.65);
-    const metal=brass();
+    const metal=this.metal;
     for(const [r,w,y] of [[1.34,.012,.36],[1.48,.007,.362],[1.63,.013,.357]])this.group.add(ring(r,w,metal,y));
     this.group.add(ring(1.38,.007,this.light,.37));
     for(let i=0;i<12;i++){
@@ -110,12 +131,13 @@ export class ArcaneTotalRing {
   }
   configure(quality:QualityPreset):void{this.quality=quality;this.fragments.geometry.setDrawRange(0,quality==='ultra'?48:quality==='high'?20:quality==='medium'?8:0);}
   trigger(event:string):void {this.event=event;this.elapsed=0;}
+  setTotal(total:number):void{this.danger=totalDanger(total);this.metal.color.set(0x9b7844).lerp(HEAT_RED,this.danger);}
   setDirection(direction:number):void {this.direction=direction;}
   update(delta:number,reduced:boolean):void{
     this.elapsed+=delta;const t=Math.min(1,this.elapsed/1.05);const strength=reduced?0:Math.sin(t*Math.PI);
-    const burst=this.event==='bust',exact=this.event==='exact';
-    this.light.color.set(burst&&t<1?0xff784b:exact&&t<1?0xffda89:0x858ce0);
-    this.light.opacity=.38+strength*.5;
+    const burst=this.event==='bust';
+    this.light.color.set(0xc99a4e).lerp(RING_RED,this.danger);
+    this.light.opacity=.26+this.danger*.5+strength*.2;
     this.sectors.children.forEach((sector,i)=>{sector.position.y=.376+(burst?strength*(i%3)*.13:0);sector.rotation.y=burst?Math.sin(i*4)*strength*.18:0;});
     this.orbit.rotation.y+=reduced?0:delta*.025*this.direction;
     this.orbit.scale.z=this.direction;

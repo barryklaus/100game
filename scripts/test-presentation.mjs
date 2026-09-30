@@ -179,3 +179,20 @@ const repeated=delayed.setCards(['one'],'back');
 assert.equal(first,repeated,'Repeated renders must await the same unfinished pile update');
 loadReady(texture);await Promise.resolve();loadReady(texture);await first;delayed.dispose();
 console.log('Card handoff checks passed: delayed pile loading, online acknowledgment, rejected moves, repeated renders, and cleanup.');
+
+const {totalDanger,totalMarkup,overflowQuake}=await load('src/ui/totalFeedback.ts');
+assert.deepEqual([-10,0,25,50,75,100,108].map(totalDanger),[0,0,.25,.5,.75,1,1],'Gold-to-red progression clamps safely at both ends');
+assert(!totalMarkup(100).includes('total-shard'),'Exactly 100 is tense, not exploded');
+assert.equal((totalMarkup(108).match(/aria-hidden="true"/g)||[]).length,6,'Overflow has six decorative fragments without duplicate announcements');
+for(const age of [0,.1,.5,1,2,2.4,4]){
+  const quiet=overflowQuake(age,true);assert.deepEqual(quiet,{x:0,y:0,z:0,roll:0},'Reduced motion suppresses earthquake');
+  const quake=overflowQuake(age,false);assert(Math.abs(quake.x)<=.34&&Math.abs(quake.y)<=.17&&Math.abs(quake.roll)<=.023,'Earthquake stays bounded');
+}
+assert.deepEqual(overflowQuake(2.4,false),{x:0,y:0,z:0,roll:0},'Earthquake returns completely to rest');
+const {OverflowFireworks}=await load('src/render/OverflowFireworks.ts');
+const fireworks=new OverflowFireworks();assert.equal(fireworks.points.visible,false);
+fireworks.configure('high');assert.equal(fireworks.points.geometry.drawRange.count,144);
+fireworks.trigger(false);assert.equal(fireworks.points.visible,true);fireworks.update(3,false);assert.equal(fireworks.points.visible,false,'Fireworks have no persistent idle effect');
+fireworks.trigger(true);assert.equal(fireworks.points.visible,false,'Reduced motion suppresses fireworks');
+fireworks.points.geometry.dispose();fireworks.points.material.dispose();
+console.log('Total feedback checks passed: danger progression, overflow fragments, bounded earthquake, reduced motion, and finite fireworks.');

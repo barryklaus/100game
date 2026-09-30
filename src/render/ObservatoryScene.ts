@@ -1,3 +1,5 @@
+import { overflowQuake } from '../ui/totalFeedback';
+import { OverflowFireworks } from './OverflowFireworks';
 import { CardHandoff } from './CardHandoff';
 import type { CardSpin } from '../ui/cardGesture';
 import { avatarAnchor } from '../ui/avatarLayout';
@@ -57,6 +59,8 @@ export class ObservatoryScene {
   private cardMasks = new WeakMap<THREE.Material, THREE.Material>();
   private table = new ObservatoryTable();
   private ring = new ArcaneTotalRing();
+  private fireworks = new OverflowFireworks();
+  private overflowAge=4;
   private hand!: PhysicalHand;
   private environment!: THREE.WebGLRenderTarget;
   private lastEventKey = '';
@@ -158,6 +162,7 @@ export class ObservatoryScene {
     this.hand.configure(options.reducedMotion);
     this.ring.configure(options.quality);
     this.table.configure(options.quality);
+    this.fireworks.configure(options.quality);
     this.discardPile.setDetail(options.quality==='ultra'?14:options.quality==='high'?10:options.quality==='medium'?7:4);
     this.resize();
     this.renderer.shadowMap.needsUpdate = true;
@@ -169,6 +174,8 @@ export class ObservatoryScene {
     this.localSeat = next.localSeat;
     this.seatProjectionDirty = true;
     this.ring.setDirection(next.direction);
+    this.ring.setTotal(next.total);
+    this.table.setTotal(next.total);
     this.drawCardUrl = next.drawCardUrl;
     this.pileShadows[0].visible = (next.drawCount ?? 0) > 0;
     this.pileShadows[1].visible = (next.discardCount ?? 0) > 0;
@@ -180,10 +187,11 @@ export class ObservatoryScene {
       this.pruneTimer=window.setTimeout(()=>this.pruneTextureCache(),300);
     });
     const key=next.eventKey??`${next.total}:${next.discardCardUrl}:${next.event}`;
+    if(!next.active || (next.event==='none'&&key!==this.lastEventKey)){this.overflowAge=4;this.fireworks.trigger(true);}
     if(!next.active)this.handoff.clear();
     else void this.handoff.sync(key,!!next.pendingPlay,discardUpdate).catch(()=>undefined);
     if(key!==this.lastEventKey){
-      if(this.lastEventKey){this.impact=1;this.eventKind=next.event;this.ring.trigger(next.event);}
+      if(this.lastEventKey){if(next.total>100&&next.event==='bust'){this.overflowAge=0;this.fireworks.trigger(this.reducedMotion);}this.impact=1;this.eventKind=next.event;this.ring.trigger(next.event);}
       this.lastEventKey=key;
     }
     this.renderer.domElement.hidden = !next.active||this.contextLost;
@@ -203,7 +211,7 @@ export class ObservatoryScene {
     this.ceilingLight.shadow.radius=5;
     this.scene.add(this.ceilingLight,this.ceilingLight.target);
     const rim=new THREE.DirectionalLight(0x6669bc,.7);rim.position.set(2,2,-5);this.scene.add(rim);
-    this.world.add(this.table.group,this.ring.group);
+    this.world.add(this.table.group,this.ring.group,this.fireworks.points);
     this.deckPile=new CardPile(true,url=>this.loadTexture(url));
     this.discardPile=new CardPile(false,url=>this.loadTexture(url));
     this.deckStack=this.deckPile.group;this.discardStack=this.discardPile.group;
@@ -425,7 +433,7 @@ export class ObservatoryScene {
       pile.style.setProperty('--pile-label-y',`${(-point.y*.5+.5)*innerHeight+7}px`);
     });
     const portrait=innerHeight>innerWidth*1.08;
-    const total=this.tablePoint(0,.9,-.65).project(this.camera);
+    const total=this.tablePoint(0,.40,-.30).project(this.camera);
     document.documentElement.style.setProperty('--total-x',`${(total.x*.5+.5)*innerWidth}px`);
     document.documentElement.style.setProperty('--total-y',`${(-total.y*.5+.5)*innerHeight}px`);
     for (let playerIndex=0;playerIndex<this.playerCount;playerIndex++) {
@@ -456,8 +464,8 @@ export class ObservatoryScene {
     this.renderer.shadowMap.needsUpdate = true;
     this.seatProjectionDirty = true;
     if (this.deckStack && this.discardStack) {
-      const pileX = portrait ? 1.05 : 2.35;
-      const pileZ = portrait ? 1.8 : .3;
+      const pileX = portrait ? 1.05 : 3.35;
+      const pileZ = portrait ? 2.3 : 1.0;
       this.deckStack.position.set(-pileX, 0, pileZ);
       this.table.cradle.position.copy(this.deckStack.position);
       this.table.cradle.rotation.copy(this.deckStack.rotation);
@@ -475,11 +483,15 @@ export class ObservatoryScene {
     const beat=this.reducedMotion?0:Math.sin((1-this.impact)*Math.PI);
     const orbit=this.eventKind==='reverse'?beat*.12:0;
     const punch=['zero','minus','bust'].includes(this.eventKind)?beat*(this.eventKind==='bust'?.42:.2):0;
+    this.overflowAge+=delta;
+    const quake=overflowQuake(this.overflowAge,this.reducedMotion);
+    this.fireworks.update(delta,this.reducedMotion);
     const shake=this.eventKind==='bust'||this.eventKind==='minus'?Math.sin(time*54)*beat*.028:0;
-    this.camera.position.set(baseX+Math.sin(orbit)*baseZ+shake,baseY-punch,Math.cos(orbit)*baseZ-punch);
+    this.camera.position.set(baseX+Math.sin(orbit)*baseZ+shake+quake.x,baseY-punch+quake.y,Math.cos(orbit)*baseZ-punch+quake.z);
     this.camera.lookAt(0,portrait?.6:.45,portrait?.1:-.3);
+    this.camera.rotateZ(quake.roll);
     this.camera.updateMatrixWorld();
-    if(time-this.lastSeatUpdate>.04 && (this.seatProjectionDirty || this.impact>0 || this.eventKind!=='none')){
+    if(time-this.lastSeatUpdate>.04 && (this.seatProjectionDirty || this.impact>0 || this.overflowAge<2.4 || this.eventKind!=='none')){
       this.positionSeatOverlays();this.lastSeatUpdate=time;this.seatProjectionDirty=false;
     }
     this.ring.update(delta,this.reducedMotion);
