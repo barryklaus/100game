@@ -329,6 +329,7 @@ export class ObservatoryScene {
       this.loadTexture(this.drawCardUrl || frontUrl),
     ]);
     const root = new THREE.Group();
+    root.visible = false;
     const visual = new THREE.Group();
     visual.add(createCardMesh(frontTexture,backTexture,/-[789]|-10\./.test(frontUrl)));
     root.add(visual);
@@ -355,6 +356,7 @@ export class ObservatoryScene {
     control.y += draw ? .85 : .65;
     control.z += draw ? .45 : -.3;
     root.position.copy(start);
+    root.visible = true;
     root.quaternion.copy(startQuaternion);
     root.scale.setScalar(startScale);
     visual.rotation.y = draw ? Math.PI : 0;
@@ -412,8 +414,16 @@ export class ObservatoryScene {
     });
   }
 
-  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin?:CardSpin, cardId?:string, onStart?:()=>void): Promise<void> {
+  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin?:CardSpin, cardId?:string, onStart?:()=>void, onReady?:()=>Promise<DOMRect|undefined>): Promise<void> {
     const { root, visual } = await this.makeFlyingCard(frontUrl);
+    let handRect: DOMRect | undefined;
+    try { handRect = await onReady?.(); }
+    catch (error) {
+      this.scene.remove(root);
+      root.traverse(object => { if (object instanceof THREE.Mesh) { object.geometry.dispose(); const materials = Array.isArray(object.material) ? object.material : [object.material]; materials.forEach(material => material.dispose()); } });
+      throw error;
+    }
+    if (handRect) sourceRect = handRect;
     const distance = innerHeight > innerWidth * 1.08 ? 4.9 : 5.35;
     const pose=cardId?this.hand.cardPose(cardId):undefined;
     const start = pose?.position??this.screenPoint(sourceRect, distance);
@@ -448,10 +458,10 @@ export class ObservatoryScene {
       pile.style.setProperty('--pile-label-y',`${(-point.y*.5+.5)*innerHeight+7}px`);
     });
     const portrait=innerHeight>innerWidth*1.08;
-    const total=this.tablePoint(0,.40,-.30).project(this.camera);
+    const total=this.tablePoint(0,.40,portrait ? -.30 : 1.05).project(this.camera);
     document.documentElement.style.setProperty('--total-x',`${(total.x*.5+.5)*innerWidth}px`);
     document.documentElement.style.setProperty('--total-y',`${(-total.y*.5+.5)*innerHeight}px`);
-    for (let playerIndex=0;playerIndex<this.playerCount;playerIndex++) {
+    for (let playerIndex=0;!layer.classList.contains('player-ring') && playerIndex<this.playerCount;playerIndex++) {
       const seat=layer.querySelector<HTMLElement>(`.seat[data-seat="${playerIndex}"]`);
       if(!seat)continue;
       const {x,y}=avatarAnchor(playerIndex,this.localSeat,this.playerCount,portrait);
@@ -464,7 +474,8 @@ export class ObservatoryScene {
     const portrait = innerHeight > innerWidth * 1.08;
     this.camera.aspect = innerWidth / innerHeight;
     this.camera.fov = portrait ? 46 : 42;
-    this.camera.position.set(0, portrait ? 10.8 : 7.4, portrait ? 13.8 : 9.4);
+    this.camera.position.set(0, portrait ? 10.0 : 6.3, portrait ? 14.2 : 9.8);
+    this.table.group.scale.x = portrait ? 1.04 : 1.14;
     this.camera.lookAt(0, portrait ? .6 : .45, portrait ? .1 : -.3);
     this.camera.updateProjectionMatrix();
     const budget = QUALITY_PRESETS[this.quality];
@@ -479,10 +490,11 @@ export class ObservatoryScene {
     this.renderer.shadowMap.needsUpdate = true;
     this.seatProjectionDirty = true;
     if (this.deckStack && this.discardStack) {
-      const pileX = portrait ? 1.05 : 3.35;
+      const pileX = portrait ? 1.05 : 3.65;
       const pileZ = portrait ? 2.3 : 1.0;
       this.deckStack.position.set(-pileX, 0, pileZ);
       this.table.cradle.position.copy(this.deckStack.position);
+      this.table.cradle.position.x /= this.table.group.scale.x;
       this.table.cradle.rotation.copy(this.deckStack.rotation);
       this.discardStack.position.set(pileX, 0, pileZ);
       this.pileShadows[0].position.set(-pileX,.3485,pileZ);
@@ -493,8 +505,8 @@ export class ObservatoryScene {
   private animate(time: number, delta: number): void {
     const portrait = innerHeight > innerWidth * 1.08;
     const baseX = 0;
-    const baseY = portrait ? 10.8 : 7.4;
-    const baseZ = portrait ? 13.8 : 9.4;
+    const baseY = portrait ? 10.0 : 6.3;
+    const baseZ = portrait ? 14.2 : 9.8;
     const beat=this.reducedMotion?0:Math.sin((1-this.impact)*Math.PI);
     const orbit=this.eventKind==='reverse'?beat*.12:0;
     const punch=['zero','minus','bust'].includes(this.eventKind)?beat*(this.eventKind==='bust'?.42:.2):0;

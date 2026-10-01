@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "columns": 3,
+  "rows": 3,
+  "width": 1254,
+  "height": 1254,
+  "frameSize": 418,
+  "gutter": 2,
+  "frames": [
+    "calm",
+    "thinking",
+    "nervous",
+    "panicked",
+    "smug",
+    "shocked",
+    "wind-up",
+    "release",
+    "recover"
+  ],
+  "characters": [
+    {
+      "id": 0,
+      "name": "Ember Scout",
+      "portrait": "../avatars/avatar-01.jpg",
+      "sheet": "avatar-01.webp",
+      "generatedSource": "exec-513e2d52-f92b-438e-aba6-9291894592b9.png"
+    },
+    {
+      "id": 1,
+      "name": "Tide Scholar",
+      "portrait": "../avatars/avatar-02.jpg",
+      "sheet": "avatar-02.webp",
+      "generatedSource": "exec-66945525-73d0-4fbd-9608-95c8b1c9a2da.png"
+    },
+    {
+      "id": 2,
+      "name": "Grove Guardian",
+      "portrait": "../avatars/avatar-03.jpg",
+      "sheet": "avatar-03.webp",
+      "generatedSource": "exec-168feeb0-ed75-4c0f-92ad-9a66b5b9cbe4.png"
+    },
+    {
+      "id": 3,
+      "name": "Sun Knight",
+      "portrait": "../avatars/avatar-04.jpg",
+      "sheet": "avatar-04.webp",
+      "generatedSource": "exec-e49443ea-26b6-4175-a3d1-4c9b4cf8f937.png"
+    },
+    {
+      "id": 4,
+      "name": "Storm Pilot",
+      "portrait": "../avatars/avatar-05.jpg",
+      "sheet": "avatar-05.webp",
+      "generatedSource": "exec-be4841f1-2bd4-49d2-9096-08c1e7b23a34.png"
+    },
+    {
+      "id": 5,
+      "name": "Coral Bard",
+      "portrait": "../avatars/avatar-06.jpg",
+      "sheet": "avatar-06.webp",
+      "generatedSource": "exec-fa4b6f95-67c4-4d99-a619-01fb03f1f320.png"
+    },
+    {
+      "id": 6,
+      "name": "Mushroom Alchemist",
+      "portrait": "../avatars/avatar-07.jpg",
+      "sheet": "avatar-07.webp",
+      "generatedSource": "exec-4ea579e3-4009-422c-8a88-6bc87a10df5b.png"
+    },
+    {
+      "id": 7,
+      "name": "Desert Ranger",
+      "portrait": "../avatars/avatar-08.jpg",
+      "sheet": "avatar-08.webp",
+      "generatedSource": "exec-4595d836-ae49-459e-8a39-300a9da53232.png"
+    },
+    {
+      "id": 8,
+      "name": "Moon Seer",
+      "portrait": "../avatars/avatar-09.jpg",
+      "sheet": "avatar-09.webp",
+      "generatedSource": "exec-f37bd761-4dd3-4719-bba7-a4026393cd63.png"
+    },
+    {
+      "id": 9,
+      "name": "River Courier",
+      "portrait": "../avatars/avatar-10.jpg",
+      "sheet": "avatar-10.webp",
+      "generatedSource": "exec-e21ea01c-1c3c-415f-8be5-fcb2421c7e2b.png"
+    },
+    {
+      "id": 10,
+      "name": "Thorn Duelist",
+      "portrait": "../avatars/avatar-11.jpg",
+      "sheet": "avatar-11.webp",
+      "generatedSource": "exec-191314ba-5840-4358-a9a0-270aaf0d878a.png"
+    },
+    {
+      "id": 11,
+      "name": "Forge Captain",
+      "portrait": "../avatars/avatar-12.jpg",
+      "sheet": "avatar-12.webp",
+      "generatedSource": "exec-6667a301-bab4-440c-ad9f-8dbd71e72194.png"
+    },
+    {
+      "id": 12,
+      "name": "Cloud Mechanic",
+      "portrait": "../avatars/avatar-13.jpg",
+      "sheet": "avatar-13.webp",
+      "generatedSource": "exec-0c783307-2e98-4c30-8028-0f7edb928654.png"
+    },
+    {
+      "id": 13,
+      "name": "Marsh Mystic",
+      "portrait": "../avatars/avatar-14.jpg",
+      "sheet": "avatar-14.webp",
+      "generatedSource": "exec-23991ae3-16d5-408d-a666-35f909ce0565.png"
+    },
+    {
+      "id": 14,
+      "name": "Wildwood Archer",
+      "portrait": "../avatars/avatar-15.jpg",
+      "sheet": "avatar-15.webp",
+      "generatedSource": "exec-e3e1a298-a290-4b31-b311-7c42ade1fbad.png"
+    },
+    {
+      "id": 15,
+      "name": "Dawn Dancer",
+      "portrait": "../avatars/avatar-16.jpg",
+      "sheet": "avatar-16.webp",
+      "generatedSource": "exec-a045e70e-a407-40e2-a175-98eeb97816ab.png"
+    }
+  ]
+}

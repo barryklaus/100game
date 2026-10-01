@@ -5,11 +5,13 @@ const components = [
   'target-hint', 'side-panel', 'shared-turn', 'hand-dock', 'dock-prompt',
   'dock-avatar', 'dock-person', 'local-hand', 'dock-controls', 'emote-menu',
   'info-fab', 'dock-quote', 'result-overlay', 'modal-overlay',
+  'ring-controls', 'ring-markers', 'character-sprite',
 ];
 
 function identity(node: Node): string | undefined {
   if (!(node instanceof HTMLElement)) return;
   if (node.dataset.seat !== undefined) return `seat:${node.dataset.seat}`;
+  if (node.dataset.ringFocus !== undefined) return `marker:${node.dataset.ringFocus}`;
   return components.find(name => node.classList.contains(name));
 }
 

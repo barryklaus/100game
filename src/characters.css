@@ -1,0 +1,51 @@
+/* Four cutout busts share a seat ring. Only this narrow upper band captures swipes. */
+.observatory-mode .seat-layer.player-ring{inset:11svh 0 auto!important;height:30svh!important;overflow:hidden;pointer-events:auto;touch-action:pan-y;z-index:5;}
+.observatory-mode .seat-layer .sprite-seat{position:fixed!important;left:var(--ring-x)!important;top:var(--ring-y)!important;width:min(24vw,32svh,340px)!important;height:auto!important;transform:translate(-50%,-64%) scale(var(--ring-scale,1))!important;transition:none!important;pointer-events:auto;cursor:grab;}
+.observatory-mode .seat-layer .sprite-seat[hidden]{display:none!important;}
+.observatory-mode .seat-layer .sprite-seat:is(:hover,:focus-visible){transform:translate(-50%,-64%) scale(var(--ring-scale,1))!important;}
+.observatory-mode .seat-layer .sprite-seat:focus-visible{outline:1px solid #edd297;outline-offset:4px;border-radius:8px;}
+.observatory-mode .seat-layer .sprite-seat .character{position:relative;width:100%!important;height:auto!important;aspect-ratio:1;display:block;}
+.character-sprite{position:absolute;inset:0;display:block;background-size:300% 300%;background-repeat:no-repeat;background-position:0 0;opacity:0;contain:paint;mask-image:linear-gradient(#000 0 85%,transparent 100%);}
+.character-sprite.sprite-ready{opacity:1;}
+.sprite-fallback{width:50%;height:50%;object-fit:cover;border-radius:50%;position:absolute;left:25%;top:18%;border:1px solid #bd9b69;}
+.sprite-ready+.sprite-fallback{display:none;}
+.sprite-hand-anchor{position:absolute;left:26%;top:59%;width:17%;height:24%;pointer-events:none;}
+.observatory-mode .seat-layer .sprite-seat .seat-info{position:relative;min-width:0;width:100%;margin-top:-8%;padding:0!important;}
+.observatory-mode .seat-layer .sprite-seat .seat-name{font:600 clamp(10px,1vw,16px)/1.2 system-ui;overflow:visible;text-shadow:0 2px 7px #000;}
+.observatory-mode .seat-layer .sprite-seat .seat-meta{font-size:clamp(7px,.64vw,10px);margin-top:3px;}
+.observatory-mode .seat-layer .sprite-seat .seat-count{position:static;display:inline-block;vertical-align:middle;width:auto;height:auto;min-width:17px;padding:2px 5px;margin-left:5px;border-radius:4px;font:500 10px/1.3 system-ui;border:1px solid #b9a27866;}
+.observatory-mode .seat-layer .sprite-seat.active .character{filter:drop-shadow(0 0 5px #fff0a9) drop-shadow(0 0 12px #ffb62ba6);}
+.observatory-mode .seat-layer .sprite-seat.targetable .character{filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #ffffffb0);}
+.observatory-mode .seat-layer .sprite-seat.targetable{cursor:pointer;}
+.observatory-mode .seat-layer .sprite-seat .reaction-bubble{top:auto;bottom:2%;font-size:10px;}
+.ring-controls{position:fixed;left:50%;top:9svh;transform:translateX(-50%);display:flex;align-items:center;gap:12px;z-index:7;pointer-events:auto;}
+.ring-controls>button{height:26px;width:26px;border:1px solid #b8a17255;border-radius:50%;padding:0;background:#10141ecf;color:#d2bc8f;font:22px/1 system-ui;}
+.ring-controls button[hidden]{display:none;}
+.ring-markers{display:flex;gap:7px;}
+.ring-marker{width:21px;height:21px;padding:0;border:1px solid #b3a07d44;border-radius:50%;background:#111521;color:#9296a4;font:9px system-ui;}
+.ring-marker.in-view{border-color:#b9a277;color:#ddd0b5;}
+.ring-marker.current{background:#e9c682;color:#271808;box-shadow:0 0 9px #ffbb4688;}
+.ring-marker.eligible{border-color:#fff;color:#fff;box-shadow:0 0 7px #fff8;}
+.ring-marker:focus-visible,.ring-controls>button:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+.observatory-mode .target-hint{top:6.5svh!important;max-width:90vw;text-align:center;font-size:10px;}
+.reduce-motion .sprite-seat .character{filter:none!important;}
+@media(orientation:portrait){
+ .observatory-mode .seat-layer.player-ring{top:15svh!important;height:26svh!important;}
+ .observatory-mode .seat-layer .sprite-seat{width:24.5vw!important;transform:translate(-50%,-58%) scale(var(--ring-scale,1))!important;}
+ .observatory-mode .seat-layer .sprite-seat:is(:hover,:focus-visible){transform:translate(-50%,-58%) scale(var(--ring-scale,1))!important;}
+ .observatory-mode .seat-layer .sprite-seat .seat-name{font-size:10px;}
+ .observatory-mode .seat-layer .sprite-seat .seat-meta{font-size:7px;}
+ .observatory-mode .seat-layer .sprite-seat .seat-count{font-size:8px;min-width:12px;padding:1px 3px;margin-left:2px;}
+ .ring-controls{top:14svh;gap:10px;}
+ .ring-markers{gap:6px;}
+ .ring-marker{width:20px;height:20px;}
+ .observatory-mode .target-hint{top:18svh!important;font-size:9px;}
+ .observatory-mode .total-caption{display:none!important;}
+}
+@media(orientation:landscape) and (max-height:520px){
+ .ring-controls{top:15svh;}
+ .observatory-mode .seat-layer.player-ring{top:17svh!important;height:27svh!important;}
+ .observatory-mode .seat-layer .sprite-seat{width:min(22vw,33svh)!important;}
+ .observatory-mode .seat-layer .sprite-seat .seat-meta{display:none;}
+ .observatory-mode .target-hint{top:10svh!important;font-size:9px;}
+}

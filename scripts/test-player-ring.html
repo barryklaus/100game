@@ -1,0 +1,57 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>100 — player ring lifecycle regression</title>
+<style>
+ body{font:16px system-ui;background:#111521;color:#eee;padding:24px}
+ #fixture{opacity:0;pointer-events:none}
+ .seat{position:fixed;left:var(--ring-x);top:var(--ring-y);width:80px;height:100px}
+ .sprite-hand-anchor{display:block;width:12px;height:18px}
+</style>
+<h1>Player ring lifecycle regression</h1>
+<p id="result">Running…</p><div id="fixture"></div>
+<script type="module">
+ import {PlayerRing} from '../src/ui/PlayerRing.ts';
+ import {updateGameView} from '../src/ui/updateGameView.ts';
+ const root=document.querySelector('#fixture');
+ const check=(condition,message)=>{if(!condition)throw new Error(message)};
+ const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+ const markup=()=>`<main class="game-page"><div class="seat-layer player-ring">${Array.from({length:8},(_,i)=>`<button class="seat" data-seat="${i}" data-mood="Normal"><span class="character"><span class="character-sprite" data-sprite-url="${import.meta.env.BASE_URL}assets/characters/avatar-${String(i+1).padStart(2,'0')}.webp"></span><span class="sprite-hand-anchor"></span></span></button>`).join('')}</div><nav class="ring-controls">${Array.from({length:8},(_,i)=>`<button data-ring-focus="${i}">${i}</button>`).join('')}<button data-ring-step="1">Next</button></nav></main>`;
+ const base={roundKey:'A',count:8,active:7,total:60,overflow:false,reducedMotion:false,target:false};
+ const sprite=i=>root.querySelector(`[data-seat="${i}"] .character-sprite`);
+ try {
+  updateGameView(root,markup());
+  const ring=new PlayerRing(root);ring.sync(base);
+  const originals=[...root.querySelectorAll('.character-sprite')];
+  await ring.prepareThrow(7);
+  check(sprite(7).classList.contains('sprite-ready'),'Visible atlas did not decode');
+  check(sprite(7).dataset.frame==='6','Wind-up missing before release');
+  ring.release(7);ring.sync({...base,active:0});
+  const position=root.querySelector('[data-seat="7"]').style.getPropertyValue('--ring-x');
+  ring.browse(1);ring.show(4);await pause(40);
+  check(root.querySelector('[data-seat="7"]').style.getPropertyValue('--ring-x')===position,'Browsing moved the hand during the card flight');
+  check(root.querySelector('[data-ring-step]').disabled,'Flight navigation remained enabled');
+  let nextPrepared=false;
+  const next=ring.prepareThrow(0).then(()=>{nextPrepared=true});
+  await pause(40);check(!nextPrepared,'Next actor skipped the replacement draw');
+  ring.received(7);await next;
+  check(sprite(0).dataset.frame==='6','Next actor did not focus and wind up after the draw');
+  ring.release(0);ring.received(0);
+  check(!root.querySelector('[data-ring-step]').disabled,'Completed draw left navigation locked');
+  ring.sync({...base,active:1,total:95});
+  check(sprite(1).dataset.frame==='3'&&sprite(0).dataset.frame==='2','Reactions ignored the displayed danger total');
+  ring.sync({...base,total:101,overflow:true});
+  check([...root.querySelectorAll('.character-sprite')].every(node=>node.dataset.frame==='5'),'Overflow did not replace every reaction');
+  ring.sync({...base,total:0});
+  const interrupted=ring.prepareThrow(2);
+  ring.sync({...base,roundKey:'B',active:1,total:0});
+  let rejected=false;try{await interrupted}catch{rejected=true}
+  check(rejected,'Leaving a table allowed a stale throw to proceed');
+  updateGameView(root,markup());ring.sync({...base,roundKey:'B',active:1,total:0});
+  check([...root.querySelectorAll('.character-sprite')].every((node,i)=>node===originals[i]),'A game update recreated character sprites');
+  check(root.querySelectorAll('.seat:not([hidden])').length===4,'Updated table did not retain exactly four visible players');
+  check(!root.querySelector('[data-ring-step]').disabled,'Canceled throw left controls locked');
+  document.querySelector('#result').textContent='PASS — decoded sprites, synchronized wind-up/release/draw, stable flight anchors, deferred next turn, danger reactions, canceled throws, and persistent character nodes.';
+ } catch(error) {
+  document.querySelector('#result').textContent=`FAIL — ${error.message}`;throw error;
+ }
+</script>
