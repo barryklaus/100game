@@ -25,7 +25,7 @@ export function makeSeamlessLoop(context: AudioContext, original: AudioBuffer): 
   return loop;
 }
 
-/** One source per entry into the cue range; only Anxiety loops continuously. */
+/** One shot per visible score change; only Anxiety loops continuously. */
 export class SuspenseTrack {
   private buffer?: AudioBuffer;
   private source?: AudioBufferSourceNode;
@@ -52,6 +52,10 @@ export class SuspenseTrack {
   setTotal(total: number | null, enabled = true): void {
     if (this.disposed || (total === this.total && enabled === this.enabled)) return;
     if (!this.level(total)) this.spent = false;
+    else if (!this.loop && total !== this.total) {
+      this.spent = false;
+      this.stop(.025); // A fresh number gets one new cue, without stacking the old tail.
+    }
     this.total = total;
     this.enabled = enabled;
     this.apply();
