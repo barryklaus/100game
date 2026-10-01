@@ -134,7 +134,7 @@ export class ArcaneTotalRing {
   private arrival=0;
   private quality:QualityPreset='high';
   constructor(){
-    this.group.position.set(0,0,-.65);
+    this.group.position.set(0,0,0);
     const metal=this.metal;
     for(const [r,w,y] of [[1.34,.012,.36],[1.48,.007,.362],[1.63,.013,.357]])this.group.add(ring(r,w,metal,y));
     this.group.add(ring(1.38,.007,this.light,.37));

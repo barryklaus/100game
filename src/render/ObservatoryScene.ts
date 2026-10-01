@@ -226,7 +226,9 @@ export class ObservatoryScene {
     this.ceilingLight.shadow.radius=5;
     this.scene.add(this.ceilingLight,this.ceilingLight.target);
     const rim=new THREE.DirectionalLight(0x6669bc,.7);rim.position.set(2,2,-5);this.scene.add(rim);
-    this.world.add(this.table.group,this.ring.group,this.fireworks.points);
+    // The center rings inherit the exact oval stretch and tilt of the engraving.
+    this.table.group.add(this.ring.group);
+    this.world.add(this.table.group,this.fireworks.points);
     this.deckPile=new CardPile(true,url=>this.loadTexture(url));
     this.discardPile=new CardPile(false,url=>this.loadTexture(url));
     this.deckStack=this.deckPile.group;this.discardStack=this.discardPile.group;
@@ -458,7 +460,7 @@ export class ObservatoryScene {
       pile.style.setProperty('--pile-label-y',`${(-point.y*.5+.5)*innerHeight+7}px`);
     });
     const portrait=innerHeight>innerWidth*1.08;
-    const total=this.tablePoint(0,.40,portrait ? .45 : 1.05).project(this.camera);
+    const total=this.tablePoint(0,.3475,0).project(this.camera);
     document.documentElement.style.setProperty('--total-x',`${(total.x*.5+.5)*innerWidth}px`);
     document.documentElement.style.setProperty('--total-y',`${(-total.y*.5+.5)*innerHeight}px`);
     this.projectPlayerRing();
@@ -533,8 +535,8 @@ export class ObservatoryScene {
     this.renderer.shadowMap.needsUpdate = true;
     this.seatProjectionDirty = true;
     if (this.deckStack && this.discardStack) {
-      const pileX = portrait ? 1.05 : 3.65;
-      const pileZ = portrait ? 2.3 : 1.0;
+      const pileX = portrait ? 2.45 : 3.65;
+      const pileZ = 0;
       this.deckStack.position.set(-pileX, 0, pileZ);
       // Cancel the tabletop's oval stretch without distorting the card-sized cradle.
       this.table.group.updateMatrix();this.deckStack.updateMatrix();

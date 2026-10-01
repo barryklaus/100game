@@ -4,14 +4,16 @@
 :is(.world3d-active,.observatory-mode) .game-layout,:is(.world3d-active,.observatory-mode) .arena,:is(.world3d-active,.observatory-mode) .table-rim,:is(.world3d-active,.observatory-mode) .table-felt,:is(.world3d-active,.observatory-mode) .seat-layer{position:fixed;inset:0;width:100%;height:100%;transform:none!important;margin:0;border:0!important;border-radius:0;box-shadow:none!important;background:none!important;}
 :is(.world3d-active,.observatory-mode) .table-rim::before,:is(.world3d-active,.observatory-mode) .table-rim::after,:is(.world3d-active,.observatory-mode) .table-felt::before,:is(.world3d-active,.observatory-mode) .table-felt::after,:is(.world3d-active,.observatory-mode) .arena::before,:is(.world3d-active,.observatory-mode) .arena::after{display:none!important;}
 :is(.world3d-active,.observatory-mode) .seat-layer,:is(.world3d-active,.observatory-mode) .energy-system{pointer-events:none;}
-:is(.world3d-active,.observatory-mode) .energy-system{position:fixed;inset:0;z-index:3;}
-:is(.world3d-active,.observatory-mode) .energy-system .total-wrap{position:fixed!important;left:var(--total-x,50vw)!important;top:var(--total-y,43vh)!important;transform:translate(-50%,-50%)!important;opacity:1!important;visibility:visible!important;display:flex!important;align-items:center;flex-direction:column;min-width:180px;pointer-events:none;text-shadow:none;}
-:is(.world3d-active,.observatory-mode) .energy-system .total-number{display:block!important;visibility:visible!important;font:400 clamp(176px,21vw,316px)/.78 'Luckiest Guy',sans-serif!important;letter-spacing:-.025em!important;transform:none!important;color:#f6ecd2;-webkit-text-stroke:1px #bdab83;text-shadow:0 3px 0 #6a5a40,0 9px 20px #0009;filter:none!important;}
+:is(.world3d-active,.observatory-mode) .energy-system{position:fixed;inset:0;z-index:6;}
+/* Fixed table containers form their own layer; lift that ancestor above the seats. */
+:is(.world3d-active,.observatory-mode) .table-rim{z-index:6;pointer-events:none;}
+:is(.world3d-active,.observatory-mode) .energy-system .total-wrap{position:fixed!important;left:var(--total-x,50vw)!important;top:var(--total-y,49vh)!important;transform:translate(-50%,-100%)!important;opacity:1!important;visibility:visible!important;display:flex!important;align-items:center;flex-direction:column;min-width:180px;pointer-events:none;text-shadow:none;}
+:is(.world3d-active,.observatory-mode) .energy-system .total-number{display:block!important;visibility:visible!important;font:400 clamp(148px,17.5vw,264px)/.78 'Luckiest Guy',sans-serif!important;letter-spacing:-.025em!important;transform:none!important;color:#f6ecd2;-webkit-text-stroke:1px #bdab83;text-shadow:0 3px 0 #6a5a40,0 9px 20px #0009;filter:none!important;}
 :is(.world3d-active,.observatory-mode) .total-caption{display:block!important;font:500 9px/1.3 system-ui;letter-spacing:.28em;color:#b7b2c5;opacity:.72;margin-bottom:12px;}
-:is(.world3d-active,.observatory-mode) .total-event{font:600 10px/1.6 system-ui;letter-spacing:.22em;color:#bcb6dc;min-height:16px;margin-top:5px;}
+:is(.world3d-active,.observatory-mode) .total-event{position:absolute;top:100%;font:600 10px/1.6 system-ui;letter-spacing:.22em;color:#bcb6dc;min-height:16px;margin-top:5px;}
 :is(.world3d-active,.observatory-mode) .busted .total-number{color:#ffd6ac;-webkit-text-stroke-color:#c88a63;}
 :is(.world3d-active,.observatory-mode) .busted .total-event{color:#ffb88b;letter-spacing:.4em;}
-.ring-direction{font:500 15px/1 system-ui;letter-spacing:.45em;color:#9f92b8;opacity:.65;margin-top:10px;}
+.ring-direction{position:absolute;top:calc(100% + 26px);font:500 15px/1 system-ui;letter-spacing:.45em;color:#9f92b8;opacity:.65;margin-top:10px;}
 :is(.world3d-active,.observatory-mode) .game-header{height:82px;padding:22px 30px;background:linear-gradient(#03050a66,transparent);z-index:12;}
 :is(.world3d-active,.observatory-mode) .match-plaque{clip-path:none;background:none;border:0!important;box-shadow:none;padding:0;width:auto;min-height:0;gap:12px;}
 :is(.world3d-active,.observatory-mode) .plaque-crown{font-size:28px;color:#bea678;}
@@ -105,7 +107,7 @@
  :is(.world3d-active,.observatory-mode) .seat .seat-name{font-size:10px;}
  :is(.world3d-active,.observatory-mode) .seat .seat-meta{font-size:8px;}
  :is(.world3d-active,.observatory-mode) .seat-count{width:17px;height:20px;font-size:9px;line-height:18px;right:-4px;}
- :is(.world3d-active,.observatory-mode) .energy-system .total-number{font-size:clamp(152px,48vw,240px)!important;}
+ :is(.world3d-active,.observatory-mode) .energy-system .total-number{font-size:clamp(126px,40vw,200px)!important;}
  :is(.world3d-active,.observatory-mode) .total-caption{font-size:7px;margin-bottom:8px;}
  :is(.world3d-active,.observatory-mode) .total-event{font-size:8px;letter-spacing:.14em;}
  :is(.world3d-active,.observatory-mode) .ring-direction{font-size:12px;margin-top:7px;}
@@ -138,7 +140,7 @@
  :is(.world3d-active,.observatory-mode) .seat .seat-name{font-size:9px;}
  :is(.world3d-active,.observatory-mode) .seat .seat-meta{font-size:7px;}
  :is(.world3d-active,.observatory-mode) .seat .seat-info{padding-top:3px;}
- :is(.world3d-active,.observatory-mode) .energy-system .total-number{font-size:148px!important;}
+ :is(.world3d-active,.observatory-mode) .energy-system .total-number{font-size:124px!important;}
  :is(.world3d-active,.observatory-mode) .total-caption{font-size:7px;margin-bottom:5px;}
  :is(.world3d-active,.observatory-mode) .total-event{font-size:7px;}
  :is(.world3d-active,.observatory-mode) .local-hand{bottom:-20%;}
@@ -158,11 +160,13 @@
 /* A deliberate static observatory survives unavailable or lost WebGL contexts. */
 .observatory-mode:not(.world3d-active) .game-page{background:radial-gradient(ellipse at 50% 58%,#1b1c2c,#04060b 70%)!important;}
 .observatory-mode:not(.world3d-active) .table-felt::before{content:'';display:block!important;position:absolute;inset:33% 6% 21%;border:2px solid #826c4566;border-radius:50%;background:repeating-radial-gradient(ellipse,#151a25 0 14%,#83745666 14.2%,#151a25 14.5% 16%);box-shadow:0 0 0 5px #171620,0 30px 80px #000;}
-.observatory-mode:not(.world3d-active) .total-wrap{--total-y:49vh;}
+.observatory-mode:not(.world3d-active) .total-wrap{top:56vh!important;}
 .observatory-mode:not(.world3d-active) .sprite-seat{--table-seat-y:35svh!important;--table-seat-clip:polygon(-24px -24px,calc(100% + 24px) -24px,calc(100% + 24px) 86%,-24px 86%)!important;}
-.observatory-mode:not(.world3d-active) .pile-wrap:first-child{left:35%;top:52%;}
-.observatory-mode:not(.world3d-active) .pile-wrap:nth-child(2){left:65%;top:52%;}
-@media(orientation:portrait){.observatory-mode:not(.world3d-active) .table-felt::before{inset:38% -45% 21%;}.observatory-mode:not(.world3d-active) .sprite-seat{--table-seat-y:39svh!important;}}
+.observatory-mode:not(.world3d-active) .table-cards{position:fixed;inset:0;transform:none;display:block;pointer-events:none;}
+.observatory-mode:not(.world3d-active) .pile-wrap{position:absolute;transform:translate(-50%,-50%);}
+.observatory-mode:not(.world3d-active) .pile-wrap:first-child{left:25%;top:56%;}
+.observatory-mode:not(.world3d-active) .pile-wrap:nth-child(2){left:75%;top:56%;}
+@media(orientation:portrait){.observatory-mode:not(.world3d-active) .table-felt::before{inset:38% -45% 21%;}.observatory-mode:not(.world3d-active) .sprite-seat{--table-seat-y:39svh!important;}.observatory-mode:not(.world3d-active) .total-wrap{top:58.5vh!important;}.observatory-mode:not(.world3d-active) .pile-wrap{top:58.5%!important;}}
 .result-panel .rating-list .score-entry>span{display:block;background:none;border:0;border-radius:0;padding:0;margin:0;text-align:left;}
 .result-panel .rating-list .score-entry{min-width:0;align-items:center;}
 .result-panel .result-actions{position:sticky;bottom:-1px;padding-top:8px;background:#0e1420;}
