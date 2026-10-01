@@ -8,7 +8,7 @@ All 16 existing character identities now have nine cartoon bust frames each (144
 - The ring focuses on the active player before their throw. Navigation pauses during a throw and replacement draw so their hand stays in place.
 - Reactions follow the **displayed** total: calm/thinking below 70, nervous at 70–89, panicked for the active player at 90–100, and shocked on overflow. Special-card actors briefly look relieved.
 - Throwing uses a 110 ms wind-up, release as the real 3D card leaves, and recovery until the replacement reaches the hand. The sprite holds card backs only, preserving other players' hand privacy.
-- Desktop uses a lower viewing angle and a wider table; both layouts use a shallow character arc.
+- The table is a wide oblong tilted forward. Characters sit behind its far rim in both layouts; their lower bodies are clipped against the projected tabletop edge, including while browsing the ring. The draw/discard piles and their landing poses share the table tilt.
 - Reduced motion skips rotation and throw poses. Failed sprite loads retain the original portrait.
 
 ## Asset format and performance

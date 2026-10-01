@@ -458,9 +458,10 @@ export class ObservatoryScene {
       pile.style.setProperty('--pile-label-y',`${(-point.y*.5+.5)*innerHeight+7}px`);
     });
     const portrait=innerHeight>innerWidth*1.08;
-    const total=this.tablePoint(0,.40,portrait ? -.30 : 1.05).project(this.camera);
+    const total=this.tablePoint(0,.40,portrait ? .45 : 1.05).project(this.camera);
     document.documentElement.style.setProperty('--total-x',`${(total.x*.5+.5)*innerWidth}px`);
     document.documentElement.style.setProperty('--total-y',`${(-total.y*.5+.5)*innerHeight}px`);
+    this.projectPlayerRing();
     for (let playerIndex=0;!layer.classList.contains('player-ring') && playerIndex<this.playerCount;playerIndex++) {
       const seat=layer.querySelector<HTMLElement>(`.seat[data-seat="${playerIndex}"]`);
       if(!seat)continue;
@@ -470,12 +471,54 @@ export class ObservatoryScene {
     }
   }
 
+  /** Clip busts at the projected far rim, so the tabletop covers their lower bodies. */
+  projectPlayerRing(): void {
+    if (!this.active) return;
+    const layer = document.querySelector<HTMLElement>('.seat-layer.player-ring');
+    if (!layer) return;
+    this.world.updateMatrixWorld(true);
+    const rim = Array.from({length:97},(_,i)=>{
+      const angle=i/96*Math.PI*2;
+      const point=this.table.group.localToWorld(new THREE.Vector3(Math.cos(angle)*5.02,.355,Math.sin(angle)*5.02)).project(this.camera);
+      return {x:(point.x*.5+.5)*innerWidth,y:(-point.y*.5+.5)*innerHeight};
+    });
+    const edgeAt=(x:number):number=>{
+      let y=Infinity;
+      for(let i=1;i<rim.length;i++){
+        const a=rim[i-1],b=rim[i];
+        if(x<Math.min(a.x,b.x)||x>Math.max(a.x,b.x)||Math.abs(b.x-a.x)<.001)continue;
+        y=Math.min(y,a.y+(b.y-a.y)*(x-a.x)/(b.x-a.x));
+      }
+      return Number.isFinite(y)?y:rim.reduce((closest,p)=>Math.abs(p.x-x)<Math.abs(closest.x-x)?p:closest).y;
+    };
+    const seats=Array.from(layer.querySelectorAll<HTMLElement>('.seat:not([hidden])'));
+    // Position every seat first, then read bounds together to avoid repeated reflow.
+    seats.forEach(seat=>{
+      const x=parseFloat(seat.style.getPropertyValue('--ring-x'))/100*innerWidth;
+      seat.style.setProperty('--table-seat-y',`${edgeAt(x)}px`);
+    });
+    const bounds=seats.map(seat=>seat.getBoundingClientRect());
+    seats.forEach((seat,index)=>{
+      const rect=bounds[index];
+      if(rect.width<1)return;
+      const ratio=seat.offsetWidth/rect.width;
+      const padding=24/seat.offsetWidth;
+      const points=Array.from({length:9},(_,i)=>{
+        const fraction=1+padding-i/8*(1+padding*2);
+        const y=Math.max(0,Math.min(seat.offsetHeight+24,(edgeAt(rect.left+rect.width*fraction)-rect.top)*ratio));
+        return `${fraction*100}% ${y.toFixed(1)}px`;
+      });
+      seat.style.setProperty('--table-seat-clip',`polygon(-24px -24px,calc(100% + 24px) -24px,${points.join(',')})`);
+    });
+  }
+
   private resize = (): void => {
     const portrait = innerHeight > innerWidth * 1.08;
     this.camera.aspect = innerWidth / innerHeight;
     this.camera.fov = portrait ? 46 : 42;
-    this.camera.position.set(0, portrait ? 10.0 : 6.3, portrait ? 14.2 : 9.8);
-    this.table.group.scale.x = portrait ? 1.04 : 1.14;
+    this.camera.position.set(0, portrait ? 10.0 : 7.0, portrait ? 14.2 : 11.0);
+    this.world.rotation.x = .18;
+    this.table.group.scale.set(portrait ? 1.30 : 1.38,1,.70);
     this.camera.lookAt(0, portrait ? .6 : .45, portrait ? .1 : -.3);
     this.camera.updateProjectionMatrix();
     const budget = QUALITY_PRESETS[this.quality];
@@ -493,9 +536,10 @@ export class ObservatoryScene {
       const pileX = portrait ? 1.05 : 3.65;
       const pileZ = portrait ? 2.3 : 1.0;
       this.deckStack.position.set(-pileX, 0, pileZ);
-      this.table.cradle.position.copy(this.deckStack.position);
-      this.table.cradle.position.x /= this.table.group.scale.x;
-      this.table.cradle.rotation.copy(this.deckStack.rotation);
+      // Cancel the tabletop's oval stretch without distorting the card-sized cradle.
+      this.table.group.updateMatrix();this.deckStack.updateMatrix();
+      this.table.cradle.matrixAutoUpdate=false;
+      this.table.cradle.matrix.copy(this.table.group.matrix).invert().multiply(this.deckStack.matrix);
       this.discardStack.position.set(pileX, 0, pileZ);
       this.pileShadows[0].position.set(-pileX,.3485,pileZ);
       this.pileShadows[1].position.set(pileX,.3485,pileZ);
@@ -505,8 +549,8 @@ export class ObservatoryScene {
   private animate(time: number, delta: number): void {
     const portrait = innerHeight > innerWidth * 1.08;
     const baseX = 0;
-    const baseY = portrait ? 10.0 : 6.3;
-    const baseZ = portrait ? 14.2 : 9.8;
+    const baseY = portrait ? 10.0 : 7.0;
+    const baseZ = portrait ? 14.2 : 11.0;
     const beat=this.reducedMotion?0:Math.sin((1-this.impact)*Math.PI);
     const orbit=this.eventKind==='reverse'?beat*.12:0;
     const punch=['zero','minus','bust'].includes(this.eventKind)?beat*(this.eventKind==='bust'?.42:.2):0;

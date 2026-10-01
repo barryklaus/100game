@@ -157,11 +157,12 @@
 :is(.world3d-active,.observatory-mode) .your-turn-bubble{transform:none!important;}
 /* A deliberate static observatory survives unavailable or lost WebGL contexts. */
 .observatory-mode:not(.world3d-active) .game-page{background:radial-gradient(ellipse at 50% 58%,#1b1c2c,#04060b 70%)!important;}
-.observatory-mode:not(.world3d-active) .table-felt::before{content:'';display:block!important;position:absolute;inset:20% 10% 12%;border:2px solid #826c4566;border-radius:50%;background:repeating-radial-gradient(ellipse,#151a25 0 14%,#83745666 14.2%,#151a25 14.5% 16%);box-shadow:0 0 0 5px #171620,0 30px 80px #000;}
-.observatory-mode:not(.world3d-active) .total-wrap{--total-y:40vh;}
+.observatory-mode:not(.world3d-active) .table-felt::before{content:'';display:block!important;position:absolute;inset:33% 6% 21%;border:2px solid #826c4566;border-radius:50%;background:repeating-radial-gradient(ellipse,#151a25 0 14%,#83745666 14.2%,#151a25 14.5% 16%);box-shadow:0 0 0 5px #171620,0 30px 80px #000;}
+.observatory-mode:not(.world3d-active) .total-wrap{--total-y:49vh;}
+.observatory-mode:not(.world3d-active) .sprite-seat{--table-seat-y:35svh!important;--table-seat-clip:polygon(-24px -24px,calc(100% + 24px) -24px,calc(100% + 24px) 86%,-24px 86%)!important;}
 .observatory-mode:not(.world3d-active) .pile-wrap:first-child{left:35%;top:52%;}
 .observatory-mode:not(.world3d-active) .pile-wrap:nth-child(2){left:65%;top:52%;}
-@media(orientation:portrait){.observatory-mode:not(.world3d-active) .table-felt::before{inset:27% -20% 19%;}}
+@media(orientation:portrait){.observatory-mode:not(.world3d-active) .table-felt::before{inset:38% -45% 21%;}.observatory-mode:not(.world3d-active) .sprite-seat{--table-seat-y:39svh!important;}}
 .result-panel .rating-list .score-entry>span{display:block;background:none;border:0;border-radius:0;padding:0;margin:0;text-align:left;}
 .result-panel .rating-list .score-entry{min-width:0;align-items:center;}
 .result-panel .result-actions{position:sticky;bottom:-1px;padding-top:8px;background:#0e1420;}

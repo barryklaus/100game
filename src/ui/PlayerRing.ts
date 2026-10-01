@@ -24,7 +24,7 @@ export class PlayerRing {
   private loaded = new Map<string, Promise<void>>();
   private readyUrls = new Set<string>();
 
-  constructor(private root: HTMLElement) {
+  constructor(private root: HTMLElement, private projectLayout?: () => void) {
     root.addEventListener('pointerdown', this.down);
     root.addEventListener('pointermove', this.move);
     root.addEventListener('pointerup', this.up);
@@ -222,5 +222,6 @@ export class PlayerRing {
       marker.setAttribute('aria-pressed', String(pose.visible));
     });
     this.paintFrames();
+    this.projectLayout?.();
   }
 }

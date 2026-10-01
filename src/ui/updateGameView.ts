@@ -18,7 +18,7 @@ function identity(node: Node): string | undefined {
 function attributes(current: HTMLElement, next: HTMLElement): void {
   // These coordinates belong to the 3D renderer, not the HTML view template.
   const projected = current.matches('.seat')
-    ? ['--seat-chair-x', '--seat-chair-y'].map(name => [name, current.style.getPropertyValue(name)] as const)
+    ? ['--seat-chair-x', '--seat-chair-y', '--table-seat-y', '--table-seat-clip'].map(name => [name, current.style.getPropertyValue(name)] as const)
     : [];
   for (const attribute of Array.from(current.attributes)) {
     if (!next.hasAttribute(attribute.name)) current.removeAttribute(attribute.name);

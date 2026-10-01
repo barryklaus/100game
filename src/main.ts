@@ -25,7 +25,7 @@ import { updateGameView } from './ui/updateGameView';
 import { GyroHand } from './ui/GyroHand';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
-const playerRing = new PlayerRing(app);
+const playerRing = new PlayerRing(app, () => observatory?.projectPlayerRing());
 let settings: Settings = loadSettings();
 let stats: Stats = loadStats();
 let state: GameState | null = null;
