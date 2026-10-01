@@ -69,4 +69,6 @@ Rules, online projections/privacy, hosted CPU timing, card presentation, gesture
 
 `scripts/test-expanded-characters.html` decodes all sixteen real runtime WebPs and verifies all 144 cells have complete populated figures, clear sampling gutters, and hand anchors inside the frame. Its pose selector previews every expression and throw pose with anchor outlines for visual calibration.
 
+Hand cards and all draw/throw animations render in a transparent foreground canvas above characters and the shared total. It uses the same world camera and card meshes, with no extra shadows or post-processing. On landing, a thrown card returns to the tabletop depth layer until the authoritative discard pile is ready. Foreground textures participate in cache retention and both renderers are released when the scene is disposed. `scripts/test-card-layers.html` checks hand ownership, draws and character throws, foreground stacking, texture retention, Ultra rendering, landing handoff, and renderer cleanup.
+
 The Cloudflare production build passes. Preview screenshots are in `docs/previews/`. A successful build does not establish an FPS guarantee on every phone; a two-device live multiplayer session has not been verified for this update.

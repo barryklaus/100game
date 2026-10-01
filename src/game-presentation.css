@@ -222,8 +222,18 @@
   height: 100svh;
   pointer-events: none;
 }
+/* This canvas contains only hand/in-flight cards, above the entire scene HUD. */
+.foreground-cards-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  width: 100vw;
+  height: 100svh;
+  pointer-events: none;
+}
 .world3d-active body { background: #080a17; }
 .world3d-active #app { position: relative; z-index: 1; }
+.world3d-active #app:has(.modal-overlay) { z-index: 31; }
 .world3d-active .game-page { background: transparent; }
 .world3d-active .game-page::before {
   opacity: 1;

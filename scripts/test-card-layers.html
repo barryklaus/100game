@@ -1,0 +1,70 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>100 — foreground card regression</title>
+<style>
+ body{margin:0;background:#070a11;color:#fff;font:16px system-ui}
+ #app{position:relative;z-index:1}
+ #result{position:fixed;left:16px;bottom:16px;z-index:40;background:#101722;padding:12px;max-width:65vw}
+ .blocker{position:fixed;top:22vh;left:30vw;width:40vw;height:38vh;background:#572841;border:4px solid #bc748e;display:grid;place-items:center;font-size:64px}
+ .source,.target{position:fixed;width:110px;height:154px;top:20vh}
+ .source{left:25vw}.target{left:70vw}
+ .local-hand .hand-card{position:fixed;left:45vw;bottom:24px;width:110px;height:154px;padding:0;border:0;background:transparent}
+ .local-hand .hand-card img{width:100%;height:100%}.mesh-ready{opacity:0}
+</style>
+<div id="app"><div class="blocker">100 / Characters</div><div class="source"></div><div class="target"></div><div class="draw-stack" hidden><img alt=""></div><div class="local-hand"><button class="hand-card" data-card="hand-test"><img alt=""></button></div></div>
+<p id="result">Running…</p>
+<script type="module">
+ import '../src/game-presentation.css';
+ import {ObservatoryScene} from '../src/render/ObservatoryScene.ts';
+ const result=document.querySelector('#result');
+ const check=(condition,message)=>{if(!condition)throw new Error(message)};
+ const back=`${import.meta.env.BASE_URL}assets/cards/back.webp`;
+ const front=`${import.meta.env.BASE_URL}assets/cards/sun-4.webp`;
+ document.querySelector('.draw-stack img').src=back;
+ document.querySelector('.hand-card img').src=front;
+ const scene=new ObservatoryScene();
+ const state={active:true,total:50,direction:1,event:'none',playerCount:4,localSeat:0,drawCount:24,discardCount:0,drawCardUrl:back};
+ const foreground=scene.foreground;
+ let samples=0,fail;
+ const sample=()=>{
+   if(foreground.scene.children.some(card=>card.visible)){
+     samples++;
+     const canvas=document.querySelector('.foreground-cards-canvas');
+     if(canvas.hidden || Number(getComputedStyle(canvas).zIndex)<=Number(getComputedStyle(document.querySelector('#app')).zIndex))fail='A moving card was behind the HTML scene';
+   }
+ };
+ const flight=async action=>{
+   let raf;
+   const tick=()=>{sample();raf=requestAnimationFrame(tick)};
+   raf=requestAnimationFrame(tick);
+   await action();cancelAnimationFrame(raf);
+   check(!fail,fail);
+ };
+ try{
+   scene.update(state);
+   for(let i=0;i<60&&!scene.hand.cardPose('hand-test');i++)await new Promise(resolve=>setTimeout(resolve,50));
+   const hand=scene.hand.cards.get('hand-test')?.mesh;
+   if(!document.documentElement.classList.contains('crisp-mobile-hand')){
+     check(hand?.parent===foreground.scene,'Hand cards did not join the foreground');
+     const face=hand.getObjectByName('card-front').material.map;
+     for(let i=0;i<16;i++)scene.loadedTextures.set(`unused-${i}`,new face.constructor());
+     scene.pruneTextureCache();
+     check([...scene.loadedTextures.values()].includes(face),'Texture pruning discarded an active foreground card');
+   }
+   await flight(()=>scene.drawCardToHand(back,document.querySelector('.target').getBoundingClientRect()));
+   const resting=hand?1:0;
+   check(foreground.scene.children.length===resting,'Receiving a card left an extra flying copy');
+   await flight(()=>scene.playCardToDiscard(front,document.querySelector('.source').getBoundingClientRect()));
+   check(foreground.scene.children.length===resting,'Landed character card did not return to table depth');
+   const landed=scene.scene.children.find(card=>card.userData!==undefined && card!==scene.world && card.isGroup);
+   check(landed,'Landed card disappeared before the authoritative pile was ready');
+   scene.update({...state,event:'card',eventKey:'landed',discardCount:1,discardCards:[front]});
+   await new Promise(resolve=>setTimeout(resolve,100));
+   scene.configure({quality:'ultra',reducedMotion:false});
+   await flight(()=>scene.drawCardToHand(front,document.querySelector('.target').getBoundingClientRect()));
+   check(samples>12,'Flights were not observed across multiple rendered frames');
+   result.textContent=`PASS — ${samples} foreground frames; hand cards, character throws, deck draws, texture retention, Ultra rendering, landing handoff and no duplicate receiving card.`;
+   scene.dispose();
+   check(!document.querySelector('.foreground-cards-canvas'),'Leaving retained the foreground renderer');
+ }catch(error){result.textContent=`FAIL — ${error.message}`;throw error}
+</script>

@@ -19,6 +19,7 @@ import { cardFaceTexture } from './CardFaceTexture';
 import { CardPile } from './CardPile';
 import { CardFlightFit } from './CardFlightFit';
 import { flyingCardFlex } from './CardFlex';
+import { ForegroundCards } from './ForegroundCards';
 
 type SceneState = {
   pendingPlay?: boolean;
@@ -70,6 +71,7 @@ export class ObservatoryScene {
   private ring = new ArcaneTotalRing();
   private fireworks = new OverflowFireworks();
   private hand!: PhysicalHand;
+  private foreground!: ForegroundCards;
   private environment!: THREE.WebGLRenderTarget;
   private lastEventKey = '';
 
@@ -110,8 +112,9 @@ export class ObservatoryScene {
     this.renderer.domElement.className = 'world3d-canvas';
     this.renderer.domElement.setAttribute('aria-hidden', 'true');
     document.body.prepend(this.renderer.domElement);
-    this.renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();this.contextLost=true;this.onCardArrival?.(this.playKey);this.renderer.domElement.hidden=true;document.documentElement.classList.remove('world3d-active','world3d-total');});
-    this.renderer.domElement.addEventListener('webglcontextrestored',()=>{this.contextLost=false;this.renderer.domElement.hidden=!this.active;document.documentElement.classList.toggle('world3d-active',this.active);document.documentElement.classList.toggle('world3d-total',this.active);});
+    this.foreground = new ForegroundCards(this.camera, this.refreshContext);
+    this.renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();this.refreshContext();});
+    this.renderer.domElement.addEventListener('webglcontextrestored',this.refreshContext);
 
     this.scene.background = new THREE.Color(0x03050a);
     this.scene.fog = new THREE.FogExp2(0x03050a, .025);
@@ -123,7 +126,7 @@ export class ObservatoryScene {
     this.scene.environment=this.environment.texture;
     this.scene.environmentIntensity=.18;
     room.dispose();pmrem.dispose();
-    this.hand=new PhysicalHand(this.scene,this.camera,url=>this.loadTexture(url));
+    this.hand=new PhysicalHand(this.foreground.scene,this.camera,url=>this.loadTexture(url));
     this.resize();
     this.renderer.shadowMap.needsUpdate = true;
     addEventListener('resize', this.resize, { passive: true });
@@ -131,6 +134,15 @@ export class ObservatoryScene {
   }
 
   set qualityHigh(value: boolean) { this.configure({quality:value?'high':'mobile',reducedMotion:this.reducedMotion}); }
+
+  private refreshContext = (): void => {
+    this.contextLost = this.renderer.getContext().isContextLost() || this.foreground.contextLost;
+    if (this.contextLost) this.onCardArrival?.(this.playKey);
+    this.renderer.domElement.hidden = !this.active || this.contextLost;
+    this.foreground.setActive(this.active && !this.contextLost);
+    document.documentElement.classList.toggle('world3d-active',this.active && !this.contextLost);
+    document.documentElement.classList.toggle('world3d-total',this.active && !this.contextLost);
+  };
 
   private configurePostProcessing(budget: typeof QUALITY_PRESETS[QualityPreset]): void {
     if (!budget.bloom) {
@@ -207,6 +219,7 @@ export class ObservatoryScene {
       this.lastEventKey=key;
     }
     this.renderer.domElement.hidden = !next.active||this.contextLost;
+    this.foreground.setActive(next.active && !this.contextLost);
     document.documentElement.classList.toggle('world3d-active', next.active&&!this.contextLost);
     document.documentElement.classList.toggle('world3d-total', next.active&&!this.contextLost);
   }
@@ -279,14 +292,14 @@ export class ObservatoryScene {
     const maximum = 14;
     if (this.loadedTextures.size <= maximum) return;
     const active = new Set<THREE.Texture>();
-    this.scene.traverse(object => {
+    [this.scene, this.foreground.scene].forEach(scene => scene.traverse(object => {
       if (!(object instanceof THREE.Mesh)) return;
       const materials = Array.isArray(object.material) ? object.material : [object.material];
       materials.forEach(material => {
         const map = (material as THREE.MeshBasicMaterial).map;
         if (map) active.add(map);
       });
-    });
+    }));
     const unused = [...this.loadedTextures.entries()]
       .filter(([,texture]) => !active.has(texture))
       .sort(([a],[b]) => (this.textureLastUsed.get(a)??0) - (this.textureLastUsed.get(b)??0));
@@ -332,7 +345,7 @@ export class ObservatoryScene {
     const visual = new THREE.Group();
     visual.add(createCardMesh(frontTexture,backTexture,/-[789]|-10\./.test(frontUrl)));
     root.add(visual);
-    this.scene.add(root);
+    this.foreground.scene.add(root);
     return { root, visual };
   }
 
@@ -403,7 +416,7 @@ export class ObservatoryScene {
           onArrive?.();
           this.hand.update(0);
           const release=()=>{
-            this.scene.remove(root);
+            root.removeFromParent();
             root.traverse(object => {
               if (object instanceof THREE.Mesh) {
                 object.geometry.dispose();
@@ -414,7 +427,11 @@ export class ObservatoryScene {
             this.pruneTextureCache();
           };
           if(draw)release();
-          else this.handoff.retain(this.lastEventKey,release);
+          else {
+            // A landed card joins the pile's depth layer until its replacement is ready.
+            this.scene.add(root);
+            this.handoff.retain(this.lastEventKey,release);
+          }
           resolve();
         }
       };
@@ -427,7 +444,7 @@ export class ObservatoryScene {
     let handRect: DOMRect | undefined;
     try { handRect = await onReady?.(); }
     catch (error) {
-      this.scene.remove(root);
+      root.removeFromParent();
       root.traverse(object => { if (object instanceof THREE.Mesh) { object.geometry.dispose(); const materials = Array.isArray(object.material) ? object.material : [object.material]; materials.forEach(material => material.dispose()); } });
       throw error;
     }
@@ -535,6 +552,8 @@ export class ObservatoryScene {
     const pixelRatio = Math.min(devicePixelRatio, budget.pixelRatio * this.renderScale, pixelBudget);
     this.renderer.setPixelRatio(pixelRatio);
     this.renderer.setSize(innerWidth, innerHeight, false);
+    // Keep the foreground print crisp while the table adapts its render resolution.
+    this.foreground.resize(innerWidth, innerHeight, Math.min(devicePixelRatio, budget.pixelRatio, pixelBudget));
     this.renderer.shadowMap.enabled = budget.shadows;
     this.composer?.setPixelRatio(pixelRatio);
     this.composer?.setSize(innerWidth,innerHeight);
@@ -638,7 +657,7 @@ export class ObservatoryScene {
     try {
       // The composer output has no usable room depth on the default framebuffer.
       // Rebuild depth without changing its color, then draw only the clean cards.
-      // This keeps a flying card correctly hidden behind the table and piles.
+      // Resting piles and landed cards keep their physical tabletop occlusion.
       this.renderer.setRenderTarget(null);
       this.renderer.autoClear = false;
       this.renderer.shadowMap.autoUpdate = false;
@@ -686,10 +705,11 @@ export class ObservatoryScene {
     if (this.activeFlights) this.renderer.shadowMap.needsUpdate = true;
     this.renderer.info.reset();
     if(QUALITY_PRESETS[this.quality].bloom)this.renderWithCleanCards();else this.renderer.render(this.scene, this.camera);
+    this.foreground.render();
     if(time-this.profileTime>2.4){
       const frameMs=this.profileDelta/this.profileFrames*1000;
       this.renderer.domElement.dataset.frameMs=frameMs.toFixed(1);
-      this.renderer.domElement.dataset.drawCalls=String(this.renderer.info.render.calls);
+      this.renderer.domElement.dataset.drawCalls=String(this.renderer.info.render.calls + this.foreground.drawCalls);
       this.renderer.domElement.dataset.triangles=String(this.renderer.info.render.triangles);
       if(frameMs>19.5 && this.renderScale>.66){
         this.renderScale=Math.max(.65,this.renderScale-(frameMs>28?.15:.1));
@@ -707,15 +727,16 @@ export class ObservatoryScene {
     cancelAnimationFrame(this.frame);
     clearTimeout(this.pruneTimer);
     this.hand.dispose();this.composer?.dispose();this.bloom?.dispose();this.ao?.dispose();this.environment.dispose();
+    this.foreground.dispose();
     this.deckPile.dispose();this.discardPile.dispose();
     removeEventListener('resize', this.resize);
-    this.scene.traverse(object => {
+    [this.scene, this.foreground.scene].forEach(scene => scene.traverse(object => {
       if (object instanceof THREE.Mesh || object instanceof THREE.Points) {
         object.geometry.dispose();
         const materials = Array.isArray(object.material) ? object.material : [object.material];
         materials.forEach(material => material.dispose());
       }
-    });
+    }));
     this.textureCache.forEach(pending => void pending.then(texture => texture.dispose()));
     this.renderer.dispose();
     this.renderer.domElement.remove();
