@@ -84,7 +84,7 @@ if (observatory) observatory.onCardArrival = key => {
   }
   const caption = document.querySelector('.total-event');
   if (caption) caption.textContent = presentedTotal.visible.caption;
-  audio.setSuspenseTotal(presentedTotal.visible.total);
+  audio.setPresentedTotal(presentedTotal.visible.total);
   if (state?.phase === 'ended') render();
   if (remoteSnapshots.length) queueMicrotask(() => roomChanged());
 };
@@ -140,7 +140,7 @@ function roomChanged(): void {
   const key = state ? `${state.round}-${state.phase}-${state.current}-${state.pendingSevens.length}` : '';
   if (key !== lastTurnKey) { selectedCard = null; lastTurnKey = key; }
   if (state && previous && state.log[0] !== previous.log[0] && state.played.length) {
-    if (state.event === 'bust') { audio.play('bust'); flash(`${state.players[state.bust!].name.toUpperCase()} caused Overflow`, 'bust'); }
+    if (state.event === 'bust') { flash(`${state.players[state.bust!].name.toUpperCase()} caused Overflow`, 'bust'); }
     else if (state.event === 'exact') { audio.play('exact'); flash('EXACT 100!  +3', 'exact'); }
     else if (state.event === 'reverse') { audio.play('reverse'); flash('DIRECTION REVERSED', 'reverse'); }
     else if (state.event === 'seven') { audio.play('target'); flash('CHOOSE A PLAYER', 'seven'); }
@@ -301,7 +301,7 @@ function resolveCard(cardId: string): void {
   selectedCard = null;
   const ev = state.event;
   if (ev === 'exact') { audio.play('exact'); flash('EXACT 100!  +3', 'exact'); react([actor], '+3'); }
-  else if (ev === 'bust') { audio.play('bust'); flash(`${state.players[actor].name.toUpperCase()} caused Overflow`, 'bust'); react([actor], '−5'); }
+  else if (ev === 'bust') { flash(`${state.players[actor].name.toUpperCase()} caused Overflow`, 'bust'); react([actor], '−5'); }
   else if (ev === 'seven') { audio.play('target'); flash('CHOOSE A PLAYER', 'seven'); react([actor], '✧'); }
   else if (ev === 'reverse') { audio.play('reverse'); flash('DIRECTION REVERSED', 'reverse'); react(state.players.map(p => p.id), '↺'); }
   else if (ev === 'zero') { audio.play('zero'); flash('+0  ·  ZERO', 'zero'); react([actor], '…'); }
@@ -494,7 +494,7 @@ function render(): void {
   }, !!observatory?.canAnimate && !settings.reducedMotion);
   updateGameView(app, (online && online.status !== 'playing' ? lobbyView() : state ? gameView() : onlineMode ? onlineView() : setupView()) + modalView());
   // Use the held score during the wave, and the immediate score in motion/HTML fallback.
-  audio.setSuspenseTotal(active?presentedTotal.visible.total:null);
+  audio.setPresentedTotal(active?presentedTotal.visible.total:null);
   if(!locked&&!awaitingNetwork)departingCardId=null;
   for(const element of Array.from(document.querySelectorAll<HTMLElement>('.local-hand .hand-card'))){
     if(element.dataset.card===departingCardId)element.classList.add('card-departing');

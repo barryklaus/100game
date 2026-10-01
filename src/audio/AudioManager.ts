@@ -1,4 +1,4 @@
-import {SuspenseTrack} from './SuspenseTrack';
+import {SuspenseTrack, anxietyLevel, makeSeamlessLoop} from './SuspenseTrack';
 
 export type AudioCue = 'card-hover'|'card-select'|'card-flick'|'card-impact'|'card-draw'|'draw-pile'|'shuffle'|'center-energy'|'total-increase'|'reverse'|'zero'|'minus-ten'|'win'|'loss'|'avatar-reaction'|'emote'|'button'|'tavern-ambience'|'fire-ambience'|'city-ambience';
 type LegacyCue = 'pickup'|'slap'|'draw'|'target'|'minus'|'exact'|'bust'|'click';
@@ -27,6 +27,7 @@ export class AudioManager extends EventTarget {
   private loops=new Map<string,AudioBufferSourceNode>();
   private cardClipLoad?:Promise<void>;
   private suspense?:SuspenseTrack;
+  private anxiety?:SuspenseTrack;
   private suspenseLoad?:Promise<void>;
   private suspenseTotal:number|null=null;
   private backgrounded=false;
@@ -42,21 +43,36 @@ export class AudioManager extends EventTarget {
       this.context=new AudioContext();this.master=this.context.createGain();this.master.connect(this.context.destination);
       for(const channel of ['sfx','music','ambience','ui'] as const){const gain=this.context.createGain();gain.connect(this.master);this.channels.set(channel,gain);}
       this.suspense=new SuspenseTrack(this.context,this.channels.get('music')!);
+      this.anxiety=new SuspenseTrack(this.context,this.channels.get('music')!,anxietyLevel,makeSeamlessLoop);
       this.applyGains();
     }
     if(this.context.state==='suspended')void this.context.resume();
     // Preload on the first interaction, well before the table normally reaches 70.
-    this.suspenseLoad ??= fetch(`${import.meta.env.BASE_URL}assets/sfx/Cartoon-Suspense-X.wav`)
-      .then(response=>{if(!response.ok)throw new Error('Suspense recording unavailable');return response.arrayBuffer();})
-      .then(bytes=>this.context!.decodeAudioData(bytes))
-      .then(buffer=>this.suspense?.setBuffer(buffer))
-      .catch(()=>undefined); // An unavailable recording must never interrupt a game.
+    this.suspenseLoad ??= Promise.allSettled([
+      this.loadRecording('Cartoon-Suspense-X.wav').then(buffer=>this.suspense?.setBuffer(buffer)),
+      this.loadRecording('Anxiety-Repeat.wav').then(buffer=>this.anxiety?.setBuffer(buffer)),
+      this.loadRecording('Explosion.wav').then(buffer=>{
+        if(!this.disposed)this.clips.set('loss',{buffer,channel:'sfx',loop:false});
+      }),
+    ]).then(()=>undefined); // An unavailable recording must never interrupt a game.
   }
-  setSuspenseTotal(total:number|null):void{this.suspenseTotal=total;this.syncSuspense();}
+  private async loadRecording(file:string):Promise<AudioBuffer>{
+    const response=await fetch(`${import.meta.env.BASE_URL}assets/sfx/${file}`);
+    if(!response.ok)throw new Error(`Recording unavailable: ${file}`);
+    return this.context!.decodeAudioData(await response.arrayBuffer());
+  }
+  /** Called with the visible score in the number's arrival callback, never server state. */
+  setPresentedTotal(total:number|null):void{
+    const overflow=this.suspenseTotal!==null&&this.suspenseTotal<=100&&total!==null&&total>100;
+    this.suspenseTotal=total;this.syncSuspense();
+    if(overflow&&!this.backgrounded&&!this.disposed)this.play('bust');
+  }
   setBackgrounded(hidden:boolean):void{this.backgrounded=hidden;this.syncSuspense();}
   private syncSuspense():void{
     const audible=!this.backgrounded&&!this.settings.muted&&this.settings.volume>0&&this.settings.musicVolume>0;
-    this.suspense?.setTotal(audible?this.suspenseTotal:null);
+    const total=audible?this.suspenseTotal:null;
+    this.suspense?.setTotal(total===100?null:total);
+    this.anxiety?.setTotal(total);
   }
   private applyGains():void{
     if(!this.context||!this.master)return;
@@ -119,5 +135,5 @@ export class AudioManager extends EventTarget {
     else if(cue==='total-increase'||cue==='center-energy')this.tone(170,.2,'sine',.035,1.3,options);
     // Ambience and music are independent loop buses, silent until a real clip is registered.
   }
-  dispose():void{this.disposed=true;this.suspense?.dispose();for(const source of this.loops.values())source.stop();this.loops.clear();void this.context?.close();}
+  dispose():void{this.disposed=true;this.suspense?.dispose();this.anxiety?.dispose();for(const source of this.loops.values())source.stop();this.loops.clear();void this.context?.close();}
 }

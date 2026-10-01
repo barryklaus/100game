@@ -5,6 +5,26 @@ export function suspenseLevel(total: number | null): {rate: number; gain: number
   return {rate: .72 + .73 * tension, gain: .22 + .58 * tension ** 1.4};
 }
 
+export function anxietyLevel(total: number | null): {rate: number; gain: number} | null {
+  return total === 100 ? {rate: 1, gain: .8} : null;
+}
+
+/** Join the recording's tail into its head once; native looping has no timer gaps. */
+export function makeSeamlessLoop(context: AudioContext, original: AudioBuffer): AudioBuffer {
+  const overlap = Math.min(Math.floor(original.sampleRate * .04), Math.floor(original.length / 4));
+  if (overlap < 2) return original;
+  const loop = context.createBuffer(original.numberOfChannels, original.length - overlap, original.sampleRate);
+  for (let channel = 0; channel < original.numberOfChannels; channel++) {
+    const input = original.getChannelData(channel), output = loop.getChannelData(channel);
+    output.set(input.subarray(overlap));
+    for (let i = 0; i < overlap; i++) {
+      const mix = (1 - Math.cos(Math.PI * i / (overlap - 1))) / 2;
+      output[output.length - overlap + i] = input[original.length - overlap + i] * (1 - mix) + input[i] * mix;
+    }
+  }
+  return loop;
+}
+
 /** Sustain the body of the short recording, excluding its attack and silent tail. */
 export function makeSuspenseLoop(context: AudioContext, original: AudioBuffer): AudioBuffer {
   const start = Math.floor(original.sampleRate * .1);
@@ -50,11 +70,16 @@ export class SuspenseTrack {
   private total: number | null = null;
   private disposed = false;
 
-  constructor(private context: AudioContext, private output: AudioNode) {}
+  constructor(
+    private context: AudioContext,
+    private output: AudioNode,
+    private level = suspenseLevel,
+    private prepare = makeSuspenseLoop,
+  ) {}
 
   setBuffer(buffer: AudioBuffer): void {
     if (this.disposed) return;
-    this.buffer = makeSuspenseLoop(this.context, buffer);
+    this.buffer = this.prepare(this.context, buffer);
     this.apply(); // A late decode must use the latest presented score.
   }
 
@@ -65,7 +90,7 @@ export class SuspenseTrack {
   }
 
   private apply(): void {
-    const level = suspenseLevel(this.total);
+    const level = this.level(this.total);
     if (!level) {
       this.stop(this.total !== null && this.total > 100 ? .006 : .08);
       return;

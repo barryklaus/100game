@@ -5,7 +5,7 @@ const load=async path=>{
   const result=await build({entryPoints:[path],bundle:true,platform:'node',format:'esm',write:false,define:{'import.meta.env.BASE_URL':'"/"'}});
   return import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);
 };
-const {SuspenseTrack,suspenseLevel,makeSuspenseLoop}=await load('src/audio/SuspenseTrack.ts');
+const {SuspenseTrack,suspenseLevel,makeSuspenseLoop,anxietyLevel,makeSeamlessLoop}=await load('src/audio/SuspenseTrack.ts');
 const {TotalPresentation}=await load('src/ui/TotalPresentation.ts');
 const {CardImpactFlow}=await load('src/render/CardImpactFlow.ts');
 
@@ -27,32 +27,38 @@ class Context {
   createGain(){const node=new Node();node.gain=new Param();this.gains.push(node);return node;}
   createBufferSource(){
     const node=new Node();node.playbackRate=new Param();
-    node.start=time=>{node.startTime=time;};node.stop=time=>{node.stopTime=time;};
+    node.start=time=>{node.startTime=time??this.currentTime;};node.stop=time=>{node.stopTime=time;};
     this.sources.push(node);return node;
   }
   createBuffer(numberOfChannels,length,sampleRate){
     const channels=Array.from({length:numberOfChannels},()=>new Float32Array(length));
     return {numberOfChannels,length,sampleRate,duration:length/sampleRate,getChannelData:i=>channels[i]};
   }
-  decodeAudioData(){return this.decoding??Promise.resolve(recording);}
+  decodeAudioData(file){return this.decoding??Promise.resolve(recordings.get(file)??recording);}
   resume(){this.state='running';return Promise.resolve();}
   close(){this.state='closed';return Promise.resolve();}
 }
 // Exercise the real supplied recording, not only an idealized tone.
-const wav=await readFile('public/assets/sfx/Cartoon-Suspense-X.wav');
-assert.equal(wav.toString('ascii',0,4),'RIFF');
-let format,data;
-for(let offset=12;offset+8<=wav.length;){
-  const size=wav.readUInt32LE(offset+4),kind=wav.toString('ascii',offset,offset+4);
-  if(kind==='fmt ')format=wav.subarray(offset+8,offset+8+size);
-  if(kind==='data')data=wav.subarray(offset+8,offset+8+size);
-  offset+=8+size+(size%2);
-}
-assert.equal(format.readUInt16LE(0),1);assert.equal(format.readUInt16LE(14),16);
-const channels=format.readUInt16LE(2),rate=format.readUInt32LE(4);
 const ctx=new Context();
-const recording=ctx.createBuffer(channels,data.length/(channels*2),rate);
-for(let i=0;i<recording.length;i++)for(let c=0;c<channels;c++)recording.getChannelData(c)[i]=data.readInt16LE((i*channels+c)*2)/32768;
+async function readRecording(file){
+  const wav=await readFile('public/assets/sfx/'+file);
+  assert.equal(wav.toString('ascii',0,4),'RIFF');
+  let format,data;
+  for(let offset=12;offset+8<=wav.length;){
+    const size=wav.readUInt32LE(offset+4),kind=wav.toString('ascii',offset,offset+4);
+    if(kind==='fmt ')format=wav.subarray(offset+8,offset+8+size);
+    if(kind==='data')data=wav.subarray(offset+8,offset+8+size);
+    offset+=8+size+(size%2);
+  }
+  assert.equal(format.readUInt16LE(0),1);assert.equal(format.readUInt16LE(14),16);
+  const channels=format.readUInt16LE(2),rate=format.readUInt32LE(4);
+  const buffer=ctx.createBuffer(channels,data.length/(channels*2),rate);
+  for(let i=0;i<buffer.length;i++)for(let c=0;c<channels;c++)buffer.getChannelData(c)[i]=data.readInt16LE((i*channels+c)*2)/32768;
+  return buffer;
+}
+const recordings=new Map(await Promise.all(['Cartoon-Suspense-X.wav','Anxiety-Repeat.wav','Explosion.wav'].map(async file=>[file,await readRecording(file)])));
+const recording=recordings.get('Cartoon-Suspense-X.wav'),anxietyRecording=recordings.get('Anxiety-Repeat.wav'),explosionRecording=recordings.get('Explosion.wav');
+const channels=recording.numberOfChannels;
 const loop=makeSuspenseLoop(ctx,recording);
 assert.equal(loop.numberOfChannels,2);assert(loop.duration>.58&&loop.duration<.60,'Short loop excludes the attack and silent tail');
 for(let c=0;c<channels;c++){
@@ -110,27 +116,91 @@ track.dispose();track.setTotal(100);assert.equal(ctx.sources.length,2);
 
 // Loading late, preferences, tab visibility, and cleanup must use the latest displayed total.
 globalThis.AudioContext=Context;
-let requests=0,resolveDownload;
-globalThis.fetch=()=>{requests++;return new Promise(resolve=>{resolveDownload=()=>resolve({ok:true,arrayBuffer:async()=>new ArrayBuffer(0)});});};
+let requests=0,downloads=[];
+const resolveDownload=()=>{for(const resolve of downloads.splice(0))resolve();};
+globalThis.fetch=url=>{requests++;return new Promise(resolve=>{downloads.push(()=>resolve({ok:true,arrayBuffer:async()=>url.split('/').at(-1)}));});};
 const {AudioManager}=await load('src/audio/AudioManager.ts');
 const manager=new AudioManager();
 const settings={volume:.55,sfxVolume:.8,musicVolume:.45,ambienceVolume:.3,muted:false};
-manager.configure(settings);manager.setSuspenseTotal(90);manager.unlock();manager.unlock();
-const managed=Context.instances.at(-1);assert.equal(requests,1,'Recording fetches once on first interaction');
-manager.setSuspenseTotal(0);resolveDownload();
+manager.configure(settings);manager.setPresentedTotal(90);manager.unlock();manager.unlock();
+const managed=Context.instances.at(-1);assert.equal(requests,3,'Each of the three recordings fetches once on first interaction');
+manager.setPresentedTotal(0);resolveDownload();
 await new Promise(resolve=>setImmediate(resolve));
 assert.equal(managed.sources.length,0,'Late download cannot resurrect a reset round');
-manager.setSuspenseTotal(80);assert.equal(managed.sources.length,1);
+manager.setPresentedTotal(80);assert.equal(managed.sources.length,1);
 manager.configure({...settings,muted:true});assert(managed.sources.at(-1).stopTime,'Mute stops processing');
-manager.setSuspenseTotal(95);manager.configure(settings);
+manager.setPresentedTotal(95);manager.configure(settings);
 assert.equal(managed.sources.at(-1).playbackRate.value,suspenseLevel(95).rate,'Unmute uses current presented total');
 manager.configure({...settings,musicVolume:0});assert(managed.sources.at(-1).stopTime,'Music volume controls suspense');
 manager.configure(settings);manager.setBackgrounded(true);assert(managed.sources.at(-1).stopTime,'Background tabs stop the loop');
-manager.setSuspenseTotal(70);manager.setBackgrounded(false);
+manager.setPresentedTotal(70);manager.setBackgrounded(false);
 assert.equal(managed.sources.at(-1).playbackRate.value,.72);
-manager.setSuspenseTotal(null);assert(managed.sources.at(-1).stopTime,'Leaving the table stops suspense');
+manager.setPresentedTotal(null);assert(managed.sources.at(-1).stopTime,'Leaving the table stops suspense');
 manager.dispose();
-const late=new AudioManager();late.setSuspenseTotal(100);late.unlock();
+const late=new AudioManager();late.setPresentedTotal(100);late.unlock();
 const closed=Context.instances.at(-1);late.dispose();resolveDownload();
 await new Promise(resolve=>setImmediate(resolve));assert.equal(closed.sources.length,0,'Decode after disposal cannot start a loop');
 console.log('Suspense checks passed: real WAV loop, 70–100 pitch/intensity, exact wave/score/audio arrival, decreases, zero, overflow, fallback, resets, late loading, mute/music volume, background tabs, and cleanup.');
+
+const anxietyLoop=makeSeamlessLoop(ctx,anxietyRecording);
+assert(anxietyLoop.duration>.85&&anxietyLoop.duration<.86,'Anxiety retains its rhythm with a short 40 ms seam crossfade');
+for(let c=0;c<anxietyLoop.numberOfChannels;c++){
+  const samples=anxietyLoop.getChannelData(c),input=anxietyRecording.getChannelData(c),overlap=anxietyRecording.length-anxietyLoop.length;
+  assert.equal(samples.at(-1),input[overlap-1]);assert.equal(samples[0],input[overlap],'Loop boundary continues across adjacent original samples');
+  assert(Math.abs(samples.at(-1)-samples[0])<.03,'No click at the actual Anxiety loop boundary');
+  assert(samples.every(s=>Number.isFinite(s)&&Math.abs(s)<1),'Crossfade stays within original audio headroom');
+  const tail=samples.subarray(samples.length-1000);
+  assert(Math.sqrt(tail.reduce((sum,s)=>sum+s*s,0)/tail.length)>.03,'Loop seam cannot introduce a silent gap');
+}
+for(const total of [null,0,70,99,101])assert.equal(anxietyLevel(total),null);
+assert.deepEqual(anxietyLevel(100),{rate:1,gain:.8},'Anxiety plays only at 100, at original pitch');
+
+const endgame=new AudioManager(),endScore=new TotalPresentation(),endWave=new CardImpactFlow();
+endgame.configure(settings);endgame.unlock();resolveDownload();await new Promise(resolve=>setImmediate(resolve));
+const endContext=Context.instances.at(-1);let explosions=0;
+endgame.addEventListener('cue',event=>{if(event.detail.name==='loss')explosions++;});
+const present=(key,total,animate=true,round='endgame')=>{
+  endScore.sync(round,key,{total,caption:''},animate);endWave.setCard(key);endgame.setPresentedTotal(endScore.visible.total);
+};
+const arrive=(key,delta=.83)=>{
+  endContext.currentTime+=delta;
+  if(endWave.update(delta,false).arrival&&endScore.arrive(key))endgame.setPresentedTotal(endScore.visible.total);
+};
+present('',95);const rising=endContext.sources.at(-1);
+present('exact',100);assert.equal(endContext.sources.length,1,'Pending 100 cannot start Anxiety early');
+arrive('obsolete',.8);assert.equal(endContext.sources.length,1);
+arrive('exact',.03);const anxiety=endContext.sources.at(-1);
+assert.equal(endScore.visible.total,100);assert(rising.stopTime,'100 replaces the rising track');
+assert.equal(anxiety.playbackRate.value,1);assert(anxiety.buffer.duration<.86);
+assert.equal(anxiety.startTime,endContext.currentTime,'Anxiety starts with the number commit');
+assert.equal(anxiety.loop,true,'Native audio looping has no timer gaps');
+present('zero',100);arrive('zero');present('zero',100);
+assert.equal(endContext.sources.length,2,'Zero, targets and repeated renders cannot restart Anxiety at 100');
+present('minus',90);assert.equal(anxiety.stopTime,undefined,'Anxiety holds while minus-ten waits');
+arrive('minus');assert(anxiety.stopTime,'Dropping below 100 stops Anxiety');
+assert.equal(endContext.sources.at(-1).playbackRate.value,suspenseLevel(90).rate,'Rising suspense resumes at lower tension');
+present('exact-again',100);arrive('exact-again');const lastAnxiety=endContext.sources.at(-1);
+present('overflow',110);assert.equal(explosions,0,'Authoritative overflow cannot play the recording before the wave');
+arrive('overflow');const blast=endContext.sources.at(-1);
+assert.equal(blast.buffer,explosionRecording,'Overflow uses the supplied Explosion WAV');
+assert.equal(blast.startTime,endContext.currentTime,'Explosion starts on the number explosion clock instant');
+assert.equal(lastAnxiety.stopTime,endContext.currentTime+.006,'Anxiety cuts on overflow with a short anti-click fade');
+assert.equal(blast.loop,false,'Explosion is a one-shot');
+present('overflow',110);endgame.setPresentedTotal(110);assert.equal(explosions,1,'End-game renders cannot replay Explosion');
+blast.onended();assert(blast.disconnected,'Explosion node cleans up after playback');
+present('',0,true,'next-round');present('fallback-bust',105,false,'next-round');
+assert.equal(explosions,2,'Reduced motion / HTML fallback plays Explosion with its immediate score');
+endgame.setPresentedTotal(null);endgame.setPresentedTotal(110);
+assert.equal(explosions,2,'Opening an already-ended game does not replay its old Explosion');
+endgame.setPresentedTotal(100);const mutedAnxiety=endContext.sources.at(-1);
+endgame.configure({...settings,muted:true});assert(mutedAnxiety.stopTime);
+endgame.setPresentedTotal(110);assert.equal(explosions,3,'Muted overflow is consumed once');
+const nodesBeforeUnmute=endContext.sources.length;
+endgame.configure(settings);assert.equal(endContext.sources.length,nodesBeforeUnmute,'Unmuting cannot play a stale Explosion');
+endgame.setPresentedTotal(100);endgame.configure({...settings,musicVolume:0});
+assert(endContext.sources.at(-1).stopTime,'Anxiety obeys Music volume');
+endgame.configure(settings);endgame.setBackgrounded(true);assert(endContext.sources.at(-1).stopTime,'Hidden tabs stop Anxiety');
+endgame.setPresentedTotal(110);assert.equal(explosions,3,'Hidden overflow does not play');
+endgame.setBackgrounded(false);assert.equal(explosions,3,'Returning to a tab cannot replay its old Explosion');
+endgame.dispose();
+console.log('End-game audio checks passed: real Anxiety seam, exact-100 switch, continuous Zero, minus-ten relief, synchronized one-shot Explosion, fallback, no duplicate/late explosions, music/mute/visibility and cleanup.');
