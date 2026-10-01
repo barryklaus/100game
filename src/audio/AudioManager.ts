@@ -43,7 +43,7 @@ export class AudioManager extends EventTarget {
       this.context=new AudioContext();this.master=this.context.createGain();this.master.connect(this.context.destination);
       for(const channel of ['sfx','music','ambience','ui'] as const){const gain=this.context.createGain();gain.connect(this.master);this.channels.set(channel,gain);}
       this.suspense=new SuspenseTrack(this.context,this.channels.get('music')!);
-      this.anxiety=new SuspenseTrack(this.context,this.channels.get('music')!,anxietyLevel,makeSeamlessLoop);
+      this.anxiety=new SuspenseTrack(this.context,this.channels.get('music')!,anxietyLevel,makeSeamlessLoop,true);
       this.applyGains();
     }
     if(this.context.state==='suspended')void this.context.resume();
@@ -70,9 +70,8 @@ export class AudioManager extends EventTarget {
   setBackgrounded(hidden:boolean):void{this.backgrounded=hidden;this.syncSuspense();}
   private syncSuspense():void{
     const audible=!this.backgrounded&&!this.settings.muted&&this.settings.volume>0&&this.settings.musicVolume>0;
-    const total=audible?this.suspenseTotal:null;
-    this.suspense?.setTotal(total===100?null:total);
-    this.anxiety?.setTotal(total);
+    this.suspense?.setTotal(this.suspenseTotal,audible);
+    this.anxiety?.setTotal(this.suspenseTotal,audible);
   }
   private applyGains():void{
     if(!this.context||!this.master)return;
