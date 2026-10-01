@@ -1,0 +1,148 @@
+{
+  "version": 2,
+  "status": "integrated into game: aligned frames, transparent sampling gutters, pose-specific hand anchors",
+  "tool": "built-in image_gen",
+  "columns": 3,
+  "rows": 3,
+  "frames": [
+    "calm",
+    "thinking",
+    "nervous",
+    "panicked",
+    "smug",
+    "shocked",
+    "wind-up",
+    "release",
+    "recover"
+  ],
+  "characters": [
+    {
+      "id": 0,
+      "name": "Ember Scout",
+      "file": "avatar-01-expanded.png",
+      "original": "exec-513e2d52-f92b-438e-aba6-9291894592b9.png",
+      "generatedSource": "exec-ff727a5e-028d-450d-9ab4-721274156639.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Ember Scout sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 1,
+      "name": "Tide Scholar",
+      "file": "avatar-02-expanded.png",
+      "original": "exec-66945525-73d0-4fbd-9608-95c8b1c9a2da.png",
+      "generatedSource": "exec-85fde0fa-a4b6-48af-83c5-0705ab77cea9.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Mira sprite atlas. One targeted correction: the nine figures are STILL TOO LARGE for their cells. Reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing. Keep exactly 3 equal columns and 3 equal rows. Each whole figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any still-missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, hairstyle, pearl earrings, costume, rendering style, 100 card backs and hand gestures. Keep her head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 2,
+      "name": "Grove Guardian",
+      "file": "avatar-03-expanded.png",
+      "original": "exec-168feeb0-ed75-4c0f-92ad-9a66b5b9cbe4.png",
+      "generatedSource": "exec-61090b7b-2b3b-40a7-b758-0818a5595b95.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Grove Guardian sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 3,
+      "name": "Sun Knight",
+      "file": "avatar-04-expanded.png",
+      "original": "exec-e49443ea-26b6-4175-a3d1-4c9b4cf8f937.png",
+      "generatedSource": "exec-aa9f112a-d348-4382-8bb8-71d65464615b.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Sun Knight sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 4,
+      "name": "Storm Pilot",
+      "file": "avatar-05-expanded.png",
+      "original": "exec-be4841f1-2bd4-49d2-9096-08c1e7b23a34.png",
+      "generatedSource": "exec-547a57d8-c034-4b1e-8252-878550e0db5c.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Storm Pilot sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 5,
+      "name": "Coral Bard",
+      "file": "avatar-06-expanded.png",
+      "original": "exec-fa4b6f95-67c4-4d99-a619-01fb03f1f320.png",
+      "generatedSource": "exec-e44dd9c9-c47d-4fb6-826c-ad5dc89deac4.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Coral Bard sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 6,
+      "name": "Mushroom Alchemist",
+      "file": "avatar-07-expanded.png",
+      "original": "exec-4ea579e3-4009-422c-8a88-6bc87a10df5b.png",
+      "generatedSource": "exec-b37c0483-d052-4ffe-9a24-1676ce34367d.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Mushroom Alchemist sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 7,
+      "name": "Desert Ranger",
+      "file": "avatar-08-expanded.png",
+      "original": "exec-4595d836-ae49-459e-8a39-300a9da53232.png",
+      "generatedSource": "exec-14b10225-d282-4bc8-9a8e-e61791bd6ef8.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Desert Ranger sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 8,
+      "name": "Moon Seer",
+      "file": "avatar-09-expanded.png",
+      "original": "exec-f37bd761-4dd3-4719-bba7-a4026393cd63.png",
+      "generatedSource": "exec-710e4949-e79f-4558-a018-a8caf5adccdf.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Moon Seer sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 9,
+      "name": "River Courier",
+      "file": "avatar-10-expanded.png",
+      "original": "exec-e21ea01c-1c3c-415f-8be5-fcb2421c7e2b.png",
+      "generatedSource": "exec-baa54028-771c-436a-9d05-74a4268d6f9a.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached River Courier sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 10,
+      "name": "Thorn Duelist",
+      "file": "avatar-11-expanded.png",
+      "original": "exec-191314ba-5840-4358-a9a0-270aaf0d878a.png",
+      "generatedSource": "exec-c0c7442d-d110-4d5e-bccb-17ef984aca59.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Thorn Duelist sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 11,
+      "name": "Forge Captain",
+      "file": "avatar-12-expanded.png",
+      "original": "exec-6667a301-bab4-440c-ad9f-8dbd71e72194.png",
+      "generatedSource": "exec-620994b3-d7de-4b4b-afb5-31aae3040964.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Forge Captain sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 12,
+      "name": "Cloud Mechanic",
+      "file": "avatar-13-expanded.png",
+      "original": "exec-0c783307-2e98-4c30-8028-0f7edb928654.png",
+      "generatedSource": "exec-78560005-cc0c-446d-b11d-0efcd8be21cb.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Cloud Mechanic sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 13,
+      "name": "Marsh Mystic",
+      "file": "avatar-14-expanded.png",
+      "original": "exec-23991ae3-16d5-408d-a666-35f909ce0565.png",
+      "generatedSource": "exec-8a8275ac-048d-4717-b0fe-d5ef90de913b.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Marsh Mystic sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 14,
+      "name": "Wildwood Archer",
+      "file": "avatar-15-expanded.png",
+      "original": "exec-e3e1a298-a290-4b31-b311-7c42ade1fbad.png",
+      "generatedSource": "exec-bd92738e-3388-435c-b996-d6b771ccb56a.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Wildwood Archer sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    },
+    {
+      "id": 15,
+      "name": "Dawn Dancer",
+      "file": "avatar-16-expanded.png",
+      "original": "exec-a045e70e-a407-40e2-a175-98eeb97816ab.png",
+      "generatedSource": "exec-54907b94-1c84-44e8-9f3f-e714ebba97a3.png",
+      "prompt": "Use case: identity-preserve.\nEDIT the attached Dawn Dancer sprite atlas. The nine figures are TOO LARGE for their cells and their shoulders are cropped. Restore missing hair, both shoulders, upper arms, sleeves and elbows, and reframe all nine into MUCH SMALLER isolated complete waist-up figures with very generous transparent spacing.\nKeep exactly 3 EQUAL columns and 3 EQUAL rows. Each entire figure must occupy only 65 percent of its cell width and 75 percent of its cell height, centered horizontally. At least 17 percent of EVERY cell must be completely transparent on EACH side; 10 percent at the top and bottom. Keep all outer shoulder, sleeve and elbow contours fully visible, naturally curved and complete, never straight-cut by a cell edge. Reconstruct any missing shoulder and sleeve anatomy. The bottom of each waist-up figure may end at waist height, well inside its cell.\nPreserve all nine facial expressions and poses, in their current row-major order: calm, thinking, nervous, panicked, smug, shocked, wind-up, release, recover. Preserve EXACT character identity, age, gender, skin tone, hairstyle, costume, accessories, rendering style, 100 card backs and hand gestures. Keep the head at the same scale and same position across cells; fit even the raised throwing arm entirely inside the cell.\nDo not enlarge or tightly crop any figure. Clearly separated small waist-up silhouettes with broad transparent gutters are the goal. No background, no grid lines, no captions, no glow. Actual alpha transparency. Square 3x3 atlas."
+    }
+  ]
+}

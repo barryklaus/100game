@@ -15,7 +15,7 @@ All 16 existing character identities now have nine cartoon bust frames each (144
 
 ## Asset format and performance
 
-Each transparent WebP is 1254 × 1254, with a 3 × 3 grid of 418 × 418 cells. Frames use row-major order, as recorded in `public/assets/characters/manifest.json`.
+Each transparent WebP is 1254 × 1254, with a 3 × 3 grid of 418 × 418 cells. Frames use row-major order, as recorded in `public/assets/characters/manifest.json`. Revision `expanded-v2` uses the approved repaired artwork for all sixteen characters, including full shoulder, sleeve and hair contours. Generated row/column drift is resolved at the actual transparent gaps before packing; no silhouette is split at the nominal cell boundaries. Heads align above the table with at least fourteen pixels of side padding and twenty-four pixels vertically.
 
 | Frame | Pose |
 | --- | --- |
@@ -29,7 +29,17 @@ Each transparent WebP is 1254 × 1254, with a 3 × 3 grid of 418 × 418 cells. F
 | 7 | Release, throwing hand empty, one card retained |
 | 8 | Recovery, throwing hand empty, one card retained |
 
-Atlases decode when their seats enter view and are cached. Sprite frames change on gameplay events, with no idle animation loop. Only ring movement runs a short 260 ms animation loop. Two transparent pixels inside each cell prevent neighboring-frame sampling at fractional CSS sizes. WebP quality is 90; alpha is preserved. The existing high-resolution card textures are untouched.
+Atlases decode when their seats enter view and are cached. Sprite frames change on gameplay events, with no idle animation loop. Only ring movement runs a short 260 ms animation loop. Fourteen transparent pixels inside each cell prevent neighboring-frame sampling at fractional CSS sizes. WebP quality is 92; alpha is preserved, with invisible alpha export noise (values 0–8) excluded. The sixteen atlases total about 7.9 MB, compared with 11.1 MB previously. The existing high-resolution card textures are untouched.
+
+The sprite canvas is larger to compensate for the new transparent margins, preserving readable faces. The ring layer allows head/shoulder overflow, while the separate projected tabletop mask continues to cover the lower body. Pose-specific hand anchors in `src/ui/CharacterSpriteLayout.ts` make CPU/remote throws start at the raised card and replacement draws return to the catching hand. Asset revision query strings prevent an old cached atlas from being used with the new layout.
+
+To prepare the repaired sources and regenerate hand anchors:
+
+```sh
+python3 scripts/assets/prepare-expanded-characters.py
+```
+
+The lossless artwork sources and exact image-generation prompts are retained in `output/character-repairs/expanded-v2/`. The source PNGs are not served in the production build. The original image-generation library remains available as well.
 
 To repack an original generated PNG:
 
@@ -56,5 +66,7 @@ The first sheet established the same frame layout using the Ember Scout portrait
 ## Verification
 
 Rules, online projections/privacy, hosted CPU timing, card presentation, gestures, gyro, suspense timing, and ring order tests run through `pnpm test`. The ring model covers two through eight seats in desktop and portrait layouts. Browser checks cover four-player desktop/mobile presentation, eight-player swiping, arrows, distant seat markers, white target glow, and local play/draw transitions. The actual controller lifecycle checks in `scripts/test-player-ring.html` cover decoded sprites, stable hand anchors during flight, waiting for draws, canceled throws, danger reactions, and stable DOM identities. Open that page through the development server to run it.
+
+`scripts/test-expanded-characters.html` decodes all sixteen real runtime WebPs and verifies all 144 cells have complete populated figures, clear sampling gutters, and hand anchors inside the frame. Its pose selector previews every expression and throw pose with anchor outlines for visual calibration.
 
 The Cloudflare production build passes. Preview screenshots are in `docs/previews/`. A successful build does not establish an FPS guarantee on every phone; a two-device live multiplayer session has not been verified for this update.

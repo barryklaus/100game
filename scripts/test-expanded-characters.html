@@ -1,0 +1,51 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>100 — expanded character atlas verification</title>
+<style>
+ body{font:15px system-ui;background:#10141c;color:#eee;padding:24px;margin:0}
+ #gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+ figure{margin:0;padding:10px;background:#191f29;border-radius:12px}
+ .portrait{position:relative;aspect-ratio:1;background-size:300% 300%}
+ .anchor{position:absolute;outline:1px solid #fff9;background:#fff1}
+ figcaption{text-align:center}select{font:inherit;margin:12px;padding:8px}
+</style>
+<h1>Expanded character atlas verification</h1><p id="result">Checking all sixteen atlases…</p>
+<label>Preview pose<select id="frame"></select></label><div id="gallery"></div>
+<script type="module">
+ import {characterHandAnchors,CHARACTER_SPRITE_VERSION} from '../src/ui/CharacterSpriteLayout.ts';
+ const names=['Ember Scout','Tide Scholar','Grove Guardian','Sun Knight','Storm Pilot','Coral Bard','Mushroom Alchemist','Desert Ranger','Moon Seer','River Courier','Thorn Duelist','Forge Captain','Cloud Mechanic','Marsh Mystic','Wildwood Archer','Dawn Dancer'];
+ const frames=['Calm','Thinking','Nervous','Panicked','Smug','Shocked','Wind-up','Release','Recover'];
+ const selector=document.querySelector('#frame');
+ selector.innerHTML=frames.map((name,i)=>`<option value="${i}">${name}</option>`).join('');
+ const check=(value,message)=>{if(!value)throw Error(message)};
+ const gallery=document.querySelector('#gallery');
+ const paint=()=>gallery.querySelectorAll('.portrait').forEach((node,i)=>{
+   const frame=Number(selector.value);node.style.backgroundPosition=`${frame%3*50}% ${Math.floor(frame/3)*50}%`;
+   const [left,top,width,height]=characterHandAnchors[i][frame],anchor=node.querySelector('.anchor');
+   Object.assign(anchor.style,{left:`${left*100}%`,top:`${top*100}%`,width:`${width*100}%`,height:`${height*100}%`});
+ });
+ selector.addEventListener('change',paint);
+ try{
+   for(let avatar=0;avatar<16;avatar++){
+     const url=`${import.meta.env.BASE_URL}assets/characters/avatar-${String(avatar+1).padStart(2,'0')}.webp?v=${CHARACTER_SPRITE_VERSION}`;
+     const image=new Image();image.src=url;await image.decode();
+     check(image.width===1254&&image.height===1254,`${names[avatar]}: incorrect grid dimensions`);
+     const canvas=document.createElement('canvas');canvas.width=canvas.height=418;
+     const ctx=canvas.getContext('2d',{willReadFrequently:true});
+     for(let frame=0;frame<9;frame++){
+       ctx.clearRect(0,0,418,418);ctx.drawImage(image,frame%3*418,Math.floor(frame/3)*418,418,418,0,0,418,418);
+       const rgba=ctx.getImageData(0,0,418,418).data;let solid=0;
+       for(let y=0;y<418;y++)for(let x=0;x<418;x++){
+         const a=rgba[(y*418+x)*4+3];if(a>32)solid++;
+         if(x<12||x>=406||y<12||y>=406)check(a<16,`${names[avatar]} pose ${frame}: art touches sampling gutter`);
+       }
+       check(solid>18000,`${names[avatar]} pose ${frame}: missing figure`);
+       const [x,y,w,h]=characterHandAnchors[avatar][frame];
+       check(x>=0&&y>=0&&w>0&&h>0&&x+w<=1&&y+h<=1,`${names[avatar]} pose ${frame}: hand outside frame`);
+     }
+     gallery.insertAdjacentHTML('beforeend',`<figure><div class="portrait" style="background-image:url('${url}')"><span class="anchor"></span></div><figcaption>${names[avatar]}</figcaption></figure>`);
+   }
+   paint();document.querySelector('#result').textContent='PASS — 16 atlases decoded, 144 populated frames, transparent gutters, and all 144 hand anchors inside their frames.';
+ }catch(error){document.querySelector('#result').textContent=`FAIL — ${error.message}`;throw error}
+</script>

@@ -1,4 +1,5 @@
 import { faceFrame, nearestCenter, ringSeat, type CharacterFrame } from './PlayerRingModel';
+import { characterHandAnchors } from './CharacterSpriteLayout';
 
 type RingState = { roundKey: string; count: number; active: number; total: number; overflow: boolean; reducedMotion: boolean; target: boolean };
 /** Event-driven sprite frames; the ring has no idle animation loop. */
@@ -194,6 +195,16 @@ export class PlayerRing {
       if (sprite) {
         sprite.style.backgroundPosition = `${frame % 3 * 50}% ${Math.floor(frame / 3) * 50}%`;
         sprite.dataset.frame = String(frame);
+        const avatar = Number(sprite.dataset.avatar ?? 0);
+        const anchor = seat.querySelector<HTMLElement>('.sprite-hand-anchor');
+        const hand = characterHandAnchors[(avatar % 16 + 16) % 16]?.[frame];
+        if (anchor && hand) {
+          const [left, top, width, height] = hand;
+          anchor.style.left = `${left * 100}%`;
+          anchor.style.top = `${top * 100}%`;
+          anchor.style.width = `${width * 100}%`;
+          anchor.style.height = `${height * 100}%`;
+        }
         const url = sprite.dataset.spriteUrl;
         sprite.classList.toggle('sprite-ready', !!url && this.readyUrls.has(url));
       }

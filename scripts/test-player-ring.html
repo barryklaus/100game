@@ -11,11 +11,12 @@
 <p id="result">Running…</p><div id="fixture"></div>
 <script type="module">
  import {PlayerRing} from '../src/ui/PlayerRing.ts';
+ import {CHARACTER_SPRITE_VERSION} from '../src/ui/CharacterSpriteLayout.ts';
  import {updateGameView} from '../src/ui/updateGameView.ts';
  const root=document.querySelector('#fixture');
  const check=(condition,message)=>{if(!condition)throw new Error(message)};
  const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
- const markup=()=>`<main class="game-page"><div class="seat-layer player-ring">${Array.from({length:8},(_,i)=>`<button class="seat" data-seat="${i}" data-mood="Normal"><span class="character"><span class="character-sprite" data-sprite-url="${import.meta.env.BASE_URL}assets/characters/avatar-${String(i+1).padStart(2,'0')}.webp"></span><span class="sprite-hand-anchor"></span></span></button>`).join('')}</div><nav class="ring-controls">${Array.from({length:8},(_,i)=>`<button data-ring-focus="${i}">${i}</button>`).join('')}<button data-ring-step="1">Next</button></nav></main>`;
+ const markup=()=>`<main class="game-page"><div class="seat-layer player-ring">${Array.from({length:8},(_,i)=>`<button class="seat" data-seat="${i}" data-mood="Normal"><span class="character"><span class="character-sprite" data-avatar="${i}" data-sprite-url="${import.meta.env.BASE_URL}assets/characters/avatar-${String(i+1).padStart(2,'0')}.webp?v=${CHARACTER_SPRITE_VERSION}"></span><span class="sprite-hand-anchor"></span></span></button>`).join('')}</div><nav class="ring-controls">${Array.from({length:8},(_,i)=>`<button data-ring-focus="${i}">${i}</button>`).join('')}<button data-ring-step="1">Next</button></nav></main>`;
  const base={roundKey:'A',count:8,active:7,total:60,overflow:false,reducedMotion:false,target:false};
  const sprite=i=>root.querySelector(`[data-seat="${i}"] .character-sprite`);
  try {
@@ -25,7 +26,9 @@
   await ring.prepareThrow(7);
   check(sprite(7).classList.contains('sprite-ready'),'Visible atlas did not decode');
   check(sprite(7).dataset.frame==='6','Wind-up missing before release');
+  check(parseFloat(root.querySelector('[data-seat="7"] .sprite-hand-anchor').style.top)<30,'Wind-up card starts at the raised hand');
   ring.release(7);ring.sync({...base,active:0});
+  check(parseFloat(root.querySelector('[data-seat="7"] .sprite-hand-anchor').style.top)>35,'Release updates the anchor to the extended hand');
   const position=root.querySelector('[data-seat="7"]').style.getPropertyValue('--ring-x');
   ring.browse(1);ring.show(4);await pause(40);
   check(root.querySelector('[data-seat="7"]').style.getPropertyValue('--ring-x')===position,'Browsing moved the hand during the card flight');
