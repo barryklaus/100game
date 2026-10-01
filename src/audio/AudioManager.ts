@@ -1,11 +1,11 @@
 import {SuspenseTrack, anxietyLevel, makeSeamlessLoop} from './SuspenseTrack';
 
 export type AudioCue = 'card-hover'|'card-select'|'card-flick'|'card-impact'|'card-draw'|'draw-pile'|'shuffle'|'center-energy'|'total-increase'|'reverse'|'zero'|'minus-ten'|'win'|'loss'|'avatar-reaction'|'emote'|'button'|'tavern-ambience'|'fire-ambience'|'city-ambience';
-type LegacyCue = 'pickup'|'slap'|'draw'|'target'|'minus'|'exact'|'bust'|'click';
+type LegacyCue = 'pickup'|'slap'|'draw'|'target'|'minus'|'bust'|'click';
 type Channel = 'sfx'|'music'|'ambience'|'ui';
 type AudioOptions = {position?:{x:number;y:number;z:number};intensity?:number;volume?:number};
 type SoundSettings = {volume:number;sfxVolume:number;musicVolume:number;ambienceVolume:number;muted:boolean};
-const aliases:Record<LegacyCue,AudioCue>={pickup:'card-select',slap:'card-impact',draw:'card-draw',target:'avatar-reaction',minus:'minus-ten',exact:'win',bust:'loss',click:'button'};
+const aliases:Record<LegacyCue,AudioCue>={pickup:'card-select',slap:'card-impact',draw:'card-draw',target:'avatar-reaction',minus:'minus-ten',bust:'loss',click:'button'};
 const cardClips: readonly [string, string][] = [
   ['take', 'SOUND-CARD-TAKE.mp3'],
   ['deal-1', 'SOUND-CARD-DEAL1.wav'], ['deal-2', 'SOUND-CARD-DEAL2.wav'], ['deal-3', 'SOUND-CARD-DEAL3.wav'],

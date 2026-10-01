@@ -160,8 +160,10 @@ export class ArcaneTotalRing {
     this.arrival=Math.max(0,this.arrival-delta*3);
     this.light.opacity=Math.min(1,.26+this.danger*.5+strength*.2+this.arrival*.6);
     this.metal.emissive.copy(this.light.color);this.metal.emissiveIntensity=reduced?0:this.arrival*1.8;
-    this.sectors.children.forEach((sector,i)=>{sector.position.y=.376+(burst?strength*(i%3)*.13:0);sector.rotation.y=burst?Math.sin(i*4)*strength*.18:0;});
-    this.orbit.rotation.y+=reduced?0:delta*.025*this.direction;
+    // Rotate inside the shared oval coordinates, never lift/tilt the line art off the cloth.
+    const motion=reduced||t>=1?0:delta*strength*this.direction;
+    this.sectors.rotation.y+=motion*(this.event==='reverse'?-1.1:.55);
+    this.orbit.rotation.y+=motion*.65;
     this.orbit.scale.z=this.direction;
     const active=['exact','bust','zero','minus'].includes(this.event);
     const material=this.pulse.material as THREE.MeshBasicMaterial;material.opacity=active?strength*(burst?.8:.45):0;material.color.copy(this.light.color);

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {build} from 'esbuild';
+import {Group, Matrix4, Vector3, Quaternion} from 'three';
 const load=async path=>{const result=await build({entryPoints:[path],bundle:true,platform:'node',format:'esm',write:false});return import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);};
 const {normalizeSettings}=await load('src/data/storage.ts');
 assert.equal(normalizeSettings({}).graphics,'high','High fidelity is the default');
@@ -125,6 +126,49 @@ await deck.setCards(Array(34).fill('back'),'back');
 assert(deck.cardPose().position.y<drawn.position.y,'Draw deck shrinks after drawing');
 assert(deck.cardPose(deck.count).position.distanceTo(drawn.position)<1e-6,'Draw animation starts at the removed card');
 deck.dispose();
+
+// Test the visible geometry handoff under the actual oval surface transform.
+const {CardFlightFit}=await load('src/render/CardFlightFit.ts');
+for(const widthScale of [1.30,1.38]){
+  const world=new Group(),surface=new Group();
+  world.rotation.x=.18;surface.scale.set(widthScale,1,.70);world.add(surface);
+  const discards=new CardPile(false,async()=>texture);
+  discards.group.position.x=3.65/widthScale;
+  discards.group.scale.set(1/widthScale,1,1/widthScale);surface.add(discards.group);
+  await discards.setCards(['a','b','c'],'back');
+  const destination=discards.cardPose(discards.count);
+  const source={position:new Vector3(0,1,5),quaternion:new Quaternion(),scale:1.25};
+  const target={...destination,scale:1};
+  const fit=new CardFlightFit(source,target),flight=new Group();flight.matrixAutoUpdate=false;
+  const place=(t)=>{
+    flight.position.copy(source.position).lerp(target.position,t);
+    flight.quaternion.slerpQuaternions(source.quaternion,target.quaternion,t);
+    flight.scale.setScalar(source.scale+(target.scale-source.scale)*t);
+    fit.apply(flight,t);
+    assert(flight.matrix.elements.every(Number.isFinite)&&flight.matrix.determinant()>0,'Surface fitting cannot collapse or flip a flying card');
+  };
+  place(0);
+  const handMatrix=new Matrix4().compose(source.position,source.quaternion,new Vector3().setScalar(source.scale));
+  assert(flight.matrix.elements.every((v,i)=>Math.abs(v-handMatrix.elements[i])<1e-9),'Throw starts at the undistorted hand pose');
+  for(const t of [.25,.5,.75,1])place(t);
+  await discards.setCards(['a','b','c','d'],'back');
+  discards.group.updateWorldMatrix(true,true);
+  const top=discards.group.children.filter(child=>child.userData.cardHeight).at(-1);
+  for(const corner of [[-.5,-.71,0],[.5,-.71,0],[-.5,.71,0],[.5,.71,0]]){
+    const incoming=new Vector3(...corner).applyMatrix4(flight.matrix);
+    const settled=new Vector3(...corner).applyMatrix4(top.matrixWorld);
+    assert(incoming.distanceTo(settled)<1e-9,'Every incoming corner meets the same settled surface, including shear from a scattered discard');
+  }
+  const drawn=discards.cardPose();
+  await discards.setCards(['a','b','c'],'back');
+  const removed=discards.cardPose(discards.count);
+  assert(drawn.matrix.elements.every((v,i)=>Math.abs(v-removed.matrix.elements[i])<1e-9),'Removed top retains its full perspective transform');
+  const drawFit=new CardFlightFit({...removed,scale:1},source);
+  flight.position.copy(removed.position);flight.quaternion.copy(removed.quaternion);flight.scale.setScalar(1);drawFit.apply(flight,0);
+  assert(flight.matrix.elements.every((v,i)=>Math.abs(v-removed.matrix.elements[i])<1e-9),'Replacement starts at the exact projected pile surface');
+  discards.dispose();
+}
+console.log('Pile perspective checks passed: desktop/mobile surface coordinates, smooth fitting, exact throw corners and replacement origins.');
 console.log('Presentation checks passed: settings migration, short flicks, canceled gestures, inspection, card language, and observatory seat and score presentation.');
 console.log('Card input checks passed: quick same-card double taps and edge/corner spin grips.');
 console.log('Physical pile checks passed: empty, single, multiple cards, landing/draw alignment, and recycling.');
@@ -180,22 +224,17 @@ assert.equal(first,repeated,'Repeated renders must await the same unfinished pil
 loadReady(texture);await Promise.resolve();loadReady(texture);await first;delayed.dispose();
 console.log('Card handoff checks passed: delayed pile loading, online acknowledgment, rejected moves, repeated renders, and cleanup.');
 
-const {totalDanger,totalMarkup,overflowQuake}=await load('src/ui/totalFeedback.ts');
+const {totalDanger,totalMarkup}=await load('src/ui/totalFeedback.ts');
 assert.deepEqual([-10,0,25,50,75,100,108].map(totalDanger),[0,0,.25,.5,.75,1,1],'Gold-to-red progression clamps safely at both ends');
 assert(!totalMarkup(100).includes('total-shard'),'Exactly 100 is tense, not exploded');
 assert.equal((totalMarkup(108).match(/aria-hidden="true"/g)||[]).length,6,'Overflow has six decorative fragments without duplicate announcements');
-for(const age of [0,.1,.5,1,2,2.4,4]){
-  const quiet=overflowQuake(age,true);assert.deepEqual(quiet,{x:0,y:0,z:0,roll:0},'Reduced motion suppresses earthquake');
-  const quake=overflowQuake(age,false);assert(Math.abs(quake.x)<=.34&&Math.abs(quake.y)<=.17&&Math.abs(quake.roll)<=.023,'Earthquake stays bounded');
-}
-assert.deepEqual(overflowQuake(2.4,false),{x:0,y:0,z:0,roll:0},'Earthquake returns completely to rest');
 const {OverflowFireworks}=await load('src/render/OverflowFireworks.ts');
 const fireworks=new OverflowFireworks();assert.equal(fireworks.points.visible,false);
 fireworks.configure('high');assert.equal(fireworks.points.geometry.drawRange.count,144);
 fireworks.trigger(false);assert.equal(fireworks.points.visible,true);fireworks.update(3,false);assert.equal(fireworks.points.visible,false,'Fireworks have no persistent idle effect');
 fireworks.trigger(true);assert.equal(fireworks.points.visible,false,'Reduced motion suppresses fireworks');
 fireworks.points.geometry.dispose();fireworks.points.material.dispose();
-console.log('Total feedback checks passed: danger progression, overflow fragments, bounded earthquake, reduced motion, and finite fireworks.');
+console.log('Total feedback checks passed: danger progression, overflow fragments, reduced motion, and finite fireworks.');
 
 const {CardImpactFlow}=await load('src/render/CardImpactFlow.ts');
 const flow=new CardImpactFlow();

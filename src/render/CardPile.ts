@@ -138,12 +138,14 @@ export class CardPile {
   }
 
   /** index=count is the next landing position, or the card just drawn off the top. */
-  cardPose(index = Math.max(0, this.count - 1)): {position: THREE.Vector3; quaternion: THREE.Quaternion} {
+  cardPose(index = Math.max(0, this.count - 1)): {position: THREE.Vector3; quaternion: THREE.Quaternion; matrix: THREE.Matrix4} {
     const pose = this.localPose(index);
     this.group.updateWorldMatrix(true, false);
-    this.group.localToWorld(pose.position);
-    pose.quaternion.premultiply(this.group.getWorldQuaternion(new THREE.Quaternion()));
-    return pose;
+    const matrix=new THREE.Matrix4().compose(pose.position,pose.quaternion,new THREE.Vector3(1,1,1));
+    matrix.premultiply(this.group.matrixWorld);
+    matrix.decompose(pose.position,pose.quaternion,new THREE.Vector3());
+    pose.quaternion.normalize();
+    return {...pose,matrix};
   }
 
   dispose(): void {

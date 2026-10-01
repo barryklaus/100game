@@ -10,6 +10,7 @@ All 16 existing character identities now have nine cartoon bust frames each (144
 - Throwing uses a 110 ms wind-up, release as the real 3D card leaves, and recovery until the replacement reaches the hand. The sprite holds card backs only, preserving other players' hand privacy.
 - The table is a wide oblong tilted forward. Characters sit behind its far rim in both layouts; their lower bodies are clipped against the projected tabletop edge, including while browsing the ring. The draw/discard piles and their landing poses share the table tilt.
 - Both piles sit across the table's local center line. The total stands on the projected center point and renders in front of the characters. Its size is reduced by about 17%; captions and event messages no longer shift its base. The inner effect rings inherit the tabletop's oval stretch and forward tilt, keeping them concentric with the engraving.
+- Piles, cradle and shadows share the same surface transform as the line art. Flights preserve the full landing/draw matrix so their corners match the pile through the handoff. Events send light through the engraving and rotate the inner accents within its oval; the camera and table stay still. Exactly 100 uses the supplied Anxiety loop without the old victory chime.
 - Reduced motion skips rotation and throw poses. Failed sprite loads retain the original portrait.
 
 ## Asset format and performance

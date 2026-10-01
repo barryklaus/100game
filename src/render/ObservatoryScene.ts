@@ -1,5 +1,4 @@
 import { CardImpactFlow } from './CardImpactFlow';
-import { overflowQuake } from '../ui/totalFeedback';
 import { OverflowFireworks } from './OverflowFireworks';
 import { CardHandoff } from './CardHandoff';
 import type { CardSpin } from '../ui/cardGesture';
@@ -18,6 +17,7 @@ import { CLEAN_CARD_LAYER, createCardMesh } from './CardMesh';
 import { cardFaceFromUrl } from '../game/cardFace';
 import { cardFaceTexture } from './CardFaceTexture';
 import { CardPile } from './CardPile';
+import { CardFlightFit } from './CardFlightFit';
 import { flyingCardFlex } from './CardFlex';
 
 type SceneState = {
@@ -69,12 +69,9 @@ export class ObservatoryScene {
   private totalPulse?: Animation;
   private ring = new ArcaneTotalRing();
   private fireworks = new OverflowFireworks();
-  private overflowAge=4;
   private hand!: PhysicalHand;
   private environment!: THREE.WebGLRenderTarget;
   private lastEventKey = '';
-  private eventKind = 'none';
-  private impact = 0;
 
   private ceilingLight = new THREE.SpotLight(0xeee2d3, 145, 23, .71, .82, 1.5);
   private lastSeatUpdate = -1;
@@ -202,11 +199,11 @@ export class ObservatoryScene {
       this.pruneTimer=window.setTimeout(()=>this.pruneTextureCache(),300);
     });
     const key=next.eventKey??`${next.total}:${next.discardCardUrl}:${next.event}`;
-    if(!next.active || (next.event==='none'&&key!==this.lastEventKey)){this.overflowAge=4;this.fireworks.trigger(true);}
+    if(!next.active || (next.event==='none'&&key!==this.lastEventKey)){this.fireworks.trigger(true);}
     if(!next.active)this.handoff.clear();
     else void this.handoff.sync(key,!!next.pendingPlay,discardUpdate).catch(()=>undefined);
     if(key!==this.lastEventKey){
-      if(this.lastEventKey){if(next.total>100&&next.event==='bust'){if(next.totalPending)this.pendingOverflow=true;else{this.overflowAge=0;this.fireworks.trigger(this.reducedMotion);}}this.impact=1;this.eventKind=next.event;this.ring.trigger(next.event);}
+      if(this.lastEventKey){if(next.total>100&&next.event==='bust'){if(next.totalPending)this.pendingOverflow=true;else{this.fireworks.trigger(this.reducedMotion);}}this.ring.trigger(next.event);}
       this.lastEventKey=key;
     }
     this.renderer.domElement.hidden = !next.active||this.contextLost;
@@ -232,9 +229,9 @@ export class ObservatoryScene {
     this.deckPile=new CardPile(true,url=>this.loadTexture(url));
     this.discardPile=new CardPile(false,url=>this.loadTexture(url));
     this.deckStack=this.deckPile.group;this.discardStack=this.discardPile.group;
-    this.deckStack.position.set(-2.42,0,-.06);this.deckStack.rotation.y=-.06;
-    this.discardStack.position.set(2.42,0,-.06);this.discardStack.rotation.y=.06;
-    this.world.add(this.deckStack,this.discardStack);
+    this.deckStack.position.set(-2.42,0,0);
+    this.discardStack.position.set(2.42,0,0);
+    this.table.group.add(this.deckStack,this.discardStack);
     const pixels=new Uint8Array(64*64*4);
     for(let y=0;y<64;y++)for(let x=0;x<64;x++){
       const radius=Math.hypot((x-31.5)/31.5,(y-31.5)/31.5);
@@ -251,7 +248,7 @@ export class ObservatoryScene {
       shadow.position.set(stack.position.x,.3485,stack.position.z);
       shadow.visible=false;
       this.pileShadows.push(shadow);
-      this.world.add(shadow);
+      this.table.group.add(shadow);
     }
   }
 
@@ -348,12 +345,19 @@ export class ObservatoryScene {
     endQuaternion: THREE.Quaternion;
     startScale: number;
     endScale: number;
+    startMatrix?: THREE.Matrix4;
+    endMatrix?: THREE.Matrix4;
     draw: boolean;
     spin?: CardSpin;
     onStart?: () => void;
     onArrive?: () => void;
   }): Promise<void> {
     const { root, visual, start, end, startQuaternion, endQuaternion, startScale, endScale, draw, spin, onStart, onArrive } = options;
+    const fit=new CardFlightFit(
+      {position:start,quaternion:startQuaternion,scale:startScale,matrix:options.startMatrix},
+      {position:end,quaternion:endQuaternion,scale:endScale,matrix:options.endMatrix},
+    );
+    root.matrixAutoUpdate=false;
     const control = start.clone().lerp(end, .5);
     control.y += draw ? .85 : .65;
     control.z += draw ? .45 : -.3;
@@ -361,6 +365,7 @@ export class ObservatoryScene {
     root.visible = true;
     root.quaternion.copy(startQuaternion);
     root.scale.setScalar(startScale);
+    fit.apply(root,0);
     visual.rotation.y = draw ? Math.PI : 0;
     const flex=flyingCardFlex(visual);
     onStart?.();
@@ -384,6 +389,7 @@ export class ObservatoryScene {
         if(!draw && raw>.86)root.position.y+=Math.sin((raw-.86)/.14*Math.PI)*.075;
         root.quaternion.slerpQuaternions(startQuaternion, endQuaternion, t);
         root.scale.setScalar(THREE.MathUtils.lerp(startScale, endScale, t));
+        fit.apply(root,t);
         flex(this.reducedMotion?0:Math.sin(raw*Math.PI)*(draw?.09:.2));
         visual.rotation.set(0,draw ? Math.PI * (1 - t) : Math.sin(raw * Math.PI) * .24,Math.sin(raw * Math.PI) * (draw ? -.16 : .24));
         if(spin && spinAxis && !this.reducedMotion){
@@ -433,7 +439,7 @@ export class ObservatoryScene {
     const end = landing.position;
     const startQuaternion = pose?.quaternion??this.camera.quaternion.clone();
     const endQuaternion = landing.quaternion;
-    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: pose?.scale??this.screenScale(sourceRect, distance), endScale: 1, draw: false, spin, onStart });
+    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: pose?.scale??this.screenScale(sourceRect, distance), endScale: 1, endMatrix:landing.matrix, draw: false, spin, onStart });
   }
 
   async drawCardToHand(frontUrl: string, targetRect: DOMRect, cardId?:string, onArrive?:()=>void): Promise<void> {
@@ -446,7 +452,7 @@ export class ObservatoryScene {
     const end = pose?.position??this.screenPoint(targetRect, distance);
     const startQuaternion = drawn.quaternion;
     const endQuaternion = pose?.quaternion??this.camera.quaternion.clone();
-    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: 1, endScale: pose?.scale??this.screenScale(targetRect, distance), draw: true, onArrive });
+    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: 1, endScale: pose?.scale??this.screenScale(targetRect, distance), startMatrix:drawn.matrix, draw: true, onArrive });
   }
 
   private positionSeatOverlays(): void {
@@ -523,6 +529,7 @@ export class ObservatoryScene {
     this.table.group.scale.set(portrait ? 1.30 : 1.38,1,.70);
     this.camera.lookAt(0, portrait ? .6 : .45, portrait ? .1 : -.3);
     this.camera.updateProjectionMatrix();
+    this.camera.updateMatrixWorld();
     const budget = QUALITY_PRESETS[this.quality];
     const pixelBudget = Math.sqrt((this.quality === 'ultra' ? 6_000_000 : 4_000_000) / Math.max(1, innerWidth * innerHeight));
     const pixelRatio = Math.min(devicePixelRatio, budget.pixelRatio * this.renderScale, pixelBudget);
@@ -535,36 +542,32 @@ export class ObservatoryScene {
     this.renderer.shadowMap.needsUpdate = true;
     this.seatProjectionDirty = true;
     if (this.deckStack && this.discardStack) {
-      const pileX = portrait ? 2.45 : 3.65;
+      const unit=this.tablePoint(1,.3475,0).project(this.camera);
+      const center=this.tablePoint(0,.3475,0).project(this.camera);
+      // Keep the full piles visible on tall phones while preserving their center line.
+      const pileX = portrait ? Math.min(2.45,.62/Math.abs(unit.x-center.x)) : 3.65;
       const pileZ = 0;
-      this.deckStack.position.set(-pileX, 0, pileZ);
-      // Cancel the tabletop's oval stretch without distorting the card-sized cradle.
-      this.table.group.updateMatrix();this.deckStack.updateMatrix();
+      const widthScale=this.table.group.scale.x;
+      // Piles use the same surface coordinates and foreshortening as the line art.
+      // Normalize width so the deck stays card-sized rather than stretching wider.
+      for(const [side,pile] of [[-1,this.deckStack],[1,this.discardStack]] as const){
+        pile.position.set(side*pileX/widthScale,0,pileZ);
+        pile.scale.set(1/widthScale,1,1/widthScale);
+      }
+      this.deckStack.updateMatrix();
       this.table.cradle.matrixAutoUpdate=false;
-      this.table.cradle.matrix.copy(this.table.group.matrix).invert().multiply(this.deckStack.matrix);
-      this.discardStack.position.set(pileX, 0, pileZ);
-      this.pileShadows[0].position.set(-pileX,.3485,pileZ);
-      this.pileShadows[1].position.set(pileX,.3485,pileZ);
+      this.table.cradle.matrix.copy(this.deckStack.matrix);
+      this.pileShadows.forEach((shadow,i)=>{
+        shadow.position.set((i===0?-pileX:pileX)/widthScale,.3485,pileZ);
+        shadow.scale.setScalar(1/widthScale);
+      });
     }
   };
 
   private animate(time: number, delta: number): void {
-    const portrait = innerHeight > innerWidth * 1.08;
-    const baseX = 0;
-    const baseY = portrait ? 10.0 : 7.0;
-    const baseZ = portrait ? 14.2 : 11.0;
-    const beat=this.reducedMotion?0:Math.sin((1-this.impact)*Math.PI);
-    const orbit=this.eventKind==='reverse'?beat*.12:0;
-    const punch=['zero','minus','bust'].includes(this.eventKind)?beat*(this.eventKind==='bust'?.42:.2):0;
-    this.overflowAge+=delta;
-    const quake=overflowQuake(this.overflowAge,this.reducedMotion);
+    // Events animate surface light and rings; the camera/table remain stationary.
     this.fireworks.update(delta,this.reducedMotion);
-    const shake=this.eventKind==='bust'||this.eventKind==='minus'?Math.sin(time*54)*beat*.028:0;
-    this.camera.position.set(baseX+Math.sin(orbit)*baseZ+shake+quake.x,baseY-punch+quake.y,Math.cos(orbit)*baseZ-punch+quake.z);
-    this.camera.lookAt(0,portrait?.6:.45,portrait?.1:-.3);
-    this.camera.rotateZ(quake.roll);
-    this.camera.updateMatrixWorld();
-    if(time-this.lastSeatUpdate>.04 && (this.seatProjectionDirty || this.impact>0 || this.overflowAge<2.4 || this.eventKind!=='none')){
+    if(time-this.lastSeatUpdate>.04 && this.seatProjectionDirty){
       this.positionSeatOverlays();this.lastSeatUpdate=time;this.seatProjectionDirty=false;
     }
     const flow=this.cardFlow.update(delta,this.reducedMotion);
@@ -572,7 +575,7 @@ export class ObservatoryScene {
     if(flow.arrival){
       this.onCardArrival?.(this.playKey);
       if (this.pendingOverflow) {
-        this.pendingOverflow=false;this.overflowAge=0;this.fireworks.trigger(this.reducedMotion);
+        this.pendingOverflow=false;this.fireworks.trigger(this.reducedMotion);
       }
       this.ring.receiveCard();
       const total=document.querySelector<HTMLElement>('.total-number');
@@ -588,8 +591,6 @@ export class ObservatoryScene {
     }
     this.ring.update(delta,this.reducedMotion);
     this.hand.update(delta);
-    if(this.impact===0)this.eventKind='none';
-    this.impact=Math.max(0,this.impact-delta/1.05);
   }
 
   /** Keep bloom/AO on the room while drawing the printed cards without either. */
@@ -682,7 +683,7 @@ export class ObservatoryScene {
     this.profileFrames++;this.profileDelta+=realDelta;
     const time = this.clock.elapsedTime;
     this.animate(time, delta);
-    if (this.activeFlights || (this.quality==='ultra' && this.impact>0)) this.renderer.shadowMap.needsUpdate = true;
+    if (this.activeFlights) this.renderer.shadowMap.needsUpdate = true;
     this.renderer.info.reset();
     if(QUALITY_PRESETS[this.quality].bloom)this.renderWithCleanCards();else this.renderer.render(this.scene, this.camera);
     if(time-this.profileTime>2.4){

@@ -146,7 +146,7 @@ function roomChanged(): void {
   if (key !== lastTurnKey) { selectedCard = null; lastTurnKey = key; }
   if (state && previous && state.log[0] !== previous.log[0] && state.played.length) {
     if (state.event === 'bust') { flash(`${state.players[state.bust!].name.toUpperCase()} caused Overflow`, 'bust'); }
-    else if (state.event === 'exact') { audio.play('exact'); flash('EXACT 100!  +3', 'exact'); }
+    else if (state.event === 'exact') { flash('EXACT 100!  +3', 'exact'); }
     else if (state.event === 'reverse') { audio.play('reverse'); flash('DIRECTION REVERSED', 'reverse'); }
     else if (state.event === 'seven') { audio.play('target'); flash('CHOOSE A PLAYER', 'seven'); }
     else if(state.event==='zero')audio.play('zero');
@@ -307,7 +307,7 @@ function resolveCard(cardId: string): void {
   save();
   selectedCard = null;
   const ev = state.event;
-  if (ev === 'exact') { audio.play('exact'); flash('EXACT 100!  +3', 'exact'); react([actor], '+3'); }
+  if (ev === 'exact') { flash('EXACT 100!  +3', 'exact'); react([actor], '+3'); }
   else if (ev === 'bust') { flash(`${state.players[actor].name.toUpperCase()} caused Overflow`, 'bust'); react([actor], '−5'); }
   else if (ev === 'seven') { audio.play('target'); flash('CHOOSE A PLAYER', 'seven'); react([actor], '✧'); }
   else if (ev === 'reverse') { audio.play('reverse'); flash('DIRECTION REVERSED', 'reverse'); react(state.players.map(p => p.id), '↺'); }
