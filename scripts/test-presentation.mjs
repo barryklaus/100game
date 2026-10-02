@@ -224,6 +224,16 @@ assert.equal(first,repeated,'Repeated renders must await the same unfinished pil
 loadReady(texture);await Promise.resolve();loadReady(texture);await first;delayed.dispose();
 console.log('Card handoff checks passed: delayed pile loading, online acknowledgment, rejected moves, repeated renders, and cleanup.');
 
+const {cardScreenScale}=await load('src/render/CardScreenFit.ts');
+for(const [viewportHeight,fov,distance] of [[844,46,4.85],[800,42,5.15]])for(const rect of [{width:14,height:20},{width:24,height:35},{width:120,height:160},{width:290,height:410}]){
+  const scale=cardScreenScale(rect,viewportHeight,fov,distance);
+  const projectedHeight=1.43*scale/(2*distance*Math.tan(fov*Math.PI/360))*viewportHeight;
+  const projectedWidth=projectedHeight*1064/1478;
+  assert(projectedHeight<=rect.height+1e-9 && projectedWidth<=rect.width+1e-9,'Both card dimensions fit the receiving hand, even small mobile sprite targets');
+  assert(Math.abs(projectedHeight-rect.height)<1e-9 || Math.abs(projectedWidth-rect.width)<1e-9,'At least one card dimension meets the target without an oversized minimum');
+}
+console.log('Card screen fitting checks passed: tiny character hands and full-size player cards on desktop/mobile.');
+
 const {totalDanger,totalMarkup}=await load('src/ui/totalFeedback.ts');
 assert.deepEqual([-10,0,25,50,75,100,108].map(totalDanger),[0,0,.25,.5,.75,1,1],'Gold-to-red progression clamps safely at both ends');
 assert(!totalMarkup(100).includes('total-shard'),'Exactly 100 is tense, not exploded');

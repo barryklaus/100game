@@ -8,13 +8,15 @@
  .blocker{position:fixed;top:22vh;left:30vw;width:40vw;height:38vh;background:#572841;border:4px solid #bc748e;display:grid;place-items:center;font-size:64px}
  .source,.target{position:fixed;width:110px;height:154px;top:20vh}
  .source{left:25vw}.target{left:70vw}
+ .small-target{position:fixed;left:70vw;top:40vh;width:18px;height:25px}
  .local-hand .hand-card{position:fixed;left:45vw;bottom:24px;width:110px;height:154px;padding:0;border:0;background:transparent}
  .local-hand .hand-card img{width:100%;height:100%}.mesh-ready{opacity:0}
 </style>
-<div id="app"><div class="blocker">100 / Characters</div><div class="source"></div><div class="target"></div><div class="draw-stack" hidden><img alt=""></div><div class="local-hand"><button class="hand-card" data-card="hand-test"><img alt=""></button></div></div>
+<div id="app"><main class="game-page" data-phase="playing"><div class="blocker">100 / Characters</div><div class="source"></div><div class="target"></div><div class="small-target"></div><div class="draw-stack" hidden><img alt=""></div><div class="local-hand"><button class="hand-card" data-card="hand-test"><img alt=""></button></div></main></div>
 <p id="result">Running…</p>
 <script type="module">
  import '../src/game-presentation.css';
+ import '../src/observatory.css';
  import {ObservatoryScene} from '../src/render/ObservatoryScene.ts';
  const result=document.querySelector('#result');
  const check=(condition,message)=>{if(!condition)throw new Error(message)};
@@ -62,8 +64,31 @@
    await new Promise(resolve=>setTimeout(resolve,100));
    scene.configure({quality:'ultra',reducedMotion:false});
    await flight(()=>scene.drawCardToHand(front,document.querySelector('.target').getBoundingClientRect()));
+   const tiny=document.querySelector('.small-target').getBoundingClientRect();
+   const {Vector3}=await import('three');
+   let receivedSize;
+   await flight(()=>scene.drawCardToHand(back,tiny,undefined,()=>{
+     const card=foreground.scene.children.at(-1);
+     card.updateWorldMatrix(true,true);
+     const cardMesh=card.children[0].children[0];
+     const points=[[-.5,-.5],[.5,-.5],[-.5,.5],[.5,.5]].map(([x,y])=>new Vector3(x*cardMesh.userData.cardWidth,y*cardMesh.userData.cardHeight,0).applyMatrix4(card.matrixWorld).project(scene.camera));
+     const width=(Math.max(...points.map(p=>p.x))-Math.min(...points.map(p=>p.x)))*innerWidth/2;
+     const height=(Math.max(...points.map(p=>p.y))-Math.min(...points.map(p=>p.y)))*innerHeight/2;
+     receivedSize={width,height};
+   }));
+   check(receivedSize.width<=tiny.width+.1 && receivedSize.height<=tiny.height+.1,'A character draw card grew beyond the receiving hand');
    check(samples>12,'Flights were not observed across multiple rendered frames');
-   result.textContent=`PASS — ${samples} foreground frames; hand cards, character throws, deck draws, texture retention, Ultra rendering, landing handoff and no duplicate receiving card.`;
+   document.querySelector('.game-page').dataset.phase='ended';
+   const scores=document.createElement('div');scores.className='result-overlay';scores.innerHTML='<section class="result-panel"><h2>Round scores</h2><button>Next round</button></section>';
+   document.querySelector('.game-page').append(scores);
+   scene.update({...state,roundEnded:true,total:105,event:'bust'});
+   check(document.querySelector('.foreground-cards-canvas').hidden,'Round scores were covered by a stale foreground card frame');
+   check(getComputedStyle(document.querySelector('.local-hand')).visibility==='hidden','HTML/mobile hand cards still cover round scores');
+   check(Number(getComputedStyle(document.querySelector('#app')).zIndex)>Number(getComputedStyle(document.querySelector('.foreground-cards-canvas')).zIndex),'Round results are below the foreground canvas');
+   scores.remove();document.querySelector('.game-page').dataset.phase='playing';
+   scene.update(state);
+   await flight(()=>scene.drawCardToHand(back,tiny));
+   result.textContent=`PASS — ${samples} foreground frames; hand-sized character draws, top-layer throws, texture retention, Ultra rendering, landing handoff, unobstructed scores, next-round restoration and cleanup.`;
    scene.dispose();
    check(!document.querySelector('.foreground-cards-canvas'),'Leaving retained the foreground renderer');
  }catch(error){result.textContent=`FAIL — ${error.message}`;throw error}

@@ -234,6 +234,7 @@
 .world3d-active body { background: #080a17; }
 .world3d-active #app { position: relative; z-index: 1; }
 .world3d-active #app:has(.modal-overlay) { z-index: 31; }
+.world3d-active #app:has(.result-overlay) { z-index: 31; }
 .world3d-active .game-page { background: transparent; }
 .world3d-active .game-page::before {
   opacity: 1;

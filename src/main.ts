@@ -465,8 +465,8 @@ function gameView(): string {
   const active = state.players[actor];
   const mine = state.players[localSeat()];
   const myTurn = state.phase !== 'ended' && !awaitingNetwork && active.kind === 'human' && actor === localSeat();
-  const otherLocalTurn = !online && active.kind === 'human' && actor !== localSeat();
-  const hand = mine?.kind === 'human' ? mine.hand : [];
+  const otherLocalTurn = state.phase !== 'ended' && !online && active.kind === 'human' && actor !== localSeat();
+  const hand = state.phase !== 'ended' && mine?.kind === 'human' ? mine.hand : [];
   const totalStyle = totalClass(presentedTotal.visible.total);
 
   return `<main class="game-page" data-event="${state.event}" data-phase="${state.phase}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>SIMPLE NUMBERS.<br>BIG REACTIONS.</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>100 <span>OBSERVATORY</span></strong><small>${online?'Private online table':'Local table'} · Round ${state.round}</small></div></div><div class="header-wallet" aria-label="Player rewards"><span class="wallet-pill"><b>★</b>${stats.currency.toLocaleString()}</span><span class="wallet-pill gem"><b>◆</b>${stats.rating.toLocaleString()}</span></div><div class="header-status"><span class="round-pill">Round ${state.round}</span><span class="turn-pill">${state.phase==='ended'?'Round scores':`${actor===localSeat()?'Your':escapeHtml(active.name)+'’s'} ${state.phase==='target'?'choice':'turn'}`}</span></div><div class="header-actions"><button data-action="history" aria-label="Game history">▤</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}
@@ -532,6 +532,7 @@ function render(): void {
     if(receivingCardIds.has(element.dataset.card!))element.classList.add('receiving-card');
   }
   observatory?.update({
+    roundEnded: state?.phase === 'ended',
     pendingPlay: locked || awaitingNetwork || remoteFlight,
     playKey,
     totalPending: presentedTotal.pending,

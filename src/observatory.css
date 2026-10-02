@@ -79,7 +79,8 @@
 .result-actions{display:flex;align-items:center;gap:14px;margin-top:14px;}
 .result-actions .primary-button{flex:1;border-radius:6px;min-height:36px;padding:8px 15px;font:600 11px system-ui;background:#bda577;border:1px solid #d1b783;box-shadow:none;}
 .result-actions .text-button{font-size:10px;color:#a19faf;}
-.game-page[data-phase="ended"] .local-hand{opacity:.16;pointer-events:none;transition:opacity .5s;}
+.game-page[data-phase="ended"] .local-hand{visibility:hidden;pointer-events:none;}
+.game-page[data-phase="ended"] .shared-turn{display:none;}
 .game-page[data-phase="ended"] .dock-controls{visibility:hidden;}
 @keyframes score-arrive{from{opacity:0;translate:0 8px}to{opacity:1;translate:0 0}}
 .setup-hero{background:radial-gradient(ellipse at 50% 65%,#32304366,transparent 64%),repeating-radial-gradient(circle at 50% 65%,transparent 0 89px,#a9916330 90px,transparent 91px 105px),#070b13;}

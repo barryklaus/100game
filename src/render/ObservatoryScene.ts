@@ -20,8 +20,10 @@ import { CardPile } from './CardPile';
 import { CardFlightFit } from './CardFlightFit';
 import { flyingCardFlex } from './CardFlex';
 import { ForegroundCards } from './ForegroundCards';
+import { cardScreenScale } from './CardScreenFit';
 
 type SceneState = {
+  roundEnded?: boolean;
   pendingPlay?: boolean;
   playKey?: string;
   totalPending?: boolean;
@@ -53,6 +55,7 @@ export class ObservatoryScene {
   private activeFlights = 0;
   private handoff = new CardHandoff();
   private active = false;
+  private roundEnded = false;
   private contextLost=false;
   private quality: QualityPreset = 'high';
   private reducedMotion = false;
@@ -139,7 +142,7 @@ export class ObservatoryScene {
     this.contextLost = this.renderer.getContext().isContextLost() || this.foreground.contextLost;
     if (this.contextLost) this.onCardArrival?.(this.playKey);
     this.renderer.domElement.hidden = !this.active || this.contextLost;
-    this.foreground.setActive(this.active && !this.contextLost);
+    this.foreground.setActive(this.active && !this.roundEnded && !this.contextLost);
     document.documentElement.classList.toggle('world3d-active',this.active && !this.contextLost);
     document.documentElement.classList.toggle('world3d-total',this.active && !this.contextLost);
   };
@@ -190,6 +193,7 @@ export class ObservatoryScene {
 
   update(next: SceneState): void {
     this.active = next.active;
+    this.roundEnded = !!next.roundEnded;
     this.playerCount = next.playerCount;
     this.currentTotal=next.total;
     this.localSeat = next.localSeat;
@@ -219,7 +223,7 @@ export class ObservatoryScene {
       this.lastEventKey=key;
     }
     this.renderer.domElement.hidden = !next.active||this.contextLost;
-    this.foreground.setActive(next.active && !this.contextLost);
+    this.foreground.setActive(next.active && !next.roundEnded && !this.contextLost);
     document.documentElement.classList.toggle('world3d-active', next.active&&!this.contextLost);
     document.documentElement.classList.toggle('world3d-total', next.active&&!this.contextLost);
   }
@@ -321,8 +325,7 @@ export class ObservatoryScene {
   }
 
   private screenScale(rect: DOMRect, distance: number): number {
-    const worldHeight = 2 * distance * Math.tan(THREE.MathUtils.degToRad(this.camera.fov * .5));
-    return Math.max(.46, Math.min(1.65, rect.height / innerHeight * worldHeight / 1.43));
+    return cardScreenScale(rect, innerHeight, this.camera.fov, distance);
   }
 
   private tablePoint(x: number, y: number, z: number): THREE.Vector3 {
