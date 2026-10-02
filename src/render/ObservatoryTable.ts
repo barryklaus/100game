@@ -10,6 +10,12 @@ function ring(radius:number, width:number, material:THREE.Material, y:number):TH
   const mesh=new THREE.Mesh(new THREE.TorusGeometry(radius,width,6,128),material);
   mesh.rotation.x=-Math.PI/2;mesh.position.y=y;return mesh;
 }
+/** Inlaid line art stays above the felt and below the first card's paper edge. */
+function inlaidRing(radius:number,width:number,material:THREE.Material):THREE.Mesh {
+  const mesh=ring(radius,width,material,.3482);
+  mesh.scale.z=.04;
+  return mesh;
+}
 
 /** One baked engraving map gives every quality tier the same crafted surface. */
 function engraving():THREE.CanvasTexture {
@@ -121,14 +127,14 @@ export class ArcaneTotalRing {
   constructor(){
     this.group.position.set(0,0,0);
     const metal=this.metal;
-    for(const [r,w,y] of [[1.34,.012,.36],[1.48,.007,.362],[1.63,.013,.357]])this.group.add(ring(r,w,metal,y));
-    this.group.add(ring(1.38,.007,this.light,.37));
+    for(const [r,w] of [[1.34,.012],[1.48,.007],[1.63,.013]])this.group.add(inlaidRing(r,w,metal));
+    this.group.add(inlaidRing(1.38,.007,this.light));
     for(let i=0;i<12;i++){
-      const sector=new THREE.Mesh(new THREE.TorusGeometry(1.55,.012,5,12,Math.PI/9),this.light);sector.rotation.x=-Math.PI/2;sector.rotation.z=i*Math.PI/6;sector.position.y=.376;this.sectors.add(sector);
-      const a=i/12*Math.PI*2;const marker=new THREE.Mesh(new THREE.ConeGeometry(.035,.12,3),metal);marker.rotation.set(-Math.PI/2,0,-a);marker.position.set(Math.sin(a)*1.74,.366,Math.cos(a)*1.74);this.orbit.add(marker);
+      const sector=new THREE.Mesh(new THREE.TorusGeometry(1.55,.012,5,12,Math.PI/9),this.light);sector.rotation.x=-Math.PI/2;sector.rotation.z=i*Math.PI/6;sector.scale.z=.04;sector.position.y=.3482;this.sectors.add(sector);
+      const a=i/12*Math.PI*2;const marker=new THREE.Mesh(new THREE.ConeGeometry(.035,.12,3),metal);marker.rotation.set(-Math.PI/2,0,-a);marker.scale.z=.015;marker.position.set(Math.sin(a)*1.74,.3482,Math.cos(a)*1.74);this.orbit.add(marker);
     }
     this.group.add(this.orbit,this.sectors);
-    this.pulse=new THREE.Mesh(new THREE.RingGeometry(1.2,1.24,96),new THREE.MeshBasicMaterial({color:0x97bdff,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));this.pulse.rotation.x=-Math.PI/2;this.pulse.position.y=.39;this.group.add(this.pulse);
+    this.pulse=new THREE.Mesh(new THREE.RingGeometry(1.2,1.24,96),new THREE.MeshBasicMaterial({color:0x97bdff,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));this.pulse.rotation.x=-Math.PI/2;this.pulse.position.y=.3486;this.group.add(this.pulse);
     const positions=new Float32Array(48*3);for(let i=0;i<48;i++){const a=i*2.399;positions[i*3]=Math.sin(a)*(1.4+(i%7)*.055);positions[i*3+1]=.4+(i%5)*.055;positions[i*3+2]=Math.cos(a)*(1.4+(i%7)*.055);}
     const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(positions,3));
     this.fragments=new THREE.Points(geometry,new THREE.PointsMaterial({color:0x9aaeff,size:.027,transparent:true,opacity:.25,depthWrite:false,map:glowTexture(),blending:THREE.AdditiveBlending}));this.group.add(this.fragments);

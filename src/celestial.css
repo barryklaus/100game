@@ -28,15 +28,17 @@
  .observatory-mode .game-header{padding:16px 12px!important;}
  .observatory-mode .match-plaque strong{font-size:25px!important;}
  .observatory-mode .match-plaque strong span{font-size:6px!important;letter-spacing:.14em!important;}
- .observatory-mode .energy-system .total-number{font-size:clamp(112px,min(40vw,21svh),220px)!important;}
- .observatory-mode .energy-system .total-wrap{top:calc(var(--total-y,49vh) + 16svh)!important;}
+ /* Portrait uses the projected table center, with room for three digits and a minus sign between piles. */
+ .observatory-mode .energy-system .total-number{font-size:min(27vw,14svh,180px)!important;}
+ .observatory-mode .energy-system .total-wrap{top:var(--total-y,49svh)!important;transform:translate(-50%,-50%)!important;}
+ .observatory-mode .total-caption{position:absolute;bottom:calc(100% + 6px);margin:0;white-space:nowrap;}
  .observatory-mode .local-hand{bottom:4svh!important;}
  .observatory-mode .local-hand .hand-card{height:min(39svh,57vw)!important;}
  .observatory-mode .seat-layer .sprite-seat .seat-meta{font-size:6px;}
  .observatory-mode .seat-layer .sprite-seat{width:26vw!important;}
  .observatory-mode .seat-layer .sprite-seat .seat-info{padding:2px 0!important;}
  .observatory-mode:not(.world3d-active) .game-page{background-image:linear-gradient(#03070c44,#03070c66),url('/assets/scene/celestial-v1/room-mobile.webp')!important;}
- .observatory-mode:not(.world3d-active) .energy-system .total-wrap{top:60svh!important;}
+ .observatory-mode:not(.world3d-active) .energy-system .total-wrap{top:58.5svh!important;}
 }
 @media(orientation:landscape) and (max-height:520px){
  .observatory-mode .local-hand{bottom:3svh!important;}
