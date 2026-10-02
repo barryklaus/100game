@@ -17,35 +17,93 @@ function inlaidRing(radius:number,width:number,material:THREE.Material):THREE.Me
   return mesh;
 }
 
-/** One baked engraving map gives every quality tier the same crafted surface. */
+/** One baked celestial atlas keeps the richer design at a single surface draw call. */
 function engraving():THREE.CanvasTexture {
   const canvas=document.createElement('canvas');canvas.width=canvas.height=2048;
-  const c=canvas.getContext('2d')!;const mid=1024;
+  const c=canvas.getContext('2d')!;
   c.fillStyle='#10243a';c.fillRect(0,0,2048,2048);
   let seed=91;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
-  for(let i=0;i<48000;i++){const light=random()>.5;c.fillStyle=light?'#ffffff05':'#0000000b';c.fillRect(random()*2048,random()*2048,random()*3+1,1);}
-  c.translate(mid,mid);
-  const circle=(r:number,color:string,width=1)=>{c.strokeStyle=color;c.lineWidth=width;c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.stroke();};
-  [345,892,908].forEach((r,i)=>circle(r,'#aa844d',i===1?2:1));
-  for(let i=0;i<72;i++){
-    const a=i/72*Math.PI*2;c.save();c.rotate(a);
-    c.strokeStyle=i%6===0?'#bc9559':'#715c3d';c.lineWidth=1;c.beginPath();c.moveTo(0,-919);c.lineTo(0,i%6===0?-942:-926);c.stroke();
-    c.restore();
+  for(let i=0;i<48000;i++){c.fillStyle=random()>.5?'#ffffff05':'#0000000b';c.fillRect(random()*2048,random()*2048,random()*3+1,1);}
+  c.translate(1024,1024);
+  const gold='#c6a360',fine='#8b754c',bright='#e3c785';
+  const circle=(r:number,color=gold,width=1.5)=>{c.strokeStyle=color;c.lineWidth=width;c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.stroke();};
+  const star=(x:number,y:number,r:number)=>{
+    c.save();c.translate(x,y);c.fillStyle=bright;c.beginPath();
+    for(let i=0;i<8;i++){const a=i*Math.PI/4,s=i%2?r*.19:r;c.lineTo(Math.sin(a)*s,Math.cos(a)*s);}c.closePath();c.fill();c.restore();
+  };
+  const glyph=(path:string,x:number,y:number,size:number)=>{
+    c.save();c.translate(x,y);c.scale(size/100,size/100);c.strokeStyle=gold;c.lineWidth=5;c.lineCap='round';c.lineJoin='round';c.stroke(new Path2D(path));c.restore();
+  };
+  // Original vector glyphs stay crisp and identical across browser font families.
+  const zodiac=[
+    'M0 38V-7C0-55-51-52-37-17M0-7C0-55 51-52 37-17',
+    'M-27-45Q-24-18 0-18Q24-18 27-45M0-18A27 27 0 1 1 -1-18',
+    'M-34-38Q0-24 34-38M-34 38Q0 24 34 38M-17-32V32M17-32V32',
+    'M35-24H-17A13 13 0 1 0 -17 2A13 13 0 1 0 -17-24M-35 24H17A13 13 0 1 0 17-2A13 13 0 1 0 17 24',
+    'M-30 8A12 12 0 1 1 -30 32A12 12 0 1 1 -30 8M-22 10C-4 1-35-44-10-44C19-44 26-19 11 9C-5 38 20 49 34 25',
+    'M-38 29V-25Q-27-43-16-25V26M-16-25Q-5-43 6-25V27M6-25Q17-43 28-25V19C28 43 8 38 9 16C10-5 42-5 41 15Q36 31 23 37',
+    'M-38 34H38M-38 13H-17A22 22 0 1 1 17 13H38',
+    'M-38 28V-25Q-27-42-16-25V28M-16-25Q-5-42 6-25V28M6-25Q17-42 28-25V13Q28 30 44 28M37 20L44 28L37 36',
+    'M-32 32L32-32M8-32H32V-8M-29-9L9 29',
+    'M-37-18L-26-35L-15-18V26M-15-18Q0-50 14-16V13C14 45 45 42 41 20C37-1 18 7 14 16',
+    'M-40-14L-24-29L-8-14L8-29L24-14L40-29M-40 22L-24 7L-8 22L8 7L24 22L40 7',
+    'M-25-40Q6 0-25 40M25-40Q-6 0 25 40M-35 0H35',
+  ];
+  [333,345,376,480,490,797,810,920,932,967].forEach((r,i)=>circle(r,i%3===0?gold:fine,i===7?2.2:1.3));
+  for(let i=0;i<180;i++){
+    c.save();c.rotate(i/180*Math.PI*2);c.strokeStyle=i%15===0?bright:fine;c.lineWidth=i%5===0?2:1;
+    c.beginPath();c.moveTo(0,-938);c.lineTo(0,i%15===0?-961:i%5===0?-953:-945);c.stroke();c.restore();
   }
   for(let i=0;i<12;i++){
-    c.save();c.rotate(i*Math.PI/6);c.strokeStyle='#81704c';c.lineWidth=1;
-    c.beginPath();c.moveTo(0,-354);c.lineTo(0,-385);c.moveTo(-5,-370);c.lineTo(0,-378);c.lineTo(5,-370);c.lineTo(0,-362);c.closePath();c.stroke();
-    const radius=820;c.fillStyle='#b89559';c.beginPath();
-    for(let j=0;j<16;j++){const a=j*Math.PI/8,r=j%2?3:j%4===0?15:8;const x=Math.sin(a)*r,y=-radius+Math.cos(a)*r;j?c.lineTo(x,y):c.moveTo(x,y);}c.closePath();c.fill();
-    c.restore();
+    const a=-Math.PI/2+i*Math.PI/6,x=Math.cos(a)*862,y=Math.sin(a)*862;
+    c.save();c.translate(x,y);circle(43,fine,1.2);circle(47,'#a98c52',.8);c.restore();glyph(zodiac[i],x,y,61);
+    // Spokes and star junctions connect the atlas to the central astrolabe.
+    const junction=a+Math.PI/12;
+    c.strokeStyle=fine;c.lineWidth=1.2;c.beginPath();c.moveTo(Math.cos(junction)*815,Math.sin(junction)*815);c.lineTo(Math.cos(junction)*505,Math.sin(junction)*505);c.stroke();
+    star(Math.cos(junction)*495,Math.sin(junction)*495,9);
+    star(Math.cos(junction)*795,Math.sin(junction)*795,7);
   }
-  // Sparse constellation tracks in the annulus, leaving the center quiet.
-  for(let i=0;i<28;i++){
-    const a=random()*Math.PI*2,r=440+random()*330;
-    c.save();c.rotate(a);c.translate(r,0);c.strokeStyle='#ad864780';c.beginPath();c.moveTo(-24,-15);c.lineTo(18,8);c.lineTo(48,-26);c.stroke();
-    for(const [x,y] of [[-24,-15],[18,8],[48,-26]]){c.fillStyle='#ccab6da0';c.beginPath();c.arc(x,y,2,0,Math.PI*2);c.fill();}c.restore();
+  // Recognizable constellation chains, leaving the center and outer symbol band quiet.
+  const chains=[[[0,0],[22,-38],[64,-26],[83,9],[119,-12]],[[0,0],[28,24],[60,10],[89,43]],[[0,0],[19,-29],[48,-52],[82,-31],[69,9],[33,21],[0,0]]];
+  for(let i=0;i<24;i++){
+    const a=i*Math.PI/12+.08,r=565+(i%3)*76;
+    c.save();c.rotate(a);c.translate(r,0);c.rotate(-a+.25*(i%4));
+    const chain=chains[i%chains.length];c.strokeStyle='#a88a536e';c.lineWidth=1.2;c.beginPath();chain.forEach(([x,y],j)=>j?c.lineTo(x,y):c.moveTo(x,y));c.stroke();
+    chain.forEach(([x,y],j)=>{c.fillStyle=gold;c.beginPath();c.arc(x,y,j%2?2:3,0,Math.PI*2);c.fill();if(j%3===0)star(x,y,6);});c.restore();
   }
-  const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=4;return texture;
+  for(let i=0;i<160;i++){
+    const a=random()*Math.PI*2,r=520+random()*258;star(Math.cos(a)*r,Math.sin(a)*r,random()>.93?6:1.2);
+  }
+  const planets=[
+    'M0-18A18 18 0 1 1 -1-18M0 18V45M-12 33H12',
+    'M-9-14A22 22 0 1 1 -10-14M9-9L35-35M17-35H35V-17',
+    'M0-16A16 16 0 1 1 -1-16M0-16V-30M-17-43Q0-21 17-43M0 16V40M-11 30H11',
+    'M-23-25Q14-42 6-15L-20 10H22M12-35V36M1 25H24',
+    'M-10-38V30M-23-23H3M-10 7Q26-17 22 11Q18 31 34 35',
+    'M0-38V35M-13 22H13M-28-31V-15Q0 19 28-15V-31',
+    'M0-24A24 24 0 1 1 -1-24M0-2A2 2 0 1 1 -1-2',
+    'M13-27C-25-16-25 21 13 29C-5 13-5-12 13-27',
+  ];
+  planets.forEach((path,i)=>{const a=i*Math.PI/4-Math.PI/2;glyph(path,Math.cos(a)*438,Math.sin(a)*438,38);});
+  // A compass rose beneath the standing total, with thin solar rays.
+  circle(205,fine);circle(217,gold);circle(74,gold,2);circle(81,fine);
+  for(let i=0;i<32;i++){
+    c.save();c.rotate(i*Math.PI/16);c.strokeStyle=i%4===0?gold:fine;c.lineWidth=1.2;
+    c.beginPath();c.moveTo(0,-88);c.lineTo(i%2?6:11,i%4===0?-267:-202);c.lineTo(0,-179);c.lineTo(i%2?-6:-11,i%4===0?-267:-202);c.closePath();c.stroke();c.restore();
+  }
+  // Moon phases on the near rim, separated into two arcs so the player's hand has room.
+  const moonAngles=[.12,.16,.20,.24,.28,.32,.68,.72,.76,.80,.84,.88];
+  moonAngles.forEach((a,i)=>{
+    const x=Math.cos(a*Math.PI)*899,y=Math.sin(a*Math.PI)*899;
+    c.save();c.translate(x,y);c.beginPath();c.arc(0,0,12,0,Math.PI*2);c.clip();
+    const phase=i/11*Math.PI*2;c.fillStyle='#10243a';c.fillRect(-12,-12,24,24);c.fillStyle=gold;
+    for(let py=-12;py<12;py++)for(let px=-12;px<12;px++){
+      const nx=(px+.5)/12,ny=(py+.5)/12,nz=Math.sqrt(Math.max(0,1-nx*nx-ny*ny));
+      if(nx*nx+ny*ny<=1&&nx*Math.sin(phase)-nz*Math.cos(phase)>0)c.fillRect(px,py,1,1);
+    }
+    c.restore();c.strokeStyle=fine;c.lineWidth=.8;c.beginPath();c.arc(x,y,12,0,Math.PI*2);c.stroke();
+  });
+  const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=8;return texture;
 }
 
 /** Baked walnut grain keeps the physical rim inexpensive at every quality tier. */
@@ -84,15 +142,22 @@ export class ObservatoryTable {
         float goldMask=smoothstep(.01,.055,diffuseColor.r-diffuseColor.b);
         float lineMask=goldMask*smoothstep(.03,.18,max(diffuseColor.r,max(diffuseColor.g,diffuseColor.b)));
         vec3 heated=vec3(max(diffuseColor.r*1.9,.16),diffuseColor.g*.08,diffuseColor.b*.035);
-        diffuseColor.rgb=mix(diffuseColor.rgb,heated,uTableDanger*goldMask);`);
+        diffuseColor.rgb=mix(diffuseColor.rgb,heated,uTableDanger*goldMask*.42);
+        diffuseColor.rgb*=1.-lineMask*.32;`);
       shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>',`#include <emissivemap_fragment>
         float radius=length(vMapUv-vec2(.5))*2.;
         float waveRadius=1.03-uTableFlow*1.3;
-        float wave=1.-smoothstep(.025,.14,abs(radius-waveRadius));
+        float wave=1.-smoothstep(.035,.16,abs(radius-waveRadius));
         float wake=smoothstep(0.,.06,radius-waveRadius)*(1.-smoothstep(.06,.32,radius-waveRadius));
         float flash=pow(max(0.,1.-uTableFlow*5.),2.);
+        float angle=atan(vMapUv.y-.5,vMapUv.x-.5);
+        float orbitHead=pow(max(0.,cos(angle-uTableFlow*7.85398)),28.);
+        float orbitBand=1.-smoothstep(.006,.032,abs(radius-.79));
+        float spokes=pow(max(0.,cos(angle*12.-uTableFlow*12.56637)),10.);
         vec3 flowColor=mix(vec3(1.,.58,.12),vec3(1.,.045,.008),uTableDanger);
-        totalEmissiveRadiance+=flowColor*lineMask*uTableFlowStrength*(wave*3.2+wake*.18+flash*.9);`);
+        vec3 restingGold=mix(vec3(1.,.57,.16),vec3(1.,.23,.04),uTableDanger*.6);
+        totalEmissiveRadiance+=restingGold*lineMask*.018;
+        totalEmissiveRadiance+=flowColor*lineMask*uTableFlowStrength*(wave*(4.6+spokes*2.)+wake*.28+flash*.55+orbitHead*orbitBand*3.2);`);
     };
     top.rotation.x=-Math.PI/2;top.position.y=.3475;top.receiveShadow=true;this.group.add(top);
     for(const [r,w,y] of [[4.76,.012,.352],[5.015,.014,.335],[5.01,.011,.005]])this.group.add(ring(r,w,metal,y));
