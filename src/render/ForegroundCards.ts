@@ -5,6 +5,7 @@ export class ForegroundCards {
   readonly scene = new THREE.Scene();
   private renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
   private active = false;
+  private painted = false;
   contextLost = false;
 
   constructor(private camera: THREE.PerspectiveCamera, onContextChange: () => void) {
@@ -24,7 +25,7 @@ export class ForegroundCards {
 
   setActive(active: boolean): void {
     this.active = active;
-    if (!active) this.renderer.domElement.hidden = true;
+    if (!active) this.clear();
   }
 
   resize(width: number, height: number, pixelRatio: number): void {
@@ -35,7 +36,16 @@ export class ForegroundCards {
   render(): void {
     const visible = this.active && !this.contextLost && this.scene.children.some(card => card.visible);
     this.renderer.domElement.hidden = !visible;
-    if (visible) this.renderer.render(this.scene, this.camera);
+    if (visible) { this.renderer.render(this.scene, this.camera); this.painted = true; }
+    else this.clear();
+  }
+
+  private clear(): void {
+    // Explicitly erase the last draw frame before hiding the transparent canvas.
+    // Mobile compositors may otherwise retain its last painted card bitmap.
+    if (this.painted && !this.contextLost) this.renderer.clear();
+    this.painted = false;
+    this.renderer.domElement.hidden = true;
   }
 
   get drawCalls(): number { return this.renderer.domElement.hidden ? 0 : this.renderer.info.render.calls; }

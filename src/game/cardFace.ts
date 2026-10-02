@@ -27,7 +27,8 @@ export function cardFace(card: Pick<Card, 'suit' | 'rank'>): CardFace {
   return {
     suit: card.suit,
     rank: card.rank,
-    index: card.rank === 'A' ? '1' : ['J', 'Q', 'K'].includes(card.rank) ? '10' : card.rank,
+    index: ({ '7': 'CHOOSE', '8': 'REVERSE', '9': 'ZERO', '10': '-10' } as Partial<Record<Rank, string>>)[card.rank]
+      ?? (card.rank === 'A' ? '1' : ['J', 'Q', 'K'].includes(card.rank) ? '10' : card.rank),
     accent: accents[card.suit],
     special: Boolean(action),
     ...action,

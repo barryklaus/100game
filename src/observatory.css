@@ -112,8 +112,9 @@
  :is(.world3d-active,.observatory-mode) .total-caption{font-size:7px;margin-bottom:8px;}
  :is(.world3d-active,.observatory-mode) .total-event{font-size:8px;letter-spacing:.14em;}
  :is(.world3d-active,.observatory-mode) .ring-direction{font-size:12px;margin-top:7px;}
- :is(.world3d-active,.observatory-mode) .local-hand{bottom:-11%;gap:0;}
- :is(.world3d-active,.observatory-mode) .local-hand .hand-card{height:49svh;max-height:86vw;min-height:240px;}
+ :is(.world3d-active,.observatory-mode) .energy-system .total-wrap{top:calc(var(--total-y,49vh) + max(8svh,72px))!important;}
+ :is(.world3d-active,.observatory-mode) .local-hand{bottom:-2svh;gap:0;}
+ :is(.world3d-active,.observatory-mode) .local-hand .hand-card{height:min(45svh,64vw);max-height:none;min-height:0;}
  :is(.world3d-active,.observatory-mode) .dock-prompt{left:14px;bottom:38%;padding:0;width:auto;flex-direction:row;gap:7px;}
  :is(.world3d-active,.observatory-mode) .dock-prompt .dock-avatar{width:28px;height:28px;}
  :is(.world3d-active,.observatory-mode) .dock-prompt strong{font-size:9px;max-width:65px;}
@@ -167,7 +168,7 @@
 .observatory-mode:not(.world3d-active) .pile-wrap{position:absolute;transform:translate(-50%,-50%);}
 .observatory-mode:not(.world3d-active) .pile-wrap:first-child{left:25%;top:56%;}
 .observatory-mode:not(.world3d-active) .pile-wrap:nth-child(2){left:75%;top:56%;}
-@media(orientation:portrait){.observatory-mode:not(.world3d-active) .table-felt::before{inset:38% -45% 21%;}.observatory-mode:not(.world3d-active) .sprite-seat{--table-seat-y:39svh!important;}.observatory-mode:not(.world3d-active) .total-wrap{top:58.5vh!important;}.observatory-mode:not(.world3d-active) .pile-wrap{top:58.5%!important;}}
+@media(orientation:portrait){.observatory-mode:not(.world3d-active) .table-felt::before{inset:38% -45% 21%;}.observatory-mode:not(.world3d-active) .sprite-seat{--table-seat-y:39svh!important;}.observatory-mode:not(.world3d-active) .total-wrap{top:66.5svh!important;}.observatory-mode:not(.world3d-active) .pile-wrap{top:58.5%!important;}}
 .result-panel .rating-list .score-entry>span{display:block;background:none;border:0;border-radius:0;padding:0;margin:0;text-align:left;}
 .result-panel .rating-list .score-entry{min-width:0;align-items:center;}
 .result-panel .result-actions{position:sticky;bottom:-1px;padding-top:8px;background:#0e1420;}

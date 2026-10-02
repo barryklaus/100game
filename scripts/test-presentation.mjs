@@ -46,6 +46,7 @@ const labels=new Set(makeDeck().map(cardDisplayRank));
 assert.deepEqual([...labels],['1','2','3','4','5','6','CHOOSE PLAYER','REVERSE','ZERO','MINUS TEN','10']);
 assert.equal(cardFace({rank:'A',suit:'sun'}).index,'1');
 assert.equal(cardFace({rank:'K',suit:'sun'}).index,'10');
+for(const suit of ['fire','water','leaf','sun'])assert.deepEqual(['7','8','9','10'].map(rank=>cardFace({rank,suit}).index),['CHOOSE','REVERSE','ZERO','-10'],'Action corner labels are consistent in every suit without changing ranks');
 assert.deepEqual(['7','8','9','10'].map(rank=>cardFace({rank,suit:'fire'}).title),['CHOOSE A PLAYER','REVERSE','ZERO','−10']);
 assert.equal(cardFaceFromUrl('/assets/cards/water-9.webp')?.detail,'Total stays the same · +0');
 assert.equal(cardFaceFromUrl('/assets/cards/back.webp'),null);

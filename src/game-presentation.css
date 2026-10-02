@@ -231,6 +231,7 @@
   height: 100svh;
   pointer-events: none;
 }
+.foreground-cards-canvas[hidden],.world3d-canvas[hidden]{display:none!important;}
 .world3d-active body { background: #080a17; }
 .world3d-active #app { position: relative; z-index: 1; }
 .world3d-active #app:has(.modal-overlay) { z-index: 31; }

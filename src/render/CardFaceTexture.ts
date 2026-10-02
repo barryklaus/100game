@@ -38,6 +38,18 @@ function index(ctx: CanvasRenderingContext2D, value: string, x: number, y: numbe
   ctx.restore();
 }
 
+function lines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
+  const result: string[] = [];
+  let line = '';
+  for (const word of text.split(' ')) {
+    const next = line ? `${line} ${word}` : word;
+    if (line && ctx.measureText(next).width > maxWidth) { result.push(line); line = word; }
+    else line = next;
+  }
+  if (line) result.push(line);
+  return result;
+}
+
 /** Print fixed card information once. Moving light is a separate border-only mesh. */
 export async function cardFaceTexture(source: THREE.Texture, face: CardFace): Promise<THREE.CanvasTexture> {
   await loadFaceFont();
@@ -73,26 +85,34 @@ export async function cardFaceTexture(source: THREE.Texture, face: CardFace): Pr
     ctx.fillRect(edge, top, width - edge * 2, titleBand);
     ctx.fillStyle = face.accent;
     ctx.fillRect(edge, top, width - edge * 2, width * .014);
-    const rightCell = width * .205;
+    const rightCell = width * .47;
     const center = (edge + width - edge - rightCell) / 2;
-    let size = width * (face.title!.length > 10 ? .069 : .091);
+    const textWidth = width - edge * 2 - rightCell - width * .04;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    do { ctx.font = `${size}px "${FONT}", system-ui, sans-serif`; size -= 2; }
-    while (ctx.measureText(face.title!).width > width - edge * 2 - rightCell - width * .06 && size > 30);
+    const titleSize = width * .06, detailSize = width * .03;
+    ctx.font = `${titleSize}px "${FONT}", system-ui, sans-serif`;
+    const titleLines = lines(ctx, face.title!, textWidth);
+    ctx.font = `700 ${detailSize}px system-ui, sans-serif`;
+    const detailLines = lines(ctx, face.detail!, textWidth);
+    const blockHeight = titleLines.length * titleSize + width * .01 + detailLines.length * detailSize * 1.15;
+    let y = top + (titleBand - blockHeight) / 2;
+    ctx.font = `${titleSize}px "${FONT}", system-ui, sans-serif`;
     ctx.fillStyle = '#211927';
-    ctx.fillText(face.title!, center, top + titleBand * .43);
-    ctx.font = `700 ${width * .038}px system-ui, sans-serif`;
+    for (const line of titleLines) { ctx.fillText(line, center, y + titleSize / 2); y += titleSize; }
+    y += width * .01;
+    ctx.font = `700 ${detailSize}px system-ui, sans-serif`;
     ctx.fillStyle = '#5a4c55';
-    ctx.fillText(face.detail!, center, top + titleBand * .75);
+    for (const line of detailLines) { ctx.fillText(line, center, y + detailSize * .575); y += detailSize * 1.15; }
   }
 
-  const indexSize = width * (face.index.length > 1 ? .205 : .249);
+  const wordIndex = face.index.length > 3;
+  const indexSize = width * (wordIndex ? face.index === 'ZERO' ? .14 : .095 : face.index.length > 1 ? .205 : .249);
   index(ctx, face.index, width * .073, height * .052, indexSize);
   ctx.save();
   ctx.translate(width, height);
   ctx.rotate(Math.PI);
-  index(ctx, face.index, width * .073, height * .052, indexSize * .68, face.special);
+  index(ctx, face.index, width * .073, height * .052, indexSize * (wordIndex ? 1 : .68), face.special);
   ctx.restore();
 
   // A quiet hairline lends definition without widening the printed border.

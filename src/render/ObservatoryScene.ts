@@ -344,6 +344,7 @@ export class ObservatoryScene {
       this.loadTexture(this.drawCardUrl || frontUrl),
     ]);
     const root = new THREE.Group();
+    root.name = 'card-flight';
     root.visible = false;
     const visual = new THREE.Group();
     visual.add(createCardMesh(frontTexture,backTexture,/-[789]|-10\./.test(frontUrl)));
@@ -390,7 +391,7 @@ export class ObservatoryScene {
     const duration = this.reducedMotion ? 80 : draw ? 520 : spin ? (spin.turns===2?720:560) : 440;
     const spinAxis=spin?new THREE.Vector3(spin.x,spin.y,spin.z):undefined;
     const spinRotation=new THREE.Quaternion();
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.activeFlights++;
       const step = (now: number): void => {
         const raw = Math.min(1, (now - started) / duration);
@@ -416,9 +417,11 @@ export class ObservatoryScene {
         else {
           this.activeFlights--;
           this.renderer.shadowMap.needsUpdate = true;
-          onArrive?.();
-          this.hand.update(0);
+          let released = false;
           const release=()=>{
+            if (released) return;
+            released = true;
+            root.visible = false;
             root.removeFromParent();
             root.traverse(object => {
               if (object instanceof THREE.Mesh) {
@@ -427,15 +430,24 @@ export class ObservatoryScene {
                 materials.forEach(material=>material.dispose());
               }
             });
+            this.foreground.render();
             this.pruneTextureCache();
           };
-          if(draw)release();
-          else {
-            // A landed card joins the pile's depth layer until its replacement is ready.
-            this.scene.add(root);
-            this.handoff.retain(this.lastEventKey,release);
+          try {
+            onArrive?.();
+            this.hand.update(0);
+            if (!draw) {
+              // A landed card joins the pile's depth layer until its replacement is ready.
+              this.scene.add(root);
+              this.handoff.retain(this.lastEventKey,release);
+            }
+            resolve();
+          } catch (error) {
+            release(); reject(error);
+          } finally {
+            // Receiving-hand callbacks must never prevent draw-card removal.
+            if (draw) release();
           }
-          resolve();
         }
       };
       requestAnimationFrame(step);

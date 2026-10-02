@@ -263,6 +263,11 @@ button:active { translate:0 1px; }
 .playing-card .card-index.top {top:4.8%;left:7.3%;}
 .playing-card .card-index.bottom {right:7.3%;bottom:4.8%;transform:rotate(180deg);}
 .playing-card.special .card-index.bottom {color:#211927;-webkit-text-stroke:.55cqw #fff9e9;text-shadow:none;}
+.playing-card.special .card-index {font-size:20.5cqw;}
+.playing-card.special .card-index.word-index {font-size:9.5cqw;letter-spacing:0;-webkit-text-stroke:.5cqw #191525;}
+.playing-card.special .card-index[data-index="ZERO"] {font-size:14cqw;}
+.playing-card.special .card-index.bottom:not(.word-index) {font-size:13.94cqw;}
+.playing-card.special .card-index.bottom.word-index {-webkit-text-stroke:.4cqw #fff9e9;}
 .playing-card .card-action {
   position:absolute;
   display:flex;
@@ -271,15 +276,15 @@ button:active { translate:0 1px; }
   justify-content:center;
   left:5.1%;right:5.1%;bottom:3.65%;
   height:16.2%;
-  padding-right:20.5%;
+  padding:1.5% 47% 1.5% 2%;
   border-top:.9cqw solid var(--card-accent);
   background:#fff9e9;
   color:#211927;
   text-align:center;
-  white-space:nowrap;
+  white-space:normal;
 }
-.playing-card .card-action strong {font:400 6.9cqw/1 'Luckiest Guy',system-ui,sans-serif;letter-spacing:.015em;}
-.playing-card .card-action small {font:700 3.8cqw/1.15 system-ui,sans-serif;color:#5a4c55;margin-top:1cqw;}
+.playing-card .card-action strong {font:400 6cqw/1 'Luckiest Guy',system-ui,sans-serif;letter-spacing:.015em;}
+.playing-card .card-action small {font:700 3cqw/1.15 system-ui,sans-serif;color:#5a4c55;margin-top:1cqw;}
 
 /* The foil is cut to the printed frame. Color remains on a still card, while
    the sharp reflected light appears only as the card moves or tilts. */
