@@ -1,7 +1,8 @@
-import { faceFrame, nearestCenter, ringSeat, type CharacterFrame } from './PlayerRingModel';
+import { faceFrame, nearestCenter, ringSeat, seatDistance, type CharacterFrame } from './PlayerRingModel';
 import { characterHandAnchors } from './CharacterSpriteLayout';
 
-type RingState = { roundKey: string; count: number; active: number; total: number; overflow: boolean; reducedMotion: boolean; target: boolean };
+type RingState = { roundKey: string; count: number; active: number; total: number; overflow: boolean; overflowSeat?: number; reducedMotion: boolean; target: boolean };
+type OverflowStage = 'idle' | 'focus' | 'fall' | 'complete';
 /** Event-driven sprite frames; the ring has no idle animation loop. */
 export class PlayerRing {
   private state: RingState = { roundKey: '', count: 0, active: 0, total: 0, overflow: false, reducedMotion: false, target: false };
@@ -24,8 +25,15 @@ export class PlayerRing {
   private epoch = 0;
   private loaded = new Map<string, Promise<void>>();
   private readyUrls = new Set<string>();
+  private overflowStage: OverflowStage = 'idle';
+  private overflowSeat = -1;
+  private tumbleFrame = 0;
+  private tumbleDrop = 0;
+  private tumbleUsesSheet = false;
+  private tumbleRaf = 0;
+  private overflowTimer = 0;
 
-  constructor(private root: HTMLElement, private projectLayout?: () => void) {
+  constructor(private root: HTMLElement, private projectLayout?: () => void, private onOverflowComplete?: () => void) {
     root.addEventListener('pointerdown', this.down);
     root.addEventListener('pointermove', this.move);
     root.addEventListener('pointerup', this.up);
@@ -42,6 +50,8 @@ export class PlayerRing {
     this.state = next;
     if (roundChanged) {
       this.epoch++;
+      cancelAnimationFrame(this.tumbleRaf); clearTimeout(this.overflowTimer);
+      this.overflowStage = 'idle'; this.overflowSeat = -1; this.tumbleDrop = 0;
       this.cancelMove();
       this.dragging = undefined;
       this.finishDrag?.(); this.finishDrag = undefined; this.dragReleased = undefined;
@@ -52,25 +62,79 @@ export class PlayerRing {
       this.recoverTimers.forEach(clearTimeout); this.recoverTimers.clear();
       clearTimeout(this.reliefTimer); this.relieved = -1;
       this.center = this.targetCenter = next.active + .5;
-    } else if (actorChanged) {
+    } else if (actorChanged && !next.overflow) {
       if (this.dragging || this.throws.size) this.deferredFocus = next.active;
       else void this.focus(next.active);
     }
     if (next.overflow) {
       this.throws.clear(); this.recoverTimers.forEach(clearTimeout); this.recoverTimers.clear();
       this.drawWaiters.forEach(waiter => waiter.resolve()); this.drawWaiters.clear();
+      if (this.overflowStage === 'idle') this.beginOverflow(next.overflowSeat ?? next.active);
     }
+    // Warm only the current player's fall near danger, never all sixteen atlases.
+    if (!next.overflow && next.total >= 90) void this.tumbleReady(next.active);
     this.paint();
+  }
+
+  scoresReady(roundKey: string): boolean { return this.state.roundKey === roundKey && this.overflowStage === 'complete'; }
+
+  private tumbleReady(index: number): Promise<void> {
+    const url = this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .character-tumble`)?.dataset.tumbleUrl;
+    return url ? this.imageReady(url) : Promise.resolve();
+  }
+  private beginOverflow(index: number): void {
+    const epoch = this.epoch;
+    const current = () => epoch === this.epoch && this.state.overflow;
+    this.cancelMove(); this.deferredFocus = undefined; this.preparing.clear();
+    if (this.dragging?.element.hasPointerCapture(this.dragging.id)) this.dragging.element.releasePointerCapture(this.dragging.id);
+    this.dragging = undefined; this.finishDrag?.(); this.finishDrag = undefined; this.dragReleased = undefined;
+    this.overflowSeat = index; this.overflowStage = 'focus'; this.tumbleFrame = 0; this.tumbleDrop = 0;
+    if (this.state.count <= 4) this.center = (this.state.count - 1) / 2;
+    const center = this.state.count <= 4 ? index : this.center + seatDistance(index, this.center, this.state.count);
+    const finish = () => {
+      if (!current()) return;
+      this.overflowStage = 'complete'; this.paint();
+      queueMicrotask(() => { if (current()) this.onOverflowComplete?.(); });
+    };
+    if (this.state.reducedMotion) {
+      this.center = this.targetCenter = center; finish(); return;
+    }
+    const ready = this.tumbleReady(index);
+    // Let the existing number explosion land before centering the culprit.
+    this.overflowTimer = window.setTimeout(() => {
+      if (!current()) return;
+      void (async () => {
+        await this.rotate(center, true);
+        if (!current()) return;
+        // A slow or missing sheet must never prevent scores or the next round.
+        await Promise.race([ready, new Promise(resolve => setTimeout(resolve, 450))]);
+        if (!current()) return;
+        const url = this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .character-tumble`)?.dataset.tumbleUrl;
+        this.tumbleUsesSheet = !!url && this.readyUrls.has(url);
+        this.overflowStage = 'fall';
+        const started = performance.now();
+        const step = (now: number) => {
+          if (!current()) return;
+          const elapsed = now - started;
+          this.tumbleFrame = Math.min(8, Math.floor(elapsed / 145));
+          this.tumbleDrop = Math.max(0, Math.min(1, (elapsed - 1160) / 380));
+          this.paintFrames();
+          if (elapsed < 1540) this.tumbleRaf = requestAnimationFrame(step);
+          else { this.tumbleRaf = 0; finish(); }
+        };
+        this.tumbleRaf = requestAnimationFrame(step);
+      })();
+    }, 350);
   }
 
   private cancelMove(): void {
     cancelAnimationFrame(this.raf); this.raf = 0;
     this.finishMove?.(); this.finishMove = undefined; this.moving = undefined;
   }
-  private rotate(center: number): Promise<void> {
+  private rotate(center: number, includeSmall = false): Promise<void> {
     this.cancelMove();
     this.targetCenter = center;
-    if (this.state.count <= 4 || this.state.reducedMotion || Math.abs(center - this.center) < .001) { this.center = center; this.paint(); return Promise.resolve(); }
+    if ((!includeSmall && this.state.count <= 4) || this.state.reducedMotion || Math.abs(center - this.center) < .001) { this.center = center; this.paint(); return Promise.resolve(); }
     const start = this.center, started = performance.now();
     this.moving = new Promise(resolve => { this.finishMove = resolve; });
     const step = (now: number) => {
@@ -83,17 +147,18 @@ export class PlayerRing {
     return this.moving;
   }
   focus(index: number): Promise<void> {
+    if (this.overflowStage !== 'idle') return Promise.resolve();
     if (!this.state.count || this.state.count <= 4) return Promise.resolve();
     return this.rotate(nearestCenter(index, this.center, this.state.count));
   }
   /** Keep the throwing hand and replacement-card destination still during a flight. */
   show(index: number): void { if (!this.busy) void this.focus(index); }
   browse(direction: number): void { if (!this.busy) void this.rotate(Math.round(this.center - .5) + .5 + direction); }
-  private get busy(): boolean { return !!(this.preparing.size || this.throws.size || this.dragging); }
+  private get busy(): boolean { return !!(this.preparing.size || this.throws.size || this.dragging || this.overflowStage !== 'idle'); }
   get swiping(): boolean { return !!this.dragging; }
   private down = (event: PointerEvent): void => {
     const target = (event.target as HTMLElement).closest<HTMLElement>('.seat-layer');
-    if (!target || this.state.count <= 4 || event.button !== 0 || this.preparing.size || this.throws.size) return;
+    if (!target || this.state.count <= 4 || event.button !== 0 || this.busy) return;
     this.cancelMove();
     this.dragging = { id: event.pointerId, x: event.clientX, center: this.center, element: target, moved: false };
     this.dragReleased = new Promise(resolve => { this.finishDrag = resolve; });
@@ -122,7 +187,9 @@ export class PlayerRing {
   private spriteReady(index: number): Promise<void> {
     const sprite = this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .character-sprite`);
     const url = sprite?.dataset.spriteUrl;
-    if (!url) return Promise.resolve();
+    return url ? this.imageReady(url) : Promise.resolve();
+  }
+  private imageReady(url: string): Promise<void> {
     let ready = this.loaded.get(url);
     if (!ready) {
       const image = new Image(); image.src = url;
@@ -187,9 +254,26 @@ export class PlayerRing {
     return this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .sprite-hand-anchor`)?.getBoundingClientRect();
   }
   private paintFrames(): void {
+    const page = this.root.querySelector<HTMLElement>('.game-page');
+    if (page) page.dataset.overflowStage = this.overflowStage;
     this.root.querySelectorAll<HTMLButtonElement>('[data-ring-focus], [data-ring-step]').forEach(button => { button.disabled = this.busy; });
     this.root.querySelectorAll<HTMLElement>('.seat').forEach(seat => {
       const index = Number(seat.dataset.seat);
+      const culprit = this.overflowStage !== 'idle' && index === this.overflowSeat;
+      seat.classList.toggle('overflow-culprit', culprit);
+      seat.classList.toggle('overflow-support', this.overflowStage !== 'idle' && !culprit);
+      const tumble = seat.querySelector<HTMLElement>('.character-tumble');
+      const falling = culprit && ['fall', 'complete'].includes(this.overflowStage) && !this.state.reducedMotion;
+      if (tumble) {
+        const useSheet = falling && this.tumbleUsesSheet;
+        tumble.style.backgroundImage = useSheet ? `url('${tumble.dataset.tumbleUrl}')` : '';
+        seat.classList.toggle('tumbling', useSheet);
+        seat.classList.toggle('tumble-fallback', falling && !useSheet);
+        tumble.style.backgroundPosition = `${this.tumbleFrame % 3 * 50}% ${Math.floor(this.tumbleFrame / 3) * 50}%`;
+        tumble.dataset.frame = String(this.tumbleFrame);
+        seat.style.setProperty('--tumble-drop', String(this.tumbleDrop));
+        seat.style.setProperty('--tumble-progress', String(this.tumbleFrame / 8));
+      }
       const frame = this.throws.get(index) ?? faceFrame(this.state.total, index === this.state.active, index === this.relieved, this.state.overflow, seat.dataset.mood);
       const sprite = seat.querySelector<HTMLElement>('.character-sprite');
       if (sprite) {
@@ -215,7 +299,7 @@ export class PlayerRing {
     if (!this.state.count) return;
     const portrait = innerHeight > innerWidth * 1.08;
     this.root.querySelectorAll<HTMLElement>('.seat').forEach(seat => {
-      const index = Number(seat.dataset.seat), pose = ringSeat(index, this.center, this.state.count, portrait);
+      const index = Number(seat.dataset.seat), pose = ringSeat(index, this.center, this.state.count, portrait, this.overflowStage !== 'idle');
       seat.style.setProperty('--ring-x', `${pose.x * 100}vw`);
       seat.style.setProperty('--ring-y', `${pose.y * 100}svh`);
       seat.style.setProperty('--ring-scale', String(pose.scale));
@@ -228,7 +312,7 @@ export class PlayerRing {
       if (pose.visible) void this.spriteReady(index);
     });
     this.root.querySelectorAll<HTMLElement>('[data-ring-focus]').forEach(marker => {
-      const pose = ringSeat(Number(marker.dataset.ringFocus), this.center, this.state.count, portrait);
+      const pose = ringSeat(Number(marker.dataset.ringFocus), this.center, this.state.count, portrait, this.overflowStage !== 'idle');
       marker.classList.toggle('in-view', pose.visible);
       marker.setAttribute('aria-pressed', String(pose.visible));
     });

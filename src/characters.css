@@ -7,6 +7,16 @@
 .observatory-mode .seat-layer .sprite-seat .character{position:relative;width:100%!important;height:auto!important;aspect-ratio:1;display:block;clip-path:var(--table-seat-clip,none);}
 .character-sprite{position:absolute;inset:0;display:block;background-size:300% 300%;background-repeat:no-repeat;background-position:0 0;opacity:0;contain:paint;}
 .character-sprite.sprite-ready{opacity:1;}
+.character-tumble{position:absolute;inset:0;display:block;background-size:300% 300%;background-repeat:no-repeat;opacity:0;pointer-events:none;contain:paint;translate:0 calc(var(--tumble-drop,0) * 78%);}
+.tumbling .character-tumble{opacity:calc(1 - var(--tumble-drop,0));}
+.tumbling .character-sprite,.tumbling .sprite-fallback{opacity:0!important;}
+.tumble-fallback .character-sprite{translate:0 calc(var(--tumble-progress,0) * 20% + var(--tumble-drop,0) * 78%);scale:calc(1 - var(--tumble-progress,0) * .22);opacity:calc(1 - var(--tumble-drop,0));}
+.observatory-mode .seat-layer .sprite-seat.overflow-support{filter:brightness(.24)!important;pointer-events:none;}
+.observatory-mode .seat-layer .sprite-seat.overflow-culprit .character{filter:drop-shadow(0 0 6px #fff9) drop-shadow(0 0 18px #ffd98488);}
+.observatory-mode .seat-layer .sprite-seat.overflow-culprit{width:min(32vw,33svh,390px)!important;}
+.game-page[data-overflow-stage="focus"] .total-number,.game-page[data-overflow-stage="fall"] .total-number{opacity:.22;transition:opacity .3s;}
+.game-page[data-overflow-stage="focus"] .seat-score,.game-page[data-overflow-stage="fall"] .seat-score{visibility:hidden;}
+.game-page[data-overflow-stage="complete"] .result-overlay,.game-page[data-overflow-stage="complete"] .seat-score{animation-delay:0s;}
 .sprite-fallback{width:50%;height:50%;object-fit:cover;border-radius:50%;position:absolute;left:25%;top:18%;border:1px solid #bd9b69;}
 .sprite-ready+.sprite-fallback{display:none;}
 .sprite-hand-anchor{position:absolute;left:26%;top:59%;width:17%;height:24%;pointer-events:none;}
@@ -32,6 +42,7 @@
 @media(orientation:portrait){
  .observatory-mode .seat-layer.player-ring{top:15svh!important;height:35svh!important;}
  .observatory-mode .seat-layer .sprite-seat{width:28vw!important;}
+ .observatory-mode .seat-layer .sprite-seat.overflow-culprit{width:43vw!important;}
  .observatory-mode .seat-layer .sprite-seat:is(:hover,:focus-visible){transform:translate(-50%,-86%) scale(var(--ring-scale,1))!important;}
  .observatory-mode .seat-layer .sprite-seat .seat-name{font-size:10px;}
  .observatory-mode .seat-layer .sprite-seat .seat-meta{font-size:7px;}

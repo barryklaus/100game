@@ -8,11 +8,11 @@ export function seatDistance(index: number, center: number, count: number): numb
 export function nearestCenter(index: number, center: number, count: number): number {
   return center + seatDistance(index + .5, center, count);
 }
-export function ringSeat(index: number, center: number, count: number, portrait: boolean) {
-  const distance = count <= 4 ? index - (count - 1) / 2 : seatDistance(index, center, count);
+export function ringSeat(index: number, center: number, count: number, portrait: boolean, spotlight = false) {
+  const distance = count <= 4 ? index - (spotlight ? center : (count - 1) / 2) : seatDistance(index, center, count);
   const visible = Math.abs(distance) < 2;
   const u = distance / Math.max(1.5, (count - 1) / 2 * Number(count <= 4));
-  const opacity = count <= 4 ? 1 : Math.max(0, Math.min(1, (2 - Math.abs(distance)) * 2));
+  const opacity = count <= 4 && !spotlight ? 1 : Math.max(0, Math.min(1, (2 - Math.abs(distance)) * 2));
   return { distance, visible, opacity, x: .5 + u * (portrait ? .375 : .30), y: (portrait ? .32 : .30) + u * u * .012, scale: 1 - Math.min(1, Math.abs(u)) * .06 };
 }
 export type CharacterFrame = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;

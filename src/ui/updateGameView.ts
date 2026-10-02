@@ -5,7 +5,7 @@ const components = [
   'target-hint', 'side-panel', 'shared-turn', 'hand-dock', 'dock-prompt',
   'dock-avatar', 'dock-person', 'local-hand', 'dock-controls', 'emote-menu',
   'info-fab', 'dock-quote', 'result-overlay', 'modal-overlay',
-  'ring-controls', 'ring-markers', 'character-sprite',
+  'ring-controls', 'ring-markers', 'character-sprite', 'character-tumble',
 ];
 
 function identity(node: Node): string | undefined {

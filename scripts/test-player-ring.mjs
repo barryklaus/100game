@@ -16,6 +16,12 @@ for (const count of [2,3,4,5,6,7,8]) for (const portrait of [false,true]) {
   }
   const ordered=Array.from({length:count},(_,i)=>({i,...ringSeat(i,.5,count,portrait)})).filter(p=>p.visible).sort((a,b)=>a.x-b.x);
   ordered.slice(1).forEach((p,i)=>assert.equal(p.i,wrapSeat(ordered[i].i+1,count),'Clockwise logical order survives wrapping'));
+  for(let culprit=0;culprit<count;culprit++){
+    const poses=Array.from({length:count},(_,i)=>ringSeat(i,culprit,count,portrait,true));
+    assert.equal(poses[culprit].x,.5,'Every overflowing player centers exactly, including small tables');
+    assert(poses[culprit].visible);
+    assert(poses.filter(p=>p.visible).length<=4);
+  }
 }
 assert.equal(faceFrame(69,false,false,false),0);
 assert.equal(faceFrame(69,true,false,false),1);

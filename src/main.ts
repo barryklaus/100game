@@ -26,7 +26,7 @@ import { updateGameView } from './ui/updateGameView';
 import { GyroHand } from './ui/GyroHand';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
-const playerRing = new PlayerRing(app, () => observatory?.projectPlayerRing());
+const playerRing = new PlayerRing(app, () => observatory?.projectPlayerRing(), () => render());
 let settings: Settings = loadSettings();
 let stats: Stats = loadStats();
 let state: GameState | null = null;
@@ -101,6 +101,8 @@ const escapeHtml = (value: string): string => value.replace(/[&<>"']/g, char => 
 const avatarNames = ['Ember Scout', 'Tide Scholar', 'Grove Guardian', 'Sun Knight', 'Storm Pilot', 'Coral Bard', 'Mushroom Alchemist', 'Desert Ranger', 'Moon Seer', 'River Courier', 'Thorn Duelist', 'Forge Captain', 'Cloud Mechanic', 'Marsh Mystic', 'Wildwood Archer', 'Dawn Dancer'];
 const avatarImage = (index: number): string => `${import.meta.env.BASE_URL}assets/avatars/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.jpg`;
 const characterSheet = (index: number): string => `${import.meta.env.BASE_URL}assets/characters/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.webp?v=${CHARACTER_SPRITE_VERSION}`;
+const tumbleSheet = (index: number): string => `${import.meta.env.BASE_URL}assets/characters/tumbles/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}-tumble.webp?v=1`;
+const gameRoundKey = (): string => state ? `${state.round}:${state.players.map(player=>player.name).join(':')}` : '';
 const localSeat = (): number => online?.localSeat ?? Math.max(0, settings.seats.findIndex(seat => seat.kind === 'human'));
 const canControlActor = (): boolean => !!state && !awaitingNetwork && (!online || state.turn === online.state?.turn) && state.players[state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current]?.kind === 'human' && (!online || (state.phase === 'target' ? state.pendingSevens.at(-1) : state.current) === online.localSeat);
 function closeOnline(): void {
@@ -451,7 +453,7 @@ function seatHtml(player: GameState['players'][number], index: number, count: nu
   const active = state.phase !== 'ended' && (state.phase === 'target' ? state.pendingSevens.at(-1) === index : state.current === index);
   const targetable = state.phase === 'target' && canControlActor() && index !== state.pendingSevens.at(-1);
   const suit = ['fire','water','leaf','sun'][index%4] as keyof typeof suitSymbols;
-  return `<button class="seat sprite-seat ${index===localSeat()?'local-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit}" data-seat="${index}" data-mood="${player.mood}" style="--seat-x:${x}%;--seat-y:${y}%;--seat-index:${index}" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards"><span class="reaction-bubble">${reaction[index]||''}</span><span class="character"><span class="character-sprite" data-avatar="${player.avatar}" data-sprite-url="${characterSheet(player.avatar)}" style="background-image:url('${characterSheet(player.avatar)}')" aria-hidden="true"></span><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="sprite-hand-anchor" aria-hidden="true"></span></span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)} <span class="seat-count" aria-hidden="true">${player.hand.length}</span></span><span class="seat-meta">★ ${player.ratingDelta>=0?'+':''}${player.ratingDelta} · ${index===localSeat()?'YOU':player.kind==='cpu'?'CPU':'PLAYER'}</span>${state.phase==='ended'?`<span class="seat-score ${player.ratingDelta<0?'negative':''}">${player.ratingDelta>=0?'+':''}${player.ratingDelta}</span>`:''}</span></button>`;
+  return `<button class="seat sprite-seat ${index===localSeat()?'local-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit}" data-seat="${index}" data-mood="${player.mood}" style="--seat-x:${x}%;--seat-y:${y}%;--seat-index:${index}" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards"><span class="reaction-bubble">${reaction[index]||''}</span><span class="character"><span class="character-sprite" data-avatar="${player.avatar}" data-sprite-url="${characterSheet(player.avatar)}" style="background-image:url('${characterSheet(player.avatar)}')" aria-hidden="true"></span><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="character-tumble" data-tumble-url="${tumbleSheet(player.avatar)}" aria-hidden="true"></span><span class="sprite-hand-anchor" aria-hidden="true"></span></span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)} <span class="seat-count" aria-hidden="true">${player.hand.length}</span></span><span class="seat-meta">★ ${player.ratingDelta>=0?'+':''}${player.ratingDelta} · ${index===localSeat()?'YOU':player.kind==='cpu'?'CPU':'PLAYER'}</span>${state.phase==='ended'?`<span class="seat-score ${player.ratingDelta<0?'negative':''}">${player.ratingDelta>=0?'+':''}${player.ratingDelta}</span>`:''}</span></button>`;
 }
 function gameLogLine(item: string): string {
   const playerIndex = state?.players.findIndex(player => item.startsWith(`${player.name} `)) ?? -1;
@@ -477,7 +479,7 @@ function gameView(): string {
     </section><aside class="side-panel"><div class="side-card"><div class="eyebrow">AT THE TABLE</div><h3>${state.phase==='target'?'Choosing a target: ':state.forced?'Forced play: ':'Now playing: '}${escapeHtml(active.name)}</h3></div><div class="side-card log-card"><div class="card-heading"><h3>Game Log</h3><span>RECENT MOVES</span></div><ul>${state.log.slice(0,7).map(gameLogLine).join('')}</ul></div></aside></div>
     ${otherLocalTurn ? `<div class="shared-turn" role="region" aria-label="${escapeHtml(active.name)}'s local turn"><strong>Pass the device to ${escapeHtml(active.name)}</strong><span>${state.phase === 'target' ? 'Tap a highlighted player at the table.' : 'Double-tap a card or flick it toward the table.'}</span><div class="shared-hand">${state.phase === 'playing' ? active.hand.map(card=>cardElement(card,selectedCard===card.id,'hand-card')).join('') : ''}</div></div>` : ''}
     <footer class="hand-dock"><div class="dock-prompt ${myTurn?'my-turn':''}">${myTurn?'<span class="your-turn-bubble">YOUR TURN</span>':''}<img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${mine ? `${mine.ratingDelta>=0?'+':''}${mine.ratingDelta} · Round score` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Double-tap a card or flick it upward' : awaitingNetwork ? 'Confirming your move…' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><div class="emote-menu ${emotesOpen?'open':''}"><button class="emote-trigger" data-action="emotes" aria-label="Choose emote" aria-expanded="${emotesOpen}">☺<small>EMOTE</small></button><div class="emote-wheel" aria-label="Emotes" ${emotesOpen?'':'inert aria-hidden="true"'}>${(['Happy','Excited','Confused','Angry','Sad','Smug','Scared','Thinking'] as const).map(m=>`<button data-emote="${m}" title="${m}" aria-label="${m}">${moodSymbols[m]}</button>`).join('')}</div></div><button class="info-fab" data-action="rules" aria-label="Game information">i<small>INFO</small></button><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
-    ${state.phase==='ended'&&!presentedTotal.pending?resultView():''}</main>`;
+    ${state.phase==='ended'&&!presentedTotal.pending&&playerRing.scoresReady(gameRoundKey())?resultView():''}</main>`;
 }
 function resultView(): string {
   if (!state) return '';
@@ -512,7 +514,7 @@ async function dealOpeningHand(snapshot:GameState):Promise<void>{
 }
 function syncPlayerRing(): void {
   const active = !!state && (!online || online.status === 'playing');
-  playerRing.sync({ roundKey: active ? `${state!.round}:${state!.players.map(player=>player.name).join(':')}` : '', count: active ? state!.players.length : 0, active: state?.phase === 'target' ? state.pendingSevens.at(-1)! : state?.current ?? 0, total: presentedTotal.visible.total, overflow: presentedTotal.visible.total > 100, reducedMotion: settings.reducedMotion, target: state?.phase === 'target' });
+  playerRing.sync({ roundKey: active ? `${state!.round}:${state!.players.map(player=>player.name).join(':')}` : '', count: active ? state!.players.length : 0, active: state?.phase === 'target' ? state.pendingSevens.at(-1)! : state?.current ?? 0, total: presentedTotal.visible.total, overflow: active && presentedTotal.visible.total > 100, overflowSeat: state?.bust ?? undefined, reducedMotion: settings.reducedMotion, target: state?.phase === 'target' });
 }
 function render(): void {
   const discard = state?.played.at(-1);
@@ -554,7 +556,7 @@ function render(): void {
   if(roundKey!==presentedRound){
     presentedRound=roundKey;
     ++dealEpoch;openingDeal=false;
-    if(state&&!settings.reducedMotion&&(!online||online.status==='playing')){
+    if(state&&state.phase!=='ended'&&!settings.reducedMotion&&(!online||online.status==='playing')){
       const snapshot=state;requestAnimationFrame(()=>{if(state===snapshot)void dealOpeningHand(snapshot);});
     }
   }

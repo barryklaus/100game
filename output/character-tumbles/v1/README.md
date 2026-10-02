@@ -21,4 +21,4 @@ Regenerate the packed sheets with:
 python3 scripts/assets/pack-tumble-sheets.py
 ```
 
-These assets are prepared for the overflow sequence. Gameplay integration, automatic slider focus and delayed score-panel presentation have not been applied to the live game in this artwork step.
+The optimized sheets are integrated in the game under `public/assets/characters/tumbles`. After the presented total overflows, the slider centers the actual overflowing player, dims the others, plays the backward fall behind the tabletop, then shows scores. The next round cancels and resets the sequence. Reduced motion uses immediate focus and scores; missing or slow images use a bounded fallback. No rule or scoring changes are included.
