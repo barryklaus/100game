@@ -47,8 +47,8 @@ assert.deepEqual([...labels],['1','2','3','4','5','6','CHOOSE PLAYER','REVERSE',
 assert.equal(cardFace({rank:'A',suit:'sun'}).index,'1');
 assert.equal(cardFace({rank:'K',suit:'sun'}).index,'10');
 for(const suit of ['fire','water','leaf','sun'])assert.deepEqual(['7','8','9','10'].map(rank=>cardFace({rank,suit}).index),['CHOOSE','REVERSE','ZERO','-10'],'Action corner labels are consistent in every suit without changing ranks');
-assert.deepEqual(['7','8','9','10'].map(rank=>cardFace({rank,suit:'fire'}).title),['CHOOSE A PLAYER','REVERSE','ZERO','−10']);
-assert.equal(cardFaceFromUrl('/assets/cards/water-9.webp')?.detail,'Total stays the same · +0');
+assert.deepEqual(['7','8','9','10'].map(rank=>cardFace({rank,suit:'fire'}).title),['CHOOSE PLAYER','REVERSE','ZERO','−10']);
+assert.equal(cardFaceFromUrl('/assets/cards/water-9.webp')?.detail,'Keep the total unchanged.');
 assert.equal(cardFaceFromUrl('/assets/cards/back.webp'),null);
 const {CardPile,CARD_TABLE_HEIGHT}=await load('src/render/CardPile.ts');
 const {CARD_THICKNESS,CLEAN_CARD_LAYER,createCardMesh,disposeCardMesh}=await load('src/render/CardMesh.ts');

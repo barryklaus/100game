@@ -78,7 +78,7 @@ export async function cardFaceTexture(source: THREE.Texture, face: CardFace): Pr
   ctx.drawImage(image, edge, edge, width - edge * 2, height - edge * 2);
   ctx.restore();
 
-  const titleBand = face.special ? height * .162 : 0;
+  const titleBand = face.special ? height * .185 : 0;
   if (face.special) {
     const top = height - edge - titleBand;
     ctx.fillStyle = '#fff9e9';
@@ -90,7 +90,7 @@ export async function cardFaceTexture(source: THREE.Texture, face: CardFace): Pr
     const textWidth = width - edge * 2 - rightCell - width * .04;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    const titleSize = width * .06, detailSize = width * .03;
+    const titleSize = width * .06, detailSize = width * .04;
     ctx.font = `${titleSize}px "${FONT}", system-ui, sans-serif`;
     const titleLines = lines(ctx, face.title!, textWidth);
     ctx.font = `700 ${detailSize}px system-ui, sans-serif`;
@@ -102,7 +102,7 @@ export async function cardFaceTexture(source: THREE.Texture, face: CardFace): Pr
     for (const line of titleLines) { ctx.fillText(line, center, y + titleSize / 2); y += titleSize; }
     y += width * .01;
     ctx.font = `700 ${detailSize}px system-ui, sans-serif`;
-    ctx.fillStyle = '#5a4c55';
+    ctx.fillStyle = '#322938';
     for (const line of detailLines) { ctx.fillText(line, center, y + detailSize * .575); y += detailSize * 1.15; }
   }
 

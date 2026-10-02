@@ -16,10 +16,10 @@ const accents: Record<Suit, string> = {
 };
 
 const actions: Partial<Record<Rank, { title: string; detail: string }>> = {
-  '7': { title: 'CHOOSE A PLAYER', detail: 'They play next · +0' },
-  '8': { title: 'REVERSE', detail: 'Change direction · +0' },
-  '9': { title: 'ZERO', detail: 'Total stays the same · +0' },
-  '10': { title: '−10', detail: 'Subtract 10 from total' },
+  '7': { title: 'CHOOSE PLAYER', detail: 'Choose who plays next.' },
+  '8': { title: 'REVERSE', detail: 'Reverse the turn order.' },
+  '9': { title: 'ZERO', detail: 'Keep the total unchanged.' },
+  '10': { title: '−10', detail: 'Subtract 10 from the total.' },
 };
 
 export function cardFace(card: Pick<Card, 'suit' | 'rank'>): CardFace {
