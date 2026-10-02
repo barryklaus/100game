@@ -1,0 +1,44 @@
+/* Approved Celestial Observatory: painted room + the existing physical game. */
+.observatory-backdrop{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#081327;}
+.observatory-backdrop[hidden]{display:none!important;}
+.observatory-backdrop>img{width:100%;height:100%;object-fit:cover;object-position:center;}
+.observatory-backdrop::after{content:'';position:absolute;inset:0;background:linear-gradient(#04071145,transparent 28%,#02060b12 65%,#02060b55);}
+.observatory-mode .world3d-canvas{z-index:1;}
+.observatory-mode #app{position:relative;z-index:2;}
+.observatory-mode #app:has(.modal-overlay),.observatory-mode #app:has(.result-overlay){z-index:31;}
+.observatory-mode .game-header{background:linear-gradient(#04080cbf,transparent)!important;text-shadow:0 2px 5px #000;}
+.observatory-mode .wallet-pill,.observatory-mode .header-actions button,.observatory-mode .ring-marker,.observatory-mode .ring-controls>button{background:#08121fe6;border-color:#c7a16680;}
+.observatory-mode .ring-marker.current{background:#e9c682;color:#271808;border-color:#ffe3a0;box-shadow:0 0 9px #ffbb4688;}
+.observatory-mode .header-status{color:#f7df9e;text-shadow:0 2px 6px #000;}
+.observatory-mode .seat-layer .sprite-seat .seat-info{background:linear-gradient(#07101dcc,transparent)!important;border-radius:7px;padding:3px 5px!important;}
+.observatory-mode .seat-layer .sprite-seat .seat-name{color:#f5e8c9;text-shadow:0 1px 3px #000,0 2px 8px #000;}
+.observatory-mode .seat-layer .sprite-seat .seat-meta{color:#cfbf9e;}
+.observatory-mode .energy-system .total-number{font-size:clamp(104px,12vw,190px)!important;text-shadow:0 3px 0 #6a5a40,0 10px 20px #0009;}
+.observatory-mode .energy-system .total-wrap{top:calc(var(--total-y,49vh) + 5svh)!important;}
+.observatory-mode .total-caption{color:#eee1c4;opacity:.86;}
+.observatory-mode .local-hand{bottom:6svh!important;}
+.observatory-mode .local-hand .hand-card{height:clamp(190px,32svh,370px)!important;}
+.observatory-mode .emote-trigger,.observatory-mode .info-fab{background:#07111fec!important;border-color:#d0b37b99!important;color:#e2d7c3!important;}
+/* The fallback shows the same room and a simple felt oval if WebGL is unavailable. */
+.observatory-mode:not(.world3d-active) .game-page{background:linear-gradient(#03070c44,#03070c66),url('/assets/scene/celestial-v1/room-desktop.webp') center/cover!important;}
+.observatory-mode:not(.world3d-active) .table-felt::before{border:12px solid #754a2c!important;background:repeating-radial-gradient(ellipse,#12243b 0 14%,#9d7e4855 14.2%,#12243b 14.5% 16%);box-shadow:0 5px 0 4px #3e2518,0 16px 22px #0008;}
+.observatory-mode:not(.world3d-active) .draw-stack{outline:none!important;border:0!important;box-shadow:0 5px 9px #0008!important;}
+@media(orientation:portrait){
+ .observatory-mode .game-header{padding:16px 12px!important;}
+ .observatory-mode .match-plaque strong{font-size:25px!important;}
+ .observatory-mode .match-plaque strong span{font-size:6px!important;letter-spacing:.14em!important;}
+ .observatory-mode .energy-system .total-number{font-size:clamp(94px,30vw,158px)!important;}
+ .observatory-mode .energy-system .total-wrap{top:calc(var(--total-y,49vh) + max(4svh,32px))!important;}
+ .observatory-mode .local-hand{bottom:4svh!important;}
+ .observatory-mode .local-hand .hand-card{height:min(39svh,57vw)!important;}
+ .observatory-mode .seat-layer .sprite-seat .seat-meta{font-size:6px;}
+ .observatory-mode .seat-layer .sprite-seat{width:26vw!important;}
+ .observatory-mode .seat-layer .sprite-seat .seat-info{padding:2px 0!important;}
+ .observatory-mode:not(.world3d-active) .game-page{background-image:linear-gradient(#03070c44,#03070c66),url('/assets/scene/celestial-v1/room-mobile.webp')!important;}
+ .observatory-mode:not(.world3d-active) .energy-system .total-wrap{top:60svh!important;}
+}
+@media(orientation:landscape) and (max-height:520px){
+ .observatory-mode .local-hand{bottom:3svh!important;}
+ .observatory-mode .local-hand .hand-card{height:35svh!important;}
+ .observatory-mode .energy-system .total-number{font-size:clamp(80px,20svh,104px)!important;}
+}

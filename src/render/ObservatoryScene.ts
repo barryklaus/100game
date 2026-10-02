@@ -76,9 +76,10 @@ export class ObservatoryScene {
   private hand!: PhysicalHand;
   private foreground!: ForegroundCards;
   private environment!: THREE.WebGLRenderTarget;
+  private backdrop = document.createElement('picture');
   private lastEventKey = '';
 
-  private ceilingLight = new THREE.SpotLight(0xeee2d3, 145, 23, .71, .82, 1.5);
+  private ceilingLight = new THREE.SpotLight(0xffe2b2, 180, 23, .71, .82, 1.5);
   private lastSeatUpdate = -1;
   private seatProjectionDirty = true;
   private profileTime=0;
@@ -111,15 +112,25 @@ export class ObservatoryScene {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.shadowMap.autoUpdate = false;
-    this.renderer.setClearColor(0x03050a, 1);
+    this.renderer.setClearColor(0x03050a, 0);
     this.renderer.domElement.className = 'world3d-canvas';
     this.renderer.domElement.setAttribute('aria-hidden', 'true');
     document.body.prepend(this.renderer.domElement);
+    this.backdrop.className='observatory-backdrop';
+    this.backdrop.setAttribute('aria-hidden','true');
+    this.backdrop.hidden=true;
+    const source=document.createElement('source');
+    source.media='(orientation: portrait)';
+    source.srcset=`${import.meta.env.BASE_URL}assets/scene/celestial-v1/room-mobile.webp`;
+    const image=document.createElement('img');
+    image.src=`${import.meta.env.BASE_URL}assets/scene/celestial-v1/room-desktop.webp`;
+    image.alt='';image.decoding='async';
+    this.backdrop.append(source,image);document.body.prepend(this.backdrop);
     this.foreground = new ForegroundCards(this.camera, this.refreshContext);
     this.renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();this.refreshContext();});
     this.renderer.domElement.addEventListener('webglcontextrestored',this.refreshContext);
 
-    this.scene.background = new THREE.Color(0x03050a);
+    this.scene.background = null;
     this.scene.fog = new THREE.FogExp2(0x03050a, .025);
     this.buildWorld();
 
@@ -184,7 +195,6 @@ export class ObservatoryScene {
     }
     this.hand.configure(options.reducedMotion);
     this.ring.configure(options.quality);
-    this.table.configure(options.quality);
     this.fireworks.configure(options.quality);
     this.discardPile.setDetail(options.quality==='ultra'?14:options.quality==='high'?10:options.quality==='medium'?7:4);
     this.resize();
@@ -223,6 +233,7 @@ export class ObservatoryScene {
       this.lastEventKey=key;
     }
     this.renderer.domElement.hidden = !next.active||this.contextLost;
+    this.backdrop.hidden=!next.active;
     this.foreground.setActive(next.active && !next.roundEnded && !this.contextLost);
     document.documentElement.classList.toggle('world3d-active', next.active&&!this.contextLost);
     document.documentElement.classList.toggle('world3d-total', next.active&&!this.contextLost);
@@ -555,11 +566,11 @@ export class ObservatoryScene {
   private resize = (): void => {
     const portrait = innerHeight > innerWidth * 1.08;
     this.camera.aspect = innerWidth / innerHeight;
-    this.camera.fov = portrait ? 46 : 42;
+    this.camera.fov = portrait ? 46 : 40;
     this.camera.position.set(0, portrait ? 10.0 : 7.0, portrait ? 14.2 : 11.0);
     this.world.rotation.x = .18;
-    this.table.group.scale.set(portrait ? 1.30 : 1.38,1,.70);
-    this.camera.lookAt(0, portrait ? .6 : .45, portrait ? .1 : -.3);
+    this.table.group.scale.set(portrait ? 1.30 : 1.45,1,.70);
+    this.camera.lookAt(0, portrait ? .6 : .95, portrait ? .1 : -.3);
     this.camera.updateProjectionMatrix();
     this.camera.updateMatrixWorld();
     const budget = QUALITY_PRESETS[this.quality];
@@ -588,9 +599,6 @@ export class ObservatoryScene {
         pile.position.set(side*pileX/widthScale,0,pileZ);
         pile.scale.set(1/widthScale,1,1/widthScale);
       }
-      this.deckStack.updateMatrix();
-      this.table.cradle.matrixAutoUpdate=false;
-      this.table.cradle.matrix.copy(this.deckStack.matrix);
       this.pileShadows.forEach((shadow,i)=>{
         shadow.position.set((i===0?-pileX:pileX)/widthScale,.3485,pileZ);
         shadow.scale.setScalar(1/widthScale);
@@ -755,6 +763,7 @@ export class ObservatoryScene {
     this.textureCache.forEach(pending => void pending.then(texture => texture.dispose()));
     this.renderer.dispose();
     this.renderer.domElement.remove();
+    this.backdrop.remove();
     document.documentElement.classList.remove('world3d-active','world3d-total');
   }
 }

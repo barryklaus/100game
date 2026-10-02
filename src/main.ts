@@ -8,6 +8,7 @@ import './game-presentation.css';
 import './premium.css';
 import './observatory.css';
 import './characters.css';
+import './celestial.css';
 import { CONFIG, MOODS, moodSymbols, suitSymbols } from './data/config';
 import { defaultSeats, loadSettings, loadStats, saveSettings, saveStats, type Settings, type Stats } from './data/storage';
 import { backImage, cardDisplayRank, cardImage, cardImageLossless, prefersLosslessHand } from './game/deck';
