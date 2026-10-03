@@ -11,7 +11,7 @@
     "test:next": "node scripts/test-next.mjs",
     "deploy:next": "node scripts/deploy-next.mjs",
     "publish:next": "node scripts/publish-next.mjs",
-    "test": "node scripts/test-rules.mjs && node scripts/test-online.mjs && node scripts/test-hosted.mjs && node scripts/test-presentation.mjs && node scripts/test-gyro.mjs && node scripts/test-suspense.mjs && node scripts/test-player-ring.mjs",
+    "test": "node scripts/test-rules.mjs && node scripts/test-online.mjs && node scripts/test-hosted.mjs && node scripts/test-presentation.mjs && node scripts/test-gyro.mjs && node scripts/test-suspense.mjs && node scripts/test-player-ring.mjs && node scripts/test-traditional.mjs",
     "preview": "vite preview --host 0.0.0.0",
     "dev:cloudflare": "wrangler dev --local",
     "deploy:cloudflare": "pnpm build:cloudflare && wrangler deploy"

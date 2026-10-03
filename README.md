@@ -56,6 +56,16 @@ On GitHub Pages, a failed connection or unconfirmed move eventually shows a retr
 
 ## Run locally
 
+### Finn and June animation play test (100next)
+
+Open [the two-character trial](https://100next.pages.dev/?characters=finn-june), or select **Finn & June** in the 100next setup. The link prepares Finn as Human and June as CPU. Change June to Human for a shared-device two-player test, or create an online room and share its invite. Invites retain the character selection. The existing Observatory cast remains selectable.
+
+Both characters use complete traditional drawings: 14 motion clips and 26 expression variants each. Ordinary gestures use one fixed burgundy chair; the character and chair tumble together on overflow. Throws and catches follow actual card release and arrival events. Eye/head reactions follow the other player's screen position. Rules and turn limits are unchanged.
+
+The logical cells retain uniform 128-pixel minimum padding. Runtime atlases omit that empty padding and restore it during drawing, reducing decoded atlas memory from about 144 MiB to 36 MiB for the pair. Images load on demand, and resting poses are not continuously repainted. These are animation trial assets for gameplay review, not a finished eight-character cast. Generation prompts and layout provenance are in `scripts/assets/social-club/`; padding, chair and timing proofs accompany the runtime assets.
+
+For local testing use `pnpm exec vite --mode 100next`, then open `/?characters=finn-june` on its local URL.
+
 Requires Node.js 22+ and pnpm 11 for development only. Players only need a modern browser.
 
 ```bash

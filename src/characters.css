@@ -39,10 +39,19 @@
 .ring-marker:focus-visible,.ring-controls>button:focus-visible{outline:2px solid #fff;outline-offset:3px;}
 .observatory-mode .target-hint{top:6.5svh!important;max-width:90vw;text-align:center;font-size:10px;}
 .reduce-motion .sprite-seat .character{filter:none!important;}
+/* Traditional cells keep their generous padding; the art expands inside the same rim mask. */
+.observatory-mode .seat-layer .sprite-seat.traditional-seat{width:min(43vw,calc(94vw / min(var(--player-count),4)),50svh,600px)!important;}
+.observatory-mode .seat-layer .traditional-seat.overflow-culprit{width:min(43vw,calc(94vw / min(var(--player-count),4)),50svh,600px)!important;}
+.traditional-sprite{position:absolute;left:-50%;top:-26%;width:200%;height:200%;pointer-events:none;}
+.traditional-sprite[data-ready="true"]+.sprite-fallback{display:none;}
+.cast-choice{display:block;margin:16px 0;color:#d6c596;font:600 11px system-ui;}
+.cast-choice select{display:block;margin-top:8px;width:100%;padding:12px;border:1px solid #9a866455;border-radius:8px;background:#101725;color:#f2e6c8;font:16px system-ui;}
 @media(orientation:portrait){
  .observatory-mode .seat-layer.player-ring{top:15svh!important;height:35svh!important;}
  .observatory-mode .seat-layer .sprite-seat{width:28vw!important;}
+ .observatory-mode .seat-layer .sprite-seat.traditional-seat{width:min(46vw,calc(96vw / min(var(--player-count),4)),38svh)!important;}
  .observatory-mode .seat-layer .sprite-seat.overflow-culprit{width:43vw!important;}
+ .observatory-mode .seat-layer .traditional-seat.overflow-culprit{width:min(46vw,calc(96vw / min(var(--player-count),4)),38svh)!important;}
  .observatory-mode .seat-layer .sprite-seat:is(:hover,:focus-visible){transform:translate(-50%,-86%) scale(var(--ring-scale,1))!important;}
  .observatory-mode .seat-layer .sprite-seat .seat-name{font-size:10px;}
  .observatory-mode .seat-layer .sprite-seat .seat-meta{font-size:7px;}

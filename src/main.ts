@@ -32,6 +32,8 @@ const isHostedVersion = isNextVersion || import.meta.env.MODE === 'cloudflare';
 if (isNextVersion) document.title = '100next — Simple Numbers. Big Reactions.';
 const playerRing = new PlayerRing(app, () => observatory?.projectPlayerRing(), () => render());
 let settings: Settings = loadSettings();
+let trialCast=isNextVersion&&new URLSearchParams(location.search).get('characters')==='finn-june';
+if(trialCast){settings.playerCount=2;settings.seats[0]={...settings.seats[0],name:'Finn',avatar:0,kind:'human',mood:'Normal'};settings.seats[1]={...settings.seats[1],name:'June',avatar:1,kind:'cpu',mood:'Normal'};}
 let stats: Stats = loadStats();
 let state: GameState | null = null;
 let selectedCard: string | null = null;
@@ -102,8 +104,11 @@ function totalClass(total: number): string {
 }
 
 const escapeHtml = (value: string): string => value.replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char]!);
-const avatarNames = ['Ember Scout', 'Tide Scholar', 'Grove Guardian', 'Sun Knight', 'Storm Pilot', 'Coral Bard', 'Mushroom Alchemist', 'Desert Ranger', 'Moon Seer', 'River Courier', 'Thorn Duelist', 'Forge Captain', 'Cloud Mechanic', 'Marsh Mystic', 'Wildwood Archer', 'Dawn Dancer'];
-const avatarImage = (index: number): string => `${import.meta.env.BASE_URL}assets/avatars/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.jpg`;
+const observatoryAvatarNames = ['Ember Scout', 'Tide Scholar', 'Grove Guardian', 'Sun Knight', 'Storm Pilot', 'Coral Bard', 'Mushroom Alchemist', 'Desert Ranger', 'Moon Seer', 'River Courier', 'Thorn Duelist', 'Forge Captain', 'Cloud Mechanic', 'Marsh Mystic', 'Wildwood Archer', 'Dawn Dancer'];
+let avatarNames=trialCast?['Finn','June']:observatoryAvatarNames;
+const trialCharacter=(index:number):'finn'|'june'=>index%2===0?'finn':'june';
+const avatarImage = (index: number): string => trialCast?`${import.meta.env.BASE_URL}assets/social-club/${trialCharacter(index)}-portrait.webp`:`${import.meta.env.BASE_URL}assets/avatars/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.jpg`;
+function castPath(room?:string):string{const params=new URLSearchParams();if(room)params.set('room',room);if(trialCast)params.set('characters','finn-june');return location.pathname+(params.size?'?'+params:'');}
 const characterSheet = (index: number): string => `${import.meta.env.BASE_URL}assets/characters/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.webp?v=${CHARACTER_SPRITE_VERSION}`;
 const tumbleSheet = (index: number): string => `${import.meta.env.BASE_URL}assets/characters/tumbles/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}-tumble.webp?v=1`;
 const gameRoundKey = (): string => state ? `${state.round}:${state.players.map(player=>player.name).join(':')}` : '';
@@ -111,7 +116,7 @@ const localSeat = (): number => online?.localSeat ?? Math.max(0, settings.seats.
 const canControlActor = (): boolean => !!state && !awaitingNetwork && (!online || state.turn === online.state?.turn) && state.players[state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current]?.kind === 'human' && (!online || (state.phase === 'target' ? state.pendingSevens.at(-1) : state.current) === online.localSeat);
 function closeOnline(): void {
   online?.close(); online = null; state = null; onlineMode = null; selectedCard = null; recordedRound = 0; awaitingNetwork = false; pendingLog = ''; observedOnlineHand.clear(); observedOnlineRound = 0; clearCpu();
-  history.replaceState(null, '', location.pathname);
+  history.replaceState(null, '', castPath());
   render();
 }
 function roomChanged(): void {
@@ -180,7 +185,7 @@ function connectOnline(mode: 'host' | 'join'): void {
   const Room = isHostedVersion ? HostedRoom : OnlineRoom;
   online = new Room(mode === 'join' ? 'guest' : 'host', code, { name, avatar, mood: settings.seats[0].mood }, roomChanged);
   onlineMode = mode; recordedRound = 0;
-  if (mode === 'host') { online.setCpuCount(roomCpuCount); history.replaceState(null, '', `${location.pathname}?room=${code}`); }
+  if (mode === 'host') { online.setCpuCount(roomCpuCount); history.replaceState(null, '', castPath(code)); }
   render();
 }
 function applyPreferences(): void {
@@ -208,9 +213,11 @@ function react(ids: number[], text: string): void {
   window.setTimeout(() => { ids.forEach(id => delete reaction[id]); if (!locked) render(); }, 1500);
 }
 
-function animateOpponentDraw(seatIndex: number): void {
+async function animateOpponentDraw(seatIndex: number): Promise<void> {
   if (!observatory?.canAnimate || settings.reducedMotion) { playerRing.received(seatIndex); return; }
-  const target = playerRing.handRect(seatIndex);
+  const roundKey=gameRoundKey();
+  const target = await playerRing.prepareDraw(seatIndex);
+  if(roundKey!==gameRoundKey()||!state||state.phase==='ended')return;
   if (!target) { playerRing.received(seatIndex); return; }
   // Both sides use the back artwork: other players' replacement cards stay private.
   audio.play('draw-pile');
@@ -401,6 +408,7 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
 function chooseTarget(target: number): void {
   if (!state || state.phase !== 'target' || locked || awaitingNetwork || (online && state.turn !== online.state?.turn)) return;
   const chooser = state.pendingSevens.at(-1)!;
+  playerRing.chosen(chooser,target);
   if (online) { awaitingNetwork = !online.isHost || online instanceof HostedRoom; pendingLog = state.log[0]; online.target(target); render(); return; }
   selectTarget(state, target);
   react([target], '✧');
@@ -435,6 +443,7 @@ function setupView(): string {
   return `<main class="setup-page">
     <div class="setup-hero"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">THE CARD GAME</div><h1>Simple numbers.<br><em>Big reactions.</em></h1><p>Look at your two cards. Make your move. Don't be the one who goes over 100.</p><div class="hero-cards">${cardElement({id:'fire-7',suit:'fire',rank:'7'},false,'hero-card one')}${cardElement({id:'water-8',suit:'water',rank:'8'},false,'hero-card two')}${cardElement({id:'sun-10',suit:'sun',rank:'10'},false,'hero-card three')}</div><div class="hero-footer">PLAY. BLUFF. SURVIVE.</div></div>
     <section class="setup-panel"><div class="panel-top"><span class="eyebrow">GATHER ROUND</span><div class="top-links"><button data-action="rules">How to play</button><button data-action="stats">Stats</button><button data-action="settings">⚙ Settings</button></div></div><h2>Set the table</h2><p class="muted">Choose 2–8 players. Any seat can be Human or CPU.</p>
+      ${isNextVersion ? `<label class="cast-choice">CHARACTERS<select id="character-cast"><option value="observatory" ${!trialCast?'selected':''}>Observatory</option><option value="finn-june" ${trialCast?'selected':''}>Finn &amp; June</option></select></label>` : ''}
       <div class="setup-controls"><label>PLAYERS<select id="player-count">${Array.from({length:7},(_,i)=>`<option value="${i+2}" ${settings.playerCount===i+2?'selected':''}>${i+2} players${i+2===4?' · recommended':''}</option>`).join('')}</select></label><label>CPU DIFFICULTY<select id="difficulty"><option value="easy" ${settings.difficulty==='easy'?'selected':''}>Easy</option><option value="normal" ${settings.difficulty==='normal'?'selected':''}>Normal</option></select></label></div>
       <div class="seat-editor">${settings.seats.slice(0,settings.playerCount).map((seat,i)=>`<div class="seat-row"><div class="seat-number">${String(i+1).padStart(2,'0')}</div><div class="avatar-tiny"><img src="${avatarImage(seat.avatar)}" alt=""></div><input aria-label="Player ${i+1} name" data-seat-name="${i}" maxlength="15" value="${escapeHtml(seat.name)}"><select aria-label="Player ${i+1} type" data-seat-kind="${i}"><option value="human" ${seat.kind==='human'?'selected':''}>Human</option><option value="cpu" ${seat.kind==='cpu'?'selected':''}>CPU</option></select><select aria-label="Player ${i+1} avatar" data-seat-avatar="${i}">${avatarNames.map((name,v)=>`<option value="${v}" ${seat.avatar===v?'selected':''}>${escapeHtml(name)}</option>`).join('')}</select><select aria-label="Player ${i+1} mood" data-seat-mood="${i}">${MOODS.map(m=>`<option ${seat.mood===m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}</div>
       <button class="primary-button start-button" data-action="start">START LOCAL GAME <span>➜</span></button><button class="secondary-button online-entry" data-action="online-setup">PLAY ONLINE WITH FRIENDS</button><p class="setup-note">Local: pass one device · Online: share a room link, one Human per device</p>
@@ -444,11 +453,11 @@ function avatarPicker(): string {
   return `<div class="avatar-picker" role="group" aria-label="Choose a character">${avatarNames.map((name, index) => `<button class="avatar-choice ${settings.seats[0].avatar === index ? 'chosen' : ''}" data-avatar-choice="${index}" aria-label="${escapeHtml(name)}" aria-pressed="${settings.seats[0].avatar === index}"><img src="${avatarImage(index)}" alt=""><span>${escapeHtml(name)}</span></button>`).join('')}</div>`;
 }
 function onlineView(): string {
-  return `<main class="online-page"><section class="online-panel"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">PLAY TOGETHER</div><h1>Online table</h1><p>Each friend plays from their own browser. Share a room link to play together.</p><div class="online-tabs"><button class="${onlineMode === 'host' ? 'current' : ''}" data-action="host-tab">Create room</button><button class="${onlineMode === 'join' ? 'current' : ''}" data-action="join-tab">Join room</button></div><label class="online-field">YOUR NAME<input id="online-name" maxlength="15" value="${escapeHtml(settings.seats[0].name)}"></label><div class="online-avatar-heading">YOUR CHARACTER <span>${escapeHtml(avatarNames[settings.seats[0].avatar % 16])}</span></div>${avatarPicker()}${onlineMode === 'join' ? `<label class="online-field">ROOM CODE OR INVITE LINK<input id="room-code" autocomplete="off" value="${escapeHtml(joinCode)}" placeholder="100-abc123…"></label>` : ''}<button class="primary-button start-button" data-action="${onlineMode === 'join' ? 'join-room' : 'create-room'}">${onlineMode === 'join' ? 'JOIN ROOM' : 'CREATE ROOM'} ➜</button><button class="text-button" data-action="back-setup">Back to local setup</button></section></main>`;
+  return `<main class="online-page"><section class="online-panel"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">PLAY TOGETHER</div><h1>Online table</h1><p>Each friend plays from their own browser. Share a room link to play together.</p><div class="online-tabs"><button class="${onlineMode === 'host' ? 'current' : ''}" data-action="host-tab">Create room</button><button class="${onlineMode === 'join' ? 'current' : ''}" data-action="join-tab">Join room</button></div><label class="online-field">YOUR NAME<input id="online-name" maxlength="15" value="${escapeHtml(settings.seats[0].name)}"></label><div class="online-avatar-heading">YOUR CHARACTER <span>${escapeHtml(avatarNames[settings.seats[0].avatar % avatarNames.length])}</span></div>${avatarPicker()}${onlineMode === 'join' ? `<label class="online-field">ROOM CODE OR INVITE LINK<input id="room-code" autocomplete="off" value="${escapeHtml(joinCode)}" placeholder="100-abc123…"></label>` : ''}<button class="primary-button start-button" data-action="${onlineMode === 'join' ? 'join-room' : 'create-room'}">${onlineMode === 'join' ? 'JOIN ROOM' : 'CREATE ROOM'} ➜</button><button class="text-button" data-action="back-setup">Back to local setup</button></section></main>`;
 }
 function lobbyView(): string {
   if (!online) return onlineView();
-  const invite = `${location.origin}${location.pathname}?room=${online.roomId}`;
+  const invite = `${location.origin}${castPath(online.roomId)}`;
   return `<main class="online-page"><section class="online-panel"><div class="eyebrow">${online.isHost ? 'YOUR ROOM' : 'JOINING A ROOM'}</div><h1>${online.status === 'disconnected' ? 'Connection ended' : online.status === 'connecting' ? 'Connecting…' : 'Gather your players'}</h1><p role="status">${online.error ? escapeHtml(online.error) : online.isHost ? 'Share this link. Each friend joins from a separate browser.' : 'Waiting for the host to start the round.'}</p>${online.isHost && online.status === 'lobby' ? `<div class="invite-box"><input readonly aria-label="Invite link" value="${escapeHtml(invite)}"><button data-action="copy-invite">COPY LINK</button></div>` : ''}<div class="lobby-seats">${online.seats.map((seat,i)=>`<div><img src="${avatarImage(seat.avatar)}" alt=""><strong>${escapeHtml(seat.name)}${i === online!.localSeat ? ' · You' : ''}</strong><span>${seat.kind === 'cpu' ? 'CPU' : i === online!.hostSeat ? 'Host' : 'Online'}</span></div>`).join('')}</div>${online.isHost && online.status === 'lobby' ? `<label class="online-field">CPU PLAYERS <select id="room-cpus">${Array.from({length:Math.max(0,9-online.seats.filter(s=>s.kind==='human').length)},(_,i)=>`<option value="${i}" ${online!.cpuCount===i?'selected':''}>${i}</option>`).join('')}</select></label><button class="primary-button start-button" data-action="start-online" ${online.seats.length<2?'disabled':''}>START ONLINE ROUND ➜</button><p class="setup-note">${online.seats.length}/8 seats · At least two players needed</p>` : ''}${online.status === 'disconnected' ? `<button class="primary-button start-button" data-action="retry-room">${online instanceof HostedRoom ? 'RECONNECT TO ROOM' : online.isHost ? 'CREATE NEW ROOM' : 'TRY JOINING AGAIN'} ➜</button>` : ''}<button class="text-button" data-action="leave-room">Leave room</button></section></main>`;
 }
 function seatHtml(player: GameState['players'][number], index: number, count: number): string {
@@ -457,7 +466,7 @@ function seatHtml(player: GameState['players'][number], index: number, count: nu
   const active = state.phase !== 'ended' && (state.phase === 'target' ? state.pendingSevens.at(-1) === index : state.current === index);
   const targetable = state.phase === 'target' && canControlActor() && index !== state.pendingSevens.at(-1);
   const suit = ['fire','water','leaf','sun'][index%4] as keyof typeof suitSymbols;
-  return `<button class="seat sprite-seat ${index===localSeat()?'local-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit}" data-seat="${index}" data-mood="${player.mood}" style="--seat-x:${x}%;--seat-y:${y}%;--seat-index:${index}" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards"><span class="reaction-bubble">${reaction[index]||''}</span><span class="character"><span class="character-sprite" data-avatar="${player.avatar}" data-sprite-url="${characterSheet(player.avatar)}" style="background-image:url('${characterSheet(player.avatar)}')" aria-hidden="true"></span><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="character-tumble" data-tumble-url="${tumbleSheet(player.avatar)}" aria-hidden="true"></span><span class="sprite-hand-anchor" aria-hidden="true"></span></span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)} <span class="seat-count" aria-hidden="true">${player.hand.length}</span></span><span class="seat-meta">★ ${player.ratingDelta>=0?'+':''}${player.ratingDelta} · ${index===localSeat()?'YOU':player.kind==='cpu'?'CPU':'PLAYER'}</span>${state.phase==='ended'?`<span class="seat-score ${player.ratingDelta<0?'negative':''}">${player.ratingDelta>=0?'+':''}${player.ratingDelta}</span>`:''}</span></button>`;
+  return `<button class="seat sprite-seat ${index===localSeat()?'local-seat':''} ${trialCast?'traditional-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit}" data-seat="${index}" ${trialCast?`data-traditional="${trialCharacter(player.avatar)}"`:''} data-mood="${player.mood}" style="--seat-x:${x}%;--seat-y:${y}%;--seat-index:${index}" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards"><span class="reaction-bubble">${reaction[index]||''}</span>${trialCast?`<span class="character"><canvas class="traditional-sprite" data-character="${trialCharacter(player.avatar)}" width="512" height="512" aria-hidden="true"></canvas><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="sprite-hand-anchor" aria-hidden="true"></span>`:`<span class="character"><span class="character-sprite" data-avatar="${player.avatar}" data-sprite-url="${characterSheet(player.avatar)}" style="background-image:url('${characterSheet(player.avatar)}')" aria-hidden="true"></span><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="character-tumble" data-tumble-url="${tumbleSheet(player.avatar)}" aria-hidden="true"></span><span class="sprite-hand-anchor" aria-hidden="true"></span>`}</span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)} <span class="seat-count" aria-hidden="true">${player.hand.length}</span></span><span class="seat-meta">★ ${player.ratingDelta>=0?'+':''}${player.ratingDelta} · ${index===localSeat()?'YOU':player.kind==='cpu'?'CPU':'PLAYER'}</span>${state.phase==='ended'?`<span class="seat-score ${player.ratingDelta<0?'negative':''}">${player.ratingDelta>=0?'+':''}${player.ratingDelta}</span>`:''}</span></button>`;
 }
 function gameLogLine(item: string): string {
   const playerIndex = state?.players.findIndex(player => item.startsWith(`${player.name} `)) ?? -1;
@@ -582,12 +591,12 @@ app.addEventListener('click', event => {
     if (action === 'start') startGame();
     if (action === 'online-setup') { onlineMode = 'host'; render(); }
     if (action === 'host-tab' || action === 'join-tab') { onlineMode = action === 'host-tab' ? 'host' : 'join'; render(); }
-    if (action === 'back-setup') { onlineMode = null; history.replaceState(null, '', location.pathname); render(); }
+    if (action === 'back-setup') { onlineMode = null; history.replaceState(null, '', castPath()); render(); }
     if (action === 'create-room' || action === 'join-room') connectOnline(action === 'create-room' ? 'host' : 'join');
     if (action === 'retry-room' && online) { if (online instanceof HostedRoom) online.retry(); else connectOnline(online.isHost ? 'host' : 'join'); }
     if (action === 'start-online') online?.startRound();
     if (action === 'leave-room') { modal = null; closeOnline(); }
-    if (action === 'copy-invite' && online) void navigator.clipboard.writeText(`${location.origin}${location.pathname}?room=${online.roomId}`).then(()=>flash('Invite link copied')).catch(()=>flash('Select and copy the invite link.'));
+    if (action === 'copy-invite' && online) void navigator.clipboard.writeText(`${location.origin}${castPath(online.roomId)}`).then(()=>flash('Invite link copied')).catch(()=>flash('Select and copy the invite link.'));
     if (action === 'again' && state) { modal = null; if (online) online.startRound(state.round + 1); else startGame(state.round + 1); }
     if (action === 'restart' && state) { modal = null; if (online) online.startRound(state.round); else startGame(state.round); }
     if (action === 'new-game') { clearCpu(); state = null; selectedCard = null; render(); }
@@ -618,6 +627,11 @@ app.addEventListener('click', event => {
 });
 app.addEventListener('change', event => {
   const el = event.target as HTMLInputElement | HTMLSelectElement;
+  if(el.id==='character-cast'&&isNextVersion){
+    trialCast=el.value==='finn-june';avatarNames=trialCast?['Finn','June']:observatoryAvatarNames;
+    if(trialCast){settings.playerCount=2;settings.seats[0]={...settings.seats[0],name:'Finn',avatar:0,kind:'human',mood:'Normal'};settings.seats[1]={...settings.seats[1],name:'June',avatar:1,kind:'cpu',mood:'Normal'};}
+    history.replaceState(null,'',castPath());save();render();return;
+  }
   if (el.id === 'player-count') { settings.playerCount = Number(el.value); save(); render(); }
   if (el.id === 'difficulty') { settings.difficulty = el.value as Settings['difficulty']; save(); }
   if (el.id === 'room-cpus') { roomCpuCount = Number(el.value); online?.setCpuCount(roomCpuCount); }

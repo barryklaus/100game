@@ -1,10 +1,12 @@
 import { faceFrame, nearestCenter, ringSeat, seatDistance, type CharacterFrame } from './PlayerRingModel';
 import { characterHandAnchors } from './CharacterSpriteLayout';
+import { TraditionalCharacters } from './TraditionalCharacters';
 
 type RingState = { roundKey: string; count: number; active: number; total: number; overflow: boolean; overflowSeat?: number; reducedMotion: boolean; target: boolean };
 type OverflowStage = 'idle' | 'focus' | 'fall' | 'complete';
 /** Event-driven sprite frames; the ring has no idle animation loop. */
 export class PlayerRing {
+  private traditional: TraditionalCharacters;
   private state: RingState = { roundKey: '', count: 0, active: 0, total: 0, overflow: false, reducedMotion: false, target: false };
   private center = .5;
   private targetCenter = .5;
@@ -34,6 +36,7 @@ export class PlayerRing {
   private overflowTimer = 0;
 
   constructor(private root: HTMLElement, private projectLayout?: () => void, private onOverflowComplete?: () => void) {
+    this.traditional = new TraditionalCharacters(root);
     root.addEventListener('pointerdown', this.down);
     root.addEventListener('pointermove', this.move);
     root.addEventListener('pointerup', this.up);
@@ -49,6 +52,7 @@ export class PlayerRing {
     const actorChanged = this.state.active !== next.active;
     this.state = next;
     if (roundChanged) {
+      this.traditional.reset();
       this.epoch++;
       cancelAnimationFrame(this.tumbleRaf); clearTimeout(this.overflowTimer);
       this.overflowStage = 'idle'; this.overflowSeat = -1; this.tumbleDrop = 0;
@@ -109,6 +113,11 @@ export class PlayerRing {
         // A slow or missing sheet must never prevent scores or the next round.
         await Promise.race([ready, new Promise(resolve => setTimeout(resolve, 450))]);
         if (!current()) return;
+        if(this.traditional.has(index)) {
+          this.overflowStage='fall';this.paintFrames();
+          try {await this.traditional.tumble(index);}catch {/* Scores remain available if an asset fails. */}
+          if(current())finish();return;
+        }
         const url = this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .character-tumble`)?.dataset.tumbleUrl;
         this.tumbleUsesSheet = !!url && this.readyUrls.has(url);
         this.overflowStage = 'fall';
@@ -203,12 +212,13 @@ export class PlayerRing {
     this.preparing.add(index); this.paintFrames();
     try {
       await this.dragReleased;
-      await Promise.all([...this.drawWaiters.entries()].filter(([seat]) => seat !== index).map(([,waiter]) => waiter.promise));
+      await Promise.all([...this.drawWaiters.entries()].filter(([seat]) => seat !== index || this.traditional.has(index)).map(([,waiter]) => waiter.promise));
       if (epoch !== this.epoch) throw new Error('The table changed before the throw.');
       await this.focus(index);
       await this.spriteReady(index);
       if (epoch !== this.epoch) throw new Error('The table changed before the throw.');
       clearTimeout(this.recoverTimers.get(index)); this.recoverTimers.delete(index);
+      if(this.traditional.has(index))return await this.traditional.prepareThrow(index);
       if (!this.state.reducedMotion) {
         this.throws.set(index, 6); this.paintFrames();
         await new Promise(resolve => setTimeout(resolve, 110));
@@ -222,6 +232,7 @@ export class PlayerRing {
   }
   release(index: number): void {
     if (this.state.reducedMotion) return;
+    if(this.traditional.has(index))this.traditional.release(index);
     this.throws.set(index, 7); this.paintFrames();
     this.drawWaiters.get(index)?.resolve();
     let resolve!: () => void;
@@ -237,9 +248,18 @@ export class PlayerRing {
     }, 180));
   }
   cancelThrow(index: number): void {
+    if(this.traditional.has(index))this.traditional.cancel(index);
     this.received(index);
   }
   received(index: number): void {
+    if(this.traditional.has(index)){
+      const epoch=this.epoch;
+      void this.traditional.received(index).finally(()=>{if(epoch===this.epoch)this.finishReceived(index);});
+      return;
+    }
+    this.finishReceived(index);
+  }
+  private finishReceived(index:number):void {
     clearTimeout(this.recoverTimers.get(index)); this.recoverTimers.delete(index); this.throws.delete(index);
     this.drawWaiters.get(index)?.resolve(); this.drawWaiters.delete(index); this.paintFrames();
     if (!this.throws.size && !this.dragging && this.deferredFocus !== undefined) {
@@ -247,13 +267,18 @@ export class PlayerRing {
     }
   }
   played(index: number, special: boolean): void {
+    if(special&&this.traditional.has(index))this.traditional.relieved(index);
     clearTimeout(this.reliefTimer); this.relieved = special ? index : -1;
     this.reliefTimer = window.setTimeout(() => { this.relieved = -1; this.paintFrames(); }, 1500);
   }
   handRect(index: number): DOMRect | undefined {
+    if(this.traditional.has(index))return this.traditional.handRect(index,true);
     return this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .sprite-hand-anchor`)?.getBoundingClientRect();
   }
+  prepareDraw(index:number):Promise<DOMRect|undefined>{return this.traditional.has(index)?this.traditional.prepareDraw(index):Promise.resolve(this.handRect(index));}
+  chosen(index:number,target:number):void{if(this.traditional.has(index))this.traditional.chosen(index,target);}
   private paintFrames(): void {
+    this.traditional.sync(this.state);
     const page = this.root.querySelector<HTMLElement>('.game-page');
     if (page) page.dataset.overflowStage = this.overflowStage;
     this.root.querySelectorAll<HTMLButtonElement>('[data-ring-focus], [data-ring-step]').forEach(button => { button.disabled = this.busy; });
@@ -300,6 +325,7 @@ export class PlayerRing {
     const portrait = innerHeight > innerWidth * 1.08;
     this.root.querySelectorAll<HTMLElement>('.seat').forEach(seat => {
       const index = Number(seat.dataset.seat), pose = ringSeat(index, this.center, this.state.count, portrait, this.overflowStage !== 'idle');
+      if(this.traditional.has(index)&&this.state.count===2&&this.overflowStage==='idle')pose.x=index===0?.27:.73;
       seat.style.setProperty('--ring-x', `${pose.x * 100}vw`);
       seat.style.setProperty('--ring-y', `${pose.y * 100}svh`);
       seat.style.setProperty('--ring-scale', String(pose.scale));
