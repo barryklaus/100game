@@ -7,9 +7,11 @@ The preserved Observatory game remains at **https://100game.100game.workers.dev/
 
 ## Publishing
 
-After an update, commit the changes and run `pnpm publish:next`. It verifies the branch and clean checkout, runs the existing checks plus the 100next routing checks, builds the game, pushes GitHub, then publishes the room Worker and Pages frontend. It never deploys the stable Worker.
+After an update, verify it, commit the changes and push branch `100next`. GitHub automatically runs the `Publish 100next` workflow, publishes the separate room Worker and Pages frontend, then verifies the deployed commit and multiplayer service. The owner does not need to press Push Origin for agent-managed updates.
 
-The `Publish 100next` GitHub workflow performs the same checks and deployment after a push to `100next`. It needs the repository secret `CLOUDFLARE_API_TOKEN`, with Cloudflare Pages Edit and Workers Scripts Edit access for the owner's account. Store this only in GitHub Actions secrets; never commit it. The account ID is public configuration. The workflow cannot publish other branches.
+The `Publish 100next` GitHub workflow is configured and verified as of October 3, 2026. Its encrypted repository secret `CLOUDFLARE_API_TOKEN` has Cloudflare Pages Edit and Workers Scripts Edit access for the owner's account. Store this only in GitHub Actions secrets; never commit it. The account ID is public configuration. The workflow cannot publish other branches. Publishing runs on GitHub and does not require this Mac to stay online.
+
+`pnpm publish:next` is a direct publishing fallback. It checks the branch and clean checkout, runs tests, builds, pushes GitHub, deploys and verifies the live game using existing authentication. The normal workflow is preferred to avoid deploying the same update twice. Neither path deploys the stable Worker.
 
 `/release.json` identifies the deployed commit. Check it after publishing, then verify local play and online room creation, joining, and WebSocket connection.
 
