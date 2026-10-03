@@ -37,9 +37,16 @@ function connect(token) {
   };
 }
 
-const release = await (await fetch(`${origin}/release.json`, { signal: AbortSignal.timeout(15000) })).json();
+const expected = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+let release;
+// The production alias may take a moment to follow a successful Pages upload.
+for (let attempt = 0; attempt < 12; attempt++) {
+  release = await (await fetch(`${origin}/release.json?commit=${expected}&check=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(15000) })).json();
+  if (release.commit === expected) break;
+  await new Promise(resolve => setTimeout(resolve, 2000));
+}
 assert.equal(release.version, '100next');
-assert.equal(release.commit, execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), 'The live game must match the published commit');
+assert.equal(release.commit, expected, 'The live game must match the published commit');
 const hostSeat = await post('create', { profile: profile('Release check host') });
 const guestSeat = await post('join', { profile: profile('Release check guest') });
 const host = connect(hostSeat.token);
