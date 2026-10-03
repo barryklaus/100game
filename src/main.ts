@@ -27,6 +27,9 @@ import { updateGameView } from './ui/updateGameView';
 import { GyroHand } from './ui/GyroHand';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
+const isNextVersion = import.meta.env.MODE === '100next';
+const isHostedVersion = isNextVersion || import.meta.env.MODE === 'cloudflare';
+if (isNextVersion) document.title = '100next — Simple Numbers. Big Reactions.';
 const playerRing = new PlayerRing(app, () => observatory?.projectPlayerRing(), () => render());
 let settings: Settings = loadSettings();
 let stats: Stats = loadStats();
@@ -174,7 +177,7 @@ function connectOnline(mode: 'host' | 'join'): void {
   if (!/^100-[a-z0-9]{12}$/.test(code)) { flash('Enter a valid room code or invite link.', 'bust'); return; }
   online?.close(); online = null; state = null; awaitingNetwork = false; selectedCard = null; lastTurnKey = ''; observedOnlineHand.clear(); observedOnlineRound = 0;
   hostedLobbyInitialized = false;
-  const Room = import.meta.env.MODE === 'cloudflare' ? HostedRoom : OnlineRoom;
+  const Room = isHostedVersion ? HostedRoom : OnlineRoom;
   online = new Room(mode === 'join' ? 'guest' : 'host', code, { name, avatar, mood: settings.seats[0].mood }, roomChanged);
   onlineMode = mode; recordedRound = 0;
   if (mode === 'host') { online.setCpuCount(roomCpuCount); history.replaceState(null, '', `${location.pathname}?room=${code}`); }
@@ -564,7 +567,7 @@ function render(): void {
   if (remoteSnapshots.length && !presentedTotal.pending && !remoteFlight) queueMicrotask(() => roomChanged());
 }
 render();
-if (import.meta.env.MODE === 'cloudflare' && onlineMode === 'join' && /^100-[a-z0-9]{12}$/.test(joinCode) && localStorage.getItem(`100game:room:${joinCode}`)) connectOnline('join');
+if (isHostedVersion && onlineMode === 'join' && /^100-[a-z0-9]{12}$/.test(joinCode) && localStorage.getItem(`100game:room:${joinCode}`)) connectOnline('join');
 
 app.addEventListener('click', event => {
   const target = event.target as HTMLElement;
