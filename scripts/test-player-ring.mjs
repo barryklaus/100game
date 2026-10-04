@@ -1,7 +1,18 @@
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 const result = await build({entryPoints:['src/ui/PlayerRingModel.ts'],bundle:true,platform:'node',format:'esm',write:false});
-const { wrapSeat, nearestCenter, ringSeat, faceFrame } = await import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);
+const { wrapSeat, nearestCenter, ringSeat, traditionalRingSeat, faceFrame } = await import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);
+for(const portrait of [false,true]){
+ const two=[0,1].map(i=>traditionalRingSeat(i,.5,2,portrait));
+ const four=[0,1,2,3].map(i=>traditionalRingSeat(i,1.5,4,portrait));
+ assert.equal(two[0].x,four[1].x);assert.equal(two[1].x,four[2].x,'Two characters retain the central four-seat positions');
+ for(const count of [2,3,4,8])for(let active=0;active<count;active++){
+  const center=nearestCenter(active,.5,count);
+  const poses=Array.from({length:count},(_,i)=>traditionalRingSeat(i,center,count,portrait));
+  assert.equal(poses.filter(p=>p.visible).length,Math.min(count,4));
+  assert(poses.filter(p=>p.visible).every(p=>p.x>0&&p.x<1));
+ }
+}
 for (const count of [2,3,4,5,6,7,8]) for (const portrait of [false,true]) {
   for (let active=0; active<count; active++) {
     const center = nearestCenter(active, 97.5, count);

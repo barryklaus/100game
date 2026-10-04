@@ -15,6 +15,11 @@ export function ringSeat(index: number, center: number, count: number, portrait:
   const opacity = count <= 4 && !spotlight ? 1 : Math.max(0, Math.min(1, (2 - Math.abs(distance)) * 2));
   return { distance, visible, opacity, x: .5 + u * (portrait ? .375 : .30), y: (portrait ? .32 : .30) + u * u * .012, scale: 1 - Math.min(1, Math.abs(u)) * .06 };
 }
+/** Fixed four-chair spacing: smaller games occupy the inner seats instead of spreading out. */
+export function traditionalRingSeat(index: number, center: number, count: number, portrait: boolean, spotlight = false) {
+  const pose=ringSeat(index,center,count,portrait,spotlight);
+  return {...pose,x:.5+pose.distance*(portrait?.235:.155),scale:1-Math.min(1,Math.abs(pose.distance)/1.5)*.03};
+}
 export type CharacterFrame = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 export function faceFrame(total: number, active: boolean, relieved: boolean, overflow: boolean, mood = 'Normal'): CharacterFrame {
   if (overflow) return 5;

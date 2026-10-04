@@ -1,0 +1,13 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>June repaired sprite review</title><style>body{margin:0;background:#181621;color:#eadcc5;font-family:system-ui;text-align:center}h1{font-size:20px}button{margin:4px;padding:10px;background:#383444;color:#fff;border:1px solid #a99160;border-radius:8px}#cast{display:flex;justify-content:center;gap:0}.seat{width:440px;max-width:48vw}.traditional-sprite{width:100%;height:auto}.label{margin-top:-60px}#status{min-height:24px}#poses{display:grid;grid-template-columns:repeat(4,1fr)}#poses img{width:100%}</style></head><body><h1>Finn + June · corrected chair alignment</h1><nav id="controls"></nav><p id="status">Ready</p><section id="cast"><div class="seat" data-seat="0" data-traditional="finn"><canvas class="traditional-sprite" data-character="finn" width="512" height="512"></canvas><p class="label">Finn</p></div><div class="seat" data-seat="1" data-traditional="june"><canvas class="traditional-sprite" data-character="june" width="512" height="512"></canvas><p class="label">June</p></div></section><script type="module">
+import {TraditionalCharacters} from '/src/ui/TraditionalCharacters.ts';
+const cast=new TraditionalCharacters(document.querySelector('#cast'));
+const state={active:0,total:0,overflow:false,target:false,reducedMotion:false};
+cast.sync(state);
+for(const id of ['idle','study','look-left','look-right','choose-left','choose-right','danger','celebrate','defeat','tumble','return']){
+ const button=document.createElement('button');button.textContent='June '+id;
+ button.onclick=async()=>{document.querySelector('#status').textContent=id;await cast.play(1,id);document.querySelector('#status').textContent=id+' complete';};
+ document.querySelector('#controls').append(button);
+}
+const cycle=document.createElement('button');cycle.textContent='June throw and catch';
+cycle.onclick=async()=>{document.querySelector('#status').textContent='Preparing throw';await cast.prepareThrow(1);cast.release(1);await new Promise(r=>setTimeout(r,500));await cast.prepareDraw(1);await cast.received(1);document.querySelector('#status').textContent='Throw and catch complete';};document.querySelector('#controls').append(cycle);
+</script></body></html>

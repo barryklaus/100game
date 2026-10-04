@@ -107,7 +107,7 @@ const escapeHtml = (value: string): string => value.replace(/[&<>"']/g, char => 
 const observatoryAvatarNames = ['Ember Scout', 'Tide Scholar', 'Grove Guardian', 'Sun Knight', 'Storm Pilot', 'Coral Bard', 'Mushroom Alchemist', 'Desert Ranger', 'Moon Seer', 'River Courier', 'Thorn Duelist', 'Forge Captain', 'Cloud Mechanic', 'Marsh Mystic', 'Wildwood Archer', 'Dawn Dancer'];
 let avatarNames=trialCast?['Finn','June']:observatoryAvatarNames;
 const trialCharacter=(index:number):'finn'|'june'=>index%2===0?'finn':'june';
-const avatarImage = (index: number): string => trialCast?`${import.meta.env.BASE_URL}assets/social-club/${trialCharacter(index)}-portrait.webp`:`${import.meta.env.BASE_URL}assets/avatars/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.jpg`;
+const avatarImage = (index: number): string => trialCast?`${import.meta.env.BASE_URL}assets/social-club/${trialCharacter(index)}-portrait${trialCharacter(index)==='june'?'-v2':''}.webp`:`${import.meta.env.BASE_URL}assets/avatars/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.jpg`;
 function castPath(room?:string):string{const params=new URLSearchParams();if(room)params.set('room',room);if(trialCast)params.set('characters','finn-june');return location.pathname+(params.size?'?'+params:'');}
 const characterSheet = (index: number): string => `${import.meta.env.BASE_URL}assets/characters/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.webp?v=${CHARACTER_SPRITE_VERSION}`;
 const tumbleSheet = (index: number): string => `${import.meta.env.BASE_URL}assets/characters/tumbles/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}-tumble.webp?v=1`;

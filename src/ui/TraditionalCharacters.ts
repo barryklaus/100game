@@ -31,7 +31,7 @@ export class TraditionalCharacters {
     let promise=this.assets.get(character);
     if (!promise) {
       const load=async (file:string) => {const im=new Image();im.src=`${import.meta.env.BASE_URL}assets/social-club/${file}`;await im.decode();return im;};
-      promise=Promise.all([load(`${character}-atlas.webp`),load('chair.webp')]).then(([atlas,chair])=>{const result={atlas,chair};this.decoded.set(character,result);return result;});
+      promise=Promise.all([load(character==='june'?'june-atlas-v2.webp':'finn-atlas.webp'),load('chair.webp')]).then(([atlas,chair])=>{const result={atlas,chair};this.decoded.set(character,result);return result;});
       this.assets.set(character,promise);
     }
     return promise;
@@ -115,7 +115,7 @@ export class TraditionalCharacters {
   handRect(index:number,catching=false):DOMRect|undefined{
     const seat=this.seat(index);if(!seat)return;
     // Calibrated to the selected card and open receiving palm in each padded drawing.
-    const [x,y,w,h]=seat.character==='june'?(catching?[276,225,18,25]:[245,217,18,25]):(catching?[293,233,24,34]:[300,232,24,34]);
+    const [x,y,w,h]=seat.character==='june'?(catching?[315,237,18,25]:[264,223,18,25]):(catching?[293,233,24,34]:[300,232,24,34]);
     const r=seat.canvas.getBoundingClientRect();
     return new DOMRect(r.left+(x-w/2)/512*r.width,r.top+(y-h/2)/512*r.height,w/512*r.width,h/512*r.height);
   }

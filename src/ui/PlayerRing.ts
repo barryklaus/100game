@@ -1,4 +1,4 @@
-import { faceFrame, nearestCenter, ringSeat, seatDistance, type CharacterFrame } from './PlayerRingModel';
+import { faceFrame, nearestCenter, ringSeat, traditionalRingSeat, seatDistance, type CharacterFrame } from './PlayerRingModel';
 import { characterHandAnchors } from './CharacterSpriteLayout';
 import { TraditionalCharacters } from './TraditionalCharacters';
 
@@ -324,8 +324,8 @@ export class PlayerRing {
     if (!this.state.count) return;
     const portrait = innerHeight > innerWidth * 1.08;
     this.root.querySelectorAll<HTMLElement>('.seat').forEach(seat => {
-      const index = Number(seat.dataset.seat), pose = ringSeat(index, this.center, this.state.count, portrait, this.overflowStage !== 'idle');
-      if(this.traditional.has(index)&&this.state.count===2&&this.overflowStage==='idle')pose.x=index===0?.27:.73;
+      const index = Number(seat.dataset.seat), layout=this.traditional.has(index)?traditionalRingSeat:ringSeat;
+      const pose = layout(index, this.center, this.state.count, portrait, this.overflowStage !== 'idle');
       seat.style.setProperty('--ring-x', `${pose.x * 100}vw`);
       seat.style.setProperty('--ring-y', `${pose.y * 100}svh`);
       seat.style.setProperty('--ring-scale', String(pose.scale));

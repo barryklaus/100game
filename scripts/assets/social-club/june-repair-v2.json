@@ -1,0 +1,104 @@
+{
+  "character": "June",
+  "tool": "built-in image_gen",
+  "jobs": [
+    {
+      "id": "card-actions",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-c887e31b-da0c-402d-af55-05f77fee95ef.png",
+      "prompt": "Use case: precise-object-edit.\nEdit target: this June whole-character sprite sheet for the 100next game.\nPrimary correction: repair June's eye anatomy and coordinated gaze in EVERY frame. Currently pupils aim in conflicting directions, making her cross-eyed/wall-eyed. Draw appealing adult cartoon eyes with naturally matched pupils, consistent brown irises and dark pupils, both aimed at the SAME intended target, neither converging excessively nor diverging. Preserve her adult face, warm brown skin, black curly hair, earrings, teal vest and trousers, white sleeves, black necktie, shoes and bold clean cartoon style.\nAll twelve faces look straight forward toward the table, with BOTH pupils centered in the same direction. Preserve the card selection/release/catch poses and exact two-card / one-card counts.\nPreserve the exact 3-column grid and 4 rows, exactly 12 complete independent full-body drawings in the same row-major order. Preserve pose timing, all gestures, exactly two arms/hands/legs, legs crossed, body proportions, retained card hand on IMAGE LEFT and working hand IMAGE RIGHT. All ordinary poses OMIT the chair. Keep feet, hips, waist and shoulders identically positioned in each cell except intentional arm/head expression movements. Same scale in all cells. Generous blank transparent spacing, no cropped body parts. No labels. True transparent background, no glow, no halo, no gradient, no shadows or background shapes. Change only the defective gaze and any unintended torso/lower-body drift; keep the identity and action drawings.",
+      "count": 12,
+      "cols": 3,
+      "tool": "built-in image_gen"
+    },
+    {
+      "id": "attention",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-145f7dbc-98b2-4c78-b84c-b8c8b392e37a.png",
+      "prompt": "Use case: precise-object-edit.\nEdit target: this June whole-character sprite sheet for the 100next game.\nPrimary correction: repair June's eye anatomy and coordinated gaze in EVERY frame. Currently pupils aim in conflicting directions, making her cross-eyed/wall-eyed. Draw appealing adult cartoon eyes with naturally matched pupils, consistent brown irises and dark pupils, both aimed at the SAME intended target, neither converging excessively nor diverging. Preserve her adult face, warm brown skin, black curly hair, earrings, teal vest and trousers, white sleeves, black necktie, shoes and bold clean cartoon style.\nRow-major gaze: pose 0 front neutral, 1 blink eyes closed, 2 down at cards, 3 down at cards, 4 front, 5 slight SCREEN-LEFT glance, 6 SCREEN-LEFT head and BOTH eyes, 7 slight SCREEN-LEFT, 8 slight SCREEN-RIGHT, 9 SCREEN-RIGHT head and BOTH eyes, 10 slight SCREEN-RIGHT, 11 front. LEFT means viewer/image left, never anatomical left. Body stays facing forward, with the exact same crossed legs.\nPreserve the exact 3-column grid and 4 rows, exactly 12 complete independent full-body drawings in the same row-major order. Preserve pose timing, all gestures, exactly two arms/hands/legs, legs crossed, body proportions, retained card hand on IMAGE LEFT and working hand IMAGE RIGHT. All ordinary poses OMIT the chair. Keep feet, hips, waist and shoulders identically positioned in each cell except intentional arm/head expression movements. Same scale in all cells. Generous blank transparent spacing, no cropped body parts. No labels. True transparent background, no glow, no halo, no gradient, no shadows or background shapes. Change only the defective gaze and any unintended torso/lower-body drift; keep the identity and action drawings.",
+      "count": 12,
+      "cols": 3,
+      "tool": "built-in image_gen"
+    },
+    {
+      "id": "gestures",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-5223d90c-dc7c-432f-855f-8e809deddb2a.png",
+      "prompt": "Use case: precise-object-edit.\nEdit target: this June whole-character sprite sheet for the 100next game.\nPrimary correction: repair June's eye anatomy and coordinated gaze in EVERY frame. Currently pupils aim in conflicting directions, making her cross-eyed/wall-eyed. Draw appealing adult cartoon eyes with naturally matched pupils, consistent brown irises and dark pupils, both aimed at the SAME intended target, neither converging excessively nor diverging. Preserve her adult face, warm brown skin, black curly hair, earrings, teal vest and trousers, white sleeves, black necktie, shoes and bold clean cartoon style.\nPreserve all twelve exact gestures, card counts, hand sides and expressions. Pose1 pointing SCREEN LEFT has both eyes look SCREEN LEFT. Pose3 pointing SCREEN RIGHT has both eyes look SCREEN RIGHT. Others look straight forward or close both eyes for laughter/slump. Do not roll one eye opposite the other.\nPreserve the exact 3-column grid and 4 rows, exactly 12 complete independent full-body drawings in the same row-major order. Preserve pose timing, all gestures, exactly two arms/hands/legs, legs crossed, body proportions, retained card hand on IMAGE LEFT and working hand IMAGE RIGHT. All ordinary poses OMIT the chair. Keep feet, hips, waist and shoulders identically positioned in each cell except intentional arm/head expression movements. Same scale in all cells. Generous blank transparent spacing, no cropped body parts. No labels. True transparent background, no glow, no halo, no gradient, no shadows or background shapes. Change only the defective gaze and any unintended torso/lower-body drift; keep the identity and action drawings.",
+      "count": 12,
+      "cols": 3,
+      "tool": "built-in image_gen"
+    },
+    {
+      "id": "emotions-directional",
+      "path": "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-traditional-sprites/june-repaired-v2/emotions-directional-accepted.png",
+      "prompt": "Packed six verified left gazes interleaved with six verified right gazes. See directionSources prompts.",
+      "count": 12,
+      "cols": 3,
+      "tool": "built-in image_gen"
+    },
+    {
+      "id": "emotions-front",
+      "count": 16,
+      "cols": 4,
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-d79c62f2-68d9-4c7e-8eba-0e5503e1b311.png",
+      "prompt": "Use case: precise-object-edit. June emotion sprite sheet, use attached as exact identity/expression reference. Redraw EXACT 16 full body seated figures arranged four columns and four rows. MOST IMPORTANT generous TRANSPARENT GUTTERS: each figure occupies ONLY the middle 65% of its cell width and 65% of cell height; 17.5% EMPTY alpha on all FOUR SIDES OF EACH INDIVIDUAL FIGURE. NO touching shoes to next hair. Never clip curls or shoe tips at sheet boundary. Preserve June adult TV cartoon identity, black curls, gold hoops, warm brown skin, teal vest/trousers, white sleeves, black tie, Oxford shoes. Same forward-facing torso, same crossed legs, same two cards in left-image hand; no chair. Exact same 16 different expressions as input row-major: calm, focused thinking, curious, skeptical, confident, smug, amused laugh, relieved eyes closed, nervous, panicked, shocked, frustrated, defeated, delighted laugh, calm, calm. Open eyes MUST both aim straight front: pupils centered, matched gaze, never cross-eyed or divergent. Uniform character scale across all16; identical hip/waist and lower body geometry across ordinary emotions. True alpha background. No glow, haze, shadow or gradient, no labels.",
+      "tool": "built-in image_gen"
+    },
+    {
+      "id": "tumble",
+      "count": 10,
+      "cols": 5,
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-7d16191f-bcdd-4142-859c-e96ff641f5e8.png",
+      "prompt": "Use case: identity-preserve. Generate a new whole-character traditional cartoon tumble animation sprite sheet. The attached seated June master is the exact locked character AND chair proportions reference. This is June: adult woman, curly black hair, warm brown skin, gold hoop earrings, teal vest/trousers, white sleeves, black tie, black/white shoes. CRITICAL chair is wide: its outside arm width is about 1.7 times June shoulder width, and the burgundy cushion surrounds her small seated hips. Preserve this EXACT wide chair to body size ratio throughout all poses. Never create a smaller narrower chair. Keep exact burgundy chair, rectangular high back, gold nailheads, dark wood and gold feet. Ten poses 5 columns x2 rows, each cell has 20% clear transparent padding on all sides. Uniform physical scale for same whole June and chair, no changing size. One card back held IMAGE LEFT hand and empty IMAGE RIGHT hand. Read row-major: 0 same master rest with one card; 1 startle, arms up; 2 small lean backward; 3 chair tips backward slightly and feet lift; 4 chair tips more; 5 backward tumble both feet forward; 6 chair lands on its back, feet raised; 7 settles on chair back; 8 dazed; 9 resting in overturned chair. Whole chair and character tilt together as rigid chair and whole-body traditional drawings. Eyes normal aligned pair, both pupils coordinated, no crossed eyes. No glow/shadows/background/labels. True transparent. Protect head/hands/feet, generous empty margins, never crop anything.",
+      "tool": "built-in image_gen"
+    }
+  ],
+  "directionSources": [
+    {
+      "id": "direction-left",
+      "count": 6,
+      "cols": 3,
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-b610edc3-9b01-4ca9-bdad-6f6a4c894300.png",
+      "prompt": "Use case: identity-preserve. Six full-body seated June emotion poses for traditional sprite animation. Attached single June is the character identity AND gaze direction reference. EVERY ONE OF THE SIX drawings looks toward SCREEN LEFT: both pupils and small head turn toward the left edge of the picture. No opposite-direction gaze, no mirrored clothes or body. Arrange 3 columns by 2 rows with generous transparent empty space around every complete figure, occupying middle65% of each cell. Six expressions row-major: curious interested, skeptical suspicious, smug slight smile, amused grin, shocked open mouth wide eyes, frustrated furrowed eyebrows. Forward-facing torso, fixed crossed legs and shoes, SAME torso center and physical scale all six, two small black/gold card backs in left-image hand, empty right-image hand beside cards. Preserve curls, gold hoops, teal vest and pants, black tie, white sleeves, warm brown skin. No chair, no background, no text labels, no glow or halo, true alpha transparent. Exactly 6 whole connected complete drawings. BOTH pupils aim LEFT together.",
+      "tool": "built-in image_gen"
+    },
+    {
+      "id": "direction-right",
+      "count": 6,
+      "cols": 3,
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-fc592796-376e-44ed-9ab6-ef5416b56da6.png",
+      "prompt": "Use case: identity-preserve. Six full-body seated June emotion poses for traditional sprite animation. Attached single June is the character identity AND gaze direction reference. EVERY ONE OF THE SIX drawings looks toward SCREEN RIGHT: both pupils and small head turn toward the right edge of the picture. No opposite-direction gaze, no mirrored clothes or body. Arrange 3 columns by 2 rows with generous transparent empty space around every complete figure, occupying middle65% of each cell. Six expressions row-major: curious interested, skeptical suspicious, smug slight smile, amused grin, shocked open mouth wide eyes, frustrated furrowed eyebrows. Forward-facing torso, fixed crossed legs and shoes, SAME torso center and physical scale all six, two small black/gold card backs in left-image hand, empty right-image hand beside cards. Preserve curls, gold hoops, teal vest and pants, black tie, white sleeves, warm brown skin. No chair, no background, no text labels, no glow or halo, true alpha transparent. Exactly 6 whole connected complete drawings. BOTH pupils aim RIGHT together.",
+      "tool": "built-in image_gen"
+    }
+  ],
+  "repair": {
+    "version": 2,
+    "alignment": "Curls/upper-body center, vest waist vertical anchor; never crossed-foot anchor",
+    "neutralBodyHeight": 234,
+    "chair": "Finn unchanged common chair",
+    "tumbleScale": "One uniform scale from first upright chair width, 197 logical pixels",
+    "padding": 133,
+    "attentionLeftPoses": [
+      7,
+      10,
+      8
+    ],
+    "attentionRightPoses": [
+      5,
+      6,
+      9
+    ],
+    "handAnchors": {
+      "release": [
+        264,
+        223,
+        18,
+        25
+      ],
+      "catch": [
+        315,
+        237,
+        18,
+        25
+      ]
+    }
+  }
+}
