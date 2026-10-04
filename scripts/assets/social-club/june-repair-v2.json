@@ -77,9 +77,9 @@
     "tumbleScale": "One uniform scale from first upright chair width, 197 logical pixels",
     "padding": 133,
     "attentionLeftPoses": [
-      7,
-      10,
-      8
+      "attention:7",
+      "emotions-directional:0",
+      "attention:8"
     ],
     "attentionRightPoses": [
       5,

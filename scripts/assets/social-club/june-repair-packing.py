@@ -81,7 +81,7 @@ two=f('card-actions',0);one=f('card-actions',5)
 defs=[
  ('idle','Idle blink',[two,f('attention',1),two],[900,80,650]),
  ('study','Study cards',[two,f('attention',2),f('attention',3),f('attention',4),two],[200,60,170,70,300]),
- ('look-left','Look left',[two,f('attention',7),f('attention',10),f('attention',8),two],[160,50,230,50,280]),
+ ('look-left','Look left',[two,f('attention',7),f('emotions-directional',0),f('attention',8),two],[160,50,230,50,280]),
  ('look-right','Look right',[two,f('attention',5),f('attention',6),f('attention',9),two],[160,50,230,50,280]),
  ('throw','Throw / wrist flick',[two,f('card-actions',1),f('card-actions',2),f('card-actions',3),f('card-actions',4),one],[200,60,60,40,50,350]),
  ('pickup','Draw / catch',[one,f('card-actions',6),f('card-actions',7),f('card-actions',8),f('card-actions',9),f('card-actions',10),two],[180,60,100,50,60,50,350]),
