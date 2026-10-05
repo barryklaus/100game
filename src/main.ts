@@ -25,7 +25,7 @@ import { HostedRoom } from './game/hosted';
 import { cardGrip, cardFlickSpin, isDoubleCardTap, isPlayGesture, type CardTap, type CardGrip, type CardSpin } from './ui/cardGesture';
 import { updateGameView } from './ui/updateGameView';
 import { GyroHand } from './ui/GyroHand';
-import { masterNames, masterCharacter, masterImage, masterAnchors } from './ui/MasterCharacters';
+import { masterNames, masterCharacter, masterImage } from './ui/MasterCharacters';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const isNextVersion = import.meta.env.MODE === '100next';
@@ -34,10 +34,10 @@ if (isNextVersion) document.title = '100next — Simple Numbers. Big Reactions.'
 const playerRing = new PlayerRing(app, () => observatory?.projectPlayerRing(), () => render());
 let settings: Settings = loadSettings();
 let trialCast=isNextVersion&&new URLSearchParams(location.search).get('characters')==='finn-june';
-let masterCast=isNextVersion&&new URLSearchParams(location.search).get('characters')==='midnight-eight';
+let masterCast=isNextVersion&&!['observatory','finn-june'].includes(new URLSearchParams(location.search).get('characters')??'');
 if(trialCast){settings.playerCount=2;settings.seats[0]={...settings.seats[0],name:'Finn',avatar:0,kind:'human',mood:'Normal'};settings.seats[1]={...settings.seats[1],name:'June',avatar:1,kind:'cpu',mood:'Normal'};}
-function useMasterSeats():void{settings.playerCount=8;settings.seats=masterNames.map((name,avatar)=>({name,avatar,kind:avatar===0?'human':'cpu',mood:'Normal'}));}
-if(masterCast)useMasterSeats();
+function useMasterSeats(reset=false):void{settings.seats=settings.seats.map((seat,index)=>({...seat,name:reset||seat.name===defaultSeats[index].name?masterNames[index]:seat.name,avatar:reset?index:seat.avatar%8}));}
+if(masterCast){useMasterSeats();if(new URLSearchParams(location.search).get('characters')==='midnight-eight'&&new URLSearchParams(location.search).get('play')==='1')settings.playerCount=8;}
 let stats: Stats = loadStats();
 let state: GameState | null = null;
 let selectedCard: string | null = null;
@@ -113,7 +113,7 @@ const observatoryAvatarNames = ['Ember Scout', 'Tide Scholar', 'Grove Guardian',
 let avatarNames=masterCast?masterNames:trialCast?['Finn','June']:observatoryAvatarNames;
 const trialCharacter=(index:number):'finn'|'june'=>index%2===0?'finn':'june';
 const avatarImage = (index: number): string => masterCast?masterImage(index,true):trialCast?`${import.meta.env.BASE_URL}assets/social-club/${trialCharacter(index)}-portrait${trialCharacter(index)==='june'?'-v2':''}.webp`:`${import.meta.env.BASE_URL}assets/avatars/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.jpg`;
-function castPath(room?:string):string{const params=new URLSearchParams();if(room)params.set('room',room);if(masterCast)params.set('characters','midnight-eight');else if(trialCast)params.set('characters','finn-june');return location.pathname+(params.size?'?'+params:'');}
+function castPath(room?:string):string{const params=new URLSearchParams();if(room)params.set('room',room);if(masterCast)params.set('characters','midnight-eight');else if(trialCast)params.set('characters','finn-june');else if(isNextVersion)params.set('characters','observatory');return location.pathname+(params.size?'?'+params:'');}
 const characterSheet = (index: number): string => `${import.meta.env.BASE_URL}assets/characters/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.webp?v=${CHARACTER_SPRITE_VERSION}`;
 const tumbleSheet = (index: number): string => `${import.meta.env.BASE_URL}assets/characters/tumbles/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}-tumble.webp?v=1`;
 const gameRoundKey = (): string => state ? `${state.round}:${state.players.map(player=>player.name).join(':')}` : '';
@@ -471,7 +471,7 @@ function seatHtml(player: GameState['players'][number], index: number, count: nu
   const active = state.phase !== 'ended' && (state.phase === 'target' ? state.pendingSevens.at(-1) === index : state.current === index);
   const targetable = state.phase === 'target' && canControlActor() && index !== state.pendingSevens.at(-1);
   const suit = ['fire','water','leaf','sun'][index%4] as keyof typeof suitSymbols;
-  return `<button class="seat sprite-seat ${index===localSeat()?'local-seat':''} ${masterCast?'traditional-seat master-seat':trialCast?'traditional-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit}" data-seat="${index}" ${trialCast?`data-traditional="${trialCharacter(player.avatar)}"`:''} data-mood="${player.mood}" style="--seat-x:${x}%;--seat-y:${y}%;--seat-index:${index}" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards"><span class="reaction-bubble">${reaction[index]||''}</span>${masterCast?`<span class="character"><img class="master-sprite" src="${masterImage(player.avatar)}" alt="" loading="lazy" decoding="async" data-character="${masterCharacter(player.avatar).id}"><span class="master-hands">${masterAnchors(player.avatar)}</span><span class="character-tumble" aria-hidden="true"></span></span>`:trialCast?`<span class="character"><canvas class="traditional-sprite" data-character="${trialCharacter(player.avatar)}" width="512" height="512" aria-hidden="true"></canvas><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="sprite-hand-anchor" aria-hidden="true"></span>`:`<span class="character"><span class="character-sprite" data-avatar="${player.avatar}" data-sprite-url="${characterSheet(player.avatar)}" style="background-image:url('${characterSheet(player.avatar)}')" aria-hidden="true"></span><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="character-tumble" data-tumble-url="${tumbleSheet(player.avatar)}" aria-hidden="true"></span><span class="sprite-hand-anchor" aria-hidden="true"></span>`}</span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)} <span class="seat-count" aria-hidden="true">${player.hand.length}</span></span><span class="seat-meta">★ ${player.ratingDelta>=0?'+':''}${player.ratingDelta} · ${index===localSeat()?'YOU':player.kind==='cpu'?'CPU':'PLAYER'}</span>${state.phase==='ended'?`<span class="seat-score ${player.ratingDelta<0?'negative':''}">${player.ratingDelta>=0?'+':''}${player.ratingDelta}</span>`:''}</span></button>`;
+  return `<button class="seat sprite-seat ${index===localSeat()?'local-seat':''} ${masterCast?'traditional-seat master-seat':trialCast?'traditional-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit}" data-seat="${index}" ${masterCast?`data-traditional="${masterCharacter(player.avatar).id}"`:trialCast?`data-traditional="${trialCharacter(player.avatar)}"`:''} data-mood="${player.mood}" style="--seat-x:${x}%;--seat-y:${y}%;--seat-index:${index}" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards"><span class="reaction-bubble">${reaction[index]||''}</span>${masterCast?`<span class="character"><canvas class="traditional-sprite" data-character="${masterCharacter(player.avatar).id}" data-sprite-set="simple-v2" width="512" height="512" aria-hidden="true"></canvas><img class="master-sprite sprite-fallback simple-fallback" src="${import.meta.env.BASE_URL}assets/social-club/simple-v2/${masterCharacter(player.avatar).id}-rest.webp" alt="" loading="lazy" decoding="async"></span>`:trialCast?`<span class="character"><canvas class="traditional-sprite" data-character="${trialCharacter(player.avatar)}" width="512" height="512" aria-hidden="true"></canvas><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="sprite-hand-anchor" aria-hidden="true"></span>`:`<span class="character"><span class="character-sprite" data-avatar="${player.avatar}" data-sprite-url="${characterSheet(player.avatar)}" style="background-image:url('${characterSheet(player.avatar)}')" aria-hidden="true"></span><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="character-tumble" data-tumble-url="${tumbleSheet(player.avatar)}" aria-hidden="true"></span><span class="sprite-hand-anchor" aria-hidden="true"></span>`}</span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)} <span class="seat-count" aria-hidden="true">${player.hand.length}</span></span><span class="seat-meta">★ ${player.ratingDelta>=0?'+':''}${player.ratingDelta} · ${index===localSeat()?'YOU':player.kind==='cpu'?'CPU':'PLAYER'}</span>${state.phase==='ended'?`<span class="seat-score ${player.ratingDelta<0?'negative':''}">${player.ratingDelta>=0?'+':''}${player.ratingDelta}</span>`:''}</span></button>`;
 }
 function gameLogLine(item: string): string {
   const playerIndex = state?.players.findIndex(player => item.startsWith(`${player.name} `)) ?? -1;
@@ -635,7 +635,7 @@ app.addEventListener('change', event => {
   const el = event.target as HTMLInputElement | HTMLSelectElement;
   if(el.id==='character-cast'&&isNextVersion){
     trialCast=el.value==='finn-june';masterCast=el.value==='midnight-eight';avatarNames=masterCast?masterNames:trialCast?['Finn','June']:observatoryAvatarNames;
-    if(masterCast)useMasterSeats();
+    if(masterCast)useMasterSeats(true);
     if(trialCast){settings.playerCount=2;settings.seats[0]={...settings.seats[0],name:'Finn',avatar:0,kind:'human',mood:'Normal'};settings.seats[1]={...settings.seats[1],name:'June',avatar:1,kind:'cpu',mood:'Normal'};}
     history.replaceState(null,'',castPath());save();render();return;
   }

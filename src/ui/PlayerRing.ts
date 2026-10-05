@@ -195,6 +195,7 @@ export class PlayerRing {
   };
 
   private spriteReady(index: number): Promise<void> {
+    if(this.traditional.has(index))return this.traditional.warm(index).then(()=>undefined).catch(()=>undefined);
     const master = this.root.querySelector<HTMLImageElement>(`.seat[data-seat="${index}"] .master-sprite`);
     if (master) return this.imageReady(master.src);
     const sprite = this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .character-sprite`);

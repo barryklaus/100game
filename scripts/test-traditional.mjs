@@ -50,3 +50,32 @@ for(const name of ['finn','june']){
  assert.equal(byId.throw.frames.at(-1).index,byId.pickup.frames[0].index);
 }
 console.log('Traditional character checks passed: release/catch hands, idle redraw budget, round cancellation, reduced motion, fixed chairs, protected padding and shared rest poses.');
+
+// Gameplay uses the repaired eight-character drawings, without the legacy chair layer.
+const names=['vince','finn','june','edgar','roxie','otis','paloma','bianca'];
+const simpleCanvases=names.map((character,index)=>({isConnected:true,dataset:{character,spriteSet:'simple-v2'},getContext:()=>({clearRect(){},drawImage(...args){simpleDraws.push(args);}}),getBoundingClientRect:()=>({left:index*500,top:0,width:512,height:512})}));
+const simpleDraws=[];
+const simpleNodes=simpleCanvases.map((canvas,index)=>({dataset:{seat:String(index),mood:'Normal'},getBoundingClientRect:canvas.getBoundingClientRect}));
+const simpleRoot={querySelector(selector){const index=Number(selector.match(/data-seat="(\d+)"/)?.[1]);return selector.includes('traditional-sprite')?simpleCanvases[index]:simpleNodes[index];},querySelectorAll(){return simpleNodes;}};
+const simpleCast=new TraditionalCharacters(simpleRoot);
+simpleCast.sync(state);await flush();
+assert(simpleCanvases.every(canvas=>canvas.dataset.ready==='true'),'All eight selectable characters decode in gameplay');
+assert(simpleDraws.every(args=>args.length===9),'Chair-free cast draws just the padded atlas cell');
+for(let index=0;index<8;index++){
+ const thrown=simpleCast.prepareThrow(index);await flush();await advance(321);const hand=await thrown;
+ assert(hand.left>index*500+270&&hand.left<index*500+320,'Flight starts at the working image-right card');
+ simpleCast.release(index);await flush();
+ assert.equal(simpleCanvases[index].dataset.cards,'1','The drawn card vanishes exactly at release');
+ await advance(2000);
+ await simpleCast.prepareDraw(index);
+ assert.equal(simpleCanvases[index].dataset.cards,'1','An approaching deck card does not duplicate early');
+ const pickup=simpleCast.received(index);await flush();
+ assert.equal(simpleCanvases[index].dataset.cards,'2','Two cards return at the actual catch callback');
+ await advance(2000);await pickup;
+}
+const falling=simpleCast.tumble(3);await flush();await advance(300);await advance(2000);await falling;
+assert.equal(simpleCanvases[3].dataset.frame,'30','Overflow ends on the feet-up floor drawing');
+simpleCast.sync({...state,overflow:true});await flush();
+assert.equal(simpleCanvases[3].dataset.frame,'30','Scores hold the landing instead of resetting or enlarging the culprit');
+simpleCast.reset();assert.equal(raf.size,0);
+console.log('Midnight gameplay checks passed: eight casts, chair-free draw, release/catch timing and held tumble landing.');

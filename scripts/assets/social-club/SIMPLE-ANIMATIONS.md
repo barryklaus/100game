@@ -21,7 +21,7 @@ All logical frames are 512 × 512 with at least 128 clear pixels on each side. T
 
 The sources, padded PNG sheets, individual frames, and GIFs are saved in the workspace's sibling `output/100next-simple-animation-v2/` directory. Exact generation prompts and reference paths are in `simple-eight-generation-v1.json`.
 
-Open `/animation-preview/index.html` for all eight characters, selectable clips, one-shot replay, padding inspection, and optional table occlusion. The preview redraws only when a frame changes and stops when the selected motion finishes. These are animation assets and a review gallery; the main game still uses its approved master cast until the new animation set is integrated.
+Open `/animation-preview/index.html` for all eight characters, selectable clips, one-shot replay, padding inspection, and optional table occlusion. The preview redraws only when a frame changes and stops when the selected motion finishes. The main 100next game now uses these chair-free v2 drawings by default, with the Midnight Social Club lounge in desktop and portrait layouts. The eight characters are selectable in local and online setup. Card flights connect to the working hand at release/catch, left/right reactions follow the visible active seat, and the overflowing culprit holds the floor landing until the next round. Atlases decode only as seats enter view; canvases repaint only on frame changes. The original Observatory cast remains available through the character selector and the stable build is unchanged.
 
 ## Scale repair
 

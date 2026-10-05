@@ -50,6 +50,7 @@
 .observatory-mode .seat-layer .sprite-seat.master-seat:is(:hover,:focus-visible){transform:translate(-50%,-80%) scale(var(--ring-scale,1))!important;}
 .master-sprite,.master-hands{position:absolute;left:-50%;top:-26%;width:200%;height:200%;pointer-events:none;}
 .master-sprite{max-width:none;object-fit:contain;}
+.simple-fallback{border:0;border-radius:0;background:none;}
 .master-hands>span{position:absolute;pointer-events:none;}
 .tumble-fallback .master-sprite{translate:0 calc(var(--tumble-progress,0) * 20% + var(--tumble-drop,0) * 78%);scale:calc(1 - var(--tumble-progress,0) * .22);opacity:calc(1 - var(--tumble-drop,0));}
 .cast-choice{display:block;margin:16px 0;color:#d6c596;font:600 11px system-ui;}

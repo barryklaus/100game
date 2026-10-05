@@ -149,6 +149,7 @@ def pack(slug):
     for i,layer in enumerate(layers):
         atlas.alpha_composite(layer.crop((128,128,384,384)),(i%8*256,i//8*256))
     atlas.save(RUNTIME/f'{slug}-atlas.webp',lossless=True,method=6)
+    layers[0].save(RUNTIME/f'{slug}-rest.webp',lossless=True,method=6)
     atlas.save(target/'atlas.png')
     full=Image.new('RGBA',(2048,4096))
     for i,layer in enumerate(layers):full.alpha_composite(layer,(i%4*512,i//4*512))
