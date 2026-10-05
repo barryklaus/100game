@@ -56,6 +56,7 @@
  .observatory-mode .seat-layer .sprite-seat.traditional-seat{width:28vw!important;}
  .observatory-mode .seat-layer .sprite-seat.overflow-culprit{width:43vw!important;}
  .observatory-mode .seat-layer .traditional-seat.overflow-culprit{width:28vw!important;}
+ .observatory-mode .seat-layer .sprite-seat.master-seat{width:42vw!important;}
  .observatory-mode .seat-layer .sprite-seat:is(:hover,:focus-visible){transform:translate(-50%,-86%) scale(var(--ring-scale,1))!important;}
  .observatory-mode .seat-layer .sprite-seat .seat-name{font-size:10px;}
  .observatory-mode .seat-layer .sprite-seat .seat-meta{font-size:7px;}

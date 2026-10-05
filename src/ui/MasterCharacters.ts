@@ -5,7 +5,9 @@ export function masterCharacter(index: number) {
   return masterCharacterData[(index % masterCharacterData.length + masterCharacterData.length) % masterCharacterData.length];
 }
 export function masterImage(index: number, portrait = false): string {
-  return `${import.meta.env.BASE_URL}assets/social-club/masters-v1/${masterCharacter(index).id}-${portrait ? 'portrait' : 'master'}.webp`;
+  const id = masterCharacter(index).id;
+  const revision = id === 'finn' ? '-v2' : '';
+  return `${import.meta.env.BASE_URL}assets/social-club/masters-v1/${id}-${portrait ? 'portrait' : 'master'}${revision}.webp`;
 }
 /** The artwork stays a whole drawing; these invisible anchors connect the actual flying cards. */
 export function masterHandRect(root: HTMLElement, index: number, catching = false): DOMRect | undefined {

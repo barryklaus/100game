@@ -36,28 +36,28 @@
     {
       "id": "finn",
       "name": "Finn",
-      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-00a9a324-be1b-445d-bd61-1eb43e7ffb43.png",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-f04d92d0-1d64-41f2-a6f1-83d5b3899fcf.png",
       "alphaBounds": [
-        764,
+        804,
         512,
-        1284,
+        1243,
         1536
       ],
       "padding": [
-        764,
+        804,
         512,
-        764,
+        805,
         512
       ],
       "release": [
-        254.29,
-        238.21,
+        248.17,
+        224.86,
         18,
         25
       ],
       "catch": [
-        283.54,
-        254.8,
+        273.59,
+        240.89,
         18,
         25
       ]

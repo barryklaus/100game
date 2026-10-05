@@ -9,7 +9,7 @@ REVIEW = ROOT.parent / 'output/100next-character-masters/chair-free-v1'
 RUNTIME = ROOT / 'public/assets/social-club/masters-v1'
 SPEC = [
     ('vince', 'Vince', '5b44d3b4-afb1-48f0-9358-bbee567d87db', (588,488), (720,580)),
-    ('finn', 'Finn', '00a9a324-be1b-445d-bd61-1eb43e7ffb43', (620,580), (754,656)),
+    ('finn', 'Finn', 'f04d92d0-1d64-41f2-a6f1-83d5b3899fcf', (590,510), (701,580)),
     ('june', 'June', '51209227-302f-49b0-992f-d15ebd0cad88', (560,520), (703,562)),
     ('edgar', 'Edgar', '8844fc25-a024-4666-a94d-42e6b71716ce', (633,543), (743,603)),
     ('roxie', 'Roxie', '4334e583-a83a-4868-a61b-e1a66be1b184', (576,468), (720,533)),
@@ -39,11 +39,12 @@ for i,(slug,name,source_id,release,catch) in enumerate(SPEC):
     framed = Image.new('RGBA',(2048,2048))
     offset = ((2048-resized.width)//2,1536-resized.height)
     framed.alpha_composite(resized,offset)
-    framed.save(REVIEW / f'{slug}-master.png')
+    revision = '-v2' if slug == 'finn' else ''
+    framed.save(REVIEW / f'{slug}-master{revision}.png')
     runtime = framed.resize((1024,1024),Image.Resampling.LANCZOS)
-    runtime.save(RUNTIME / f'{slug}-master.webp',lossless=True,method=6)
+    runtime.save(RUNTIME / f'{slug}-master{revision}.webp',lossless=True,method=6)
     face = framed.crop((730,490,1318,1078)).resize((384,384),Image.Resampling.LANCZOS)
-    face.save(RUNTIME / f'{slug}-portrait.webp',lossless=True,method=6)
+    face.save(RUNTIME / f'{slug}-portrait{revision}.webp',lossless=True,method=6)
     def point(p):
         return [round((offset[0]+(p[0]-bounds[0])*scale)/4,2),round((offset[1]+(p[1]-bounds[1])*scale)/4,2),18,25]
     alpha_bounds = framed.getchannel('A').getbbox()
