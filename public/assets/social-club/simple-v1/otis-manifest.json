@@ -1,0 +1,1224 @@
+{
+  "id": "otis",
+  "tool": "built-in image_gen",
+  "logicalCell": 512,
+  "atlasCols": 8,
+  "cell": 256,
+  "padding": 128,
+  "frames": 31,
+  "clips": {
+    "idle": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 2,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        950,
+        90,
+        550
+      ]
+    },
+    "study": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 3,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        60,
+        240,
+        100
+      ]
+    },
+    "look-left": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 5,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        70,
+        300,
+        100
+      ]
+    },
+    "look-right": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 4,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        70,
+        300,
+        100
+      ]
+    },
+    "choose-left": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 5,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        70,
+        380,
+        100
+      ]
+    },
+    "choose-right": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 4,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        70,
+        380,
+        100
+      ]
+    },
+    "danger": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 8,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 9,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 8,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        100,
+        130,
+        180,
+        180
+      ]
+    },
+    "throw": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 14,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 15,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 16,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 17,
+          "combinedChair": false,
+          "cards": 1
+        }
+      ],
+      "durations": [
+        160,
+        80,
+        80,
+        80,
+        260
+      ]
+    },
+    "pickup": {
+      "frames": [
+        {
+          "index": 17,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 18,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 18,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 19,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 20,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        160,
+        80,
+        100,
+        80,
+        80,
+        220
+      ]
+    },
+    "celebrate": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 6,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 11,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        80,
+        180,
+        230,
+        150
+      ]
+    },
+    "defeat": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 12,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        80,
+        550
+      ]
+    },
+    "startle": {
+      "frames": [
+        {
+          "index": 17,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 23,
+          "combinedChair": false,
+          "cards": 1
+        }
+      ],
+      "durations": [
+        90,
+        180
+      ]
+    },
+    "tumble": {
+      "frames": [
+        {
+          "index": 22,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 23,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 24,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 25,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 26,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 27,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 28,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 29,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 30,
+          "combinedChair": false,
+          "cards": 1
+        }
+      ],
+      "durations": [
+        100,
+        100,
+        70,
+        60,
+        50,
+        70,
+        60,
+        100,
+        650
+      ]
+    },
+    "return": {
+      "frames": [
+        {
+          "index": 30,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 29,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 28,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 26,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 25,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 24,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 23,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 22,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 17,
+          "combinedChair": false,
+          "cards": 1
+        }
+      ],
+      "durations": [
+        180,
+        70,
+        60,
+        60,
+        70,
+        80,
+        90,
+        100,
+        200
+      ]
+    },
+    "expressions": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 2,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 3,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 4,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 5,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 6,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 7,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 8,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 9,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 10,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 11,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 12,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        500,
+        350,
+        350,
+        350,
+        350,
+        350,
+        350,
+        350,
+        350,
+        350,
+        350,
+        350
+      ]
+    }
+  },
+  "checks": [
+    {
+      "kind": "reactions",
+      "pose": 0,
+      "bounds": [
+        174,
+        135,
+        338,
+        384
+      ],
+      "padding": [
+        174,
+        135,
+        174,
+        128
+      ],
+      "sourceBox": [
+        113,
+        19,
+        338,
+        361
+      ],
+      "uniformScale": 0.7272727272727273
+    },
+    {
+      "kind": "reactions",
+      "pose": 1,
+      "bounds": [
+        174,
+        135,
+        339,
+        384
+      ],
+      "padding": [
+        174,
+        135,
+        173,
+        128
+      ],
+      "sourceBox": [
+        431,
+        19,
+        658,
+        361
+      ],
+      "uniformScale": 0.7272727272727273
+    },
+    {
+      "kind": "reactions",
+      "pose": 2,
+      "bounds": [
+        174,
+        135,
+        339,
+        384
+      ],
+      "padding": [
+        174,
+        135,
+        173,
+        128
+      ],
+      "sourceBox": [
+        766,
+        19,
+        993,
+        361
+      ],
+      "uniformScale": 0.7272727272727273
+    },
+    {
+      "kind": "reactions",
+      "pose": 3,
+      "bounds": [
+        174,
+        132,
+        338,
+        384
+      ],
+      "padding": [
+        174,
+        132,
+        174,
+        128
+      ],
+      "sourceBox": [
+        111,
+        363,
+        337,
+        709
+      ],
+      "uniformScale": 0.7272727272727273
+    },
+    {
+      "kind": "reactions",
+      "pose": 4,
+      "bounds": [
+        172,
+        132,
+        339,
+        384
+      ],
+      "padding": [
+        172,
+        132,
+        173,
+        128
+      ],
+      "sourceBox": [
+        433,
+        363,
+        662,
+        709
+      ],
+      "uniformScale": 0.7272727272727273
+    },
+    {
+      "kind": "reactions",
+      "pose": 5,
+      "bounds": [
+        174,
+        132,
+        338,
+        384
+      ],
+      "padding": [
+        174,
+        132,
+        174,
+        128
+      ],
+      "sourceBox": [
+        768,
+        363,
+        994,
+        709
+      ],
+      "uniformScale": 0.7272727272727273
+    },
+    {
+      "kind": "reactions",
+      "pose": 6,
+      "bounds": [
+        170,
+        129,
+        342,
+        384
+      ],
+      "padding": [
+        170,
+        129,
+        170,
+        128
+      ],
+      "sourceBox": [
+        106,
+        713,
+        342,
+        1063
+      ],
+      "uniformScale": 0.7272727272727273
+    },
+    {
+      "kind": "reactions",
+      "pose": 7,
+      "bounds": [
+        171,
+        129,
+        341,
+        384
+      ],
+      "padding": [
+        171,
+        129,
+        171,
+        128
+      ],
+      "sourceBox": [
+        430,
+        713,
+        664,
+        1063
+      ],
+      "uniformScale": 0.7272727272727273
+    },
+    {
+      "kind": "reactions",
+      "pose": 8,
+      "bounds": [
+        170,
+        129,
+        341,
+        384
+      ],
+      "padding": [
+        170,
+        129,
+        171,
+        128
+      ],
+      "sourceBox": [
+        765,
+        713,
+        1000,
+        1063
+      ],
+      "uniformScale": 0.7272727272727273
+    },
+    {
+      "kind": "reactions",
+      "pose": 9,
+      "bounds": [
+        170,
+        128,
+        341,
+        384
+      ],
+      "padding": [
+        170,
+        128,
+        171,
+        128
+      ],
+      "sourceBox": [
+        107,
+        1063,
+        342,
+        1415
+      ],
+      "uniformScale": 0.7272727272727273
+    },
+    {
+      "kind": "reactions",
+      "pose": 10,
+      "bounds": [
+        170,
+        128,
+        341,
+        384
+      ],
+      "padding": [
+        170,
+        128,
+        171,
+        128
+      ],
+      "sourceBox": [
+        429,
+        1063,
+        664,
+        1415
+      ],
+      "uniformScale": 0.7272727272727273
+    },
+    {
+      "kind": "reactions",
+      "pose": 11,
+      "bounds": [
+        170,
+        128,
+        342,
+        384
+      ],
+      "padding": [
+        170,
+        128,
+        170,
+        128
+      ],
+      "sourceBox": [
+        765,
+        1063,
+        1002,
+        1415
+      ],
+      "uniformScale": 0.7272727272727273
+    },
+    {
+      "kind": "card-actions",
+      "pose": 0,
+      "bounds": [
+        176,
+        135,
+        337,
+        384
+      ],
+      "padding": [
+        176,
+        135,
+        175,
+        128
+      ],
+      "sourceBox": [
+        111,
+        26,
+        369,
+        425
+      ],
+      "uniformScale": 0.6233766233766235
+    },
+    {
+      "kind": "card-actions",
+      "pose": 1,
+      "bounds": [
+        177,
+        135,
+        335,
+        384
+      ],
+      "padding": [
+        177,
+        135,
+        177,
+        128
+      ],
+      "sourceBox": [
+        485,
+        26,
+        739,
+        425
+      ],
+      "uniformScale": 0.6233766233766235
+    },
+    {
+      "kind": "card-actions",
+      "pose": 2,
+      "bounds": [
+        172,
+        135,
+        340,
+        384
+      ],
+      "padding": [
+        172,
+        135,
+        172,
+        128
+      ],
+      "sourceBox": [
+        859,
+        26,
+        1128,
+        425
+      ],
+      "uniformScale": 0.6233766233766235
+    },
+    {
+      "kind": "card-actions",
+      "pose": 3,
+      "bounds": [
+        172,
+        135,
+        339,
+        384
+      ],
+      "padding": [
+        172,
+        135,
+        173,
+        128
+      ],
+      "sourceBox": [
+        111,
+        443,
+        379,
+        843
+      ],
+      "uniformScale": 0.6233766233766235
+    },
+    {
+      "kind": "card-actions",
+      "pose": 4,
+      "bounds": [
+        176,
+        135,
+        337,
+        384
+      ],
+      "padding": [
+        176,
+        135,
+        175,
+        128
+      ],
+      "sourceBox": [
+        484,
+        443,
+        743,
+        843
+      ],
+      "uniformScale": 0.6233766233766235
+    },
+    {
+      "kind": "card-actions",
+      "pose": 5,
+      "bounds": [
+        176,
+        135,
+        336,
+        384
+      ],
+      "padding": [
+        176,
+        135,
+        176,
+        128
+      ],
+      "sourceBox": [
+        857,
+        443,
+        1114,
+        843
+      ],
+      "uniformScale": 0.6233766233766235
+    },
+    {
+      "kind": "card-actions",
+      "pose": 6,
+      "bounds": [
+        176,
+        134,
+        337,
+        384
+      ],
+      "padding": [
+        176,
+        134,
+        175,
+        128
+      ],
+      "sourceBox": [
+        111,
+        861,
+        369,
+        1262
+      ],
+      "uniformScale": 0.6233766233766235
+    },
+    {
+      "kind": "card-actions",
+      "pose": 7,
+      "bounds": [
+        176,
+        134,
+        337,
+        384
+      ],
+      "padding": [
+        176,
+        134,
+        175,
+        128
+      ],
+      "sourceBox": [
+        485,
+        861,
+        744,
+        1262
+      ],
+      "uniformScale": 0.6233766233766235
+    },
+    {
+      "kind": "card-actions",
+      "pose": 8,
+      "bounds": [
+        176,
+        134,
+        335,
+        384
+      ],
+      "padding": [
+        176,
+        134,
+        177,
+        128
+      ],
+      "sourceBox": [
+        859,
+        861,
+        1114,
+        1262
+      ],
+      "uniformScale": 0.6233766233766235
+    },
+    {
+      "kind": "tumble",
+      "pose": 0,
+      "bounds": [
+        178,
+        135,
+        334,
+        384
+      ],
+      "padding": [
+        178,
+        135,
+        178,
+        128
+      ],
+      "sourceBox": [
+        101,
+        48,
+        373,
+        481
+      ],
+      "uniformScale": 0.574427881587235
+    },
+    {
+      "kind": "tumble",
+      "pose": 1,
+      "bounds": [
+        157,
+        136,
+        355,
+        384
+      ],
+      "padding": [
+        157,
+        136,
+        157,
+        128
+      ],
+      "sourceBox": [
+        452,
+        48,
+        796,
+        481
+      ],
+      "uniformScale": 0.574427881587235
+    },
+    {
+      "kind": "tumble",
+      "pose": 2,
+      "bounds": [
+        148,
+        144,
+        364,
+        382
+      ],
+      "padding": [
+        148,
+        144,
+        148,
+        130
+      ],
+      "sourceBox": [
+        843,
+        48,
+        1219,
+        481
+      ],
+      "uniformScale": 0.574427881587235
+    },
+    {
+      "kind": "tumble",
+      "pose": 3,
+      "bounds": [
+        155,
+        218,
+        357,
+        384
+      ],
+      "padding": [
+        155,
+        218,
+        155,
+        128
+      ],
+      "sourceBox": [
+        59,
+        532,
+        410,
+        821
+      ],
+      "uniformScale": 0.574427881587235
+    },
+    {
+      "kind": "tumble",
+      "pose": 4,
+      "bounds": [
+        160,
+        218,
+        352,
+        384
+      ],
+      "padding": [
+        160,
+        218,
+        160,
+        128
+      ],
+      "sourceBox": [
+        456,
+        532,
+        790,
+        821
+      ],
+      "uniformScale": 0.574427881587235
+    },
+    {
+      "kind": "tumble",
+      "pose": 5,
+      "bounds": [
+        143,
+        222,
+        369,
+        384
+      ],
+      "padding": [
+        143,
+        222,
+        143,
+        128
+      ],
+      "sourceBox": [
+        841,
+        532,
+        1234,
+        821
+      ],
+      "uniformScale": 0.574427881587235
+    },
+    {
+      "kind": "tumble",
+      "pose": 6,
+      "bounds": [
+        160,
+        231,
+        352,
+        384
+      ],
+      "padding": [
+        160,
+        231,
+        160,
+        128
+      ],
+      "sourceBox": [
+        70,
+        892,
+        405,
+        1183
+      ],
+      "uniformScale": 0.574427881587235
+    },
+    {
+      "kind": "tumble",
+      "pose": 7,
+      "bounds": [
+        160,
+        223,
+        353,
+        381
+      ],
+      "padding": [
+        160,
+        223,
+        159,
+        131
+      ],
+      "sourceBox": [
+        467,
+        892,
+        803,
+        1183
+      ],
+      "uniformScale": 0.574427881587235
+    },
+    {
+      "kind": "tumble",
+      "pose": 8,
+      "bounds": [
+        144,
+        217,
+        368,
+        384
+      ],
+      "padding": [
+        144,
+        217,
+        144,
+        128
+      ],
+      "sourceBox": [
+        845,
+        892,
+        1235,
+        1183
+      ],
+      "uniformScale": 0.574427881587235
+    }
+  ],
+  "handPolicy": "retained image-left, working image-right",
+  "throwReleaseMs": 320,
+  "pickupCatchMs": 340,
+  "chairPolicy": "No chairs in any frame, including tumbles",
+  "tumble": "body lying flat low on floor, feet up"
+}

@@ -1,0 +1,347 @@
+{
+  "tool": "built-in image_gen",
+  "chairPolicy": "No chairs in any frame, including tumbles",
+  "jobs": [
+    {
+      "id": "vince-reactions",
+      "character": "vince",
+      "name": "Vince",
+      "kind": "reactions",
+      "count": 12,
+      "cols": 3,
+      "rows": 4,
+      "prompt": "Use case: background-extraction. Edit target: the attached Vince 12-pose sprite sheet. Remove the entire dark burgundy/black/brown glowing BACKGROUND ONLY. Preserve EVERY character drawing exactly, including all12 figures, clothes, pose order, face expressions, fine black outlines, white shirts, card backs and shoes. Genuine transparent ALPHA=0 throughout all empty spaces between and around figures and inside arm/leg gaps. No new white or black matte, no checkerboard painted in, no haze/halo/shadow. Do NOT redraw or resize the figures. Do NOT crop any figure. Return the same whole sheet as transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-845f9da7-b7f8-49bf-8f59-f89c15b2bb1a.png"
+      ],
+      "previousPath": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-845f9da7-b7f8-49bf-8f59-f89c15b2bb1a.png",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-c1c9789c-5ef2-4ee6-b1b4-3bc27e09ed5f.png"
+    },
+    {
+      "id": "vince-card-actions",
+      "character": "vince",
+      "name": "Vince",
+      "kind": "card-actions",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Vince, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Vince master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. tan lean adult man, black wavy hair with a silver streak, burgundy dinner blazer with black lapels, ivory open-collar shirt, charcoal trousers, black gold-bit loafers.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY NINE figures in THREE columns THREE rows, row-major. 0 calm neutral TWO-card fan in IMAGE LEFT hand, empty IMAGE RIGHT hand; 1 IMAGE RIGHT fingers pinch one card from LEFT fan, TWO cards total; 2 tiny wrist cock, ONE card in RIGHT working hand and ONE retained LEFT, TWO cards total; 3 RIGHT hand makes short EMPTY release gesture near chest, ONE retained card LEFT; 4 calm ONE retained card LEFT, empty RIGHT hand at chest; 5 RIGHT hand opens for catch, ONE retained LEFT, no flying card; 6 new card grasped RIGHT at chest and ONE retained LEFT, TWO cards total; 7 RIGHT brings new card to LEFT fan, TWO cards total; 8 exact TWO-card neutral rest as0. Working arm never reaches beyond own shoulder width. Small generic forward wrist flick rather than pointing left or right, the game's separate flying card supplies trajectory. No airborne cards painted into the sheet. Legs/hips/chest remain fixed.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/vince-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-46b7bc2d-a6b9-4c8b-9e1a-66f515fee3e7.png"
+    },
+    {
+      "id": "vince-tumble",
+      "character": "vince",
+      "name": "Vince",
+      "kind": "tumble",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: precise-object-edit. Edit target is this existing nine-frame complete-character backwards tumble sprite sheet. Remove EVERY CHAIR and ALL FURNITURE from EVERY one of the nine frames, with real alpha-zero transparency replacing furniture. Keep all nine complete character drawings, expressions, clothing, card, anatomy, frame order, physical scale, floor baseline and body positions unchanged. No chair in initial seated-looking pose either; frame0 is the complete front-facing character posed as if seated, with NO visible support. Preserve the backward body fall and final frames lying way down flat on the floor on their backs, head/back low, both feet raised above the torso. Do not repaint a colored background, floor, shadows, stool, cushion or chair remnants. Exactly three columns three rows, transparent PNG, no labels or text. Chair-free all nine frames. Preserve ample space around hair, hands and feet.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-d2e7e433-d824-40fd-b261-9d6ca141a63e.png"
+      ],
+      "previousPath": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-d2e7e433-d824-40fd-b261-9d6ca141a63e.png",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-434ca9f7-7441-4442-bd76-3271e8c1a349.png"
+    },
+    {
+      "id": "finn-reactions",
+      "character": "finn",
+      "name": "Finn",
+      "kind": "reactions",
+      "count": 12,
+      "cols": 3,
+      "rows": 4,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Finn, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Finn master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. SLIM adult man with the corrected SMALL adult head-to-body proportions, copper-orange tousled hair, fair skin, blue rolled-sleeve shirt, loose black tie, navy trousers, mustard socks, brown derby shoes. Never restore the oversized earlier head.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY 12 figures in THREE columns and FOUR rows, row-major: 0 calm neutral; 1 complete blink with BOTH eyes closed; 2 focused eyes down at cards; 3 coordinated head and BOTH eyes toward SCREEN LEFT, body stays front; 4 coordinated head and BOTH eyes toward SCREEN RIGHT, body stays front; 5 confident small smile; 6 smug amused grin; 7 worried nervous brows; 8 panicked wide eyes; 9 shocked open mouth; 10 relieved eyes closed smiling; 11 frustrated defeated pout. All twelve have TWO cards held IMAGE LEFT at chest and EMPTY IMAGE RIGHT hand nearby. Keep exact same shoulders/hips/lower-body silhouette in every cell. Eyes coordinated, never cross-eyed. Don't mirror clothing/body for directional gaze.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/finn-master-v2.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-e7c47260-67a3-4e0e-8691-da1ae5daa7b0.png"
+    },
+    {
+      "id": "finn-card-actions",
+      "character": "finn",
+      "name": "Finn",
+      "kind": "card-actions",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Finn, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Finn master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. SLIM adult man with the corrected SMALL adult head-to-body proportions, copper-orange tousled hair, fair skin, blue rolled-sleeve shirt, loose black tie, navy trousers, mustard socks, brown derby shoes. Never restore the oversized earlier head.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY NINE figures in THREE columns THREE rows, row-major. 0 calm neutral TWO-card fan in IMAGE LEFT hand, empty IMAGE RIGHT hand; 1 IMAGE RIGHT fingers pinch one card from LEFT fan, TWO cards total; 2 tiny wrist cock, ONE card in RIGHT working hand and ONE retained LEFT, TWO cards total; 3 RIGHT hand makes short EMPTY release gesture near chest, ONE retained card LEFT; 4 calm ONE retained card LEFT, empty RIGHT hand at chest; 5 RIGHT hand opens for catch, ONE retained LEFT, no flying card; 6 new card grasped RIGHT at chest and ONE retained LEFT, TWO cards total; 7 RIGHT brings new card to LEFT fan, TWO cards total; 8 exact TWO-card neutral rest as0. Working arm never reaches beyond own shoulder width. Small generic forward wrist flick rather than pointing left or right, the game's separate flying card supplies trajectory. No airborne cards painted into the sheet. Legs/hips/chest remain fixed.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/finn-master-v2.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-eaae4d3f-5fbb-4523-b2c1-fc4ebba601c3.png"
+    },
+    {
+      "id": "finn-tumble",
+      "character": "finn",
+      "name": "Finn",
+      "kind": "tumble",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: precise-object-edit. Edit target is this existing nine-frame complete-character backwards tumble sprite sheet. Remove EVERY CHAIR and ALL FURNITURE from EVERY one of the nine frames, with real alpha-zero transparency replacing furniture. Keep all nine complete character drawings, expressions, clothing, card, anatomy, frame order, physical scale, floor baseline and body positions unchanged. No chair in initial seated-looking pose either; frame0 is the complete front-facing character posed as if seated, with NO visible support. Preserve the backward body fall and final frames lying way down flat on the floor on their backs, head/back low, both feet raised above the torso. Do not repaint a colored background, floor, shadows, stool, cushion or chair remnants. Exactly three columns three rows, transparent PNG, no labels or text. Chair-free all nine frames. Preserve ample space around hair, hands and feet.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-6222062c-d307-4184-82e7-7450f32bdfb3.png"
+      ],
+      "previousPath": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-6222062c-d307-4184-82e7-7450f32bdfb3.png",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-3019de33-1393-479e-98bf-70b66f62b70e.png"
+    },
+    {
+      "id": "june-reactions",
+      "character": "june",
+      "name": "June",
+      "kind": "reactions",
+      "count": 12,
+      "cols": 3,
+      "rows": 4,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for June, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free June master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. adult woman, warm brown skin, short voluminous black curls, gold hoop earrings, white rolled sleeves, teal vest and wide-leg trousers, black tie, cream-and-black oxfords, red nails.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY 12 figures in THREE columns and FOUR rows, row-major: 0 calm neutral; 1 complete blink with BOTH eyes closed; 2 focused eyes down at cards; 3 coordinated head and BOTH eyes toward SCREEN LEFT, body stays front; 4 coordinated head and BOTH eyes toward SCREEN RIGHT, body stays front; 5 confident small smile; 6 smug amused grin; 7 worried nervous brows; 8 panicked wide eyes; 9 shocked open mouth; 10 relieved eyes closed smiling; 11 frustrated defeated pout. All twelve have TWO cards held IMAGE LEFT at chest and EMPTY IMAGE RIGHT hand nearby. Keep exact same shoulders/hips/lower-body silhouette in every cell. Eyes coordinated, never cross-eyed. Don't mirror clothing/body for directional gaze.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/june-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-8d88c007-103c-4fd2-9608-abbe50c7bb9b.png"
+    },
+    {
+      "id": "june-card-actions",
+      "character": "june",
+      "name": "June",
+      "kind": "card-actions",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for June, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free June master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. adult woman, warm brown skin, short voluminous black curls, gold hoop earrings, white rolled sleeves, teal vest and wide-leg trousers, black tie, cream-and-black oxfords, red nails.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY NINE figures in THREE columns THREE rows, row-major. 0 calm neutral TWO-card fan in IMAGE LEFT hand, empty IMAGE RIGHT hand; 1 IMAGE RIGHT fingers pinch one card from LEFT fan, TWO cards total; 2 tiny wrist cock, ONE card in RIGHT working hand and ONE retained LEFT, TWO cards total; 3 RIGHT hand makes short EMPTY release gesture near chest, ONE retained card LEFT; 4 calm ONE retained card LEFT, empty RIGHT hand at chest; 5 RIGHT hand opens for catch, ONE retained LEFT, no flying card; 6 new card grasped RIGHT at chest and ONE retained LEFT, TWO cards total; 7 RIGHT brings new card to LEFT fan, TWO cards total; 8 exact TWO-card neutral rest as0. Working arm never reaches beyond own shoulder width. Small generic forward wrist flick rather than pointing left or right, the game's separate flying card supplies trajectory. No airborne cards painted into the sheet. Legs/hips/chest remain fixed.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/june-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-d31db6d2-35ae-496a-ab48-888837b7d971.png"
+    },
+    {
+      "id": "june-tumble",
+      "character": "june",
+      "name": "June",
+      "kind": "tumble",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: precise-object-edit. Edit target is this existing nine-frame complete-character backwards tumble sprite sheet. Remove EVERY CHAIR and ALL FURNITURE from EVERY one of the nine frames, with real alpha-zero transparency replacing furniture. Keep all nine complete character drawings, expressions, clothing, card, anatomy, frame order, physical scale, floor baseline and body positions unchanged. No chair in initial seated-looking pose either; frame0 is the complete front-facing character posed as if seated, with NO visible support. Preserve the backward body fall and final frames lying way down flat on the floor on their backs, head/back low, both feet raised above the torso. Do not repaint a colored background, floor, shadows, stool, cushion or chair remnants. Exactly three columns three rows, transparent PNG, no labels or text. Chair-free all nine frames. Preserve ample space around hair, hands and feet.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-da891a08-11ad-4c51-a982-13e10d80ffc8.png"
+      ],
+      "previousPath": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-da891a08-11ad-4c51-a982-13e10d80ffc8.png",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-b115c22b-6c73-47c5-90c2-44f2026ee028.png"
+    },
+    {
+      "id": "edgar-reactions",
+      "character": "edgar",
+      "name": "Edgar",
+      "kind": "reactions",
+      "count": 12,
+      "cols": 3,
+      "rows": 4,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Edgar, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Edgar master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. lanky elderly adult man, swept white hair, white goatee, long narrow nose, navy suit, purple cravat and socks, black gold-bit dress shoes.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY 12 figures in THREE columns and FOUR rows, row-major: 0 calm neutral; 1 complete blink with BOTH eyes closed; 2 focused eyes down at cards; 3 coordinated head and BOTH eyes toward SCREEN LEFT, body stays front; 4 coordinated head and BOTH eyes toward SCREEN RIGHT, body stays front; 5 confident small smile; 6 smug amused grin; 7 worried nervous brows; 8 panicked wide eyes; 9 shocked open mouth; 10 relieved eyes closed smiling; 11 frustrated defeated pout. All twelve have TWO cards held IMAGE LEFT at chest and EMPTY IMAGE RIGHT hand nearby. Keep exact same shoulders/hips/lower-body silhouette in every cell. Eyes coordinated, never cross-eyed. Don't mirror clothing/body for directional gaze.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/edgar-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-38c6f59d-e83e-4304-be2d-460a1e23992f.png"
+    },
+    {
+      "id": "edgar-card-actions",
+      "character": "edgar",
+      "name": "Edgar",
+      "kind": "card-actions",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Edgar, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Edgar master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. lanky elderly adult man, swept white hair, white goatee, long narrow nose, navy suit, purple cravat and socks, black gold-bit dress shoes.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY NINE figures in THREE columns THREE rows, row-major. 0 calm neutral TWO-card fan in IMAGE LEFT hand, empty IMAGE RIGHT hand; 1 IMAGE RIGHT fingers pinch one card from LEFT fan, TWO cards total; 2 tiny wrist cock, ONE card in RIGHT working hand and ONE retained LEFT, TWO cards total; 3 RIGHT hand makes short EMPTY release gesture near chest, ONE retained card LEFT; 4 calm ONE retained card LEFT, empty RIGHT hand at chest; 5 RIGHT hand opens for catch, ONE retained LEFT, no flying card; 6 new card grasped RIGHT at chest and ONE retained LEFT, TWO cards total; 7 RIGHT brings new card to LEFT fan, TWO cards total; 8 exact TWO-card neutral rest as0. Working arm never reaches beyond own shoulder width. Small generic forward wrist flick rather than pointing left or right, the game's separate flying card supplies trajectory. No airborne cards painted into the sheet. Legs/hips/chest remain fixed.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/edgar-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-74632601-a46d-4a6f-94a8-a6d3c81fe2b2.png"
+    },
+    {
+      "id": "edgar-tumble",
+      "character": "edgar",
+      "name": "Edgar",
+      "kind": "tumble",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: precise-object-edit. Edit target is this existing nine-frame complete-character backwards tumble sprite sheet. Remove EVERY CHAIR and ALL FURNITURE from EVERY one of the nine frames, with real alpha-zero transparency replacing furniture. Keep all nine complete character drawings, expressions, clothing, card, anatomy, frame order, physical scale, floor baseline and body positions unchanged. No chair in initial seated-looking pose either; frame0 is the complete front-facing character posed as if seated, with NO visible support. Preserve the backward body fall and final frames lying way down flat on the floor on their backs, head/back low, both feet raised above the torso. Do not repaint a colored background, floor, shadows, stool, cushion or chair remnants. Exactly three columns three rows, transparent PNG, no labels or text. Chair-free all nine frames. Preserve ample space around hair, hands and feet.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-4d194906-ecea-41b9-8a1d-7a2d33b155a9.png"
+      ],
+      "previousPath": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-4d194906-ecea-41b9-8a1d-7a2d33b155a9.png",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-d7efbba2-5ceb-4b83-99ea-664d38e80111.png"
+    },
+    {
+      "id": "roxie-reactions",
+      "character": "roxie",
+      "name": "Roxie",
+      "kind": "reactions",
+      "count": 12,
+      "cols": 3,
+      "rows": 4,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Roxie, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Roxie master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. compact athletic adult woman, auburn side-swept undercut, black leather biker jacket, orange shirt, arm tattoos, charcoal jeans, black lace-up boots.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY 12 figures in THREE columns and FOUR rows, row-major: 0 calm neutral; 1 complete blink with BOTH eyes closed; 2 focused eyes down at cards; 3 coordinated head and BOTH eyes toward SCREEN LEFT, body stays front; 4 coordinated head and BOTH eyes toward SCREEN RIGHT, body stays front; 5 confident small smile; 6 smug amused grin; 7 worried nervous brows; 8 panicked wide eyes; 9 shocked open mouth; 10 relieved eyes closed smiling; 11 frustrated defeated pout. All twelve have TWO cards held IMAGE LEFT at chest and EMPTY IMAGE RIGHT hand nearby. Keep exact same shoulders/hips/lower-body silhouette in every cell. Eyes coordinated, never cross-eyed. Don't mirror clothing/body for directional gaze.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/roxie-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-676ac8ea-615b-4ce5-893a-9a6d426206bf.png"
+    },
+    {
+      "id": "roxie-card-actions",
+      "character": "roxie",
+      "name": "Roxie",
+      "kind": "card-actions",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Roxie, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Roxie master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. compact athletic adult woman, auburn side-swept undercut, black leather biker jacket, orange shirt, arm tattoos, charcoal jeans, black lace-up boots.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY NINE figures in THREE columns THREE rows, row-major. 0 calm neutral TWO-card fan in IMAGE LEFT hand, empty IMAGE RIGHT hand; 1 IMAGE RIGHT fingers pinch one card from LEFT fan, TWO cards total; 2 tiny wrist cock, ONE card in RIGHT working hand and ONE retained LEFT, TWO cards total; 3 RIGHT hand makes short EMPTY release gesture near chest, ONE retained card LEFT; 4 calm ONE retained card LEFT, empty RIGHT hand at chest; 5 RIGHT hand opens for catch, ONE retained LEFT, no flying card; 6 new card grasped RIGHT at chest and ONE retained LEFT, TWO cards total; 7 RIGHT brings new card to LEFT fan, TWO cards total; 8 exact TWO-card neutral rest as0. Working arm never reaches beyond own shoulder width. Small generic forward wrist flick rather than pointing left or right, the game's separate flying card supplies trajectory. No airborne cards painted into the sheet. Legs/hips/chest remain fixed.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/roxie-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-a74f353b-c4b6-47e4-ba6d-001ea8001837.png"
+    },
+    {
+      "id": "roxie-tumble",
+      "character": "roxie",
+      "name": "Roxie",
+      "kind": "tumble",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Roxie, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Roxie master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. compact athletic adult woman, auburn side-swept undercut, black leather biker jacket, orange shirt, arm tattoos, charcoal jeans, black lace-up boots.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR or FURNITURE in any frame, including tumbles.\nEXACTLY NINE complete character drawings, THREE columns THREE rows, row-major. NO CHAIR OR FURNITURE IN ANY FRAME. One retained card in IMAGE LEFT hand, EMPTY RIGHT hand. Pose0 front-facing seated-looking rest WITHOUT chair;1 startled recoil;2 lean backwards and lose balance;3 fall backwards feet lifting toward camera;4 body drops backwards down onto FLOOR;5 land flat on BACK, head and shoulders LOW DOWN, both legs raised above belly, soles toward camera;6 floor impact bounce feetUP;7 settle flat on back, both knees bent feet pointing UP;8 final embarrassed defeated pose lying WAY DOWN ON FLOOR, head/back low, BOTH FEET UP prominently above torso. No person seated upright in final frame. Full body, hair, hands and feet visible. Same body physical scale every frame, same floor contact baseline.20%clear transparent padding ALL SIDES per cell. No drawn floor, chair, stool, cushion, furniture, scene, text, glow or shadows. Empty canvas ALPHA ZERO.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/roxie-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-f40938c0-2d24-4687-8b48-ee6abacb0a59.png"
+    },
+    {
+      "id": "otis-reactions",
+      "character": "otis",
+      "name": "Otis",
+      "kind": "reactions",
+      "count": 12,
+      "cols": 3,
+      "rows": 4,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Otis, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Otis master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. broad stocky adult man, medium brown skin, close dark curls, round black moustache, olive rolled-sleeve overshirt, cream Henley, tan cuffed trousers, brown work boots.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY 12 figures in THREE columns and FOUR rows, row-major: 0 calm neutral; 1 complete blink with BOTH eyes closed; 2 focused eyes down at cards; 3 coordinated head and BOTH eyes toward SCREEN LEFT, body stays front; 4 coordinated head and BOTH eyes toward SCREEN RIGHT, body stays front; 5 confident small smile; 6 smug amused grin; 7 worried nervous brows; 8 panicked wide eyes; 9 shocked open mouth; 10 relieved eyes closed smiling; 11 frustrated defeated pout. All twelve have TWO cards held IMAGE LEFT at chest and EMPTY IMAGE RIGHT hand nearby. Keep exact same shoulders/hips/lower-body silhouette in every cell. Eyes coordinated, never cross-eyed. Don't mirror clothing/body for directional gaze.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/otis-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-72a694bb-b04b-4e6a-9e74-f5497461698d.png"
+    },
+    {
+      "id": "otis-card-actions",
+      "character": "otis",
+      "name": "Otis",
+      "kind": "card-actions",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Otis, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Otis master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. broad stocky adult man, medium brown skin, close dark curls, round black moustache, olive rolled-sleeve overshirt, cream Henley, tan cuffed trousers, brown work boots.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY NINE figures in THREE columns THREE rows, row-major. 0 calm neutral TWO-card fan in IMAGE LEFT hand, empty IMAGE RIGHT hand; 1 IMAGE RIGHT fingers pinch one card from LEFT fan, TWO cards total; 2 tiny wrist cock, ONE card in RIGHT working hand and ONE retained LEFT, TWO cards total; 3 RIGHT hand makes short EMPTY release gesture near chest, ONE retained card LEFT; 4 calm ONE retained card LEFT, empty RIGHT hand at chest; 5 RIGHT hand opens for catch, ONE retained LEFT, no flying card; 6 new card grasped RIGHT at chest and ONE retained LEFT, TWO cards total; 7 RIGHT brings new card to LEFT fan, TWO cards total; 8 exact TWO-card neutral rest as0. Working arm never reaches beyond own shoulder width. Small generic forward wrist flick rather than pointing left or right, the game's separate flying card supplies trajectory. No airborne cards painted into the sheet. Legs/hips/chest remain fixed.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/otis-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-32122e94-5c35-4f88-900c-2f468129b17a.png"
+    },
+    {
+      "id": "otis-tumble",
+      "character": "otis",
+      "name": "Otis",
+      "kind": "tumble",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Otis, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Otis master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. broad stocky adult man, medium brown skin, close dark curls, round black moustache, olive rolled-sleeve overshirt, cream Henley, tan cuffed trousers, brown work boots.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR or FURNITURE in any frame, including tumbles.\nEXACTLY NINE complete character drawings, THREE columns THREE rows, row-major. NO CHAIR OR FURNITURE IN ANY FRAME. One retained card in IMAGE LEFT hand, EMPTY RIGHT hand. Pose0 front-facing seated-looking rest WITHOUT chair;1 startled recoil;2 lean backwards and lose balance;3 fall backwards feet lifting toward camera;4 body drops backwards down onto FLOOR;5 land flat on BACK, head and shoulders LOW DOWN, both legs raised above belly, soles toward camera;6 floor impact bounce feetUP;7 settle flat on back, both knees bent feet pointing UP;8 final embarrassed defeated pose lying WAY DOWN ON FLOOR, head/back low, BOTH FEET UP prominently above torso. No person seated upright in final frame. Full body, hair, hands and feet visible. Same body physical scale every frame, same floor contact baseline.20%clear transparent padding ALL SIDES per cell. No drawn floor, chair, stool, cushion, furniture, scene, text, glow or shadows. Empty canvas ALPHA ZERO.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/otis-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-0f848fb4-ca04-465b-84f3-023bac3af6e2.png"
+    },
+    {
+      "id": "paloma-reactions",
+      "character": "paloma",
+      "name": "Paloma",
+      "kind": "reactions",
+      "count": 12,
+      "cols": 3,
+      "rows": 4,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Paloma, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Paloma master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. curvy adult woman, warm olive skin, blonde curled updo, plum wrap dress, gold jewelry and necklace, dark tights, burgundy low pumps.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY 12 figures in THREE columns and FOUR rows, row-major: 0 calm neutral; 1 complete blink with BOTH eyes closed; 2 focused eyes down at cards; 3 coordinated head and BOTH eyes toward SCREEN LEFT, body stays front; 4 coordinated head and BOTH eyes toward SCREEN RIGHT, body stays front; 5 confident small smile; 6 smug amused grin; 7 worried nervous brows; 8 panicked wide eyes; 9 shocked open mouth; 10 relieved eyes closed smiling; 11 frustrated defeated pout. All twelve have TWO cards held IMAGE LEFT at chest and EMPTY IMAGE RIGHT hand nearby. Keep exact same shoulders/hips/lower-body silhouette in every cell. Eyes coordinated, never cross-eyed. Don't mirror clothing/body for directional gaze.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/paloma-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-370c7e32-a8d1-4fef-b04b-87e784466705.png"
+    },
+    {
+      "id": "paloma-card-actions",
+      "character": "paloma",
+      "name": "Paloma",
+      "kind": "card-actions",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Paloma, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Paloma master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. curvy adult woman, warm olive skin, blonde curled updo, plum wrap dress, gold jewelry and necklace, dark tights, burgundy low pumps.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY NINE figures in THREE columns THREE rows, row-major. 0 calm neutral TWO-card fan in IMAGE LEFT hand, empty IMAGE RIGHT hand; 1 IMAGE RIGHT fingers pinch one card from LEFT fan, TWO cards total; 2 tiny wrist cock, ONE card in RIGHT working hand and ONE retained LEFT, TWO cards total; 3 RIGHT hand makes short EMPTY release gesture near chest, ONE retained card LEFT; 4 calm ONE retained card LEFT, empty RIGHT hand at chest; 5 RIGHT hand opens for catch, ONE retained LEFT, no flying card; 6 new card grasped RIGHT at chest and ONE retained LEFT, TWO cards total; 7 RIGHT brings new card to LEFT fan, TWO cards total; 8 exact TWO-card neutral rest as0. Working arm never reaches beyond own shoulder width. Small generic forward wrist flick rather than pointing left or right, the game's separate flying card supplies trajectory. No airborne cards painted into the sheet. Legs/hips/chest remain fixed.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/paloma-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-970d8b47-53dd-42e8-9de3-87414d490d1a.png"
+    },
+    {
+      "id": "paloma-tumble",
+      "character": "paloma",
+      "name": "Paloma",
+      "kind": "tumble",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: identity-preserve. Production NONSEXUAL cartoon slapstick sprite sheet, EXACT adult woman Paloma from the supplied approved master. Preserve blonde updo, face, plum wrap dress, gold jewelry, opaque dark leggings/tights and burgundy pumps, crisp flat cel cartoon style. EXACTLY NINE COMPLETE FIGURES in three columns three rows on REAL transparent alpha-zero PNG. NO CHAIRS, NO furniture, NO scenery, NO labels. Whole body and hair/shoes/hands visible,20%transparent spacing all four sides each cell, equal physical body scale and fixed floor-contact baseline. One small black-and-gold card retained in image-left hand, empty image-right hand. Frame0 front-facing seated-looking rest with no visible support. Frame1 startled recoil. Frame2 lean backward and lose balance. Frame3 begin falling backward with knees held TOGETHER and body rotating into a three-quarter SIDE view. Frame4 back descending to floor, bent legs kept together, dress stays draped and fully covers thighs and hips. Frame5 land flat on back, body LOW on floor in a modest SIDE PROFILE with head low and bent calves raised. Frame6 small impact bounce in side view. Frame7 settle lying flat on back on floor, knees together, feet raised. Frame8 defeated final SIDE VIEW lying flat WAY DOWN on floor, head/back low, BOTH FEET pointing up above the torso, knees TOGETHER. The costume remains intact and fully covering the body in every drawing. Modest children's-TV-style comedy staging, focus on startled facial acting and the fall, no revealing angles or exposed underwear. No spread-legged poses. No literal floor, shadows, glow, matte or gradients. Clear alpha-zero background.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/paloma-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-69f5f5aa-1e56-4da6-8fdd-406cdbb99876.png"
+    },
+    {
+      "id": "bianca-reactions",
+      "character": "bianca",
+      "name": "Bianca",
+      "kind": "reactions",
+      "count": 12,
+      "cols": 3,
+      "rows": 4,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Bianca, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Bianca master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. petite older East Asian woman, silver bob, black angular cat-eye glasses, ivory pantsuit, charcoal high-neck blouse, jade jewelry, green socks and black low heels.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY 12 figures in THREE columns and FOUR rows, row-major: 0 calm neutral; 1 complete blink with BOTH eyes closed; 2 focused eyes down at cards; 3 coordinated head and BOTH eyes toward SCREEN LEFT, body stays front; 4 coordinated head and BOTH eyes toward SCREEN RIGHT, body stays front; 5 confident small smile; 6 smug amused grin; 7 worried nervous brows; 8 panicked wide eyes; 9 shocked open mouth; 10 relieved eyes closed smiling; 11 frustrated defeated pout. All twelve have TWO cards held IMAGE LEFT at chest and EMPTY IMAGE RIGHT hand nearby. Keep exact same shoulders/hips/lower-body silhouette in every cell. Eyes coordinated, never cross-eyed. Don't mirror clothing/body for directional gaze.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/bianca-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-917d168e-6e51-4c4d-ac85-df3aa028c618.png"
+    },
+    {
+      "id": "bianca-card-actions",
+      "character": "bianca",
+      "name": "Bianca",
+      "kind": "card-actions",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Bianca, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Bianca master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. petite older East Asian woman, silver bob, black angular cat-eye glasses, ivory pantsuit, charcoal high-neck blouse, jade jewelry, green socks and black low heels.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR anywhere on this sheet. No separate limbs or puppet parts. Body below chest should remain unchanged.\nEXACTLY NINE figures in THREE columns THREE rows, row-major. 0 calm neutral TWO-card fan in IMAGE LEFT hand, empty IMAGE RIGHT hand; 1 IMAGE RIGHT fingers pinch one card from LEFT fan, TWO cards total; 2 tiny wrist cock, ONE card in RIGHT working hand and ONE retained LEFT, TWO cards total; 3 RIGHT hand makes short EMPTY release gesture near chest, ONE retained card LEFT; 4 calm ONE retained card LEFT, empty RIGHT hand at chest; 5 RIGHT hand opens for catch, ONE retained LEFT, no flying card; 6 new card grasped RIGHT at chest and ONE retained LEFT, TWO cards total; 7 RIGHT brings new card to LEFT fan, TWO cards total; 8 exact TWO-card neutral rest as0. Working arm never reaches beyond own shoulder width. Small generic forward wrist flick rather than pointing left or right, the game's separate flying card supplies trajectory. No airborne cards painted into the sheet. Legs/hips/chest remain fixed.\nBACKGROUND REQUIREMENT: empty canvas is ALPHA ZERO, not black, burgundy, white, gradient, light shafts, checkerboard drawing, or any colored matte. No atmospheric haze between figures. Real transparent PNG.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/bianca-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-92ce5987-5411-4f73-bb59-710d4de5d3b2.png"
+    },
+    {
+      "id": "bianca-tumble",
+      "character": "bianca",
+      "name": "Bianca",
+      "kind": "tumble",
+      "count": 9,
+      "cols": 3,
+      "rows": 3,
+      "prompt": "Use case: identity-preserve. Production TRADITIONAL WHOLE-CHARACTER cartoon sprite sheet for Bianca, Midnight Social Club 100next game.\nReference1 is the EXACT approved chair-free Bianca master. Preserve identity, adult anatomy, head-to-shoulder ratio, clothing, colors, hairstyle, facial proportions and line weight. petite older East Asian woman, silver bob, black angular cat-eye glasses, ivory pantsuit, charcoal high-neck blouse, jade jewelry, green socks and black low heels.\nRich flat adult-cartoon cel style, crisp black outlines and restrained two-tone shading; never photorealistic or airbrushed. Entire complete seated figure, facing front toward the table. TWO arms, TWO hands, TWO legs. Retained card hand always IMAGE LEFT; working hand always IMAGE RIGHT. Small black card BACKS with gold trim and upright100. No face card drawings. No swaps or mirrored body/clothes/lettering.\nUNIFORM equal grid cells. TRUE TRANSPARENT alpha background. Generous clear transparent padding on ALL FOUR SIDES of EACH figure; drawing occupies only the middle60% of cell width and height, with20% clear space left/right/top/bottom. Outer sheet margins also generous. Never touch neighboring figures or sheet boundary. Complete hair/fingers/shoes always visible. Same physical scale across every frame, same seated hip anchor and shoe baseline in ordinary poses; never resize one figure to fill its cell. NO table, NO labels, NO grid lines, NO scene/background/shadow/glow. NO CHAIR or FURNITURE in any frame, including tumbles.\nEXACTLY NINE complete character drawings, THREE columns THREE rows, row-major. NO CHAIR OR FURNITURE IN ANY FRAME. One retained card in IMAGE LEFT hand, EMPTY RIGHT hand. Pose0 front-facing seated-looking rest WITHOUT chair;1 startled recoil;2 lean backwards and lose balance;3 fall backwards feet lifting toward camera;4 body drops backwards down onto FLOOR;5 land flat on BACK, head and shoulders LOW DOWN, both legs raised above belly, soles toward camera;6 floor impact bounce feetUP;7 settle flat on back, both knees bent feet pointing UP;8 final embarrassed defeated pose lying WAY DOWN ON FLOOR, head/back low, BOTH FEET UP prominently above torso. No person seated upright in final frame. Full body, hair, hands and feet visible. Same body physical scale every frame, same floor contact baseline.20%clear transparent padding ALL SIDES per cell. No drawn floor, chair, stool, cushion, furniture, scene, text, glow or shadows. Empty canvas ALPHA ZERO.",
+      "referenced_image_paths": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/bianca-master.png"
+      ],
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-760e263d-54bf-4487-928f-3a21a2358b3b.png"
+    }
+  ]
+}

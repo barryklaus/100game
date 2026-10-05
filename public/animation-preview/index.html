@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>100next · Character animation preview</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#171320;color:#eee4d6;font:16px system-ui,sans-serif}header{padding:28px max(20px,calc((100vw - 1300px)/2));background:#231a2b;border-bottom:1px solid #514052}h1{margin:0 0 8px;font-size:28px}p{margin:8px 0;color:#c6b9bf;line-height:1.5}.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:18px}button,select{background:#33243b;border:1px solid #796372;color:#fff2da;border-radius:8px;padding:10px 14px;font:inherit;cursor:pointer}button:disabled{opacity:.5}button:hover,select:hover{background:#50364e}main{max-width:1340px;margin:auto;padding:20px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.card{background:#251e2b;border:1px solid #594353;border-radius:14px;overflow:hidden}.card h2{margin:18px 18px 0;font-size:20px}.status{height:25px;margin:3px 18px;font-size:13px;color:#cab8c1}.stage{background:#eee5d5;position:relative;aspect-ratio:1}.stage canvas{width:100%;height:100%;display:block}.table{position:absolute;inset:56% -4% 0;background:linear-gradient(#563736,#251c29);border-radius:50% 50% 0 0;border-top:5px solid #b38957;display:none;pointer-events:none}body.table-view .table{display:block}.card .controls{margin:12px;justify-content:center}.card button{font-size:14px;padding:8px 11px}footer{padding:12px 24px 30px;text-align:center;color:#ad9ca9}a{color:#f1cb87}@media(max-width:900px){main{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:450px){main{padding:12px;gap:10px}.card h2{margin:12px 12px 0}.status{margin:3px 12px;font-size:11px}.card .controls{gap:5px;margin:8px}.card button{font-size:12px;padding:8px}h1{font-size:24px}}
+</style>
+<header>
+<h1>100next · Midnight Social Club</h1>
+<p>Whole-character sprite animation. No chairs. The tumble ends low on the floor, feet up.</p>
+<div class="controls"><select id="clip" aria-label="Animation"><option value="tumble">Overflow tumble</option><option value="throw">Throw card</option><option value="pickup">Pick up card</option><option value="expressions">All expressions</option><option value="look-left">Look left</option><option value="look-right">Look right</option><option value="danger">Nervous / panic</option><option value="celebrate">Celebrate / relief</option><option value="defeat">Defeat</option><option value="idle">Blink</option></select><button id="play">Play all</button><button id="pause">Pause all</button><label><input type="checkbox" id="padding"> Show full padded frame</label><label><input type="checkbox" id="table"> Table covers waist</label></div>
+</header>
+<main id="cast"></main>
+<footer>31 drawings per character · 512 × 512 logical frame · at least 128 pixels of clear padding on every side.<br><a href="/?characters=midnight-eight&play=1">Open the current game</a></footer>
+<script type="module">
+const names=['vince','finn','june','edgar','roxie','otis','paloma','bianca'];
+const players=[];let padded=false,raf=0;
+const selector=document.querySelector('#clip');
+function paint(p){
+ const i=p.current,ctx=p.ctx;ctx.clearRect(0,0,512,512);
+ const size=padded?256:Math.round(256*1.4),origin=(512-size)/2,top=padded?128:100;
+ ctx.drawImage(p.image,(i%8)*256,Math.floor(i/8)*256,256,256,origin,top,size,size);
+ ctx.strokeStyle='#cbbdaa';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(55,top+size);ctx.lineTo(457,top+size);ctx.stroke();
+ if(padded){ctx.setLineDash([5,7]);ctx.strokeStyle='#b29b89';ctx.strokeRect(128,128,256,256);ctx.setLineDash([])}
+}
+function requestTick(){if(!raf)raf=requestAnimationFrame(tick)}
+function tick(now){raf=0;let active=false;for(const p of players){if(!p.playing)continue;let elapsed=now-p.started,sum=0,index=p.clip.frames.length-1;for(let i=0;i<p.clip.durations.length;i++){sum+=p.clip.durations[i];if(elapsed<sum){index=i;break}}const next=p.clip.frames[index].index;if(next!==p.current){p.current=next;paint(p)}if(elapsed>=sum){p.playing=false;p.status.textContent=p.label+' · finished'}else active=true}if(active)requestTick()}
+function play(p,key){p.clip=p.manifest.clips[key];p.label=selector.options[selector.selectedIndex].text;p.started=performance.now();p.playing=true;p.current=p.clip.frames[0].index;p.status.textContent=p.label;paint(p);requestTick()}
+function rest(p){p.playing=false;p.current=0;p.status.textContent='Ready';paint(p)}
+await Promise.all(names.map(async name=>{
+ const card=document.createElement('section');card.className='card';card.innerHTML=`<h2>${name[0].toUpperCase()+name.slice(1)}</h2><p class="status">Loading…</p><div class="stage"><canvas width="512" height="512" aria-label="${name} animation"></canvas><div class="table"></div></div><div class="controls"><button class="replay" disabled>Replay</button><button class="rest" disabled>Rest pose</button></div>`;document.querySelector('#cast').append(card);
+ try{const response=await fetch(`/assets/social-club/simple-v1/${name}-manifest.json`);if(!response.ok)throw Error('Missing animation manifest');const manifest=await response.json();const image=new Image();image.src=`/assets/social-club/simple-v1/${name}-atlas.webp`;await image.decode();const p={manifest,image,ctx:card.querySelector('canvas').getContext('2d'),status:card.querySelector('.status'),playing:false,current:0};players.push(p);card.querySelector('.replay').onclick=()=>play(p,selector.value);card.querySelector('.rest').onclick=()=>rest(p);for(const b of card.querySelectorAll('button'))b.disabled=false;rest(p)}catch(error){card.querySelector('.status').textContent='Could not load animation';console.error(name,error)}
+}));
+document.querySelector('#play').onclick=()=>players.forEach(p=>play(p,selector.value));document.querySelector('#pause').onclick=()=>players.forEach(p=>{p.playing=false;p.status.textContent=p.label+' · paused'});document.querySelector('#padding').onchange=e=>{padded=e.target.checked;players.forEach(paint)};document.querySelector('#table').onchange=e=>document.body.classList.toggle('table-view',e.target.checked);selector.onchange=()=>players.forEach(p=>play(p,selector.value));players.forEach(p=>play(p,'tumble'));
+</script>
+</html>
