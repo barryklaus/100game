@@ -1,0 +1,15 @@
+{
+  "tool": "built-in image_gen",
+  "prompt": "Use case: precise-object-edit.\nAsset type: production background for the 100next Midnight Social Club cartoon card game.\nInput image 1 is the approved background edit target. Preserve its exact flat adult-cartoon style, crisp black outlines, restrained cel shading, burgundy velvet lounge, brass trim, teal cushions, hanging plants, left cocktail bar, warm amber lamps, three dark blue skyline windows and crescent moon. Keep the room recognizable and furniture architecture consistent.\nRemove ONLY the large teal oval foreground playing table and its red/gold rim. Continue the existing room naturally into the removed area with a simple dark burgundy/deep teal floor and the bottom of the curved lounge seating, using the same cartoon perspective. No other playing tables in the foreground. Keep the small side tables and their lamps. The game's own live 3D table will occupy the lower half, so keep that space quiet and unobstructed.\nComposition: wide landscape 16:9 room plate at high resolution. Keep the skyline windows and crescent in the upper central area, couch and lamps behind the characters, full architectural background filling the frame. Preserve the original color palette and lighting, no new theme or photorealism, no characters, no cards, no UI, no text, no logos. One complete background image, not a collage.",
+  "referenced_image_paths": [
+    "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-animation-preview/lounge.webp"
+  ],
+  "output_image": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-b1257a25-f099-4059-bebd-362dec9d198a.png",
+  "workspace_master": "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-background/midnight-room-v1.png",
+  "mobile_crop": [
+    571,
+    0,
+    1100,
+    941
+  ]
+}

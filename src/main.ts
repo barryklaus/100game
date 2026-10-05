@@ -82,9 +82,10 @@ audio.configure(settings);
 audio.setBackgrounded(document.hidden);
 document.addEventListener('visibilitychange',()=>audio.setBackgrounded(document.hidden));
 document.documentElement.classList.add('observatory-mode');
+document.documentElement.classList.toggle('midnight-mode', isNextVersion);
 const presentedTotal = new TotalPresentation();
 let observatory: ObservatoryScene | undefined;
-try { observatory = new ObservatoryScene(); observatory.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion}); } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
+try { observatory = new ObservatoryScene(isNextVersion ? 'midnight' : 'observatory'); observatory.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion}); } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
 
 if (observatory) observatory.onCardArrival = key => {
   if (!presentedTotal.arrive(key)) return;

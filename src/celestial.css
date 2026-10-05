@@ -24,6 +24,7 @@
 .observatory-mode:not(.world3d-active) .game-page{background:linear-gradient(#03070c44,#03070c66),url('/assets/scene/celestial-v1/room-desktop.webp') center/cover!important;}
 .observatory-mode:not(.world3d-active) .table-felt::before{border:12px solid #754a2c!important;background:repeating-radial-gradient(ellipse,#12243b 0 14%,#9d7e4855 14.2%,#12243b 14.5% 16%);box-shadow:0 5px 0 4px #3e2518,0 16px 22px #0008;}
 .observatory-mode:not(.world3d-active) .draw-stack{outline:none!important;border:0!important;box-shadow:0 5px 9px #0008!important;}
+.midnight-mode:not(.world3d-active) .game-page{background-image:linear-gradient(#03070c44,#03070c66),url('/assets/scene/midnight-v1/room-desktop.webp')!important;}
 @media(orientation:portrait){
  .observatory-mode .game-header{padding:16px 12px!important;}
  .observatory-mode .match-plaque strong{font-size:25px!important;}
@@ -38,6 +39,7 @@
  .observatory-mode .seat-layer .sprite-seat{width:26vw!important;}
  .observatory-mode .seat-layer .sprite-seat .seat-info{padding:2px 0!important;}
  .observatory-mode:not(.world3d-active) .game-page{background-image:linear-gradient(#03070c44,#03070c66),url('/assets/scene/celestial-v1/room-mobile.webp')!important;}
+ .midnight-mode:not(.world3d-active) .game-page{background-image:linear-gradient(#03070c44,#03070c66),url('/assets/scene/midnight-v1/room-mobile.webp')!important;}
  .observatory-mode:not(.world3d-active) .energy-system .total-wrap{top:58.5svh!important;}
 }
 @media(orientation:landscape) and (max-height:520px){

@@ -103,7 +103,7 @@ export class ObservatoryScene {
   private flowColor():string{return `hsl(${43*(1-Math.max(0,Math.min(1,this.currentTotal/100)))} 100% 65%)`;}
   private localSeat = 0;
 
-  constructor() {
+  constructor(roomTheme: 'observatory' | 'midnight' = 'observatory') {
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.info.autoReset=false;
@@ -121,9 +121,10 @@ export class ObservatoryScene {
     this.backdrop.hidden=true;
     const source=document.createElement('source');
     source.media='(orientation: portrait)';
-    source.srcset=`${import.meta.env.BASE_URL}assets/scene/celestial-v1/room-mobile.webp`;
+    const roomAssets = roomTheme === 'midnight' ? 'midnight-v1' : 'celestial-v1';
+    source.srcset=`${import.meta.env.BASE_URL}assets/scene/${roomAssets}/room-mobile.webp`;
     const image=document.createElement('img');
-    image.src=`${import.meta.env.BASE_URL}assets/scene/celestial-v1/room-desktop.webp`;
+    image.src=`${import.meta.env.BASE_URL}assets/scene/${roomAssets}/room-desktop.webp`;
     image.alt='';image.decoding='async';
     this.backdrop.append(source,image);document.body.prepend(this.backdrop);
     this.foreground = new ForegroundCards(this.camera, this.refreshContext);
