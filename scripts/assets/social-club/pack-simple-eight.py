@@ -82,7 +82,7 @@ def gif(frames,durations,path,name,label):
     for i,im in enumerate(rgb):palette.paste(im.resize((128,140)),(i*128,0))
     palette=palette.quantize(colors=256,method=Image.Quantize.MEDIANCUT)
     images=[im.quantize(palette=palette,dither=Image.Dither.NONE) for im in rgb]
-    images[0].save(path,save_all=True,append_images=images[1:],duration=durations,loop=0,disposal=1,optimize=False)
+    images[0].save(path,save_all=True,append_images=images[1:],duration=durations,disposal=1,optimize=False)
 
 def head_reference(im):
     """Measure upright skull/hair, never a moving hand or a pose's full box."""
@@ -194,7 +194,7 @@ def overview():
         for i,board in enumerate(boards):palette.paste(board.resize((320,180)),(i*320,0))
         palette=palette.quantize(colors=256,method=Image.Quantize.MEDIANCUT)
         frames=[board.quantize(palette=palette,dither=Image.Dither.NONE) for board in boards]
-        frames[0].save(OUT/f'{title}.gif',save_all=True,append_images=frames[1:],duration=durations,loop=0,disposal=1,optimize=False)
+        frames[0].save(OUT/f'{title}.gif',save_all=True,append_images=frames[1:],duration=durations,disposal=1,optimize=False)
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser()
