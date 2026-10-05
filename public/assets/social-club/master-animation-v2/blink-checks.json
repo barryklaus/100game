@@ -1,0 +1,770 @@
+[
+  {
+    "character": "vince",
+    "frame": "down-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "down-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "nervous-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "nervous-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "panicked-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "panicked-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "amused-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "amused-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "smug-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "smug-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "frustrated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "frustrated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "defeated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "defeated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "release-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "vince",
+    "frame": "release-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "down-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "down-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "nervous-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "nervous-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "panicked-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "panicked-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "amused-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "amused-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "smug-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "smug-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "frustrated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "frustrated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "defeated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "defeated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "release-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "finn",
+    "frame": "release-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "down-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "down-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "nervous-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "nervous-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "panicked-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "panicked-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "amused-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "amused-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "smug-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "smug-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "frustrated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "frustrated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "defeated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "defeated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "release-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "june",
+    "frame": "release-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "down-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "down-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "nervous-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "nervous-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "panicked-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "panicked-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "amused-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "amused-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "smug-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "smug-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "frustrated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "frustrated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "defeated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "defeated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "release-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "edgar",
+    "frame": "release-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "down-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "down-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "nervous-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "nervous-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "panicked-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "panicked-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "amused-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "amused-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "smug-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "smug-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "frustrated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "frustrated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "defeated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "defeated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "release-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "roxie",
+    "frame": "release-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "down-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "down-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "nervous-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "nervous-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "panicked-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "panicked-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "amused-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "amused-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "smug-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "smug-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "frustrated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "frustrated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "defeated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "defeated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "release-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "otis",
+    "frame": "release-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "down-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "down-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "nervous-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "nervous-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "panicked-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "panicked-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "amused-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "amused-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "smug-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "smug-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "frustrated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "frustrated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "defeated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "defeated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "release-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "paloma",
+    "frame": "release-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "down-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "down-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "nervous-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "nervous-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "panicked-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "panicked-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "amused-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "amused-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "smug-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "smug-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "frustrated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "frustrated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "defeated-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "defeated-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "release-blink-half",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  },
+  {
+    "character": "bianca",
+    "frame": "release-blink",
+    "onlyEyesChanged": true,
+    "nativePixelsPreserved": true
+  }
+]

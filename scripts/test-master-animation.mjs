@@ -8,8 +8,8 @@ globalThis.performance={now:()=>time};globalThis.window=globalThis;
 globalThis.setTimeout=(fn,ms)=>{timers.set(++key,{fn,at:time+ms});return key;};globalThis.clearTimeout=k=>timers.delete(k);
 globalThis.Image=class{decode(){return waitDecode?new Promise(resolve=>pending.push(resolve)):Promise.resolve();}};
 const names=['vince','finn','june','edgar','roxie','otis','paloma','bianca'];let paints=0;
-const nodes=names.map((id,index)=>{const image={isConnected:true,style:{cssText:''},get src(){return this.url;},set src(url){this.url=url;paints++;}};const element={dataset:{character:id},querySelector:()=>image};return {dataset:{seat:String(index),mood:'Normal'},element,image,getBoundingClientRect:()=>({left:index*200,top:100,width:100,height:100})};});
-const root={querySelector(selector){const n=nodes[Number(selector.match(/data-seat="(\d+)"/)?.[1])];if(selector.includes('master-hand'))return {getBoundingClientRect:n.getBoundingClientRect};return selector.includes('master-sprite')?n.element:n;},querySelectorAll(){return nodes;}};
+const nodes=names.map((id,index)=>{const history=[];const image={isConnected:true,style:{cssText:''},get src(){return this.url;},set src(url){this.url=url;paints++;history.push({url,time});}};const element={dataset:{character:id},querySelector:()=>image};return {dataset:{seat:String(index),mood:'Normal'},hidden:false,history,element,image,getBoundingClientRect:()=>({left:index*200,top:100,width:100,height:100})};});
+const root={querySelector(selector){const n=nodes[Number(selector.match(/data-seat="(\d+)"/)?.[1])];if(selector.includes('master-hand'))return {getBoundingClientRect:n.getBoundingClientRect};return selector.includes('master-sprite')?n.element:n;},querySelectorAll(){return nodes.filter(n=>!n.hidden);}};
 const flush=async()=>{for(let i=0;i<20;i++)await Promise.resolve();};
 const advance=async ms=>{const end=time+ms;while(true){const next=[...timers.entries()].filter(([,v])=>v.at<=end).sort((a,b)=>a[1].at-b[1].at)[0];if(!next)break;time=next[1].at;timers.delete(next[0]);next[1].fn();await flush();}time=end;await flush();};
 const state={active:0,total:0,overflow:false,target:false,reducedMotion:false};const cast=new MasterAnimations(root);
@@ -20,7 +20,7 @@ for(let index=0;index<8;index++){
  cast.release(index);await flush();assert.equal(nodes[index].element.dataset.cards,'1');assert.equal(nodes[index].element.dataset.frame,'release','Card disappears from the working hand at release');await advance(300);
  await cast.prepareDraw(index);assert.equal(nodes[index].element.dataset.cards,'1','No second painted card before the actual flight arrives');
  const received=cast.received(index);await flush();assert.equal(nodes[index].element.dataset.cards,'2');await advance(1000);await received;
- assert(!nodes[index].element.dataset.animation,'Draw settles without a perpetual animation loop');
+ assert(!nodes[index].element.dataset.animation||nodes[index].element.dataset.animation.startsWith('blink-'),'Draw settles; only an independent short blink may follow');
 }
 cast.chosen(4,1);await flush();assert.equal(nodes[4].element.dataset.animation,'choose-left');await advance(1000);cast.chosen(1,4);await flush();assert.equal(nodes[1].element.dataset.animation,'choose-right');await advance(1000);
 const fall=cast.tumble(3);await flush();await advance(1800);await fall;assert.equal(nodes[3].element.dataset.frame,'floor');cast.sync({...state,overflow:true});await flush();assert.equal(nodes[3].element.dataset.frame,'floor','Score rendering keeps the fallen pose');
@@ -29,6 +29,26 @@ cast.sync(state);await flush();nodes[0].element.dataset.character='bianca';cast.
 // Cancellation while a whole clip is still decoding cannot overwrite the next round.
 waitDecode=true;const interrupted=cast.prepareThrow(1);await flush();cast.reset();await interrupted;waitDecode=false;pending.splice(0).forEach(resolve=>resolve());await flush();assert.equal(timers.size,0);
 cast.sync({...state,reducedMotion:true});await flush();await cast.tumble(2);assert.equal(nodes[2].element.dataset.frame,'floor');assert.equal(timers.size,0,'Reduced motion completes immediately');cast.reset();
+// A quiet human turn must keep every visible character alive, without more sync calls.
+const random=Math.random;Math.random=()=>.5;globalThis.document={hidden:false};
+nodes.forEach((n,i)=>{n.hidden=i>=4;n.history.length=0;});
+cast.sync({...state,total:85});await flush();await advance(15000);
+const blinkCounts=nodes.map(n=>n.history.filter(h=>h.url.endsWith('/nervous-blink.webp')).length);
+assert(blinkCounts.slice(0,4).every(n=>n>=3),'All four visible seats blink repeatedly during one unchanged turn');
+assert(blinkCounts.slice(4).every(n=>n===0),'Offscreen characters never request or paint idle blinks');
+assert.equal(new Set(nodes.slice(0,4).map(n=>n.history.find(h=>h.url.endsWith('/nervous-blink.webp')).time)).size,4,'Characters blink at separate times');
+await advance(300);assert(nodes.slice(0,4).every(n=>n.element.dataset.frame==='nervous'),'Blink keeps the nervous expression');
+const play=cast.prepareThrow(0);await flush();await advance(321);await play;cast.release(0);await flush();await advance(6000);
+assert(nodes[0].history.some(h=>h.url.endsWith('/release-blink.webp')),'The one-card pose can blink without adding a card');
+assert.equal(nodes[0].element.dataset.cards,'1');
+document.hidden=true;await advance(300);const beforeHidden=paints;await advance(12000);assert.equal(paints,beforeHidden,'Background tabs do not paint blink frames');document.hidden=false;
+await advance(6000);assert(paints>beforeHidden,'Blinking resumes on returning to the tab');
+cast.sync({...state,reducedMotion:true});await flush();assert.equal(timers.size,0,'Reduced motion cancels every idle clock');
+cast.reset();nodes.forEach(n=>{n.hidden=false;n.history.length=0;});Math.random=random;
+// A slow blink decode must yield to a real gesture and must not reappear later.
+cast.sync(state);await flush();waitDecode=true;await advance(5000);
+const duringBlink=cast.prepareThrow(0);await flush();cast.release(0);await flush();waitDecode=false;pending.splice(0).forEach(resolve=>resolve());await flush();await advance(600);await duringBlink;
+assert.equal(nodes[0].element.dataset.cards,'1');assert.equal(nodes[0].element.dataset.frame,'release');cast.reset();assert.equal(timers.size,0);
 const data=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/manifest.json'));assert.equal(data.nativeCanvas,2048);assert.equal(data.resampled,false);
 for(const [id,set] of Object.entries(data.characters))for(const [frame,[x,y,w,h]] of Object.entries(set.bounds)){assert(x>=0&&y>=0&&x+w<=2048&&y+h<=2048);assert(existsSync(`public/assets/social-club/master-animation-v2/${id}/${frame}.webp`));}
-console.log('Master animation checks passed: all eight cast actions, release/arrival timing, left/right reactions, stable rerenders, held floor landing, late decode cancellation, reduced motion and native assets.');
+console.log('Master animation checks passed: all eight cast actions, repeated staggered blinks, expression/card preservation, offscreen/background pauses, release/arrival timing, reactions, floor landing, cancellation, reduced motion and native assets.');

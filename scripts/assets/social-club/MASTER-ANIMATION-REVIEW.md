@@ -1,5 +1,22 @@
 # Master artwork animation review, v1
 
+## Gameplay blink correction, 5 October 2026
+
+The old idle trigger attempted one blink on the active player after 4.5 seconds,
+then required another game sync to rearm. A gesture at that moment could skip
+the blink entirely. Visible characters now own independent staggered timers,
+repeating every 3–5.5 seconds during a quiet human turn. Busy card gestures take
+priority; offscreen seats, overflow, reduced motion and hidden tabs skip blinks.
+No continuous render loop is introduced.
+
+`export-master-blinks.py` adds complete native lossless frames for the current
+focused, nervous, panicked, amused, smug, frustrated, defeated and one-card
+release poses. It copies only the already-approved local eyelids and checks
+that all other RGBA pixels and the complete alpha remain exact. Mouth, card
+count, body size and pose survive each 200ms eye closure. Runtime checks cover
+repeated blinks without sync calls, independent timing, pose/card preservation,
+hidden/offscreen behavior, cancellation during image decode and reduced motion.
+
 The owner approved direct pixel-preserving editing on 5 October 2026.
 This preview is separate from the game. The native master-art quality hold
 stays enabled until the larger animations pass visual review.

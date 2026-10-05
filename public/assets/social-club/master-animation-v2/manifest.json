@@ -242,6 +242,132 @@
             100,
             180
           ]
+        },
+        "blink-rest": {
+          "frames": [
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-down": {
+          "frames": [
+            "down-blink-half",
+            "down-blink",
+            "down-blink-half",
+            "down"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-nervous": {
+          "frames": [
+            "nervous-blink-half",
+            "nervous-blink",
+            "nervous-blink-half",
+            "nervous"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-panicked": {
+          "frames": [
+            "panicked-blink-half",
+            "panicked-blink",
+            "panicked-blink-half",
+            "panicked"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-amused": {
+          "frames": [
+            "amused-blink-half",
+            "amused-blink",
+            "amused-blink-half",
+            "amused"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-smug": {
+          "frames": [
+            "smug-blink-half",
+            "smug-blink",
+            "smug-blink-half",
+            "smug"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-frustrated": {
+          "frames": [
+            "frustrated-blink-half",
+            "frustrated-blink",
+            "frustrated-blink-half",
+            "frustrated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-defeated": {
+          "frames": [
+            "defeated-blink-half",
+            "defeated-blink",
+            "defeated-blink-half",
+            "defeated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-release": {
+          "frames": [
+            "release-blink-half",
+            "release-blink",
+            "release-blink-half",
+            "release"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
         }
       },
       "emotions": {
@@ -460,6 +586,102 @@
           1040
         ],
         "tumble-start": [
+          766,
+          504,
+          508,
+          1040
+        ],
+        "down-blink-half": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "down-blink": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "nervous-blink-half": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "nervous-blink": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "panicked-blink-half": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "panicked-blink": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "amused-blink-half": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "amused-blink": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "smug-blink-half": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "smug-blink": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "frustrated-blink-half": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "frustrated-blink": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "defeated-blink-half": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "defeated-blink": [
+          766,
+          504,
+          515,
+          1040
+        ],
+        "release-blink-half": [
+          766,
+          504,
+          508,
+          1040
+        ],
+        "release-blink": [
           766,
           504,
           508,
@@ -706,6 +928,132 @@
             100,
             180
           ]
+        },
+        "blink-rest": {
+          "frames": [
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-down": {
+          "frames": [
+            "down-blink-half",
+            "down-blink",
+            "down-blink-half",
+            "down"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-nervous": {
+          "frames": [
+            "nervous-blink-half",
+            "nervous-blink",
+            "nervous-blink-half",
+            "nervous"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-panicked": {
+          "frames": [
+            "panicked-blink-half",
+            "panicked-blink",
+            "panicked-blink-half",
+            "panicked"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-amused": {
+          "frames": [
+            "amused-blink-half",
+            "amused-blink",
+            "amused-blink-half",
+            "amused"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-smug": {
+          "frames": [
+            "smug-blink-half",
+            "smug-blink",
+            "smug-blink-half",
+            "smug"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-frustrated": {
+          "frames": [
+            "frustrated-blink-half",
+            "frustrated-blink",
+            "frustrated-blink-half",
+            "frustrated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-defeated": {
+          "frames": [
+            "defeated-blink-half",
+            "defeated-blink",
+            "defeated-blink-half",
+            "defeated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-release": {
+          "frames": [
+            "release-blink-half",
+            "release-blink",
+            "release-blink-half",
+            "release"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
         }
       },
       "emotions": {
@@ -924,6 +1272,102 @@
           1040
         ],
         "tumble-start": [
+          796,
+          504,
+          513,
+          1040
+        ],
+        "down-blink-half": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "down-blink": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "nervous-blink-half": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "nervous-blink": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "panicked-blink-half": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "panicked-blink": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "amused-blink-half": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "amused-blink": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "smug-blink-half": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "smug-blink": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "frustrated-blink-half": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "frustrated-blink": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "defeated-blink-half": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "defeated-blink": [
+          796,
+          504,
+          455,
+          1040
+        ],
+        "release-blink-half": [
+          796,
+          504,
+          513,
+          1040
+        ],
+        "release-blink": [
           796,
           504,
           513,
@@ -1170,6 +1614,132 @@
             100,
             180
           ]
+        },
+        "blink-rest": {
+          "frames": [
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-down": {
+          "frames": [
+            "down-blink-half",
+            "down-blink",
+            "down-blink-half",
+            "down"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-nervous": {
+          "frames": [
+            "nervous-blink-half",
+            "nervous-blink",
+            "nervous-blink-half",
+            "nervous"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-panicked": {
+          "frames": [
+            "panicked-blink-half",
+            "panicked-blink",
+            "panicked-blink-half",
+            "panicked"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-amused": {
+          "frames": [
+            "amused-blink-half",
+            "amused-blink",
+            "amused-blink-half",
+            "amused"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-smug": {
+          "frames": [
+            "smug-blink-half",
+            "smug-blink",
+            "smug-blink-half",
+            "smug"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-frustrated": {
+          "frames": [
+            "frustrated-blink-half",
+            "frustrated-blink",
+            "frustrated-blink-half",
+            "frustrated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-defeated": {
+          "frames": [
+            "defeated-blink-half",
+            "defeated-blink",
+            "defeated-blink-half",
+            "defeated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-release": {
+          "frames": [
+            "release-blink-half",
+            "release-blink",
+            "release-blink-half",
+            "release"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
         }
       },
       "emotions": {
@@ -1388,6 +1958,102 @@
           1040
         ],
         "tumble-start": [
+          797,
+          504,
+          427,
+          1040
+        ],
+        "down-blink-half": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "down-blink": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "nervous-blink-half": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "nervous-blink": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "panicked-blink-half": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "panicked-blink": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "amused-blink-half": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "amused-blink": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "smug-blink-half": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "smug-blink": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "frustrated-blink-half": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "frustrated-blink": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "defeated-blink-half": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "defeated-blink": [
+          797,
+          504,
+          453,
+          1040
+        ],
+        "release-blink-half": [
+          797,
+          504,
+          427,
+          1040
+        ],
+        "release-blink": [
           797,
           504,
           427,
@@ -1634,6 +2300,132 @@
             100,
             180
           ]
+        },
+        "blink-rest": {
+          "frames": [
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-down": {
+          "frames": [
+            "down-blink-half",
+            "down-blink",
+            "down-blink-half",
+            "down"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-nervous": {
+          "frames": [
+            "nervous-blink-half",
+            "nervous-blink",
+            "nervous-blink-half",
+            "nervous"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-panicked": {
+          "frames": [
+            "panicked-blink-half",
+            "panicked-blink",
+            "panicked-blink-half",
+            "panicked"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-amused": {
+          "frames": [
+            "amused-blink-half",
+            "amused-blink",
+            "amused-blink-half",
+            "amused"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-smug": {
+          "frames": [
+            "smug-blink-half",
+            "smug-blink",
+            "smug-blink-half",
+            "smug"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-frustrated": {
+          "frames": [
+            "frustrated-blink-half",
+            "frustrated-blink",
+            "frustrated-blink-half",
+            "frustrated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-defeated": {
+          "frames": [
+            "defeated-blink-half",
+            "defeated-blink",
+            "defeated-blink-half",
+            "defeated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-release": {
+          "frames": [
+            "release-blink-half",
+            "release-blink",
+            "release-blink-half",
+            "release"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
         }
       },
       "emotions": {
@@ -1852,6 +2644,102 @@
           1040
         ],
         "tumble-start": [
+          773,
+          504,
+          509,
+          1040
+        ],
+        "down-blink-half": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "down-blink": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "nervous-blink-half": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "nervous-blink": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "panicked-blink-half": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "panicked-blink": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "amused-blink-half": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "amused-blink": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "smug-blink-half": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "smug-blink": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "frustrated-blink-half": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "frustrated-blink": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "defeated-blink-half": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "defeated-blink": [
+          773,
+          504,
+          501,
+          1040
+        ],
+        "release-blink-half": [
+          773,
+          504,
+          509,
+          1040
+        ],
+        "release-blink": [
           773,
           504,
           509,
@@ -2098,6 +2986,132 @@
             100,
             180
           ]
+        },
+        "blink-rest": {
+          "frames": [
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-down": {
+          "frames": [
+            "down-blink-half",
+            "down-blink",
+            "down-blink-half",
+            "down"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-nervous": {
+          "frames": [
+            "nervous-blink-half",
+            "nervous-blink",
+            "nervous-blink-half",
+            "nervous"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-panicked": {
+          "frames": [
+            "panicked-blink-half",
+            "panicked-blink",
+            "panicked-blink-half",
+            "panicked"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-amused": {
+          "frames": [
+            "amused-blink-half",
+            "amused-blink",
+            "amused-blink-half",
+            "amused"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-smug": {
+          "frames": [
+            "smug-blink-half",
+            "smug-blink",
+            "smug-blink-half",
+            "smug"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-frustrated": {
+          "frames": [
+            "frustrated-blink-half",
+            "frustrated-blink",
+            "frustrated-blink-half",
+            "frustrated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-defeated": {
+          "frames": [
+            "defeated-blink-half",
+            "defeated-blink",
+            "defeated-blink-half",
+            "defeated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-release": {
+          "frames": [
+            "release-blink-half",
+            "release-blink",
+            "release-blink-half",
+            "release"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
         }
       },
       "emotions": {
@@ -2316,6 +3330,102 @@
           1040
         ],
         "tumble-start": [
+          781,
+          504,
+          486,
+          1040
+        ],
+        "down-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "down-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "nervous-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "nervous-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "panicked-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "panicked-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "amused-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "amused-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "smug-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "smug-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "frustrated-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "frustrated-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "defeated-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "defeated-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "release-blink-half": [
+          781,
+          504,
+          486,
+          1040
+        ],
+        "release-blink": [
           781,
           504,
           486,
@@ -2562,6 +3672,132 @@
             100,
             180
           ]
+        },
+        "blink-rest": {
+          "frames": [
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-down": {
+          "frames": [
+            "down-blink-half",
+            "down-blink",
+            "down-blink-half",
+            "down"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-nervous": {
+          "frames": [
+            "nervous-blink-half",
+            "nervous-blink",
+            "nervous-blink-half",
+            "nervous"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-panicked": {
+          "frames": [
+            "panicked-blink-half",
+            "panicked-blink",
+            "panicked-blink-half",
+            "panicked"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-amused": {
+          "frames": [
+            "amused-blink-half",
+            "amused-blink",
+            "amused-blink-half",
+            "amused"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-smug": {
+          "frames": [
+            "smug-blink-half",
+            "smug-blink",
+            "smug-blink-half",
+            "smug"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-frustrated": {
+          "frames": [
+            "frustrated-blink-half",
+            "frustrated-blink",
+            "frustrated-blink-half",
+            "frustrated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-defeated": {
+          "frames": [
+            "defeated-blink-half",
+            "defeated-blink",
+            "defeated-blink-half",
+            "defeated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-release": {
+          "frames": [
+            "release-blink-half",
+            "release-blink",
+            "release-blink-half",
+            "release"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
         }
       },
       "emotions": {
@@ -2780,6 +4016,102 @@
           1040
         ],
         "tumble-start": [
+          706,
+          504,
+          625,
+          1040
+        ],
+        "down-blink-half": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "down-blink": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "nervous-blink-half": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "nervous-blink": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "panicked-blink-half": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "panicked-blink": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "amused-blink-half": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "amused-blink": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "smug-blink-half": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "smug-blink": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "frustrated-blink-half": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "frustrated-blink": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "defeated-blink-half": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "defeated-blink": [
+          706,
+          504,
+          636,
+          1040
+        ],
+        "release-blink-half": [
+          706,
+          504,
+          625,
+          1040
+        ],
+        "release-blink": [
           706,
           504,
           625,
@@ -3026,6 +4358,132 @@
             100,
             180
           ]
+        },
+        "blink-rest": {
+          "frames": [
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-down": {
+          "frames": [
+            "down-blink-half",
+            "down-blink",
+            "down-blink-half",
+            "down"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-nervous": {
+          "frames": [
+            "nervous-blink-half",
+            "nervous-blink",
+            "nervous-blink-half",
+            "nervous"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-panicked": {
+          "frames": [
+            "panicked-blink-half",
+            "panicked-blink",
+            "panicked-blink-half",
+            "panicked"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-amused": {
+          "frames": [
+            "amused-blink-half",
+            "amused-blink",
+            "amused-blink-half",
+            "amused"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-smug": {
+          "frames": [
+            "smug-blink-half",
+            "smug-blink",
+            "smug-blink-half",
+            "smug"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-frustrated": {
+          "frames": [
+            "frustrated-blink-half",
+            "frustrated-blink",
+            "frustrated-blink-half",
+            "frustrated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-defeated": {
+          "frames": [
+            "defeated-blink-half",
+            "defeated-blink",
+            "defeated-blink-half",
+            "defeated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-release": {
+          "frames": [
+            "release-blink-half",
+            "release-blink",
+            "release-blink-half",
+            "release"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
         }
       },
       "emotions": {
@@ -3244,6 +4702,102 @@
           1040
         ],
         "tumble-start": [
+          781,
+          504,
+          486,
+          1040
+        ],
+        "down-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "down-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "nervous-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "nervous-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "panicked-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "panicked-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "amused-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "amused-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "smug-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "smug-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "frustrated-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "frustrated-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "defeated-blink-half": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "defeated-blink": [
+          781,
+          504,
+          485,
+          1040
+        ],
+        "release-blink-half": [
+          781,
+          504,
+          486,
+          1040
+        ],
+        "release-blink": [
           781,
           504,
           486,
@@ -3490,6 +5044,132 @@
             100,
             180
           ]
+        },
+        "blink-rest": {
+          "frames": [
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-down": {
+          "frames": [
+            "down-blink-half",
+            "down-blink",
+            "down-blink-half",
+            "down"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-nervous": {
+          "frames": [
+            "nervous-blink-half",
+            "nervous-blink",
+            "nervous-blink-half",
+            "nervous"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-panicked": {
+          "frames": [
+            "panicked-blink-half",
+            "panicked-blink",
+            "panicked-blink-half",
+            "panicked"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-amused": {
+          "frames": [
+            "amused-blink-half",
+            "amused-blink",
+            "amused-blink-half",
+            "amused"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-smug": {
+          "frames": [
+            "smug-blink-half",
+            "smug-blink",
+            "smug-blink-half",
+            "smug"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-frustrated": {
+          "frames": [
+            "frustrated-blink-half",
+            "frustrated-blink",
+            "frustrated-blink-half",
+            "frustrated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-defeated": {
+          "frames": [
+            "defeated-blink-half",
+            "defeated-blink",
+            "defeated-blink-half",
+            "defeated"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
+        },
+        "blink-release": {
+          "frames": [
+            "release-blink-half",
+            "release-blink",
+            "release-blink-half",
+            "release"
+          ],
+          "durations": [
+            45,
+            110,
+            45,
+            50
+          ]
         }
       },
       "emotions": {
@@ -3708,6 +5388,102 @@
           1040
         ],
         "tumble-start": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "down-blink-half": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "down-blink": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "nervous-blink-half": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "nervous-blink": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "panicked-blink-half": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "panicked-blink": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "amused-blink-half": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "amused-blink": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "smug-blink-half": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "smug-blink": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "frustrated-blink-half": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "frustrated-blink": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "defeated-blink-half": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "defeated-blink": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "release-blink-half": [
+          786,
+          504,
+          476,
+          1040
+        ],
+        "release-blink": [
           786,
           504,
           476,

@@ -1,7 +1,7 @@
 import { masterAnimations, type MasterAnimationSet } from './MasterAnimationData';
 import { masterHandRect } from './MasterCharacters';
 interface CastState { active:number; total:number; overflow:boolean; overflowSeat?:number; target:boolean; reducedMotion:boolean }
-interface Seat { element:HTMLElement; image:HTMLImageElement; id:string; data:MasterAnimationSet; epoch:number; held:1|2; frame:string; mood:string; fallen:boolean; timer:number; animation?:{frames:string[];resolve:()=>void} }
+interface Seat { element:HTMLElement; image:HTMLImageElement; id:string; data:MasterAnimationSet; epoch:number; held:1|2; frame:string; mood:string; fallen:boolean; timer:number; blinkTimer:number; animation?:{frames:string[];resolve:()=>void} }
 export function masterFrameUrl(id:string,frame='rest'):string { return `${import.meta.env.BASE_URL}assets/social-club/master-animation-v2/${id}/${frame}.webp`; }
 export function masterFrameStyle(id:string,frame='rest'):string {const [x,y,w,h]=masterAnimations[id].bounds[frame];return `left:${x/2048*100}%;top:${y/2048*100}%;width:${w/2048*100}%;height:${h/2048*100}%`;}
 /** One complete drawing per pose. Only empty pixels are omitted from downloaded files. */
@@ -9,14 +9,14 @@ export class MasterAnimations {
  private seats=new Map<number,Seat>();
  private assets=new Map<string,Promise<HTMLImageElement>>();
  private state:CastState={active:0,total:0,overflow:false,target:false,reducedMotion:false};
- private blinkTimer=0;
+ private visible=new Set<number>();
  constructor(private root:HTMLElement){}
  has(index:number):boolean{return !!this.root.querySelector(`.seat[data-seat="${index}"] .master-sprite`);}
  private seat(index:number):Seat|undefined {
   const element=this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .master-sprite`),image=element?.querySelector<HTMLImageElement>('.master-frame'),id=element?.dataset.character;
   if(!element||!image||!id||!masterAnimations[id])return;
   let seat=this.seats.get(index);
-  if(!seat||seat.element!==element||seat.id!==id){if(seat)this.stop(seat);seat={element,image,id,data:masterAnimations[id],epoch:0,held:2,frame:'',mood:'Normal',fallen:false,timer:0};this.seats.set(index,seat);}
+  if(!seat||seat.element!==element||seat.id!==id){if(seat){clearTimeout(seat.blinkTimer);this.stop(seat);}seat={element,image,id,data:masterAnimations[id],epoch:0,held:2,frame:'',mood:'Normal',fallen:false,timer:0,blinkTimer:0};this.seats.set(index,seat);}
   return seat;
  }
  private load(id:string,frame:string):Promise<HTMLImageElement>{
@@ -30,7 +30,7 @@ export class MasterAnimations {
  }
  private paint(seat:Seat,frame:string):void{seat.frame=frame;seat.image.src=masterFrameUrl(seat.id,frame);seat.image.style.cssText=masterFrameStyle(seat.id,frame);seat.element.dataset.frame=frame;seat.element.dataset.cards=String(seat.held);}
  private stop(seat:Seat):void{seat.epoch++;clearTimeout(seat.timer);seat.timer=0;seat.animation?.resolve();seat.animation=undefined;delete seat.element.dataset.animation;}
- reset():void{clearTimeout(this.blinkTimer);this.blinkTimer=0;this.seats.forEach(seat=>this.stop(seat));this.seats.clear();this.assets.clear();}
+ reset():void{this.visible.clear();this.seats.forEach(seat=>{clearTimeout(seat.blinkTimer);this.stop(seat);});this.seats.clear();this.assets.clear();}
  async warm(index:number,clip?:string):Promise<void>{const seat=this.seat(index);if(!seat)return;const frames=clip?seat.data.clips[clip]?.frames:['rest'];await Promise.all([...new Set(frames??['rest'])].map(frame=>this.load(seat.id,frame))).then(()=>undefined).catch(()=>undefined);this.trim();}
  private async rest(index:number):Promise<void>{
   const seat=this.seat(index);if(!seat||seat.animation||seat.fallen)return;
@@ -42,12 +42,30 @@ export class MasterAnimations {
  }
  sync(state:CastState):void{
   const previous=this.state;this.state=state;
+  this.visible.clear();
   this.root.querySelectorAll<HTMLElement>('.master-seat:not([hidden])').forEach(node=>{const index=Number(node.dataset.seat),seat=this.seat(index);if(!seat)return;seat.mood=node.dataset.mood??'Normal';
+   this.visible.add(index);
    void this.rest(index);
    if(!state.reducedMotion&&!state.overflow&&previous.active!==state.active&&!seat.animation&&seat.held===2)void this.play(index,index===state.active?'study':`look-${this.direction(index,state.active)}`);
+   if(!state.reducedMotion&&!state.overflow&&!seat.fallen&&!seat.blinkTimer)this.scheduleBlink(index,seat,1800+(index%4)*750+Math.random()*600);
   });
-  if(state.reducedMotion||state.overflow){clearTimeout(this.blinkTimer);this.blinkTimer=0;}
-  else if(!this.blinkTimer)this.blinkTimer=window.setTimeout(()=>{this.blinkTimer=0;const seat=this.seat(this.state.active);if(seat&&!seat.animation&&!seat.fallen&&seat.held===2)void this.play(this.state.active,'idle');},4500);
+  this.seats.forEach((seat,index)=>{if(state.reducedMotion||state.overflow||!this.visible.has(index)||seat.fallen){
+   clearTimeout(seat.blinkTimer);seat.blinkTimer=0;
+   if(seat.element.dataset.animation?.startsWith('blink-')){this.stop(seat);void this.rest(index);}
+  }});
+ }
+ private scheduleBlink(index:number,seat:Seat,delay:number):void{
+  seat.blinkTimer=window.setTimeout(()=>{
+   // Keep rearming even if this moment falls during a card gesture or in a background tab.
+   // Each character owns its clock; no turn update or continuous render loop is required.
+   seat.blinkTimer=0;
+   if(this.seats.get(index)!==seat||!this.visible.has(index)||!seat.image.isConnected||seat.fallen||this.state.overflow||this.state.reducedMotion)return;
+   if(!seat.animation&&!(typeof document!=='undefined'&&document.hidden)){
+    const clip=`blink-${seat.frame}`;
+    if(seat.data.clips[clip])void this.play(index,clip);
+   }
+   this.scheduleBlink(index,seat,3000+Math.random()*2500);
+  },delay);
  }
  private direction(index:number,other:number):'left'|'right'{const a=this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"]`)?.getBoundingClientRect(),b=this.root.querySelector<HTMLElement>(`.seat[data-seat="${other}"]`)?.getBoundingClientRect();return a&&b&&b.left<a.left?'left':'right';}
  async play(index:number,id:string,from=0,end?:number):Promise<void>{
