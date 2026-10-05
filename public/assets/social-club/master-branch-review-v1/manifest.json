@@ -1,0 +1,766 @@
+{
+  "status": "Review only; not enabled in the game.",
+  "nativeFrameSize": 2048,
+  "authoringCellSize": 3072,
+  "characters": [
+    {
+      "id": "vince",
+      "name": "Vince",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        }
+      }
+    },
+    {
+      "id": "finn",
+      "name": "Finn",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        },
+        "throw-trial": {
+          "frames": [
+            "rest",
+            "throw-prepare-locked",
+            "throw-release-locked",
+            "rest"
+          ],
+          "durations": [
+            360,
+            140,
+            180,
+            400
+          ]
+        },
+        "pickup-trial": {
+          "frames": [
+            "throw-release-locked",
+            "throw-prepare-locked",
+            "rest"
+          ],
+          "durations": [
+            400,
+            170,
+            500
+          ]
+        },
+        "tumble-trial": {
+          "frames": [
+            "start-tumble",
+            "recoil-tumble",
+            "fall-start-tumble",
+            "midfall-tumble",
+            "airfall-tumble",
+            "airfall-low-tumble",
+            "floor-tumble",
+            "impact-tumble",
+            "bounce-tumble",
+            "floor-tumble"
+          ],
+          "durations": [
+            500,
+            100,
+            80,
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            1200
+          ]
+        }
+      }
+    },
+    {
+      "id": "june",
+      "name": "June",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        }
+      }
+    },
+    {
+      "id": "edgar",
+      "name": "Edgar",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        }
+      }
+    },
+    {
+      "id": "roxie",
+      "name": "Roxie",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        }
+      }
+    },
+    {
+      "id": "otis",
+      "name": "Otis",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        }
+      }
+    },
+    {
+      "id": "paloma",
+      "name": "Paloma",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        }
+      }
+    },
+    {
+      "id": "bianca",
+      "name": "Bianca",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        }
+      }
+    }
+  ],
+  "corePolicy": "Every pixel outside the two eye regions and all alpha values match the approved master.",
+  "actionPolicy": "Finn head and lower body unchanged. Only working hand/card region composited.",
+  "tumblePolicy": "Original Finn head painting at physical scale 1; new body poses are a trial, not pixel-identical."
+}

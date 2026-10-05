@@ -1,0 +1,210 @@
+{
+  "id": "otis",
+  "nativeSize": [
+    2048,
+    2048
+  ],
+  "source": "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/otis-master.png",
+  "sourceSHA256": "9be2a2fabdfb7bd5ae5f6be8b6ffff212380d7020538d5928ce85690c325cbea",
+  "method": "pixel-preserving local edits, every frame branches directly from master",
+  "mutableRegions": [
+    [
+      969,
+      610,
+      1015,
+      658
+    ],
+    [
+      1037,
+      606,
+      1080,
+      653
+    ]
+  ],
+  "clips": {
+    "blink": {
+      "frames": [
+        "rest",
+        "blink-half",
+        "blink",
+        "blink-half",
+        "rest"
+      ],
+      "durations": [
+        750,
+        40,
+        90,
+        40,
+        550
+      ]
+    },
+    "look-left": {
+      "frames": [
+        "rest",
+        "left-mid",
+        "left",
+        "left-mid",
+        "rest"
+      ],
+      "durations": [
+        120,
+        70,
+        340,
+        70,
+        160
+      ]
+    },
+    "look-right": {
+      "frames": [
+        "rest",
+        "right-mid",
+        "right",
+        "right-mid",
+        "rest"
+      ],
+      "durations": [
+        120,
+        70,
+        340,
+        70,
+        160
+      ]
+    },
+    "study": {
+      "frames": [
+        "rest",
+        "down-mid",
+        "down",
+        "down-mid",
+        "rest"
+      ],
+      "durations": [
+        100,
+        70,
+        260,
+        70,
+        140
+      ]
+    },
+    "alert": {
+      "frames": [
+        "rest",
+        "down",
+        "rest",
+        "left",
+        "right",
+        "rest"
+      ],
+      "durations": [
+        90,
+        140,
+        70,
+        150,
+        150,
+        220
+      ]
+    }
+  },
+  "checks": [
+    {
+      "frame": "rest",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        714,
+        512,
+        1334,
+        1536
+      ]
+    },
+    {
+      "frame": "blink-half",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        714,
+        512,
+        1334,
+        1536
+      ]
+    },
+    {
+      "frame": "blink",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        714,
+        512,
+        1334,
+        1536
+      ]
+    },
+    {
+      "frame": "left-mid",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        714,
+        512,
+        1334,
+        1536
+      ]
+    },
+    {
+      "frame": "left",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        714,
+        512,
+        1334,
+        1536
+      ]
+    },
+    {
+      "frame": "right-mid",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        714,
+        512,
+        1334,
+        1536
+      ]
+    },
+    {
+      "frame": "right",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        714,
+        512,
+        1334,
+        1536
+      ]
+    },
+    {
+      "frame": "down-mid",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        714,
+        512,
+        1334,
+        1536
+      ]
+    },
+    {
+      "frame": "down",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        714,
+        512,
+        1334,
+        1536
+      ]
+    }
+  ],
+  "status": "review prototype; card gestures and tumble remain a separate authoring pass"
+}
