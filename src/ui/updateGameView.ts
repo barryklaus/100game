@@ -5,7 +5,7 @@ const components = [
   'target-hint', 'side-panel', 'shared-turn', 'hand-dock', 'dock-prompt',
   'dock-avatar', 'dock-person', 'local-hand', 'dock-controls', 'emote-menu',
   'info-fab', 'dock-quote', 'result-overlay', 'modal-overlay',
-  'ring-controls', 'ring-markers', 'character-sprite', 'character-tumble', 'traditional-sprite', 'master-sprite',
+  'ring-controls', 'ring-markers', 'character-sprite', 'character-tumble', 'traditional-sprite', 'master-sprite', 'master-frame',
 ];
 
 function identity(node: Node): string | undefined {
@@ -18,8 +18,8 @@ function identity(node: Node): string | undefined {
 function attributes(current: HTMLElement, next: HTMLElement): void {
   // Sprite readiness and the displayed drawing belong to the animation controller.
   // Removing them during a score/turn render briefly exposes the portrait fallback.
-  const runtimeSpriteAttributes=current.matches('.traditional-sprite')
-    ? new Set(['data-ready','data-frame','data-cards','data-animation']) : new Set<string>();
+  const runtimeSpriteAttributes=current.matches('.traditional-sprite, .master-sprite')
+    ? new Set(['data-ready','data-frame','data-cards','data-animation']) : current.matches('.master-frame') ? new Set(['src','style']) : new Set<string>();
   // These coordinates belong to the 3D renderer, not the HTML view template.
   const projected = current.matches('.seat')
     ? ['--seat-chair-x', '--seat-chair-y', '--table-seat-y', '--table-seat-clip'].map(name => [name, current.style.getPropertyValue(name)] as const)
@@ -28,7 +28,7 @@ function attributes(current: HTMLElement, next: HTMLElement): void {
     if (!next.hasAttribute(attribute.name) && !runtimeSpriteAttributes.has(attribute.name)) current.removeAttribute(attribute.name);
   }
   for (const attribute of Array.from(next.attributes)) {
-    if (current.getAttribute(attribute.name) !== attribute.value) current.setAttribute(attribute.name, attribute.value);
+    if (!runtimeSpriteAttributes.has(attribute.name) && current.getAttribute(attribute.name) !== attribute.value) current.setAttribute(attribute.name, attribute.value);
   }
   for (const [name, value] of projected) if (value) current.style.setProperty(name, value);
 }

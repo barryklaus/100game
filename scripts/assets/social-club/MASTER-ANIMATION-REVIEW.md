@@ -54,3 +54,57 @@ Built-in imagegen supplied pose donors; the owner-approved Pillow/Numpy edits
 preserved and composited the master pixels. Full generation prompts are saved
 in `generation.json` and `tumble-generation.json` in the output folder and in
 `public/assets/social-club/master-branch-review-v1/`.
+
+## Complete master-derived set, v2
+
+After the owner's approval to finish and publish, all eight characters have
+34 complete native 2048-square drawings and 17 review clips. Gameplay uses
+14 clips: rest/blink, directional glances and choices, study, danger,
+startle, celebration, defeat, throw, pickup, tumble and return.
+The repeated clip aliases are convenience mappings, not extra artwork.
+
+Eyes and mouth are local pixel edits of each original master. The head
+outline, hairstyle, outfit, silhouette and alpha remain exact in those
+reactions. Card gestures composite a calibrated working hand/card area;
+the original head and lower body remain protected. Large falling bodies
+are new drawings calibrated to the master; their heads reuse the actual
+master painting at physical scale 1. These are complete flattened frames,
+without separate runtime limbs or head parts. No chairs appear.
+
+Visual checks caught collar/hair regions being mistaken for eyes. Explicit
+landmarks correct June and Bianca; hand-side corrections keep one retained
+card in image-left and an empty image-right working hand in falling poses.
+The final floor poses lie low on the back with feet up. Every native pose
+keeps at least 256 solid-pixel clearance on all four sides. The 3072-square
+authoring cells add another 512 pixels uniformly: minimum clearance 768.
+There is no per-pose silhouette fitting or canvas zoom.
+
+Gameplay preserves the existing table, character scale, waist occlusion,
+background, rules, multiplayer, and flying-card layers. Release is at
+320ms and the drawn replacement is restored only at actual arrival.
+Turn glances follow the active player's visible left/right position.
+Overflow spotlight plays the culprit's fall, retains the floor pose,
+and then opens scores. Round reset cancels stale decodes and timers.
+Reduced motion completes without running the movement sequence.
+
+Runtime assets in `master-animation-v2` omit transparent margins only;
+the visible source pixels are never resampled and use lossless WebP.
+Their measured rectangle is restored inside the fixed native canvas.
+Only visible seats load reactions. A bounded 24-image preload cache and
+frame-boundary timers replace a continual sprite redraw loop. The full
+2048 review frames remain in `master-branch-review-v2`.
+
+Local sources and uniformly padded PNG sheets:
+`../output/100next-master-branch-v2/`. The full donor-generation prompts
+and paths are recorded in generation-plan.json and generation-results.json.
+Repeatable builders: build-master-emotions-v2.py, master-pose-tools.py,
+build-master-movements-v2.py, export-master-animation-v2.py and
+export-master-runtime-v2.py. Cropped exports verify every visible pixel
+against the original full frame.
+
+Validation: complete-frame visual inspection; mobile/desktop game play;
+all eight release/catch sequences, stable rerenders, left/right choices,
+held tumble landing, delayed-decode cancellation, reduced motion and
+asset bounds covered by test-master-animation.mjs. Native pixel guards
+verify preservation; they do not claim generated falling anatomy is
+pixel-identical to the original seated body.

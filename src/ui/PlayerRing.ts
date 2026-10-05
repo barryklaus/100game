@@ -2,12 +2,14 @@ import { faceFrame, nearestCenter, ringSeat, traditionalRingSeat, seatDistance, 
 import { characterHandAnchors } from './CharacterSpriteLayout';
 import { TraditionalCharacters } from './TraditionalCharacters';
 import { masterHandRect } from './MasterCharacters';
+import { MasterAnimations } from './MasterAnimations';
 
 type RingState = { roundKey: string; count: number; active: number; total: number; overflow: boolean; overflowSeat?: number; reducedMotion: boolean; target: boolean };
 type OverflowStage = 'idle' | 'focus' | 'fall' | 'complete';
 /** Event-driven sprite frames; the ring has no idle animation loop. */
 export class PlayerRing {
   private traditional: TraditionalCharacters;
+  private masters: MasterAnimations;
   private state: RingState = { roundKey: '', count: 0, active: 0, total: 0, overflow: false, reducedMotion: false, target: false };
   private center = .5;
   private targetCenter = .5;
@@ -38,6 +40,7 @@ export class PlayerRing {
 
   constructor(private root: HTMLElement, private projectLayout?: () => void, private onOverflowComplete?: () => void) {
     this.traditional = new TraditionalCharacters(root);
+    this.masters = new MasterAnimations(root);
     root.addEventListener('pointerdown', this.down);
     root.addEventListener('pointermove', this.move);
     root.addEventListener('pointerup', this.up);
@@ -54,6 +57,7 @@ export class PlayerRing {
     this.state = next;
     if (roundChanged) {
       this.traditional.reset();
+      this.masters.reset();
       this.epoch++;
       cancelAnimationFrame(this.tumbleRaf); clearTimeout(this.overflowTimer);
       this.overflowStage = 'idle'; this.overflowSeat = -1; this.tumbleDrop = 0;
@@ -84,6 +88,7 @@ export class PlayerRing {
   scoresReady(roundKey: string): boolean { return this.state.roundKey === roundKey && this.overflowStage === 'complete'; }
 
   private tumbleReady(index: number): Promise<void> {
+    if(this.masters.has(index))return this.masters.warm(index,'tumble');
     const url = this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .character-tumble`)?.dataset.tumbleUrl;
     return url ? this.imageReady(url) : Promise.resolve();
   }
@@ -119,9 +124,11 @@ export class PlayerRing {
           try {await this.traditional.tumble(index);}catch {/* Scores remain available if an asset fails. */}
           if(current())finish();return;
         }
-        // Approved static masters hold their proportions while replacement art is reviewed.
-        // Keep the spotlight and scores, without the old shrinking fallback tumble.
-        if(this.root.querySelector(`.seat[data-seat="${index}"].master-seat .master-sprite`)) { finish(); return; }
+        if(this.masters.has(index)) {
+          this.overflowStage='fall';this.paintFrames();
+          try {await this.masters.tumble(index);}catch {/* Keep scores available if an asset fails. */}
+          if(current())finish();return;
+        }
         const url = this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .character-tumble`)?.dataset.tumbleUrl;
         this.tumbleUsesSheet = !!url && this.readyUrls.has(url);
         this.overflowStage = 'fall';
@@ -198,9 +205,8 @@ export class PlayerRing {
   };
 
   private spriteReady(index: number): Promise<void> {
+    if(this.masters.has(index))return this.masters.warm(index);
     if(this.traditional.has(index))return this.traditional.warm(index).then(()=>undefined).catch(()=>undefined);
-    const master = this.root.querySelector<HTMLImageElement>(`.seat[data-seat="${index}"] .master-sprite`);
-    if (master) return this.imageReady(master.src);
     const sprite = this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .character-sprite`);
     const url = sprite?.dataset.spriteUrl;
     return url ? this.imageReady(url) : Promise.resolve();
@@ -219,12 +225,13 @@ export class PlayerRing {
     this.preparing.add(index); this.paintFrames();
     try {
       await this.dragReleased;
-      await Promise.all([...this.drawWaiters.entries()].filter(([seat]) => seat !== index || this.traditional.has(index)).map(([,waiter]) => waiter.promise));
+      await Promise.all([...this.drawWaiters.entries()].filter(([seat]) => seat !== index || this.traditional.has(index) || this.masters.has(index)).map(([,waiter]) => waiter.promise));
       if (epoch !== this.epoch) throw new Error('The table changed before the throw.');
       await this.focus(index);
       await this.spriteReady(index);
       if (epoch !== this.epoch) throw new Error('The table changed before the throw.');
       clearTimeout(this.recoverTimers.get(index)); this.recoverTimers.delete(index);
+      if(this.masters.has(index))return await this.masters.prepareThrow(index);
       if(this.traditional.has(index))return await this.traditional.prepareThrow(index);
       if (!this.state.reducedMotion) {
         this.throws.set(index, 6); this.paintFrames();
@@ -239,6 +246,7 @@ export class PlayerRing {
   }
   release(index: number): void {
     if (this.state.reducedMotion) return;
+    if(this.masters.has(index))this.masters.release(index);
     if(this.traditional.has(index))this.traditional.release(index);
     this.throws.set(index, 7); this.paintFrames();
     this.drawWaiters.get(index)?.resolve();
@@ -255,10 +263,16 @@ export class PlayerRing {
     }, 180));
   }
   cancelThrow(index: number): void {
+    if(this.masters.has(index))this.masters.cancel(index);
     if(this.traditional.has(index))this.traditional.cancel(index);
     this.received(index);
   }
   received(index: number): void {
+    if(this.masters.has(index)){
+      const epoch=this.epoch;
+      void this.masters.received(index).finally(()=>{if(epoch===this.epoch)this.finishReceived(index);});
+      return;
+    }
     if(this.traditional.has(index)){
       const epoch=this.epoch;
       void this.traditional.received(index).finally(()=>{if(epoch===this.epoch)this.finishReceived(index);});
@@ -274,6 +288,7 @@ export class PlayerRing {
     }
   }
   played(index: number, special: boolean): void {
+    if(special&&this.masters.has(index))this.masters.relieved(index);
     if(special&&this.traditional.has(index))this.traditional.relieved(index);
     clearTimeout(this.reliefTimer); this.relieved = special ? index : -1;
     this.reliefTimer = window.setTimeout(() => { this.relieved = -1; this.paintFrames(); }, 1500);
@@ -283,10 +298,11 @@ export class PlayerRing {
     if(this.traditional.has(index))return this.traditional.handRect(index,true);
     return this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .sprite-hand-anchor`)?.getBoundingClientRect();
   }
-  prepareDraw(index:number):Promise<DOMRect|undefined>{return this.traditional.has(index)?this.traditional.prepareDraw(index):Promise.resolve(this.handRect(index));}
-  chosen(index:number,target:number):void{if(this.traditional.has(index))this.traditional.chosen(index,target);}
+  prepareDraw(index:number):Promise<DOMRect|undefined>{return this.masters.has(index)?this.masters.prepareDraw(index):this.traditional.has(index)?this.traditional.prepareDraw(index):Promise.resolve(this.handRect(index));}
+  chosen(index:number,target:number):void{if(this.masters.has(index))this.masters.chosen(index,target);if(this.traditional.has(index))this.traditional.chosen(index,target);}
   private paintFrames(): void {
     this.traditional.sync(this.state);
+    this.masters.sync(this.state);
     const page = this.root.querySelector<HTMLElement>('.game-page');
     if (page) page.dataset.overflowStage = this.overflowStage;
     this.root.querySelectorAll<HTMLButtonElement>('[data-ring-focus], [data-ring-step]').forEach(button => { button.disabled = this.busy; });

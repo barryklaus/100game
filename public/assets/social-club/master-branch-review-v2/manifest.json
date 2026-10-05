@@ -1,0 +1,2605 @@
+{
+  "status": "Complete master-derived animation sets; activated in 100next gameplay.",
+  "nativeFrameSize": 2048,
+  "authoringCellSize": 3072,
+  "characters": [
+    {
+      "id": "vince",
+      "name": "Vince",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        },
+        "idle": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "choose-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "choose-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "danger": {
+          "frames": [
+            "nervous",
+            "panic-soft",
+            "panicked",
+            "panic-soft",
+            "nervous"
+          ],
+          "durations": [
+            160,
+            70,
+            240,
+            70,
+            160
+          ]
+        },
+        "startle": {
+          "frames": [
+            "release",
+            "tumble-start"
+          ],
+          "durations": [
+            60,
+            180
+          ]
+        },
+        "celebrate": {
+          "frames": [
+            "rest",
+            "amused",
+            "delighted",
+            "relieved",
+            "rest"
+          ],
+          "durations": [
+            60,
+            90,
+            180,
+            100,
+            120
+          ]
+        },
+        "defeat": {
+          "frames": [
+            "rest",
+            "nervous",
+            "defeated"
+          ],
+          "durations": [
+            60,
+            80,
+            400
+          ]
+        },
+        "expressions": {
+          "frames": [
+            "rest",
+            "down",
+            "blink-half",
+            "amused",
+            "smug",
+            "nervous",
+            "panicked",
+            "shocked",
+            "frustrated",
+            "defeated",
+            "delighted",
+            "relieved"
+          ],
+          "durations": [
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300
+          ]
+        },
+        "throw": {
+          "frames": [
+            "rest",
+            "prepare-soft",
+            "prepare",
+            "throw-edge",
+            "release",
+            "settle"
+          ],
+          "durations": [
+            80,
+            80,
+            80,
+            80,
+            90,
+            130
+          ]
+        },
+        "pickup": {
+          "frames": [
+            "release",
+            "reach",
+            "reach",
+            "prepare",
+            "prepare-soft",
+            "rest"
+          ],
+          "durations": [
+            160,
+            100,
+            80,
+            80,
+            80,
+            180
+          ]
+        },
+        "tumble": {
+          "frames": [
+            "tumble-start",
+            "recoil",
+            "fall-start",
+            "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
+            "floor"
+          ],
+          "durations": [
+            100,
+            80,
+            70,
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
+          ]
+        },
+        "return": {
+          "frames": [
+            "floor",
+            "bounce",
+            "airfall-low",
+            "airfall",
+            "midfall",
+            "fall-start",
+            "recoil",
+            "tumble-start",
+            "release",
+            "rest"
+          ],
+          "durations": [
+            160,
+            70,
+            60,
+            60,
+            70,
+            70,
+            80,
+            90,
+            100,
+            180
+          ]
+        }
+      },
+      "emotions": {
+        "calm": "rest",
+        "focused": "down",
+        "curious": "left",
+        "skeptical": "blink-half",
+        "confident": "rest",
+        "nervous": "nervous",
+        "panicked": "panicked",
+        "shocked": "shocked",
+        "amused": "amused",
+        "smug": "smug",
+        "relieved": "relieved",
+        "frustrated": "frustrated",
+        "defeated": "defeated",
+        "delighted": "delighted"
+      }
+    },
+    {
+      "id": "finn",
+      "name": "Finn",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        },
+        "idle": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "choose-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "choose-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "danger": {
+          "frames": [
+            "nervous",
+            "panic-soft",
+            "panicked",
+            "panic-soft",
+            "nervous"
+          ],
+          "durations": [
+            160,
+            70,
+            240,
+            70,
+            160
+          ]
+        },
+        "startle": {
+          "frames": [
+            "release",
+            "tumble-start"
+          ],
+          "durations": [
+            60,
+            180
+          ]
+        },
+        "celebrate": {
+          "frames": [
+            "rest",
+            "amused",
+            "delighted",
+            "relieved",
+            "rest"
+          ],
+          "durations": [
+            60,
+            90,
+            180,
+            100,
+            120
+          ]
+        },
+        "defeat": {
+          "frames": [
+            "rest",
+            "nervous",
+            "defeated"
+          ],
+          "durations": [
+            60,
+            80,
+            400
+          ]
+        },
+        "expressions": {
+          "frames": [
+            "rest",
+            "down",
+            "blink-half",
+            "amused",
+            "smug",
+            "nervous",
+            "panicked",
+            "shocked",
+            "frustrated",
+            "defeated",
+            "delighted",
+            "relieved"
+          ],
+          "durations": [
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300
+          ]
+        },
+        "throw": {
+          "frames": [
+            "rest",
+            "prepare-soft",
+            "prepare",
+            "throw-edge",
+            "release",
+            "settle"
+          ],
+          "durations": [
+            80,
+            80,
+            80,
+            80,
+            90,
+            130
+          ]
+        },
+        "pickup": {
+          "frames": [
+            "release",
+            "reach",
+            "reach",
+            "prepare",
+            "prepare-soft",
+            "rest"
+          ],
+          "durations": [
+            160,
+            100,
+            80,
+            80,
+            80,
+            180
+          ]
+        },
+        "tumble": {
+          "frames": [
+            "tumble-start",
+            "recoil",
+            "fall-start",
+            "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
+            "floor"
+          ],
+          "durations": [
+            100,
+            80,
+            70,
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
+          ]
+        },
+        "return": {
+          "frames": [
+            "floor",
+            "bounce",
+            "airfall-low",
+            "airfall",
+            "midfall",
+            "fall-start",
+            "recoil",
+            "tumble-start",
+            "release",
+            "rest"
+          ],
+          "durations": [
+            160,
+            70,
+            60,
+            60,
+            70,
+            70,
+            80,
+            90,
+            100,
+            180
+          ]
+        }
+      },
+      "emotions": {
+        "calm": "rest",
+        "focused": "down",
+        "curious": "left",
+        "skeptical": "blink-half",
+        "confident": "rest",
+        "nervous": "nervous",
+        "panicked": "panicked",
+        "shocked": "shocked",
+        "amused": "amused",
+        "smug": "smug",
+        "relieved": "relieved",
+        "frustrated": "frustrated",
+        "defeated": "defeated",
+        "delighted": "delighted"
+      }
+    },
+    {
+      "id": "june",
+      "name": "June",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        },
+        "idle": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "choose-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "choose-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "danger": {
+          "frames": [
+            "nervous",
+            "panic-soft",
+            "panicked",
+            "panic-soft",
+            "nervous"
+          ],
+          "durations": [
+            160,
+            70,
+            240,
+            70,
+            160
+          ]
+        },
+        "startle": {
+          "frames": [
+            "release",
+            "tumble-start"
+          ],
+          "durations": [
+            60,
+            180
+          ]
+        },
+        "celebrate": {
+          "frames": [
+            "rest",
+            "amused",
+            "delighted",
+            "relieved",
+            "rest"
+          ],
+          "durations": [
+            60,
+            90,
+            180,
+            100,
+            120
+          ]
+        },
+        "defeat": {
+          "frames": [
+            "rest",
+            "nervous",
+            "defeated"
+          ],
+          "durations": [
+            60,
+            80,
+            400
+          ]
+        },
+        "expressions": {
+          "frames": [
+            "rest",
+            "down",
+            "blink-half",
+            "amused",
+            "smug",
+            "nervous",
+            "panicked",
+            "shocked",
+            "frustrated",
+            "defeated",
+            "delighted",
+            "relieved"
+          ],
+          "durations": [
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300
+          ]
+        },
+        "throw": {
+          "frames": [
+            "rest",
+            "prepare-soft",
+            "prepare",
+            "throw-edge",
+            "release",
+            "settle"
+          ],
+          "durations": [
+            80,
+            80,
+            80,
+            80,
+            90,
+            130
+          ]
+        },
+        "pickup": {
+          "frames": [
+            "release",
+            "reach",
+            "reach",
+            "prepare",
+            "prepare-soft",
+            "rest"
+          ],
+          "durations": [
+            160,
+            100,
+            80,
+            80,
+            80,
+            180
+          ]
+        },
+        "tumble": {
+          "frames": [
+            "tumble-start",
+            "recoil",
+            "fall-start",
+            "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
+            "floor"
+          ],
+          "durations": [
+            100,
+            80,
+            70,
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
+          ]
+        },
+        "return": {
+          "frames": [
+            "floor",
+            "bounce",
+            "airfall-low",
+            "airfall",
+            "midfall",
+            "fall-start",
+            "recoil",
+            "tumble-start",
+            "release",
+            "rest"
+          ],
+          "durations": [
+            160,
+            70,
+            60,
+            60,
+            70,
+            70,
+            80,
+            90,
+            100,
+            180
+          ]
+        }
+      },
+      "emotions": {
+        "calm": "rest",
+        "focused": "down",
+        "curious": "left",
+        "skeptical": "blink-half",
+        "confident": "rest",
+        "nervous": "nervous",
+        "panicked": "panicked",
+        "shocked": "shocked",
+        "amused": "amused",
+        "smug": "smug",
+        "relieved": "relieved",
+        "frustrated": "frustrated",
+        "defeated": "defeated",
+        "delighted": "delighted"
+      }
+    },
+    {
+      "id": "edgar",
+      "name": "Edgar",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        },
+        "idle": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "choose-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "choose-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "danger": {
+          "frames": [
+            "nervous",
+            "panic-soft",
+            "panicked",
+            "panic-soft",
+            "nervous"
+          ],
+          "durations": [
+            160,
+            70,
+            240,
+            70,
+            160
+          ]
+        },
+        "startle": {
+          "frames": [
+            "release",
+            "tumble-start"
+          ],
+          "durations": [
+            60,
+            180
+          ]
+        },
+        "celebrate": {
+          "frames": [
+            "rest",
+            "amused",
+            "delighted",
+            "relieved",
+            "rest"
+          ],
+          "durations": [
+            60,
+            90,
+            180,
+            100,
+            120
+          ]
+        },
+        "defeat": {
+          "frames": [
+            "rest",
+            "nervous",
+            "defeated"
+          ],
+          "durations": [
+            60,
+            80,
+            400
+          ]
+        },
+        "expressions": {
+          "frames": [
+            "rest",
+            "down",
+            "blink-half",
+            "amused",
+            "smug",
+            "nervous",
+            "panicked",
+            "shocked",
+            "frustrated",
+            "defeated",
+            "delighted",
+            "relieved"
+          ],
+          "durations": [
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300
+          ]
+        },
+        "throw": {
+          "frames": [
+            "rest",
+            "prepare-soft",
+            "prepare",
+            "throw-edge",
+            "release",
+            "settle"
+          ],
+          "durations": [
+            80,
+            80,
+            80,
+            80,
+            90,
+            130
+          ]
+        },
+        "pickup": {
+          "frames": [
+            "release",
+            "reach",
+            "reach",
+            "prepare",
+            "prepare-soft",
+            "rest"
+          ],
+          "durations": [
+            160,
+            100,
+            80,
+            80,
+            80,
+            180
+          ]
+        },
+        "tumble": {
+          "frames": [
+            "tumble-start",
+            "recoil",
+            "fall-start",
+            "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
+            "floor"
+          ],
+          "durations": [
+            100,
+            80,
+            70,
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
+          ]
+        },
+        "return": {
+          "frames": [
+            "floor",
+            "bounce",
+            "airfall-low",
+            "airfall",
+            "midfall",
+            "fall-start",
+            "recoil",
+            "tumble-start",
+            "release",
+            "rest"
+          ],
+          "durations": [
+            160,
+            70,
+            60,
+            60,
+            70,
+            70,
+            80,
+            90,
+            100,
+            180
+          ]
+        }
+      },
+      "emotions": {
+        "calm": "rest",
+        "focused": "down",
+        "curious": "left",
+        "skeptical": "blink-half",
+        "confident": "rest",
+        "nervous": "nervous",
+        "panicked": "panicked",
+        "shocked": "shocked",
+        "amused": "amused",
+        "smug": "smug",
+        "relieved": "relieved",
+        "frustrated": "frustrated",
+        "defeated": "defeated",
+        "delighted": "delighted"
+      }
+    },
+    {
+      "id": "roxie",
+      "name": "Roxie",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        },
+        "idle": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "choose-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "choose-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "danger": {
+          "frames": [
+            "nervous",
+            "panic-soft",
+            "panicked",
+            "panic-soft",
+            "nervous"
+          ],
+          "durations": [
+            160,
+            70,
+            240,
+            70,
+            160
+          ]
+        },
+        "startle": {
+          "frames": [
+            "release",
+            "tumble-start"
+          ],
+          "durations": [
+            60,
+            180
+          ]
+        },
+        "celebrate": {
+          "frames": [
+            "rest",
+            "amused",
+            "delighted",
+            "relieved",
+            "rest"
+          ],
+          "durations": [
+            60,
+            90,
+            180,
+            100,
+            120
+          ]
+        },
+        "defeat": {
+          "frames": [
+            "rest",
+            "nervous",
+            "defeated"
+          ],
+          "durations": [
+            60,
+            80,
+            400
+          ]
+        },
+        "expressions": {
+          "frames": [
+            "rest",
+            "down",
+            "blink-half",
+            "amused",
+            "smug",
+            "nervous",
+            "panicked",
+            "shocked",
+            "frustrated",
+            "defeated",
+            "delighted",
+            "relieved"
+          ],
+          "durations": [
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300
+          ]
+        },
+        "throw": {
+          "frames": [
+            "rest",
+            "prepare-soft",
+            "prepare",
+            "throw-edge",
+            "release",
+            "settle"
+          ],
+          "durations": [
+            80,
+            80,
+            80,
+            80,
+            90,
+            130
+          ]
+        },
+        "pickup": {
+          "frames": [
+            "release",
+            "reach",
+            "reach",
+            "prepare",
+            "prepare-soft",
+            "rest"
+          ],
+          "durations": [
+            160,
+            100,
+            80,
+            80,
+            80,
+            180
+          ]
+        },
+        "tumble": {
+          "frames": [
+            "tumble-start",
+            "recoil",
+            "fall-start",
+            "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
+            "floor"
+          ],
+          "durations": [
+            100,
+            80,
+            70,
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
+          ]
+        },
+        "return": {
+          "frames": [
+            "floor",
+            "bounce",
+            "airfall-low",
+            "airfall",
+            "midfall",
+            "fall-start",
+            "recoil",
+            "tumble-start",
+            "release",
+            "rest"
+          ],
+          "durations": [
+            160,
+            70,
+            60,
+            60,
+            70,
+            70,
+            80,
+            90,
+            100,
+            180
+          ]
+        }
+      },
+      "emotions": {
+        "calm": "rest",
+        "focused": "down",
+        "curious": "left",
+        "skeptical": "blink-half",
+        "confident": "rest",
+        "nervous": "nervous",
+        "panicked": "panicked",
+        "shocked": "shocked",
+        "amused": "amused",
+        "smug": "smug",
+        "relieved": "relieved",
+        "frustrated": "frustrated",
+        "defeated": "defeated",
+        "delighted": "delighted"
+      }
+    },
+    {
+      "id": "otis",
+      "name": "Otis",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        },
+        "idle": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "choose-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "choose-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "danger": {
+          "frames": [
+            "nervous",
+            "panic-soft",
+            "panicked",
+            "panic-soft",
+            "nervous"
+          ],
+          "durations": [
+            160,
+            70,
+            240,
+            70,
+            160
+          ]
+        },
+        "startle": {
+          "frames": [
+            "release",
+            "tumble-start"
+          ],
+          "durations": [
+            60,
+            180
+          ]
+        },
+        "celebrate": {
+          "frames": [
+            "rest",
+            "amused",
+            "delighted",
+            "relieved",
+            "rest"
+          ],
+          "durations": [
+            60,
+            90,
+            180,
+            100,
+            120
+          ]
+        },
+        "defeat": {
+          "frames": [
+            "rest",
+            "nervous",
+            "defeated"
+          ],
+          "durations": [
+            60,
+            80,
+            400
+          ]
+        },
+        "expressions": {
+          "frames": [
+            "rest",
+            "down",
+            "blink-half",
+            "amused",
+            "smug",
+            "nervous",
+            "panicked",
+            "shocked",
+            "frustrated",
+            "defeated",
+            "delighted",
+            "relieved"
+          ],
+          "durations": [
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300
+          ]
+        },
+        "throw": {
+          "frames": [
+            "rest",
+            "prepare-soft",
+            "prepare",
+            "throw-edge",
+            "release",
+            "settle"
+          ],
+          "durations": [
+            80,
+            80,
+            80,
+            80,
+            90,
+            130
+          ]
+        },
+        "pickup": {
+          "frames": [
+            "release",
+            "reach",
+            "reach",
+            "prepare",
+            "prepare-soft",
+            "rest"
+          ],
+          "durations": [
+            160,
+            100,
+            80,
+            80,
+            80,
+            180
+          ]
+        },
+        "tumble": {
+          "frames": [
+            "tumble-start",
+            "recoil",
+            "fall-start",
+            "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
+            "floor"
+          ],
+          "durations": [
+            100,
+            80,
+            70,
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
+          ]
+        },
+        "return": {
+          "frames": [
+            "floor",
+            "bounce",
+            "airfall-low",
+            "airfall",
+            "midfall",
+            "fall-start",
+            "recoil",
+            "tumble-start",
+            "release",
+            "rest"
+          ],
+          "durations": [
+            160,
+            70,
+            60,
+            60,
+            70,
+            70,
+            80,
+            90,
+            100,
+            180
+          ]
+        }
+      },
+      "emotions": {
+        "calm": "rest",
+        "focused": "down",
+        "curious": "left",
+        "skeptical": "blink-half",
+        "confident": "rest",
+        "nervous": "nervous",
+        "panicked": "panicked",
+        "shocked": "shocked",
+        "amused": "amused",
+        "smug": "smug",
+        "relieved": "relieved",
+        "frustrated": "frustrated",
+        "defeated": "defeated",
+        "delighted": "delighted"
+      }
+    },
+    {
+      "id": "paloma",
+      "name": "Paloma",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        },
+        "idle": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "choose-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "choose-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "danger": {
+          "frames": [
+            "nervous",
+            "panic-soft",
+            "panicked",
+            "panic-soft",
+            "nervous"
+          ],
+          "durations": [
+            160,
+            70,
+            240,
+            70,
+            160
+          ]
+        },
+        "startle": {
+          "frames": [
+            "release",
+            "tumble-start"
+          ],
+          "durations": [
+            60,
+            180
+          ]
+        },
+        "celebrate": {
+          "frames": [
+            "rest",
+            "amused",
+            "delighted",
+            "relieved",
+            "rest"
+          ],
+          "durations": [
+            60,
+            90,
+            180,
+            100,
+            120
+          ]
+        },
+        "defeat": {
+          "frames": [
+            "rest",
+            "nervous",
+            "defeated"
+          ],
+          "durations": [
+            60,
+            80,
+            400
+          ]
+        },
+        "expressions": {
+          "frames": [
+            "rest",
+            "down",
+            "blink-half",
+            "amused",
+            "smug",
+            "nervous",
+            "panicked",
+            "shocked",
+            "frustrated",
+            "defeated",
+            "delighted",
+            "relieved"
+          ],
+          "durations": [
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300
+          ]
+        },
+        "throw": {
+          "frames": [
+            "rest",
+            "prepare-soft",
+            "prepare",
+            "throw-edge",
+            "release",
+            "settle"
+          ],
+          "durations": [
+            80,
+            80,
+            80,
+            80,
+            90,
+            130
+          ]
+        },
+        "pickup": {
+          "frames": [
+            "release",
+            "reach",
+            "reach",
+            "prepare",
+            "prepare-soft",
+            "rest"
+          ],
+          "durations": [
+            160,
+            100,
+            80,
+            80,
+            80,
+            180
+          ]
+        },
+        "tumble": {
+          "frames": [
+            "tumble-start",
+            "recoil",
+            "fall-start",
+            "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
+            "floor"
+          ],
+          "durations": [
+            100,
+            80,
+            70,
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
+          ]
+        },
+        "return": {
+          "frames": [
+            "floor",
+            "bounce",
+            "airfall-low",
+            "airfall",
+            "midfall",
+            "fall-start",
+            "recoil",
+            "tumble-start",
+            "release",
+            "rest"
+          ],
+          "durations": [
+            160,
+            70,
+            60,
+            60,
+            70,
+            70,
+            80,
+            90,
+            100,
+            180
+          ]
+        }
+      },
+      "emotions": {
+        "calm": "rest",
+        "focused": "down",
+        "curious": "left",
+        "skeptical": "blink-half",
+        "confident": "rest",
+        "nervous": "nervous",
+        "panicked": "panicked",
+        "shocked": "shocked",
+        "amused": "amused",
+        "smug": "smug",
+        "relieved": "relieved",
+        "frustrated": "frustrated",
+        "defeated": "defeated",
+        "delighted": "delighted"
+      }
+    },
+    {
+      "id": "bianca",
+      "name": "Bianca",
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            120,
+            70,
+            340,
+            70,
+            160
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            100,
+            70,
+            260,
+            70,
+            140
+          ]
+        },
+        "alert": {
+          "frames": [
+            "rest",
+            "down",
+            "rest",
+            "left",
+            "right",
+            "rest"
+          ],
+          "durations": [
+            90,
+            140,
+            70,
+            150,
+            150,
+            220
+          ]
+        },
+        "idle": {
+          "frames": [
+            "rest",
+            "blink-half",
+            "blink",
+            "blink-half",
+            "rest"
+          ],
+          "durations": [
+            750,
+            40,
+            90,
+            40,
+            550
+          ]
+        },
+        "choose-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "choose-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            280,
+            60,
+            100
+          ]
+        },
+        "danger": {
+          "frames": [
+            "nervous",
+            "panic-soft",
+            "panicked",
+            "panic-soft",
+            "nervous"
+          ],
+          "durations": [
+            160,
+            70,
+            240,
+            70,
+            160
+          ]
+        },
+        "startle": {
+          "frames": [
+            "release",
+            "tumble-start"
+          ],
+          "durations": [
+            60,
+            180
+          ]
+        },
+        "celebrate": {
+          "frames": [
+            "rest",
+            "amused",
+            "delighted",
+            "relieved",
+            "rest"
+          ],
+          "durations": [
+            60,
+            90,
+            180,
+            100,
+            120
+          ]
+        },
+        "defeat": {
+          "frames": [
+            "rest",
+            "nervous",
+            "defeated"
+          ],
+          "durations": [
+            60,
+            80,
+            400
+          ]
+        },
+        "expressions": {
+          "frames": [
+            "rest",
+            "down",
+            "blink-half",
+            "amused",
+            "smug",
+            "nervous",
+            "panicked",
+            "shocked",
+            "frustrated",
+            "defeated",
+            "delighted",
+            "relieved"
+          ],
+          "durations": [
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300,
+            300
+          ]
+        },
+        "throw": {
+          "frames": [
+            "rest",
+            "prepare-soft",
+            "prepare",
+            "throw-edge",
+            "release",
+            "settle"
+          ],
+          "durations": [
+            80,
+            80,
+            80,
+            80,
+            90,
+            130
+          ]
+        },
+        "pickup": {
+          "frames": [
+            "release",
+            "reach",
+            "reach",
+            "prepare",
+            "prepare-soft",
+            "rest"
+          ],
+          "durations": [
+            160,
+            100,
+            80,
+            80,
+            80,
+            180
+          ]
+        },
+        "tumble": {
+          "frames": [
+            "tumble-start",
+            "recoil",
+            "fall-start",
+            "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
+            "floor"
+          ],
+          "durations": [
+            100,
+            80,
+            70,
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
+          ]
+        },
+        "return": {
+          "frames": [
+            "floor",
+            "bounce",
+            "airfall-low",
+            "airfall",
+            "midfall",
+            "fall-start",
+            "recoil",
+            "tumble-start",
+            "release",
+            "rest"
+          ],
+          "durations": [
+            160,
+            70,
+            60,
+            60,
+            70,
+            70,
+            80,
+            90,
+            100,
+            180
+          ]
+        }
+      },
+      "emotions": {
+        "calm": "rest",
+        "focused": "down",
+        "curious": "left",
+        "skeptical": "blink-half",
+        "confident": "rest",
+        "nervous": "nervous",
+        "panicked": "panicked",
+        "shocked": "shocked",
+        "amused": "amused",
+        "smug": "smug",
+        "relieved": "relieved",
+        "frustrated": "frustrated",
+        "defeated": "defeated",
+        "delighted": "delighted"
+      }
+    }
+  ],
+  "corePolicy": "Every pixel outside calibrated eye/mouth areas and all alpha match the original master.",
+  "actionPolicy": "Actual master head and lower body unchanged. Active hand/card region composited.",
+  "tumblePolicy": "Original master head painting at physical scale 1 on calibrated new falling body poses.",
+  "framePolicy": "One flattened complete character per frame; no separated runtime parts.",
+  "throwReleaseMs": 320,
+  "pickupCatchMs": 340
+}

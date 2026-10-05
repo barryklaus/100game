@@ -80,3 +80,6 @@
  .observatory-mode .seat-layer .sprite-seat .seat-meta{display:none;}
  .observatory-mode .target-hint{top:10svh!important;font-size:9px;}
 }
+
+/* Native cropped drawings restore their original coordinates inside one fixed frame. */
+.master-frame{position:absolute;max-width:none;object-fit:fill;pointer-events:none;}

@@ -30,3 +30,8 @@ Version 2 includes targeted head-size corrections to the affected complete drawi
 ## Live quality hold
 
 The v2 gallery remains an animation prototype. At full game size the 256px atlas cells lose detail, and independently drawn poses still change anatomy. After the owner's quality feedback, live 100next uses the original approved chair-free masters exported as pixel-preserving lossless 2048px WebP in `masters-native-v1`. Character pose swaps and the shrinking tumble fallback are paused; card flights, room backgrounds, the player ring, overflow spotlight and score flow remain active. New animation drawings must be reviewed at actual desktop/mobile size against the same master before replacing this quality hold. `export-native-masters.py` reproduces the export and verifies visible pixels and alpha against the original PNGs.
+
+
+The quality hold above describes the superseded v2 prototype. The approved
+master-derived v2 set now replaces it in 100next gameplay; see
+MASTER-ANIMATION-REVIEW.md for the new native artwork and validation.

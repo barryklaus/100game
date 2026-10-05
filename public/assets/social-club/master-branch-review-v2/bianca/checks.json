@@ -1,0 +1,551 @@
+{
+  "id": "bianca",
+  "nativeSize": [
+    2048,
+    2048
+  ],
+  "source": "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/bianca-master.png",
+  "sourceSHA256": "9bff4d6fca28ec2aa689a60290a95bd3db6443989dfd631c980c8a2f8038fefa",
+  "method": "pixel-preserving local edits, every frame branches directly from master",
+  "mutableRegions": [
+    [
+      975,
+      642,
+      1017,
+      666
+    ],
+    [
+      1032,
+      645,
+      1074,
+      671
+    ],
+    [
+      978,
+      697,
+      1042,
+      730
+    ]
+  ],
+  "clips": {
+    "blink": {
+      "frames": [
+        "rest",
+        "blink-half",
+        "blink",
+        "blink-half",
+        "rest"
+      ],
+      "durations": [
+        750,
+        40,
+        90,
+        40,
+        550
+      ]
+    },
+    "look-left": {
+      "frames": [
+        "rest",
+        "left-mid",
+        "left",
+        "left-mid",
+        "rest"
+      ],
+      "durations": [
+        120,
+        70,
+        340,
+        70,
+        160
+      ]
+    },
+    "look-right": {
+      "frames": [
+        "rest",
+        "right-mid",
+        "right",
+        "right-mid",
+        "rest"
+      ],
+      "durations": [
+        120,
+        70,
+        340,
+        70,
+        160
+      ]
+    },
+    "study": {
+      "frames": [
+        "rest",
+        "down-mid",
+        "down",
+        "down-mid",
+        "rest"
+      ],
+      "durations": [
+        100,
+        70,
+        260,
+        70,
+        140
+      ]
+    },
+    "alert": {
+      "frames": [
+        "rest",
+        "down",
+        "rest",
+        "left",
+        "right",
+        "rest"
+      ],
+      "durations": [
+        90,
+        140,
+        70,
+        150,
+        150,
+        220
+      ]
+    },
+    "idle": {
+      "frames": [
+        "rest",
+        "blink-half",
+        "blink",
+        "blink-half",
+        "rest"
+      ],
+      "durations": [
+        750,
+        40,
+        90,
+        40,
+        550
+      ]
+    },
+    "choose-left": {
+      "frames": [
+        "rest",
+        "left-mid",
+        "left",
+        "left-mid",
+        "rest"
+      ],
+      "durations": [
+        60,
+        60,
+        280,
+        60,
+        100
+      ]
+    },
+    "choose-right": {
+      "frames": [
+        "rest",
+        "right-mid",
+        "right",
+        "right-mid",
+        "rest"
+      ],
+      "durations": [
+        60,
+        60,
+        280,
+        60,
+        100
+      ]
+    },
+    "danger": {
+      "frames": [
+        "nervous",
+        "panic-soft",
+        "panicked",
+        "panic-soft",
+        "nervous"
+      ],
+      "durations": [
+        160,
+        70,
+        240,
+        70,
+        160
+      ]
+    },
+    "startle": {
+      "frames": [
+        "release",
+        "tumble-start"
+      ],
+      "durations": [
+        60,
+        180
+      ]
+    },
+    "celebrate": {
+      "frames": [
+        "rest",
+        "amused",
+        "delighted",
+        "relieved",
+        "rest"
+      ],
+      "durations": [
+        60,
+        90,
+        180,
+        100,
+        120
+      ]
+    },
+    "defeat": {
+      "frames": [
+        "rest",
+        "nervous",
+        "defeated"
+      ],
+      "durations": [
+        60,
+        80,
+        400
+      ]
+    },
+    "expressions": {
+      "frames": [
+        "rest",
+        "down",
+        "blink-half",
+        "amused",
+        "smug",
+        "nervous",
+        "panicked",
+        "shocked",
+        "frustrated",
+        "defeated",
+        "delighted",
+        "relieved"
+      ],
+      "durations": [
+        300,
+        300,
+        300,
+        300,
+        300,
+        300,
+        300,
+        300,
+        300,
+        300,
+        300,
+        300
+      ]
+    },
+    "throw": {
+      "frames": [
+        "rest",
+        "prepare-soft",
+        "prepare",
+        "throw-edge",
+        "release",
+        "settle"
+      ],
+      "durations": [
+        80,
+        80,
+        80,
+        80,
+        90,
+        130
+      ]
+    },
+    "pickup": {
+      "frames": [
+        "release",
+        "reach",
+        "reach",
+        "prepare",
+        "prepare-soft",
+        "rest"
+      ],
+      "durations": [
+        160,
+        100,
+        80,
+        80,
+        80,
+        180
+      ]
+    },
+    "tumble": {
+      "frames": [
+        "tumble-start",
+        "recoil",
+        "fall-start",
+        "midfall",
+        "airfall",
+        "airfall-low",
+        "floor",
+        "impact",
+        "bounce",
+        "floor"
+      ],
+      "durations": [
+        100,
+        80,
+        70,
+        70,
+        65,
+        65,
+        80,
+        60,
+        90,
+        700
+      ]
+    },
+    "return": {
+      "frames": [
+        "floor",
+        "bounce",
+        "airfall-low",
+        "airfall",
+        "midfall",
+        "fall-start",
+        "recoil",
+        "tumble-start",
+        "release",
+        "rest"
+      ],
+      "durations": [
+        160,
+        70,
+        60,
+        60,
+        70,
+        70,
+        80,
+        90,
+        100,
+        180
+      ]
+    }
+  },
+  "checks": [
+    {
+      "frame": "rest",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        794,
+        512,
+        1254,
+        1536
+      ]
+    },
+    {
+      "frame": "blink-half",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        794,
+        512,
+        1254,
+        1536
+      ]
+    },
+    {
+      "frame": "blink",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        794,
+        512,
+        1254,
+        1536
+      ]
+    },
+    {
+      "frame": "left-mid",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        794,
+        512,
+        1254,
+        1536
+      ]
+    },
+    {
+      "frame": "left",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        794,
+        512,
+        1254,
+        1536
+      ]
+    },
+    {
+      "frame": "right-mid",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        794,
+        512,
+        1254,
+        1536
+      ]
+    },
+    {
+      "frame": "right",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        794,
+        512,
+        1254,
+        1536
+      ]
+    },
+    {
+      "frame": "down-mid",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        794,
+        512,
+        1254,
+        1536
+      ]
+    },
+    {
+      "frame": "down",
+      "protectedPixelsIdentical": true,
+      "alphaIdentical": true,
+      "bounds": [
+        794,
+        512,
+        1254,
+        1536
+      ]
+    }
+  ],
+  "status": "complete animation drawings; visual review required before gameplay activation",
+  "emotions": {
+    "calm": "rest",
+    "focused": "down",
+    "curious": "left",
+    "skeptical": "blink-half",
+    "confident": "rest",
+    "nervous": "nervous",
+    "panicked": "panicked",
+    "shocked": "shocked",
+    "amused": "amused",
+    "smug": "smug",
+    "relieved": "relieved",
+    "frustrated": "frustrated",
+    "defeated": "defeated",
+    "delighted": "delighted"
+  },
+  "emotionPolicy": "Native master; only local eye and mouth areas edited; all protected RGBA and alpha identical",
+  "targetEyes": [
+    [
+      989.0,
+      650.5
+    ],
+    [
+      1051.5,
+      657.5
+    ]
+  ],
+  "movementChecks": [
+    {
+      "frame": "prepare",
+      "headPixelsIdentical": true,
+      "lowerBodyPixelsIdentical": true,
+      "protectedPixelsIdentical": true,
+      "sourceEyes": [
+        [
+          596.5,
+          300.0
+        ],
+        [
+          660.0,
+          306.0
+        ]
+      ],
+      "scale": 0.9860141627826096,
+      "rotation": 0.017326695728782468,
+      "offset": [
+        406.0558901247464,
+        344.54983715356724
+      ]
+    },
+    {
+      "frame": "release",
+      "headPixelsIdentical": true,
+      "lowerBodyPixelsIdentical": true,
+      "protectedPixelsIdentical": true,
+      "sourceEyes": [
+        [
+          585.5,
+          314.0
+        ],
+        [
+          651.0,
+          320.0
+        ]
+      ],
+      "scale": 0.9561613033498545,
+      "rotation": 0.020187065736080215,
+      "offset": [
+        435.3420687662525,
+        339.0259173649235
+      ]
+    },
+    {
+      "frame": "midfall",
+      "sourceEyes": [
+        [
+          660.5,
+          426.0
+        ],
+        [
+          725.5,
+          424.5
+        ]
+      ],
+      "bodyMirroredForCardSide": true,
+      "bodyScale": 0.9672929070559178,
+      "masterHeadScale": 1,
+      "masterHeadRotationDegrees": -7.712470974183966,
+      "headPolicy": "Actual original master head, rotated/translated; only local expression edit",
+      "bodyPolicy": "New generated body pose, calibrated from master face unit"
+    },
+    {
+      "frame": "floor",
+      "sourceEyes": [
+        [
+          381.0,
+          640.0
+        ],
+        [
+          446.0,
+          618.0
+        ]
+      ],
+      "bodyMirroredForCardSide": false,
+      "bodyScale": 0.9164792243216938,
+      "masterHeadScale": 1,
+      "masterHeadRotationDegrees": -25.0894781188281,
+      "headPolicy": "Actual original master head, rotated/translated; only local expression edit",
+      "bodyPolicy": "New generated body pose, calibrated from master face unit"
+    }
+  ],
+  "throwReleaseMs": 320,
+  "pickupCatchMs": 340,
+  "chairPolicy": "No chairs",
+  "scalePolicy": "Native master head and body protected for small gestures; actual master head reused at scale 1 for large body poses"
+}
