@@ -1,0 +1,240 @@
+{
+  "tool": "built-in image_gen",
+  "status": "single-pose chair-free master playtest, animation sheets pending",
+  "canvas": 2048,
+  "protectedPadding": 512,
+  "characters": [
+    {
+      "id": "vince",
+      "name": "Vince",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-5b44d3b4-afb1-48f0-9358-bbee567d87db.png",
+      "alphaBounds": [
+        774,
+        512,
+        1273,
+        1536
+      ],
+      "padding": [
+        774,
+        512,
+        775,
+        512
+      ],
+      "release": [
+        247.18,
+        225.39,
+        18,
+        25
+      ],
+      "catch": [
+        276.47,
+        245.8,
+        18,
+        25
+      ]
+    },
+    {
+      "id": "finn",
+      "name": "Finn",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-00a9a324-be1b-445d-bd61-1eb43e7ffb43.png",
+      "alphaBounds": [
+        764,
+        512,
+        1284,
+        1536
+      ],
+      "padding": [
+        764,
+        512,
+        764,
+        512
+      ],
+      "release": [
+        254.29,
+        238.21,
+        18,
+        25
+      ],
+      "catch": [
+        283.54,
+        254.8,
+        18,
+        25
+      ]
+    },
+    {
+      "id": "june",
+      "name": "June",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-51209227-302f-49b0-992f-d15ebd0cad88.png",
+      "alphaBounds": [
+        805,
+        512,
+        1242,
+        1536
+      ],
+      "padding": [
+        805,
+        512,
+        806,
+        512
+      ],
+      "release": [
+        240.86,
+        225.09,
+        18,
+        25
+      ],
+      "catch": [
+        275.39,
+        235.23,
+        18,
+        25
+      ]
+    },
+    {
+      "id": "edgar",
+      "name": "Edgar",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-8844fc25-a024-4666-a94d-42e6b71716ce.png",
+      "alphaBounds": [
+        781,
+        512,
+        1266,
+        1536
+      ],
+      "padding": [
+        781,
+        512,
+        782,
+        512
+      ],
+      "release": [
+        254.36,
+        235.43,
+        18,
+        25
+      ],
+      "catch": [
+        279.08,
+        248.92,
+        18,
+        25
+      ]
+    },
+    {
+      "id": "roxie",
+      "name": "Roxie",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-4334e583-a83a-4868-a61b-e1a66be1b184.png",
+      "alphaBounds": [
+        789,
+        512,
+        1258,
+        1536
+      ],
+      "padding": [
+        789,
+        512,
+        790,
+        512
+      ],
+      "release": [
+        246.94,
+        217.53,
+        18,
+        25
+      ],
+      "catch": [
+        279.91,
+        232.42,
+        18,
+        25
+      ]
+    },
+    {
+      "id": "otis",
+      "name": "Otis",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-29e587ad-e61a-4f49-8cfa-9e03fa606a71.png",
+      "alphaBounds": [
+        714,
+        512,
+        1334,
+        1536
+      ],
+      "padding": [
+        714,
+        512,
+        714,
+        512
+      ],
+      "release": [
+        255.9,
+        227.95,
+        18,
+        25
+      ],
+      "catch": [
+        281.45,
+        240.97,
+        18,
+        25
+      ]
+    },
+    {
+      "id": "paloma",
+      "name": "Paloma",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-7ed4da3c-84ed-4784-8a96-5c116c0fc160.png",
+      "alphaBounds": [
+        789,
+        512,
+        1258,
+        1536
+      ],
+      "padding": [
+        789,
+        512,
+        790,
+        512
+      ],
+      "release": [
+        245.83,
+        235.1,
+        18,
+        25
+      ],
+      "catch": [
+        279.04,
+        245.49,
+        18,
+        25
+      ]
+    },
+    {
+      "id": "bianca",
+      "name": "Bianca",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-f3a73eb1-2aa4-410e-8c9c-373d21659db1.png",
+      "alphaBounds": [
+        794,
+        512,
+        1254,
+        1536
+      ],
+      "padding": [
+        794,
+        512,
+        794,
+        512
+      ],
+      "release": [
+        249.57,
+        224.85,
+        18,
+        25
+      ],
+      "catch": [
+        278.18,
+        234.32,
+        18,
+        25
+      ]
+    }
+  ]
+}

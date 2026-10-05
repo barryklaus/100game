@@ -1,6 +1,7 @@
 import { faceFrame, nearestCenter, ringSeat, traditionalRingSeat, seatDistance, type CharacterFrame } from './PlayerRingModel';
 import { characterHandAnchors } from './CharacterSpriteLayout';
 import { TraditionalCharacters } from './TraditionalCharacters';
+import { masterHandRect } from './MasterCharacters';
 
 type RingState = { roundKey: string; count: number; active: number; total: number; overflow: boolean; overflowSeat?: number; reducedMotion: boolean; target: boolean };
 type OverflowStage = 'idle' | 'focus' | 'fall' | 'complete';
@@ -194,6 +195,8 @@ export class PlayerRing {
   };
 
   private spriteReady(index: number): Promise<void> {
+    const master = this.root.querySelector<HTMLImageElement>(`.seat[data-seat="${index}"] .master-sprite`);
+    if (master) return this.imageReady(master.src);
     const sprite = this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .character-sprite`);
     const url = sprite?.dataset.spriteUrl;
     return url ? this.imageReady(url) : Promise.resolve();
@@ -224,7 +227,7 @@ export class PlayerRing {
         await new Promise(resolve => setTimeout(resolve, 110));
       }
       if (epoch !== this.epoch) throw new Error('The table changed during the throw.');
-      return this.handRect(index);
+      return masterHandRect(this.root,index) ?? this.handRect(index);
     } finally {
       if (epoch === this.epoch) this.preparing.delete(index);
       this.paintFrames();
@@ -272,6 +275,7 @@ export class PlayerRing {
     this.reliefTimer = window.setTimeout(() => { this.relieved = -1; this.paintFrames(); }, 1500);
   }
   handRect(index: number): DOMRect | undefined {
+    const master=masterHandRect(this.root,index,true);if(master)return master;
     if(this.traditional.has(index))return this.traditional.handRect(index,true);
     return this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .sprite-hand-anchor`)?.getBoundingClientRect();
   }
@@ -324,7 +328,7 @@ export class PlayerRing {
     if (!this.state.count) return;
     const portrait = innerHeight > innerWidth * 1.08;
     this.root.querySelectorAll<HTMLElement>('.seat').forEach(seat => {
-      const index = Number(seat.dataset.seat), layout=this.traditional.has(index)?traditionalRingSeat:ringSeat;
+      const index = Number(seat.dataset.seat), layout=this.traditional.has(index)||seat.classList.contains('master-seat')?traditionalRingSeat:ringSeat;
       const pose = layout(index, this.center, this.state.count, portrait, this.overflowStage !== 'idle');
       seat.style.setProperty('--ring-x', `${pose.x * 100}vw`);
       seat.style.setProperty('--ring-y', `${pose.y * 100}svh`);

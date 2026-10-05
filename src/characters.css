@@ -44,6 +44,10 @@
 .observatory-mode .seat-layer .traditional-seat.overflow-culprit{width:min(20vw,33svh,390px)!important;}
 .traditional-sprite{position:absolute;left:-50%;top:-26%;width:200%;height:200%;pointer-events:none;}
 .traditional-sprite[data-ready="true"]+.sprite-fallback{display:none;}
+.master-sprite,.master-hands{position:absolute;left:-50%;top:-26%;width:200%;height:200%;pointer-events:none;}
+.master-sprite{max-width:none;object-fit:contain;}
+.master-hands>span{position:absolute;pointer-events:none;}
+.tumble-fallback .master-sprite{translate:0 calc(var(--tumble-progress,0) * 20% + var(--tumble-drop,0) * 78%);scale:calc(1 - var(--tumble-progress,0) * .22);opacity:calc(1 - var(--tumble-drop,0));}
 .cast-choice{display:block;margin:16px 0;color:#d6c596;font:600 11px system-ui;}
 .cast-choice select{display:block;margin-top:8px;width:100%;padding:12px;border:1px solid #9a866455;border-radius:8px;background:#101725;color:#f2e6c8;font:16px system-ui;}
 @media(orientation:portrait){

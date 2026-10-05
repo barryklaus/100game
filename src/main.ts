@@ -25,6 +25,7 @@ import { HostedRoom } from './game/hosted';
 import { cardGrip, cardFlickSpin, isDoubleCardTap, isPlayGesture, type CardTap, type CardGrip, type CardSpin } from './ui/cardGesture';
 import { updateGameView } from './ui/updateGameView';
 import { GyroHand } from './ui/GyroHand';
+import { masterNames, masterCharacter, masterImage, masterAnchors } from './ui/MasterCharacters';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const isNextVersion = import.meta.env.MODE === '100next';
@@ -33,7 +34,10 @@ if (isNextVersion) document.title = '100next — Simple Numbers. Big Reactions.'
 const playerRing = new PlayerRing(app, () => observatory?.projectPlayerRing(), () => render());
 let settings: Settings = loadSettings();
 let trialCast=isNextVersion&&new URLSearchParams(location.search).get('characters')==='finn-june';
+let masterCast=isNextVersion&&new URLSearchParams(location.search).get('characters')==='midnight-eight';
 if(trialCast){settings.playerCount=2;settings.seats[0]={...settings.seats[0],name:'Finn',avatar:0,kind:'human',mood:'Normal'};settings.seats[1]={...settings.seats[1],name:'June',avatar:1,kind:'cpu',mood:'Normal'};}
+function useMasterSeats():void{settings.playerCount=8;settings.seats=masterNames.map((name,avatar)=>({name,avatar,kind:avatar===0?'human':'cpu',mood:'Normal'}));}
+if(masterCast)useMasterSeats();
 let stats: Stats = loadStats();
 let state: GameState | null = null;
 let selectedCard: string | null = null;
@@ -105,10 +109,10 @@ function totalClass(total: number): string {
 
 const escapeHtml = (value: string): string => value.replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char]!);
 const observatoryAvatarNames = ['Ember Scout', 'Tide Scholar', 'Grove Guardian', 'Sun Knight', 'Storm Pilot', 'Coral Bard', 'Mushroom Alchemist', 'Desert Ranger', 'Moon Seer', 'River Courier', 'Thorn Duelist', 'Forge Captain', 'Cloud Mechanic', 'Marsh Mystic', 'Wildwood Archer', 'Dawn Dancer'];
-let avatarNames=trialCast?['Finn','June']:observatoryAvatarNames;
+let avatarNames=masterCast?masterNames:trialCast?['Finn','June']:observatoryAvatarNames;
 const trialCharacter=(index:number):'finn'|'june'=>index%2===0?'finn':'june';
-const avatarImage = (index: number): string => trialCast?`${import.meta.env.BASE_URL}assets/social-club/${trialCharacter(index)}-portrait${trialCharacter(index)==='june'?'-v2':''}.webp`:`${import.meta.env.BASE_URL}assets/avatars/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.jpg`;
-function castPath(room?:string):string{const params=new URLSearchParams();if(room)params.set('room',room);if(trialCast)params.set('characters','finn-june');return location.pathname+(params.size?'?'+params:'');}
+const avatarImage = (index: number): string => masterCast?masterImage(index,true):trialCast?`${import.meta.env.BASE_URL}assets/social-club/${trialCharacter(index)}-portrait${trialCharacter(index)==='june'?'-v2':''}.webp`:`${import.meta.env.BASE_URL}assets/avatars/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.jpg`;
+function castPath(room?:string):string{const params=new URLSearchParams();if(room)params.set('room',room);if(masterCast)params.set('characters','midnight-eight');else if(trialCast)params.set('characters','finn-june');return location.pathname+(params.size?'?'+params:'');}
 const characterSheet = (index: number): string => `${import.meta.env.BASE_URL}assets/characters/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}.webp?v=${CHARACTER_SPRITE_VERSION}`;
 const tumbleSheet = (index: number): string => `${import.meta.env.BASE_URL}assets/characters/tumbles/avatar-${String((index % 16 + 16) % 16 + 1).padStart(2,'0')}-tumble.webp?v=1`;
 const gameRoundKey = (): string => state ? `${state.round}:${state.players.map(player=>player.name).join(':')}` : '';
@@ -443,7 +447,7 @@ function setupView(): string {
   return `<main class="setup-page">
     <div class="setup-hero"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">THE CARD GAME</div><h1>Simple numbers.<br><em>Big reactions.</em></h1><p>Look at your two cards. Make your move. Don't be the one who goes over 100.</p><div class="hero-cards">${cardElement({id:'fire-7',suit:'fire',rank:'7'},false,'hero-card one')}${cardElement({id:'water-8',suit:'water',rank:'8'},false,'hero-card two')}${cardElement({id:'sun-10',suit:'sun',rank:'10'},false,'hero-card three')}</div><div class="hero-footer">PLAY. BLUFF. SURVIVE.</div></div>
     <section class="setup-panel"><div class="panel-top"><span class="eyebrow">GATHER ROUND</span><div class="top-links"><button data-action="rules">How to play</button><button data-action="stats">Stats</button><button data-action="settings">⚙ Settings</button></div></div><h2>Set the table</h2><p class="muted">Choose 2–8 players. Any seat can be Human or CPU.</p>
-      ${isNextVersion ? `<label class="cast-choice">CHARACTERS<select id="character-cast"><option value="observatory" ${!trialCast?'selected':''}>Observatory</option><option value="finn-june" ${trialCast?'selected':''}>Finn &amp; June</option></select></label>` : ''}
+      ${isNextVersion ? `<label class="cast-choice">CHARACTERS<select id="character-cast"><option value="observatory" ${!trialCast&&!masterCast?'selected':''}>Observatory</option><option value="finn-june" ${trialCast?'selected':''}>Finn &amp; June</option><option value="midnight-eight" ${masterCast?'selected':''}>Midnight Social Club · All 8</option></select></label>` : ''}
       <div class="setup-controls"><label>PLAYERS<select id="player-count">${Array.from({length:7},(_,i)=>`<option value="${i+2}" ${settings.playerCount===i+2?'selected':''}>${i+2} players${i+2===4?' · recommended':''}</option>`).join('')}</select></label><label>CPU DIFFICULTY<select id="difficulty"><option value="easy" ${settings.difficulty==='easy'?'selected':''}>Easy</option><option value="normal" ${settings.difficulty==='normal'?'selected':''}>Normal</option></select></label></div>
       <div class="seat-editor">${settings.seats.slice(0,settings.playerCount).map((seat,i)=>`<div class="seat-row"><div class="seat-number">${String(i+1).padStart(2,'0')}</div><div class="avatar-tiny"><img src="${avatarImage(seat.avatar)}" alt=""></div><input aria-label="Player ${i+1} name" data-seat-name="${i}" maxlength="15" value="${escapeHtml(seat.name)}"><select aria-label="Player ${i+1} type" data-seat-kind="${i}"><option value="human" ${seat.kind==='human'?'selected':''}>Human</option><option value="cpu" ${seat.kind==='cpu'?'selected':''}>CPU</option></select><select aria-label="Player ${i+1} avatar" data-seat-avatar="${i}">${avatarNames.map((name,v)=>`<option value="${v}" ${seat.avatar===v?'selected':''}>${escapeHtml(name)}</option>`).join('')}</select><select aria-label="Player ${i+1} mood" data-seat-mood="${i}">${MOODS.map(m=>`<option ${seat.mood===m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}</div>
       <button class="primary-button start-button" data-action="start">START LOCAL GAME <span>➜</span></button><button class="secondary-button online-entry" data-action="online-setup">PLAY ONLINE WITH FRIENDS</button><p class="setup-note">Local: pass one device · Online: share a room link, one Human per device</p>
@@ -466,7 +470,7 @@ function seatHtml(player: GameState['players'][number], index: number, count: nu
   const active = state.phase !== 'ended' && (state.phase === 'target' ? state.pendingSevens.at(-1) === index : state.current === index);
   const targetable = state.phase === 'target' && canControlActor() && index !== state.pendingSevens.at(-1);
   const suit = ['fire','water','leaf','sun'][index%4] as keyof typeof suitSymbols;
-  return `<button class="seat sprite-seat ${index===localSeat()?'local-seat':''} ${trialCast?'traditional-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit}" data-seat="${index}" ${trialCast?`data-traditional="${trialCharacter(player.avatar)}"`:''} data-mood="${player.mood}" style="--seat-x:${x}%;--seat-y:${y}%;--seat-index:${index}" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards"><span class="reaction-bubble">${reaction[index]||''}</span>${trialCast?`<span class="character"><canvas class="traditional-sprite" data-character="${trialCharacter(player.avatar)}" width="512" height="512" aria-hidden="true"></canvas><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="sprite-hand-anchor" aria-hidden="true"></span>`:`<span class="character"><span class="character-sprite" data-avatar="${player.avatar}" data-sprite-url="${characterSheet(player.avatar)}" style="background-image:url('${characterSheet(player.avatar)}')" aria-hidden="true"></span><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="character-tumble" data-tumble-url="${tumbleSheet(player.avatar)}" aria-hidden="true"></span><span class="sprite-hand-anchor" aria-hidden="true"></span>`}</span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)} <span class="seat-count" aria-hidden="true">${player.hand.length}</span></span><span class="seat-meta">★ ${player.ratingDelta>=0?'+':''}${player.ratingDelta} · ${index===localSeat()?'YOU':player.kind==='cpu'?'CPU':'PLAYER'}</span>${state.phase==='ended'?`<span class="seat-score ${player.ratingDelta<0?'negative':''}">${player.ratingDelta>=0?'+':''}${player.ratingDelta}</span>`:''}</span></button>`;
+  return `<button class="seat sprite-seat ${index===localSeat()?'local-seat':''} ${masterCast?'traditional-seat master-seat':trialCast?'traditional-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit}" data-seat="${index}" ${trialCast?`data-traditional="${trialCharacter(player.avatar)}"`:''} data-mood="${player.mood}" style="--seat-x:${x}%;--seat-y:${y}%;--seat-index:${index}" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards"><span class="reaction-bubble">${reaction[index]||''}</span>${masterCast?`<span class="character"><img class="master-sprite" src="${masterImage(player.avatar)}" alt="" loading="lazy" decoding="async" data-character="${masterCharacter(player.avatar).id}"><span class="master-hands">${masterAnchors(player.avatar)}</span><span class="character-tumble" aria-hidden="true"></span></span>`:trialCast?`<span class="character"><canvas class="traditional-sprite" data-character="${trialCharacter(player.avatar)}" width="512" height="512" aria-hidden="true"></canvas><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="sprite-hand-anchor" aria-hidden="true"></span>`:`<span class="character"><span class="character-sprite" data-avatar="${player.avatar}" data-sprite-url="${characterSheet(player.avatar)}" style="background-image:url('${characterSheet(player.avatar)}')" aria-hidden="true"></span><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="character-tumble" data-tumble-url="${tumbleSheet(player.avatar)}" aria-hidden="true"></span><span class="sprite-hand-anchor" aria-hidden="true"></span>`}</span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)} <span class="seat-count" aria-hidden="true">${player.hand.length}</span></span><span class="seat-meta">★ ${player.ratingDelta>=0?'+':''}${player.ratingDelta} · ${index===localSeat()?'YOU':player.kind==='cpu'?'CPU':'PLAYER'}</span>${state.phase==='ended'?`<span class="seat-score ${player.ratingDelta<0?'negative':''}">${player.ratingDelta>=0?'+':''}${player.ratingDelta}</span>`:''}</span></button>`;
 }
 function gameLogLine(item: string): string {
   const playerIndex = state?.players.findIndex(player => item.startsWith(`${player.name} `)) ?? -1;
@@ -576,6 +580,7 @@ function render(): void {
   if (remoteSnapshots.length && !presentedTotal.pending && !remoteFlight) queueMicrotask(() => roomChanged());
 }
 render();
+if(masterCast&&!onlineMode&&new URLSearchParams(location.search).get('play')==='1')startGame();
 if (isHostedVersion && onlineMode === 'join' && /^100-[a-z0-9]{12}$/.test(joinCode) && localStorage.getItem(`100game:room:${joinCode}`)) connectOnline('join');
 
 app.addEventListener('click', event => {
@@ -628,7 +633,8 @@ app.addEventListener('click', event => {
 app.addEventListener('change', event => {
   const el = event.target as HTMLInputElement | HTMLSelectElement;
   if(el.id==='character-cast'&&isNextVersion){
-    trialCast=el.value==='finn-june';avatarNames=trialCast?['Finn','June']:observatoryAvatarNames;
+    trialCast=el.value==='finn-june';masterCast=el.value==='midnight-eight';avatarNames=masterCast?masterNames:trialCast?['Finn','June']:observatoryAvatarNames;
+    if(masterCast)useMasterSeats();
     if(trialCast){settings.playerCount=2;settings.seats[0]={...settings.seats[0],name:'Finn',avatar:0,kind:'human',mood:'Normal'};settings.seats[1]={...settings.seats[1],name:'June',avatar:1,kind:'cpu',mood:'Normal'};}
     history.replaceState(null,'',castPath());save();render();return;
   }
