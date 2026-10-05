@@ -1,0 +1,57 @@
+<section id="finn-scale-repaired">
+  <h2>Finn · corrected animation</h2>
+  <div class="viz-controls">
+    <label class="form-label">Animation
+      <select class="form-select" data-clip aria-label="Finn animation"></select>
+    </label>
+    <button class="btn btn-primary" type="button" data-replay>Replay</button>
+    <button class="btn" type="button" data-rest>Rest pose</button>
+    <label class="form-check"><input class="form-check-input" type="checkbox" data-padding><span class="form-check-label">Show padding</span></label>
+  </div>
+  <canvas width="512" height="512" role="img" aria-label="Chair-free Finn showing a whole-character animation at constant scale">Finn animation</canvas>
+  <div class="text-small text-muted" data-status aria-live="polite">Loading…</div>
+</section>
+<style>
+#finn-scale-repaired canvas{display:block;width:100%;max-width:512px;height:auto;margin:12px auto}
+#finn-scale-repaired .form-label{min-width:0;max-width:100%;flex:1}
+</style>
+<script>
+(()=>{
+  const root=document.getElementById('finn-scale-repaired');
+  const data=__FINN_SCALE_DATA__;
+  const canvas=root.querySelector('canvas'),ctx=canvas.getContext('2d');
+  const selector=root.querySelector('[data-clip]'),status=root.querySelector('[data-status]');
+  const padding=root.querySelector('[data-padding]'),image=new Image();
+  let selected='tumble',current=17,playing=false,started=0,raf=0,ready=false;
+  for(const [key,clip] of Object.entries(data.clips)){
+    const option=document.createElement('option');option.value=key;option.textContent=clip.label;selector.append(option);
+  }
+  function restore(state){const choice=state?.modelContent?.selection;if(data.clips[choice])selected=choice;selector.value=selected;}
+  restore(window.openai?.widgetState);
+  function save(){try{window.openai?.setWidgetState?.({modelContent:{character:'Finn',selection:selected},privateContent:{padding:padding.checked}})?.catch(()=>{});}catch{}}
+  function colors(){const style=getComputedStyle(root);return {surface:style.getPropertyValue('--muted').trim(),line:style.getPropertyValue('--border').trim()};}
+  function draw(){
+    if(!ready)return;const palette=colors();ctx.clearRect(0,0,512,512);
+    ctx.fillStyle=palette.surface;ctx.fillRect(0,0,512,512);
+    ctx.drawImage(image,(current%8)*256,Math.floor(current/8)*256,256,256,128,128,256,256);
+    ctx.strokeStyle=palette.line;ctx.beginPath();ctx.moveTo(96,379);ctx.lineTo(416,379);ctx.stroke();
+    if(padding.checked){ctx.save();ctx.setLineDash([5,7]);ctx.strokeRect(128,128,256,256);ctx.restore();}
+  }
+  function requestTick(){if(!raf&&playing)raf=requestAnimationFrame(tick);}
+  function replay(){if(!ready)return;playing=true;started=performance.now();current=data.clips[selected].frames[0];status.textContent=data.clips[selected].label;draw();requestTick();}
+  function tick(now){
+    raf=0;if(!root.isConnected||!playing)return;
+    const clip=data.clips[selected],elapsed=now-started;let sum=0,index=clip.frames.length-1;
+    for(let i=0;i<clip.durations.length;i++){sum+=clip.durations[i];if(elapsed<sum){index=i;break;}}
+    const next=clip.frames[index];if(next!==current){current=next;draw();}
+    if(elapsed>=sum){playing=false;status.textContent=clip.label+' · finished';}else requestTick();
+  }
+  selector.addEventListener('change',()=>{selected=selector.value;save();replay();});
+  root.querySelector('[data-replay]').addEventListener('click',()=>{save();replay();});
+  root.querySelector('[data-rest]').addEventListener('click',()=>{playing=false;current=0;status.textContent='Rest pose';draw();save();});
+  padding.addEventListener('change',()=>{draw();save();});
+  window.addEventListener('openai:set_globals',e=>{restore(e.detail?.globals?.widgetState);playing=false;current=data.clips[selected].frames[0];draw();});
+  image.onload=()=>{ready=true;current=data.clips[selected].frames[0];draw();if(matchMedia('(prefers-reduced-motion: reduce)').matches){status.textContent='Ready';}else replay();};
+  image.onerror=()=>{status.textContent='Could not load animation';};image.src=data.atlas;
+})();
+</script>

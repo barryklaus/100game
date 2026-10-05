@@ -4,7 +4,7 @@ No anatomy is synthesized or redrawn. Cropping, uniform scaling, padding,
 atlas export and timed GIF playback only.
 """
 from pathlib import Path
-import json, math, shutil, sys
+import argparse, json, math
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
@@ -65,8 +65,8 @@ def clips():
       'celebrate':([two,f('reactions',5),f('reactions',10),two],[80,180,230,150]),
       'defeat':([two,f('reactions',11)],[80,550]),
       'startle':([one,f('tumble',1)],[90,180]),
-      'tumble':([f('tumble',i) for i in range(9)],[100,100,70,60,50,70,60,100,650]),
-      'return':([f('tumble',i) for i in [8,7,6,4,3,2,1,0]]+[one],[180,70,60,60,70,80,90,100,200]),
+      'tumble':([one]+[f('tumble',i) for i in range(1,9)],[100,100,70,60,50,70,60,100,650]),
+      'return':([f('tumble',i) for i in [8,7,6,4,3,2,1]]+[one,one],[180,70,60,60,70,80,90,100,200]),
       'expressions':([two]+[f('reactions',i) for i in range(1,12)],[500]+[350]*11),
     }
 
@@ -84,35 +84,66 @@ def gif(frames,durations,path,name,label):
     images=[im.quantize(palette=palette,dither=Image.Dither.NONE) for im in rgb]
     images[0].save(path,save_all=True,append_images=images[1:],duration=durations,loop=0,disposal=1,optimize=False)
 
+def head_reference(im):
+    """Measure upright skull/hair, never a moving hand or a pose's full box."""
+    alpha=np.array(im.getchannel('A'))>150
+    ys,xs=np.where(alpha)
+    top,bottom=int(ys.min()),int(ys.max())+1
+    head=alpha[top:top+round((bottom-top)*.17)]
+    widths=[]
+    for row in head:
+        points=np.flatnonzero(row)
+        if len(points):widths.append(int(points[-1]-points[0]+1))
+    return max(widths)
+
+def foot_anchor(im):
+    """Keep seated bodies still when the working hand widens their silhouette."""
+    alpha=np.array(im.getchannel('A'))>150
+    ys,xs=np.where(alpha)
+    bottom=int(ys.max())+1
+    feet=alpha[max(int(ys.min()),bottom-round((bottom-ys.min())*.10)):bottom]
+    _,fx=np.where(feet)
+    return float((fx.min()+fx.max())/2),bottom
+
 def pack(slug):
     target=OUT/slug;target.mkdir(parents=True,exist_ok=True);RUNTIME.mkdir(parents=True,exist_ok=True)
     version='-v2' if slug=='finn' else ''
     master=Image.open(ROOT.parent/f'output/100next-character-masters/chair-free-v1/{slug}-master{version}.png').convert('RGBA')
-    # Retain the exact approved padded master as rest frame0.
+    # The approved master supplies calibration; the sheet supplies neutral art.
     sources={kind:extract(OUT/f'{slug}-{kind}-source.png',cols,rows)
       for kind,cols,rows in [('reactions',3,4),('card-actions',3,3),('tumble',3,3)]}
-    # Match physical height to each sheet's upright first drawing. A wide floor
-    # pose must not shrink that sheet independently of the ordinary body poses.
-    heights={kind:cells[0][0].height for kind,cells in sources.items()}
-    widest=max(max(im.width,im.height)/heights[kind] for kind,cells in sources.items() for im,_ in cells)
-    body_height=256/widest
     rest=master.crop(master.getchannel('A').getbbox())
-    rest=rest.resize((round(rest.width/rest.height*body_height),round(body_height)),Image.Resampling.LANCZOS)
-    neutral=Image.new('RGBA',(512,512));neutral.alpha_composite(rest,(round(256-rest.width/2),384-rest.height))
-    layers=[neutral]
+    # A head is a physical size reference. Height-based fitting enlarged bodies
+    # when a head turned, knees lifted or the silhouette became horizontal.
+    reference=head_reference(rest)
+    units={'master':1.0,**{kind:reference/head_reference(cells[0][0]) for kind,cells in sources.items()}}
+    # Fit the complete cast member once. Every sheet inherits this same unit;
+    # no clip or individual pose gets independently fitted to the frame.
+    extent=max(rest.width,rest.height)
+    for kind,cells in sources.items():
+        for im,_ in cells:
+            center,_=foot_anchor(im) if kind!='tumble' else (im.width/2,im.height)
+            extent=max(extent,im.height*units[kind],2*max(center,im.width-center)*units[kind])
+    common_scale=240/extent
+    layers=[Image.new('RGBA',(512,512))]
     checks=[]
     for kind,count,cols,rows in [('reactions',12,3,4),('card-actions',9,3,3),('tumble',9,3,3)]:
         cells=sources[kind]
         # One common scale for all drawings in a sheet, never resize individual poses.
-        scale=body_height/heights[kind]
+        scale=common_scale*units[kind]
         for i,(im,source_box) in enumerate(cells):
             resized=im.resize((round(im.width*scale),round(im.height*scale)),Image.Resampling.LANCZOS)
-            x=round(256-resized.width/2);y=384-resized.height
+            cx,bottom=foot_anchor(im) if kind!='tumble' else (im.width/2,im.height)
+            x=round(256-cx*scale);y=round(376-bottom*scale)
             layer=Image.new('RGBA',(512,512));layer.alpha_composite(resized,(x,y))
             bounds=layer.getchannel('A').getbbox();insets=[bounds[0],bounds[1],512-bounds[2],512-bounds[3]]
             assert min(insets)>=128,(slug,kind,i,insets)
             layer.save(target/f'{kind}-{i:02}.png');layers.append(layer)
-            checks.append({'kind':kind,'pose':i,'bounds':bounds,'padding':insets,'sourceBox':source_box,'uniformScale':scale})
+            checks.append({'kind':kind,'pose':i,'bounds':bounds,'padding':insets,'sourceBox':source_box,'uniformScale':scale,'anchor':[cx,bottom]})
+    # The master defines physical scale, but the animated sheet defines its
+    # matching neutral drawing. Mixing an independently drawn static master
+    # into every blink/throw caused a visible anatomy and shoulder-width pop.
+    layers[0]=layers[1].copy()
     assert len(layers)==31
     atlas=Image.new('RGBA',(2048,1024))
     for i,layer in enumerate(layers):
@@ -132,7 +163,9 @@ def pack(slug):
         drawing=[{'index':i,'combinedChair':False,'cards':1 if i>=22 or 16<=i<=18 else 2} for i in ids]
         data[key]={'frames':drawing,'durations':durations}
         gif([layers[i] for i in ids],durations,target/f'{key}.gif',slug,key)
-    manifest={'id':slug,'tool':'built-in image_gen','logicalCell':512,'atlasCols':8,'cell':256,'padding':128,'frames':31,'clips':data,'checks':checks,'handPolicy':'retained image-left, working image-right','throwReleaseMs':320,'pickupCatchMs':340,'chairPolicy':'No chairs in any frame, including tumbles','tumble':'body lying flat low on floor, feet up'}
+    assert layers[0].tobytes()==layers[1].tobytes()
+    assert data['tumble']['frames'][0]['index']==data['throw']['frames'][-1]['index']
+    manifest={'id':slug,'tool':'built-in image_gen','logicalCell':512,'atlasCols':8,'cell':256,'padding':128,'frames':31,'clips':data,'checks':checks,'scaleReference':'upright skull width, one shared physical unit and fixed foot anchor','headPixels':round(reference*common_scale,2),'sharedRestFrame':1,'sharedTumbleEntryFrame':17,'handPolicy':'retained image-left, working image-right','throwReleaseMs':320,'pickupCatchMs':340,'chairPolicy':'No chairs in any frame, including tumbles','tumble':'body lying flat low on floor, feet up'}
     (target/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     (RUNTIME/f'{slug}-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     print(json.dumps({'character':slug,'drawings':len(layers),'bytes':(RUNTIME/f'{slug}-atlas.webp').stat().st_size}),flush=True)
@@ -164,5 +197,11 @@ def overview():
         frames[0].save(OUT/f'{title}.gif',save_all=True,append_images=frames[1:],duration=durations,loop=0,disposal=1,optimize=False)
 
 if __name__=='__main__':
-    for slug in sys.argv[1:] or NAMES:pack(slug)
-    if not sys.argv[1:]:overview()
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--version',default='v2',choices=['v1','v2'])
+    parser.add_argument('characters',nargs='*',choices=NAMES)
+    args=parser.parse_args()
+    OUT=ROOT.parent/f'output/100next-simple-animation-{args.version}'
+    RUNTIME=ROOT/f'public/assets/social-club/simple-{args.version}'
+    for slug in args.characters or NAMES:pack(slug)
+    if not args.characters:overview()

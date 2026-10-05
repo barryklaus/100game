@@ -1,0 +1,1348 @@
+{
+  "id": "bianca",
+  "tool": "built-in image_gen",
+  "logicalCell": 512,
+  "atlasCols": 8,
+  "cell": 256,
+  "padding": 128,
+  "frames": 31,
+  "clips": {
+    "idle": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 2,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        950,
+        90,
+        550
+      ]
+    },
+    "study": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 3,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        60,
+        240,
+        100
+      ]
+    },
+    "look-left": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 4,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        70,
+        300,
+        100
+      ]
+    },
+    "look-right": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 5,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        70,
+        300,
+        100
+      ]
+    },
+    "choose-left": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 4,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        70,
+        380,
+        100
+      ]
+    },
+    "choose-right": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 5,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        70,
+        380,
+        100
+      ]
+    },
+    "danger": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 8,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 9,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 8,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        100,
+        130,
+        180,
+        180
+      ]
+    },
+    "throw": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 14,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 15,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 16,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 17,
+          "combinedChair": false,
+          "cards": 1
+        }
+      ],
+      "durations": [
+        160,
+        80,
+        80,
+        80,
+        260
+      ]
+    },
+    "pickup": {
+      "frames": [
+        {
+          "index": 17,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 18,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 18,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 19,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 20,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        160,
+        80,
+        100,
+        80,
+        80,
+        220
+      ]
+    },
+    "celebrate": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 6,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 11,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        80,
+        180,
+        230,
+        150
+      ]
+    },
+    "defeat": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 12,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        80,
+        550
+      ]
+    },
+    "startle": {
+      "frames": [
+        {
+          "index": 17,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 23,
+          "combinedChair": false,
+          "cards": 1
+        }
+      ],
+      "durations": [
+        90,
+        180
+      ]
+    },
+    "tumble": {
+      "frames": [
+        {
+          "index": 17,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 23,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 24,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 25,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 26,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 27,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 28,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 29,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 30,
+          "combinedChair": false,
+          "cards": 1
+        }
+      ],
+      "durations": [
+        100,
+        100,
+        70,
+        60,
+        50,
+        70,
+        60,
+        100,
+        650
+      ]
+    },
+    "return": {
+      "frames": [
+        {
+          "index": 30,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 29,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 28,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 26,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 25,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 24,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 23,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 17,
+          "combinedChair": false,
+          "cards": 1
+        },
+        {
+          "index": 17,
+          "combinedChair": false,
+          "cards": 1
+        }
+      ],
+      "durations": [
+        180,
+        70,
+        60,
+        60,
+        70,
+        80,
+        90,
+        100,
+        200
+      ]
+    },
+    "expressions": {
+      "frames": [
+        {
+          "index": 0,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 2,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 3,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 4,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 5,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 6,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 7,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 8,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 9,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 10,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 11,
+          "combinedChair": false,
+          "cards": 2
+        },
+        {
+          "index": 12,
+          "combinedChair": false,
+          "cards": 2
+        }
+      ],
+      "durations": [
+        500,
+        350,
+        350,
+        350,
+        350,
+        350,
+        350,
+        350,
+        350,
+        350,
+        350,
+        350
+      ]
+    }
+  },
+  "checks": [
+    {
+      "kind": "reactions",
+      "pose": 0,
+      "bounds": [
+        197,
+        151,
+        304,
+        377
+      ],
+      "padding": [
+        197,
+        151,
+        208,
+        135
+      ],
+      "sourceBox": [
+        104,
+        14,
+        279,
+        383
+      ],
+      "uniformScale": 0.6137447033898306,
+      "anchor": [
+        95.5,
+        367
+      ]
+    },
+    {
+      "kind": "reactions",
+      "pose": 1,
+      "bounds": [
+        197,
+        151,
+        304,
+        377
+      ],
+      "padding": [
+        197,
+        151,
+        208,
+        135
+      ],
+      "sourceBox": [
+        424,
+        14,
+        599,
+        383
+      ],
+      "uniformScale": 0.6137447033898306,
+      "anchor": [
+        95.5,
+        367
+      ]
+    },
+    {
+      "kind": "reactions",
+      "pose": 2,
+      "bounds": [
+        197,
+        151,
+        304,
+        377
+      ],
+      "padding": [
+        197,
+        151,
+        208,
+        135
+      ],
+      "sourceBox": [
+        744,
+        14,
+        919,
+        383
+      ],
+      "uniformScale": 0.6137447033898306,
+      "anchor": [
+        95.5,
+        367
+      ]
+    },
+    {
+      "kind": "reactions",
+      "pose": 3,
+      "bounds": [
+        197,
+        150,
+        305,
+        378
+      ],
+      "padding": [
+        197,
+        150,
+        207,
+        134
+      ],
+      "sourceBox": [
+        103,
+        396,
+        279,
+        767
+      ],
+      "uniformScale": 0.6137447033898306,
+      "anchor": [
+        96.0,
+        369
+      ]
+    },
+    {
+      "kind": "reactions",
+      "pose": 4,
+      "bounds": [
+        197,
+        150,
+        304,
+        378
+      ],
+      "padding": [
+        197,
+        150,
+        208,
+        134
+      ],
+      "sourceBox": [
+        424,
+        396,
+        599,
+        767
+      ],
+      "uniformScale": 0.6137447033898306,
+      "anchor": [
+        95.5,
+        369
+      ]
+    },
+    {
+      "kind": "reactions",
+      "pose": 5,
+      "bounds": [
+        197,
+        150,
+        305,
+        378
+      ],
+      "padding": [
+        197,
+        150,
+        207,
+        134
+      ],
+      "sourceBox": [
+        744,
+        396,
+        920,
+        767
+      ],
+      "uniformScale": 0.6137447033898306,
+      "anchor": [
+        95.5,
+        368
+      ]
+    },
+    {
+      "kind": "reactions",
+      "pose": 6,
+      "bounds": [
+        198,
+        150,
+        305,
+        378
+      ],
+      "padding": [
+        198,
+        150,
+        207,
+        134
+      ],
+      "sourceBox": [
+        104,
+        779,
+        279,
+        1150
+      ],
+      "uniformScale": 0.6137447033898306,
+      "anchor": [
+        95.0,
+        369
+      ]
+    },
+    {
+      "kind": "reactions",
+      "pose": 7,
+      "bounds": [
+        197,
+        150,
+        305,
+        378
+      ],
+      "padding": [
+        197,
+        150,
+        207,
+        134
+      ],
+      "sourceBox": [
+        424,
+        779,
+        600,
+        1150
+      ],
+      "uniformScale": 0.6137447033898306,
+      "anchor": [
+        95.5,
+        369
+      ]
+    },
+    {
+      "kind": "reactions",
+      "pose": 8,
+      "bounds": [
+        197,
+        150,
+        304,
+        378
+      ],
+      "padding": [
+        197,
+        150,
+        208,
+        134
+      ],
+      "sourceBox": [
+        744,
+        779,
+        919,
+        1150
+      ],
+      "uniformScale": 0.6137447033898306,
+      "anchor": [
+        95.5,
+        369
+      ]
+    },
+    {
+      "kind": "reactions",
+      "pose": 9,
+      "bounds": [
+        198,
+        149,
+        305,
+        377
+      ],
+      "padding": [
+        198,
+        149,
+        207,
+        135
+      ],
+      "sourceBox": [
+        104,
+        1162,
+        279,
+        1534
+      ],
+      "uniformScale": 0.6137447033898306,
+      "anchor": [
+        95.0,
+        370
+      ]
+    },
+    {
+      "kind": "reactions",
+      "pose": 10,
+      "bounds": [
+        197,
+        149,
+        304,
+        377
+      ],
+      "padding": [
+        197,
+        149,
+        208,
+        135
+      ],
+      "sourceBox": [
+        424,
+        1162,
+        599,
+        1534
+      ],
+      "uniformScale": 0.6137447033898306,
+      "anchor": [
+        95.5,
+        370
+      ]
+    },
+    {
+      "kind": "reactions",
+      "pose": 11,
+      "bounds": [
+        197,
+        149,
+        304,
+        377
+      ],
+      "padding": [
+        197,
+        149,
+        208,
+        135
+      ],
+      "sourceBox": [
+        744,
+        1162,
+        919,
+        1534
+      ],
+      "uniformScale": 0.6137447033898306,
+      "anchor": [
+        95.5,
+        370
+      ]
+    },
+    {
+      "kind": "card-actions",
+      "pose": 0,
+      "bounds": [
+        197,
+        145,
+        306,
+        378
+      ],
+      "padding": [
+        197,
+        145,
+        206,
+        134
+      ],
+      "sourceBox": [
+        112,
+        24,
+        304,
+        432
+      ],
+      "uniformScale": 0.5702509842519685,
+      "anchor": [
+        104.0,
+        405
+      ]
+    },
+    {
+      "kind": "card-actions",
+      "pose": 1,
+      "bounds": [
+        196,
+        146,
+        304,
+        379
+      ],
+      "padding": [
+        196,
+        146,
+        208,
+        133
+      ],
+      "sourceBox": [
+        511,
+        24,
+        700,
+        432
+      ],
+      "uniformScale": 0.5702509842519685,
+      "anchor": [
+        104.5,
+        404
+      ]
+    },
+    {
+      "kind": "card-actions",
+      "pose": 2,
+      "bounds": [
+        195,
+        144,
+        317,
+        377
+      ],
+      "padding": [
+        195,
+        144,
+        195,
+        135
+      ],
+      "sourceBox": [
+        914,
+        24,
+        1128,
+        432
+      ],
+      "uniformScale": 0.5702509842519685,
+      "anchor": [
+        107.5,
+        406
+      ]
+    },
+    {
+      "kind": "card-actions",
+      "pose": 3,
+      "bounds": [
+        197,
+        143,
+        307,
+        377
+      ],
+      "padding": [
+        197,
+        143,
+        205,
+        135
+      ],
+      "sourceBox": [
+        112,
+        442,
+        305,
+        852
+      ],
+      "uniformScale": 0.5702509842519685,
+      "anchor": [
+        103.0,
+        408
+      ]
+    },
+    {
+      "kind": "card-actions",
+      "pose": 4,
+      "bounds": [
+        197,
+        144,
+        308,
+        378
+      ],
+      "padding": [
+        197,
+        144,
+        204,
+        134
+      ],
+      "sourceBox": [
+        512,
+        442,
+        707,
+        852
+      ],
+      "uniformScale": 0.5702509842519685,
+      "anchor": [
+        104.0,
+        407
+      ]
+    },
+    {
+      "kind": "card-actions",
+      "pose": 5,
+      "bounds": [
+        196,
+        143,
+        324,
+        377
+      ],
+      "padding": [
+        196,
+        143,
+        188,
+        135
+      ],
+      "sourceBox": [
+        915,
+        442,
+        1139,
+        852
+      ],
+      "uniformScale": 0.5702509842519685,
+      "anchor": [
+        105.5,
+        408
+      ]
+    },
+    {
+      "kind": "card-actions",
+      "pose": 6,
+      "bounds": [
+        196,
+        144,
+        304,
+        377
+      ],
+      "padding": [
+        196,
+        144,
+        208,
+        135
+      ],
+      "sourceBox": [
+        109,
+        864,
+        298,
+        1273
+      ],
+      "uniformScale": 0.5702509842519685,
+      "anchor": [
+        105.5,
+        407
+      ]
+    },
+    {
+      "kind": "card-actions",
+      "pose": 7,
+      "bounds": [
+        195,
+        144,
+        304,
+        377
+      ],
+      "padding": [
+        195,
+        144,
+        208,
+        135
+      ],
+      "sourceBox": [
+        511,
+        864,
+        703,
+        1273
+      ],
+      "uniformScale": 0.5702509842519685,
+      "anchor": [
+        107.5,
+        406
+      ]
+    },
+    {
+      "kind": "card-actions",
+      "pose": 8,
+      "bounds": [
+        195,
+        144,
+        307,
+        377
+      ],
+      "padding": [
+        195,
+        144,
+        205,
+        135
+      ],
+      "sourceBox": [
+        916,
+        864,
+        1112,
+        1273
+      ],
+      "uniformScale": 0.5702509842519685,
+      "anchor": [
+        106.5,
+        407
+      ]
+    },
+    {
+      "kind": "tumble",
+      "pose": 0,
+      "bounds": [
+        198,
+        155,
+        314,
+        376
+      ],
+      "padding": [
+        198,
+        155,
+        198,
+        136
+      ],
+      "sourceBox": [
+        164,
+        32,
+        359,
+        405
+      ],
+      "uniformScale": 0.5936219262295082,
+      "anchor": [
+        97.5,
+        373
+      ]
+    },
+    {
+      "kind": "tumble",
+      "pose": 1,
+      "bounds": [
+        172,
+        160,
+        341,
+        368
+      ],
+      "padding": [
+        172,
+        160,
+        171,
+        144
+      ],
+      "sourceBox": [
+        620,
+        32,
+        904,
+        405
+      ],
+      "uniformScale": 0.5936219262295082,
+      "anchor": [
+        142.0,
+        373
+      ]
+    },
+    {
+      "kind": "tumble",
+      "pose": 2,
+      "bounds": [
+        146,
+        155,
+        367,
+        376
+      ],
+      "padding": [
+        146,
+        155,
+        145,
+        136
+      ],
+      "sourceBox": [
+        1100,
+        32,
+        1472,
+        405
+      ],
+      "uniformScale": 0.5936219262295082,
+      "anchor": [
+        186.0,
+        373
+      ]
+    },
+    {
+      "kind": "tumble",
+      "pose": 3,
+      "bounds": [
+        148,
+        203,
+        364,
+        376
+      ],
+      "padding": [
+        148,
+        203,
+        148,
+        136
+      ],
+      "sourceBox": [
+        105,
+        405,
+        469,
+        697
+      ],
+      "uniformScale": 0.5936219262295082,
+      "anchor": [
+        182.0,
+        292
+      ]
+    },
+    {
+      "kind": "tumble",
+      "pose": 4,
+      "bounds": [
+        150,
+        239,
+        363,
+        376
+      ],
+      "padding": [
+        150,
+        239,
+        149,
+        136
+      ],
+      "sourceBox": [
+        602,
+        405,
+        960,
+        697
+      ],
+      "uniformScale": 0.5936219262295082,
+      "anchor": [
+        179.0,
+        292
+      ]
+    },
+    {
+      "kind": "tumble",
+      "pose": 5,
+      "bounds": [
+        153,
+        203,
+        358,
+        376
+      ],
+      "padding": [
+        153,
+        203,
+        154,
+        136
+      ],
+      "sourceBox": [
+        1138,
+        405,
+        1484,
+        697
+      ],
+      "uniformScale": 0.5936219262295082,
+      "anchor": [
+        173.0,
+        292
+      ]
+    },
+    {
+      "kind": "tumble",
+      "pose": 6,
+      "bounds": [
+        139,
+        229,
+        373,
+        376
+      ],
+      "padding": [
+        139,
+        229,
+        139,
+        136
+      ],
+      "sourceBox": [
+        94,
+        737,
+        489,
+        995
+      ],
+      "uniformScale": 0.5936219262295082,
+      "anchor": [
+        197.5,
+        258
+      ]
+    },
+    {
+      "kind": "tumble",
+      "pose": 7,
+      "bounds": [
+        148,
+        223,
+        364,
+        376
+      ],
+      "padding": [
+        148,
+        223,
+        148,
+        136
+      ],
+      "sourceBox": [
+        611,
+        737,
+        975,
+        995
+      ],
+      "uniformScale": 0.5936219262295082,
+      "anchor": [
+        182.0,
+        258
+      ]
+    },
+    {
+      "kind": "tumble",
+      "pose": 8,
+      "bounds": [
+        155,
+        223,
+        357,
+        376
+      ],
+      "padding": [
+        155,
+        223,
+        155,
+        136
+      ],
+      "sourceBox": [
+        1148,
+        737,
+        1488,
+        995
+      ],
+      "uniformScale": 0.5936219262295082,
+      "anchor": [
+        170.0,
+        258
+      ]
+    }
+  ],
+  "scaleReference": "upright skull width, one shared physical unit and fixed foot anchor",
+  "headPixels": 72.42,
+  "sharedRestFrame": 1,
+  "sharedTumbleEntryFrame": 17,
+  "handPolicy": "retained image-left, working image-right",
+  "throwReleaseMs": 320,
+  "pickupCatchMs": 340,
+  "chairPolicy": "No chairs in any frame, including tumbles",
+  "tumble": "body lying flat low on floor, feet up"
+}
