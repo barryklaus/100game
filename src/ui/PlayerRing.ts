@@ -119,6 +119,9 @@ export class PlayerRing {
           try {await this.traditional.tumble(index);}catch {/* Scores remain available if an asset fails. */}
           if(current())finish();return;
         }
+        // Approved static masters hold their proportions while replacement art is reviewed.
+        // Keep the spotlight and scores, without the old shrinking fallback tumble.
+        if(this.root.querySelector(`.seat[data-seat="${index}"].master-seat .master-sprite`)) { finish(); return; }
         const url = this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .character-tumble`)?.dataset.tumbleUrl;
         this.tumbleUsesSheet = !!url && this.readyUrls.has(url);
         this.overflowStage = 'fall';

@@ -1,0 +1,142 @@
+{
+  "status": "approved original masters; animation replacement under review",
+  "rescaled": false,
+  "characters": [
+    {
+      "id": "vince",
+      "source": "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/vince-master.png",
+      "asset": "vince-master.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "alphaBounds": [
+        774,
+        512,
+        1273,
+        1536
+      ],
+      "bytes": 340524,
+      "lossless": true
+    },
+    {
+      "id": "finn",
+      "source": "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/finn-master-v2.png",
+      "asset": "finn-master.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "alphaBounds": [
+        804,
+        512,
+        1243,
+        1536
+      ],
+      "bytes": 361164,
+      "lossless": true
+    },
+    {
+      "id": "june",
+      "source": "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/june-master.png",
+      "asset": "june-master.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "alphaBounds": [
+        805,
+        512,
+        1242,
+        1536
+      ],
+      "bytes": 369628,
+      "lossless": true
+    },
+    {
+      "id": "edgar",
+      "source": "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/edgar-master.png",
+      "asset": "edgar-master.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "alphaBounds": [
+        781,
+        512,
+        1266,
+        1536
+      ],
+      "bytes": 375598,
+      "lossless": true
+    },
+    {
+      "id": "roxie",
+      "source": "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/roxie-master.png",
+      "asset": "roxie-master.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "alphaBounds": [
+        789,
+        512,
+        1258,
+        1536
+      ],
+      "bytes": 430830,
+      "lossless": true
+    },
+    {
+      "id": "otis",
+      "source": "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/otis-master.png",
+      "asset": "otis-master.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "alphaBounds": [
+        714,
+        512,
+        1334,
+        1536
+      ],
+      "bytes": 474766,
+      "lossless": true
+    },
+    {
+      "id": "paloma",
+      "source": "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/paloma-master.png",
+      "asset": "paloma-master.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "alphaBounds": [
+        789,
+        512,
+        1258,
+        1536
+      ],
+      "bytes": 414992,
+      "lossless": true
+    },
+    {
+      "id": "bianca",
+      "source": "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-character-masters/chair-free-v1/bianca-master.png",
+      "asset": "bianca-master.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "alphaBounds": [
+        794,
+        512,
+        1254,
+        1536
+      ],
+      "bytes": 386826,
+      "lossless": true
+    }
+  ]
+}

@@ -6,6 +6,7 @@ export function masterCharacter(index: number) {
 }
 export function masterImage(index: number, portrait = false): string {
   const id = masterCharacter(index).id;
+  if(!portrait)return `${import.meta.env.BASE_URL}assets/social-club/masters-native-v1/${id}-master.webp`;
   const revision = id === 'finn' ? '-v2' : '';
   return `${import.meta.env.BASE_URL}assets/social-club/masters-v1/${id}-${portrait ? 'portrait' : 'master'}${revision}.webp`;
 }
