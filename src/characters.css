@@ -44,6 +44,10 @@
 .observatory-mode .seat-layer .traditional-seat.overflow-culprit{width:min(20vw,33svh,390px)!important;}
 .traditional-sprite{position:absolute;left:-50%;top:-26%;width:200%;height:200%;pointer-events:none;}
 .traditional-sprite[data-ready="true"]+.sprite-fallback{display:none;}
+/* Keep the master cast close to the table: larger busts, with the rim at waist height. */
+.observatory-mode .seat-layer .sprite-seat.master-seat{width:min(32vw,48svh,480px)!important;}
+.observatory-mode .seat-layer .sprite-seat.master-seat,
+.observatory-mode .seat-layer .sprite-seat.master-seat:is(:hover,:focus-visible){transform:translate(-50%,-80%) scale(var(--ring-scale,1))!important;}
 .master-sprite,.master-hands{position:absolute;left:-50%;top:-26%;width:200%;height:200%;pointer-events:none;}
 .master-sprite{max-width:none;object-fit:contain;}
 .master-hands>span{position:absolute;pointer-events:none;}
