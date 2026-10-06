@@ -17,37 +17,78 @@ OUT=ROOT.parent/'output/finn-whole-action-trial'
 DEST=ROOT/'public/finn-whole-action-trial/assets'
 DEST.mkdir(parents=True,exist_ok=True)
 CARD_MAPS=json.loads((Path(__file__).with_name('finn-whole-card-maps.json')).read_text())
-CARD_BACK=np.array(Image.open(ROOT/'public/assets/cards/full/back.png').convert('RGBA').resize((256,356),Image.Resampling.LANCZOS))
+# Match src/render/CardMesh.ts and CardFaceTexture.ts: radius = width * .055.
+card_source=Image.open(ROOT/'public/assets/cards/full/back.png').convert('RGBA')
+card_mask=Image.new('L',card_source.size)
+ImageDraw.Draw(card_mask).rounded_rectangle((0,0,card_source.width-1,card_source.height-1),radius=card_source.width*.055,fill=255)
+card_source.putalpha(card_mask)
+card_source.resize((768,1068),Image.Resampling.LANCZOS).save(DEST/'rounded-back.webp',lossless=True,exact=True)
+CARD_BACK=np.array(card_source.resize((256,356),Image.Resampling.LANCZOS))
+EXPOSED_CARDS={'throw-a':{3},'throw-b':{1},'receive-b':{2}}
+CARD_AUDIT=[]
 
 def actual_card_backs(im,name):
-    """Insert the original card artwork, retaining the drawn fingertip occlusion.
+    """Remove the entire old drawn card, then insert rounded original artwork.
 
-    Only the quadrilateral card surfaces change. The full character drawings
-    remain intact; cards are baked into the complete exported frames.
+    Reconstruct the shirt/tie behind chest cards. Outside the body, remove
+    the old card to transparency. Preserve hand color and finger ink, never
+    the adjacent gold rim. Bake the result into one complete character frame.
     """
     original=np.array(im);result=original.copy()
     r,g,b=original[:,:,:3].transpose(2,0,1).astype(float)
-    skin=(r>130)&(r>g*1.28)&(g>b*1.14)&(b>g*.4)&(original[:,:,3]>128)
-    # Preserve both finger color and its dark ink outline above the card.
-    fingers=cv2.dilate(skin.astype('uint8'),np.ones((5,5),np.uint8))>0
+    skin=(r>135)&(r>g*1.25)&(g>b*1.14)&(b>g*.5)&(original[:,:,3]>128)
+    skin=cv2.morphologyEx(skin.astype('uint8'),cv2.MORPH_CLOSE,np.ones((3,3),np.uint8))
+    contours,_=cv2.findContours(skin,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    cv2.drawContours(skin,contours,-1,1,cv2.FILLED)
+    skin=skin>0
+    nearby=cv2.dilate(skin.astype('uint8'),np.ones((5,5),np.uint8))>0
+    fingers=skin|(nearby&(original[:,:,:3].max(axis=2)<90))
+    shirt=(b>r*1.25)&(b>g*1.03)&(r<160)
+    cleanup=np.zeros(original.shape[:2],np.uint8)
+    exposed=np.zeros_like(cleanup)
+    old_gold=(r>140)&(g>90)&(r>g*1.02)&(b<g*.4)&(original[:,:,3]>128)
+    for index,quad in enumerate(CARD_MAPS[name]):
+        cover=np.zeros_like(cleanup)
+        cv2.fillPoly(cover,[np.int32(quad)],255)
+        search=cv2.dilate(cover,np.ones((41,41),np.uint8))>0
+        yy,xx=np.where(search&old_gold)
+        assert len(xx)>20,(name,index)
+        # Trace the old inked perimeter from its gold frame, avoiding a
+        # broad cleanup box that would damage nearby shirt/tie linework.
+        cover[:]=0
+        hull=cv2.convexHull(np.column_stack((xx,yy)).astype('int32'))
+        cv2.fillConvexPoly(cover,hull,255)
+        cover=cv2.dilate(cover,np.ones((5,5),np.uint8))
+        cover[fingers|shirt]=0
+        cleanup=np.maximum(cleanup,cover)
+        if index in EXPOSED_CARDS.get(name,set()):exposed=np.maximum(exposed,cover)
+    # Radius is confined to these tiny card surfaces, not character anatomy.
+    result[:,:,:3]=cv2.inpaint(original[:,:,:3],cleanup,3,cv2.INPAINT_NS)
+    result[exposed>0]=0
     h,w=CARD_BACK.shape[:2]
     source=np.float32([[0,0],[w-1,0],[w-1,h-1],[0,h-1]])
+    layers=[]
     for quad in CARD_MAPS[name]:
-        # Supersample only this small card surface. Direct warping from a
-        # large source to a tiny card aliases its intricate engraving.
         q=np.float32(quad);origin=np.floor(q.min(axis=0)).astype(int)-2
         extent=np.ceil(q.max(axis=0)).astype(int)-origin+3
         transform=cv2.getPerspectiveTransform(source,np.float32((q-origin)*4))
-        tile=cv2.warpPerspective(CARD_BACK,transform,tuple((extent*4).tolist()),flags=cv2.INTER_CUBIC)
-        tile=Image.fromarray(tile).resize(tuple(extent.tolist()),Image.Resampling.LANCZOS)
-        card=np.zeros_like(original)
-        card[origin[1]:origin[1]+extent[1],origin[0]:origin[0]+extent[0]]=np.array(tile)
-        cover=Image.new('L',im.size)
-        ImageDraw.Draw(cover).polygon([tuple(p) for p in quad],fill=255)
-        use=(np.array(cover)>0)&~fingers&(original[:,:,3]>128)
-        result[use]=card[use]
-        result[use,3]=original[use,3]
+        # Premultiplied alpha prevents a dark fringe along rounded corners.
+        src=CARD_BACK.astype('float32')/255
+        src[:,:,:3]*=src[:,:,3:4]
+        tile=cv2.warpPerspective(src,transform,tuple((extent*4).tolist()),flags=cv2.INTER_CUBIC)
+        tile=np.clip(tile,0,1)
+        alpha=tile[:,:,3:4];tile[:,:,:3]=np.divide(tile[:,:,:3],alpha,out=np.zeros_like(tile[:,:,:3]),where=alpha>1e-6)
+        tile=Image.fromarray(np.uint8(np.clip(tile,0,1)*255)).resize(tuple(extent.tolist()),Image.Resampling.LANCZOS)
+        layer=Image.new('RGBA',im.size);layer.alpha_composite(tile,tuple(origin.tolist()));layers.append(layer)
+    edited=Image.fromarray(result)
+    for layer in layers:edited=Image.alpha_composite(edited,layer)
+    result=np.array(edited);result[fingers]=original[fingers]
     assert np.array_equal(result[fingers],original[fingers])
+    outside=cleanup==0
+    for layer in layers:outside&=np.array(layer.getchannel('A'))==0
+    assert np.array_equal(result[outside],original[outside])
+    CARD_AUDIT.append({'painting':name,'replacedCards':len(layers),'oldCardRemovedBeforeInsert':True,'cornerRadiusRatio':.055,'fingersPreserved':True,'outsideUnchanged':True})
+    Image.fromarray(result).save(OUT/(name+'-rounded-clean.png'))
     return Image.fromarray(result)
 
 def pair(name):
@@ -99,7 +140,7 @@ for name,im in cells.items():
     checks.append({'frame':name,'wholeCharacterDrawing':True,'scale':scale,'bounds':bounds,'minimumClearance':clearance,'losslessVisiblePixels':True})
 
 def point(frame,p):return (np.array(p)*scales[frame]+offsets[frame]).tolist()
-manifest={'status':'Whole-character Finn review trial; game animations unchanged','nativeCanvas':2048,'authoringCell':3072,'cellInset':512,'separateHead':False,'clips':{'throw':{'frames':[f'throw-{i}' for i in range(1,7)],'durations':[70,90,55,45,75,100],'flight':[215,560],'hand':point('throw-3',[680,382]),'pile':[1470,1300]},'receive':{'frames':[f'receive-{i}' for i in range(1,7)],'durations':[80,70,490,55,75,100],'flight':[160,640],'hand':point('receive-4',[1350-pair('receive-b')[0].width,510]),'pile':[680,1300]}},'checks':checks}
+manifest={'status':'Whole-character Finn review trial; game animations unchanged','nativeCanvas':2048,'authoringCell':3072,'cellInset':512,'separateHead':False,'revision':'rounded-clean-v2','cardCornerRadiusRatio':.055,'cardAudit':CARD_AUDIT.copy(),'clips':{'throw':{'frames':[f'throw-{i}' for i in range(1,7)],'durations':[70,90,55,45,75,100],'flight':[215,560],'hand':point('throw-3',[680,382]),'pile':[1470,1300]},'receive':{'frames':[f'receive-{i}' for i in range(1,7)],'durations':[80,70,490,55,75,100],'flight':[160,640],'hand':point('receive-4',[1350-pair('receive-b')[0].width,510]),'pile':[680,1300]}},'checks':checks}
 (DEST/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
 
 for action in ['throw','receive']:
@@ -114,7 +155,7 @@ for row,action in enumerate(['throw','receive']):
         ImageDraw.Draw(contact).text((i*420+15,row*570+15),f'{action} {i+1}',fill='#e8cc86')
 contact.save(OUT/'contact.png')
 
-back=Image.open(ROOT/'public/assets/cards/back.webp').convert('RGBA')
+back=Image.open(DEST/'rounded-back.webp').convert('RGBA')
 def preview(action,table):
     clip=manifest['clips'][action];seq=[];width,height=480,602
     camera=(550,380,1550,1634);s=width/1000

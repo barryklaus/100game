@@ -4,6 +4,58 @@
   "authoringCell": 3072,
   "cellInset": 512,
   "separateHead": false,
+  "revision": "rounded-clean-v2",
+  "cardCornerRadiusRatio": 0.055,
+  "cardAudit": [
+    {
+      "painting": "throw-a",
+      "replacedCards": 4,
+      "oldCardRemovedBeforeInsert": true,
+      "cornerRadiusRatio": 0.055,
+      "fingersPreserved": true,
+      "outsideUnchanged": true
+    },
+    {
+      "painting": "throw-b",
+      "replacedCards": 3,
+      "oldCardRemovedBeforeInsert": true,
+      "cornerRadiusRatio": 0.055,
+      "fingersPreserved": true,
+      "outsideUnchanged": true
+    },
+    {
+      "painting": "throw-c",
+      "replacedCards": 2,
+      "oldCardRemovedBeforeInsert": true,
+      "cornerRadiusRatio": 0.055,
+      "fingersPreserved": true,
+      "outsideUnchanged": true
+    },
+    {
+      "painting": "receive-a",
+      "replacedCards": 2,
+      "oldCardRemovedBeforeInsert": true,
+      "cornerRadiusRatio": 0.055,
+      "fingersPreserved": true,
+      "outsideUnchanged": true
+    },
+    {
+      "painting": "receive-b",
+      "replacedCards": 3,
+      "oldCardRemovedBeforeInsert": true,
+      "cornerRadiusRatio": 0.055,
+      "fingersPreserved": true,
+      "outsideUnchanged": true
+    },
+    {
+      "painting": "receive-c",
+      "replacedCards": 4,
+      "oldCardRemovedBeforeInsert": true,
+      "cornerRadiusRatio": 0.055,
+      "fingersPreserved": true,
+      "outsideUnchanged": true
+    }
+  ],
   "clips": {
     "throw": {
       "frames": [

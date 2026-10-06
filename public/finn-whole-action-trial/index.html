@@ -19,10 +19,10 @@
 <a href="/">Open 100next</a> · <a href="assets/prompts.json">Artwork notes and prompts</a>
 </main>
 <script type="module">
-const data=await fetch('assets/manifest.json').then(r=>{if(!r.ok)throw Error('Missing animation manifest');return r.json()});
+const data=await fetch('assets/manifest.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Missing animation manifest');return r.json()});
 const images=new Map();
 async function load(key,path){const im=new Image();im.src=path;await im.decode();images.set(key,im)}
-await Promise.all([load('back','/assets/cards/back.webp'),...Object.values(data.clips).flatMap(clip=>clip.frames.map(name=>load(name,'assets/'+name+'.webp')))]);
+await Promise.all([load('back','assets/rounded-back.webp?v='+data.revision),...Object.values(data.clips).flatMap(clip=>clip.frames.map(name=>load(name,'assets/'+name+'.webp?v='+data.revision)))]);
 document.getElementById('loading').hidden=true;
 let playing=true,start=performance.now(),frozen=0,manual=-1,raf=0;
 const table=document.getElementById('table'),padding=document.getElementById('padding');
