@@ -1,0 +1,227 @@
+{
+  "status": "Whole-character Finn review trial; game animations unchanged",
+  "nativeCanvas": 2048,
+  "authoringCell": 3072,
+  "cellInset": 512,
+  "separateHead": false,
+  "clips": {
+    "throw": {
+      "frames": [
+        "throw-1",
+        "throw-2",
+        "throw-3",
+        "throw-4",
+        "throw-5",
+        "throw-6"
+      ],
+      "durations": [
+        70,
+        90,
+        55,
+        45,
+        75,
+        100
+      ],
+      "flight": [
+        215,
+        560
+      ],
+      "hand": [
+        1240.5760142789786,
+        870.9621428820551
+      ],
+      "pile": [
+        1470,
+        1300
+      ]
+    },
+    "receive": {
+      "frames": [
+        "receive-1",
+        "receive-2",
+        "receive-3",
+        "receive-4",
+        "receive-5",
+        "receive-6"
+      ],
+      "durations": [
+        80,
+        70,
+        490,
+        55,
+        75,
+        100
+      ],
+      "flight": [
+        160,
+        640
+      ],
+      "hand": [
+        1265.2844706379324,
+        1010.8461399452291
+      ],
+      "pile": [
+        680,
+        1300
+      ]
+    }
+  },
+  "checks": [
+    {
+      "frame": "throw-1",
+      "wholeCharacterDrawing": true,
+      "scale": 1.1124388919065724,
+      "bounds": [
+        775,
+        506,
+        1270,
+        1536
+      ],
+      "minimumClearance": 506,
+      "losslessVisiblePixels": true
+    },
+    {
+      "frame": "throw-2",
+      "wholeCharacterDrawing": true,
+      "scale": 1.1124388919065724,
+      "bounds": [
+        777,
+        515,
+        1381,
+        1535
+      ],
+      "minimumClearance": 513,
+      "losslessVisiblePixels": true
+    },
+    {
+      "frame": "throw-3",
+      "wholeCharacterDrawing": true,
+      "scale": 1.0882040382571732,
+      "bounds": [
+        763,
+        509,
+        1310,
+        1536
+      ],
+      "minimumClearance": 509,
+      "losslessVisiblePixels": true
+    },
+    {
+      "frame": "throw-4",
+      "wholeCharacterDrawing": true,
+      "scale": 1.0882040382571732,
+      "bounds": [
+        766,
+        513,
+        1333,
+        1536
+      ],
+      "minimumClearance": 512,
+      "losslessVisiblePixels": true
+    },
+    {
+      "frame": "throw-5",
+      "wholeCharacterDrawing": true,
+      "scale": 1.060041407867495,
+      "bounds": [
+        753,
+        511,
+        1487,
+        1536
+      ],
+      "minimumClearance": 511,
+      "losslessVisiblePixels": true
+    },
+    {
+      "frame": "throw-6",
+      "wholeCharacterDrawing": true,
+      "scale": 1.060041407867495,
+      "bounds": [
+        762,
+        511,
+        1284,
+        1536
+      ],
+      "minimumClearance": 511,
+      "losslessVisiblePixels": true
+    },
+    {
+      "frame": "receive-1",
+      "wholeCharacterDrawing": true,
+      "scale": 1.1185144729655925,
+      "bounds": [
+        778,
+        505,
+        1257,
+        1534
+      ],
+      "minimumClearance": 505,
+      "losslessVisiblePixels": true
+    },
+    {
+      "frame": "receive-2",
+      "wholeCharacterDrawing": true,
+      "scale": 1.1185144729655925,
+      "bounds": [
+        778,
+        514,
+        1322,
+        1535
+      ],
+      "minimumClearance": 513,
+      "losslessVisiblePixels": true
+    },
+    {
+      "frame": "receive-3",
+      "wholeCharacterDrawing": true,
+      "scale": 1.0650026001040043,
+      "bounds": [
+        770,
+        508,
+        1337,
+        1534
+      ],
+      "minimumClearance": 508,
+      "losslessVisiblePixels": true
+    },
+    {
+      "frame": "receive-4",
+      "wholeCharacterDrawing": true,
+      "scale": 1.0650026001040043,
+      "bounds": [
+        771,
+        512,
+        1315,
+        1534
+      ],
+      "minimumClearance": 512,
+      "losslessVisiblePixels": true
+    },
+    {
+      "frame": "receive-5",
+      "wholeCharacterDrawing": true,
+      "scale": 1.047034764826176,
+      "bounds": [
+        774,
+        513,
+        1264,
+        1536
+      ],
+      "minimumClearance": 512,
+      "losslessVisiblePixels": true
+    },
+    {
+      "frame": "receive-6",
+      "wholeCharacterDrawing": true,
+      "scale": 1.047034764826176,
+      "bounds": [
+        774,
+        509,
+        1260,
+        1536
+      ],
+      "minimumClearance": 509,
+      "losslessVisiblePixels": true
+    }
+  ]
+}
