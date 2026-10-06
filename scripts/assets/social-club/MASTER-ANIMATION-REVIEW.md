@@ -97,8 +97,8 @@ authoring cells add another 512 pixels uniformly: minimum clearance 768.
 There is no per-pose silhouette fitting or canvas zoom.
 
 Gameplay preserves the existing table, character scale, waist occlusion,
-background, rules, multiplayer, and flying-card layers. Release is at
-320ms and the drawn replacement is restored only at actual arrival.
+background, rules, multiplayer, and flying-card layers. Release was originally at
+320ms; the card-handoff correction below supersedes that timing and the drawn replacement is restored only at actual arrival.
 Turn glances follow the active player's visible left/right position.
 Overflow spotlight plays the culprit's fall, retains the floor pose,
 and then opens scores. Round reset cancels stale decodes and timers.
@@ -125,3 +125,27 @@ held tumble landing, delayed-decode cancellation, reduced motion and
 asset bounds covered by test-master-animation.mjs. Native pixel guards
 verify preservation; they do not claim generated falling anatomy is
 pixel-identical to the original seated body.
+
+## Card handoff correction, 6 October 2026
+
+Prepared throws and receiving grips now remain held through turn renders,
+idle blink clocks and delayed flights. Release removes the painted working
+card synchronously with flight start. Catch adds it synchronously with actual
+flight arrival; neither callback waits for an image-decoding promise.
+Calibrated release/catch anchors match the working card in the original art.
+The legacy rescue timer is canceled once a real draw flight is requested.
+
+Throw preparation is 200ms, followed by 190ms of follow-through. Receiving
+reaches the empty grip in 140ms, holds it through flight, then gathers the
+caught card in 180ms. All eight native masters gain matching empty-grip and
+empty-release drawings. export-card-handoffs.py restores only the masked card
+area from approved one-card artwork and preserves actual fingers, silhouette,
+head and all pixels outside that area. Lossless runtime crops and full native
+review frames are exported together. Larger mesh/flow motion trials distorted
+clothing and were rejected; they are not shipped.
+
+Validation covers all eight synchronous handoffs, held poses through delayed
+flights, cancellation and existing staggered blinks. The full game test suite
+and production build pass; real desktop and portrait CPU gameplay show no
+browser errors. This corrects timing and pose continuity; it is not a newly
+redrawn fluid animation set.

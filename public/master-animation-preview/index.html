@@ -23,7 +23,7 @@
 const root='/assets/social-club/master-branch-review-v2/';
 const data=await fetch(root+'manifest.json').then(r=>r.json());
 const $=id=>document.getElementById(id);
-const labels={'blink':'Blink','look-left':'Look left','look-right':'Look right','study':'Study cards','alert':'Quick glance','throw-trial':'Throw · trial','pickup-trial':'Pick up · trial','tumble-trial':'Tumble · trial','idle':'Rest / blink','choose-left':'Choose left','choose-right':'Choose right','danger':'Danger','celebrate':'Celebrate','defeat':'Defeat','startle':'Startle','expressions':'Expressions','throw':'Throw','pickup':'Pick up','tumble':'Fall backward','return':'Get back up'};
+const labels={'blink':'Blink','look-left':'Look left','look-right':'Look right','study':'Study cards','alert':'Quick glance','throw-trial':'Throw · trial','pickup-trial':'Pick up · trial','tumble-trial':'Tumble · trial','idle':'Rest / blink','choose-left':'Choose left','choose-right':'Choose right','danger':'Danger','celebrate':'Celebrate','defeat':'Defeat','startle':'Startle','expressions':'Expressions','throw':'Throw','pickup':'Catch / gather','receive-ready':'Reach to receive','tumble':'Fall backward','return':'Get back up'};
 const query=new URLSearchParams(location.search);
 let character=data.characters.find(c=>c.id===query.get('character'))||data.characters.find(c=>c.id==='finn');
 let clip=query.get('clip')||'blink',index=0,playing=true,master=false,timer=null,selection=0;
@@ -40,7 +40,7 @@ async function select(c,k){
  for(const b of $('characters').children)b.setAttribute('aria-pressed',String(b.dataset.id===c.id));
  $('clips').replaceChildren();
  for(const key of Object.keys(c.clips)){const b=document.createElement('button');b.textContent=labels[key];b.setAttribute('aria-pressed',String(key===clip));b.onclick=()=>select(c,key);$('clips').append(b)}
- const movement=['throw','pickup','tumble','return','startle'].includes(clip);
+ const movement=['throw','receive-ready','pickup','tumble','return','startle'].includes(clip);
  $('info').textContent=movement?'Complete character drawings. Check card grips, neck joins, and pose transitions with the frame buttons. The tumble finishes low on the floor, feet up, without a chair.':'Only local eye and mouth areas change. Head shape, body, clothing, cards, and original transparent outline stay fixed.';
  if(movement)setView(false);
  const urls=[...new Set(['rest',...c.clips[clip].frames])].map(f=>root+c.id+'/'+f+'.webp');

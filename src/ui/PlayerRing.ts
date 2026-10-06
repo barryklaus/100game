@@ -298,7 +298,12 @@ export class PlayerRing {
     if(this.traditional.has(index))return this.traditional.handRect(index,true);
     return this.root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .sprite-hand-anchor`)?.getBoundingClientRect();
   }
-  prepareDraw(index:number):Promise<DOMRect|undefined>{return this.masters.has(index)?this.masters.prepareDraw(index):this.traditional.has(index)?this.traditional.prepareDraw(index):Promise.resolve(this.handRect(index));}
+  prepareDraw(index:number):Promise<DOMRect|undefined>{
+    // Once the real replacement flight is requested, its arrival owns the
+    // catch. The old 1.98s rescue must not restore the card during a slow load.
+    clearTimeout(this.recoverTimers.get(index));this.recoverTimers.delete(index);
+    return this.masters.has(index)?this.masters.prepareDraw(index):this.traditional.has(index)?this.traditional.prepareDraw(index):Promise.resolve(this.handRect(index));
+  }
   chosen(index:number,target:number):void{if(this.masters.has(index))this.masters.chosen(index,target);if(this.traditional.has(index))this.traditional.chosen(index,target);}
   private paintFrames(): void {
     this.traditional.sync(this.state);

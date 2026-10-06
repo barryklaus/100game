@@ -1,4 +1,5 @@
 import { masterCharacterData } from './MasterSpriteData';
+import { masterAnimations } from './MasterAnimationData';
 
 export const masterNames = masterCharacterData.map(character => character.name);
 export function masterCharacter(index: number) {
@@ -17,7 +18,7 @@ export function masterHandRect(root: HTMLElement, index: number, catching = fals
 export function masterAnchors(index: number): string {
   const character = masterCharacter(index);
   return (['release', 'catch'] as const).map(kind => {
-    const [x, y, w, h] = character[kind];
+    const [x, y, w, h] = masterAnimations[character.id]?.handoff?.[kind] ?? character[kind];
     return `<span class="master-hand-${kind}" aria-hidden="true" style="left:${(x-w/2)/512*100}%;top:${(y-h/2)/512*100}%;width:${w/512*100}%;height:${h/512*100}%"></span>`;
   }).join('');
 }

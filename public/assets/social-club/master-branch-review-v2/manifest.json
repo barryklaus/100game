@@ -227,34 +227,30 @@
             "prepare-soft",
             "prepare",
             "throw-edge",
+            "empty-release",
             "release",
             "settle"
           ],
           "durations": [
-            80,
-            80,
-            80,
-            80,
-            90,
-            130
+            50,
+            50,
+            50,
+            50,
+            45,
+            65,
+            80
           ]
         },
         "pickup": {
           "frames": [
-            "release",
-            "reach",
-            "reach",
             "prepare",
             "prepare-soft",
             "rest"
           ],
           "durations": [
-            160,
-            100,
-            80,
-            80,
-            80,
-            180
+            65,
+            55,
+            60
           ]
         },
         "tumble": {
@@ -307,6 +303,18 @@
             90,
             100,
             180
+          ]
+        },
+        "receive-ready": {
+          "frames": [
+            "release",
+            "reach",
+            "empty-grip"
+          ],
+          "durations": [
+            40,
+            40,
+            60
           ]
         }
       },
@@ -551,34 +559,30 @@
             "prepare-soft",
             "prepare",
             "throw-edge",
+            "empty-release",
             "release",
             "settle"
           ],
           "durations": [
-            80,
-            80,
-            80,
-            80,
-            90,
-            130
+            50,
+            50,
+            50,
+            50,
+            45,
+            65,
+            80
           ]
         },
         "pickup": {
           "frames": [
-            "release",
-            "reach",
-            "reach",
             "prepare",
             "prepare-soft",
             "rest"
           ],
           "durations": [
-            160,
-            100,
-            80,
-            80,
-            80,
-            180
+            65,
+            55,
+            60
           ]
         },
         "tumble": {
@@ -631,6 +635,18 @@
             90,
             100,
             180
+          ]
+        },
+        "receive-ready": {
+          "frames": [
+            "release",
+            "reach",
+            "empty-grip"
+          ],
+          "durations": [
+            40,
+            40,
+            60
           ]
         }
       },
@@ -875,34 +891,30 @@
             "prepare-soft",
             "prepare",
             "throw-edge",
+            "empty-release",
             "release",
             "settle"
           ],
           "durations": [
-            80,
-            80,
-            80,
-            80,
-            90,
-            130
+            50,
+            50,
+            50,
+            50,
+            45,
+            65,
+            80
           ]
         },
         "pickup": {
           "frames": [
-            "release",
-            "reach",
-            "reach",
             "prepare",
             "prepare-soft",
             "rest"
           ],
           "durations": [
-            160,
-            100,
-            80,
-            80,
-            80,
-            180
+            65,
+            55,
+            60
           ]
         },
         "tumble": {
@@ -955,6 +967,18 @@
             90,
             100,
             180
+          ]
+        },
+        "receive-ready": {
+          "frames": [
+            "release",
+            "reach",
+            "empty-grip"
+          ],
+          "durations": [
+            40,
+            40,
+            60
           ]
         }
       },
@@ -1199,34 +1223,30 @@
             "prepare-soft",
             "prepare",
             "throw-edge",
+            "empty-release",
             "release",
             "settle"
           ],
           "durations": [
-            80,
-            80,
-            80,
-            80,
-            90,
-            130
+            50,
+            50,
+            50,
+            50,
+            45,
+            65,
+            80
           ]
         },
         "pickup": {
           "frames": [
-            "release",
-            "reach",
-            "reach",
             "prepare",
             "prepare-soft",
             "rest"
           ],
           "durations": [
-            160,
-            100,
-            80,
-            80,
-            80,
-            180
+            65,
+            55,
+            60
           ]
         },
         "tumble": {
@@ -1279,6 +1299,18 @@
             90,
             100,
             180
+          ]
+        },
+        "receive-ready": {
+          "frames": [
+            "release",
+            "reach",
+            "empty-grip"
+          ],
+          "durations": [
+            40,
+            40,
+            60
           ]
         }
       },
@@ -1523,34 +1555,30 @@
             "prepare-soft",
             "prepare",
             "throw-edge",
+            "empty-release",
             "release",
             "settle"
           ],
           "durations": [
-            80,
-            80,
-            80,
-            80,
-            90,
-            130
+            50,
+            50,
+            50,
+            50,
+            45,
+            65,
+            80
           ]
         },
         "pickup": {
           "frames": [
-            "release",
-            "reach",
-            "reach",
             "prepare",
             "prepare-soft",
             "rest"
           ],
           "durations": [
-            160,
-            100,
-            80,
-            80,
-            80,
-            180
+            65,
+            55,
+            60
           ]
         },
         "tumble": {
@@ -1603,6 +1631,18 @@
             90,
             100,
             180
+          ]
+        },
+        "receive-ready": {
+          "frames": [
+            "release",
+            "reach",
+            "empty-grip"
+          ],
+          "durations": [
+            40,
+            40,
+            60
           ]
         }
       },
@@ -1847,34 +1887,30 @@
             "prepare-soft",
             "prepare",
             "throw-edge",
+            "empty-release",
             "release",
             "settle"
           ],
           "durations": [
-            80,
-            80,
-            80,
-            80,
-            90,
-            130
+            50,
+            50,
+            50,
+            50,
+            45,
+            65,
+            80
           ]
         },
         "pickup": {
           "frames": [
-            "release",
-            "reach",
-            "reach",
             "prepare",
             "prepare-soft",
             "rest"
           ],
           "durations": [
-            160,
-            100,
-            80,
-            80,
-            80,
-            180
+            65,
+            55,
+            60
           ]
         },
         "tumble": {
@@ -1927,6 +1963,18 @@
             90,
             100,
             180
+          ]
+        },
+        "receive-ready": {
+          "frames": [
+            "release",
+            "reach",
+            "empty-grip"
+          ],
+          "durations": [
+            40,
+            40,
+            60
           ]
         }
       },
@@ -2171,34 +2219,30 @@
             "prepare-soft",
             "prepare",
             "throw-edge",
+            "empty-release",
             "release",
             "settle"
           ],
           "durations": [
-            80,
-            80,
-            80,
-            80,
-            90,
-            130
+            50,
+            50,
+            50,
+            50,
+            45,
+            65,
+            80
           ]
         },
         "pickup": {
           "frames": [
-            "release",
-            "reach",
-            "reach",
             "prepare",
             "prepare-soft",
             "rest"
           ],
           "durations": [
-            160,
-            100,
-            80,
-            80,
-            80,
-            180
+            65,
+            55,
+            60
           ]
         },
         "tumble": {
@@ -2251,6 +2295,18 @@
             90,
             100,
             180
+          ]
+        },
+        "receive-ready": {
+          "frames": [
+            "release",
+            "reach",
+            "empty-grip"
+          ],
+          "durations": [
+            40,
+            40,
+            60
           ]
         }
       },
@@ -2495,34 +2551,30 @@
             "prepare-soft",
             "prepare",
             "throw-edge",
+            "empty-release",
             "release",
             "settle"
           ],
           "durations": [
-            80,
-            80,
-            80,
-            80,
-            90,
-            130
+            50,
+            50,
+            50,
+            50,
+            45,
+            65,
+            80
           ]
         },
         "pickup": {
           "frames": [
-            "release",
-            "reach",
-            "reach",
             "prepare",
             "prepare-soft",
             "rest"
           ],
           "durations": [
-            160,
-            100,
-            80,
-            80,
-            80,
-            180
+            65,
+            55,
+            60
           ]
         },
         "tumble": {
@@ -2575,6 +2627,18 @@
             90,
             100,
             180
+          ]
+        },
+        "receive-ready": {
+          "frames": [
+            "release",
+            "reach",
+            "empty-grip"
+          ],
+          "durations": [
+            40,
+            40,
+            60
           ]
         }
       },
