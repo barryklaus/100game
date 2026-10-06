@@ -343,6 +343,7 @@ button:active { translate:0 1px; }
   border-radius:4% / 2.8%;
   background:
     var(--foil-motif) 0 0/32px 32px repeat,
+    repeating-linear-gradient(var(--foil-angle,35deg),transparent 0 20%,#ff15b0 24%,#5140ff 27%,#00dfff 30%,#3fff70 33%,#ffdd12 36%,transparent 41% 65%),
     repeating-linear-gradient(var(--foil-angle,35deg),transparent 0 30%,var(--foil-bright) 34%,transparent 39% 60%);
   background-blend-mode:screen;
   mix-blend-mode:screen;

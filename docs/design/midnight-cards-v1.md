@@ -9,7 +9,7 @@ Approved for integration on October 6, 2026. Production is complete for 100next 
 - Specials use a player selector, persistent opposing arrows, a shield with a clear 0, and a subtraction dispenser. Zero replaces the ambiguous pause/11 concept symbol.
 - Built-in imagegen produced all illustrations. Exact prompts and source paths are retained in `public/card-redesign/generation-log/` and `production-prompts.json`.
 - `scripts/assets/export-midnight-cards.py` exports 1064 × 1486 rectangular PNG originals and lossless WebP textures. It resamples only; borders and typography are not baked into the source art.
-- The game's renderer applies traditional rounded masks, rich suit frames, Luckiest Guy corner indices and inverted bottom-right indices. Instructions appear only on specials. Suit holography responds to movement inside the illustration, leaving the printed border and instructions untouched. Special cards have stronger reflections; still cards show their clean artwork.
+- The game's renderer applies traditional rounded masks, rich suit frames, Luckiest Guy corner indices and inverted bottom-right indices. Instructions appear only on specials. Neon rainbow holography responds to movement inside the illustration, with each suit's etched motifs. Reflections flow continuously around the corner labels, leaving the printed border and instruction band untouched. Special cards have stronger reflections; still cards show their clean artwork. `/card-redesign/hologram.html` compares neon rainbow and suit-metallic reflections using the actual renderer.
 - The gallery at `/card-redesign/` uses the same card renderer as the game, with suit filters and links to full-bleed originals.
 
 ## Rules preserved

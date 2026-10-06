@@ -97,7 +97,7 @@ function cardFoilMaterial(special: boolean, suit: Suit, midnight = false): THREE
     transparent: midnight,
     depthWrite: !midnight,
     toneMapped: false,
-    uniforms: { uTilt: { value: 0 }, uMotion: { value: 0 }, uSpecial: { value: special ? 1 : 0 }, uSuit: { value: foilSuitIndex[suit] }, uMidnight: { value: midnight ? 1 : 0 } },
+    uniforms: { uTilt: { value: 0 }, uMotion: { value: 0 }, uSpecial: { value: special ? 1 : 0 }, uSuit: { value: foilSuitIndex[suit] }, uMidnight: { value: midnight ? 1 : 0 }, uRainbow: { value: midnight ? 1 : 0 } },
     vertexShader: `
       varying vec2 vUv;
       void main() {
@@ -112,6 +112,7 @@ function cardFoilMaterial(special: boolean, suit: Suit, midnight = false): THREE
       uniform float uSpecial;
       uniform float uSuit;
       uniform float uMidnight;
+      uniform float uRainbow;
       float motif(vec2 uv) {
         vec2 p = fract(uv * vec2(16.0, 22.0)) - 0.5;
         if (uSuit < 0.5) { // Repeating little flame tongues.
@@ -180,6 +181,12 @@ function cardFoilMaterial(special: boolean, suit: Suit, midnight = false): THREE
           float fine = pow(max(0.0, sin(phase * 69.0)), 32.0);
           float glitter = motif(vUv) * pow(max(0.0, sin(vUv.x * 171.0 + vUv.y * 233.0 + uTilt * 8.0)), 16.0);
           vec3 reflected = mix(brightMetal, vec3(1.0, 0.96, 0.84), 0.60 + fine * 0.35);
+          if (uRainbow > 0.5) {
+            float hue = vUv.x * 0.70 + vUv.y * 0.46 + uTilt * 1.35;
+            vec3 spectrum = 0.5 + 0.5 * cos(6.283185 * (hue + vec3(0.0, 0.333333, 0.666667)));
+            vec3 neonMetal = 0.025 + 0.975 * pow(spectrum, vec3(2.0));
+            reflected = mix(neonMetal, vec3(1.0), fine * 0.48);
+          }
           reflected = mix(reflected, vec3(1.0, 0.98, 0.94), glitter * 0.75);
           float moving = sqrt(clamp(uMotion * 1.8, 0.0, 1.0));
           float alpha = moving * min(0.88, sweep * 0.85 + fine * 0.24 + glitter * 0.82 + motif(vUv) * 0.12) * mix(0.90, 1.0, uSpecial);

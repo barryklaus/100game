@@ -16,6 +16,15 @@ camera.position.z = 10;
 const cards: THREE.Group[] = [];
 let playing = false, raf = 0, version = 0;
 
+function palette(): void {
+  const rainbow = document.querySelector<HTMLSelectElement>('#palette')!.value === 'rainbow';
+  cards.forEach(card=>{
+    const foil = card.getObjectByName('card-artwork-foil') as THREE.Mesh;
+    (foil.material as THREE.ShaderMaterial).uniforms.uRainbow.value = rainbow ? 1 : 0;
+  });
+  renderer.render(scene,camera);
+}
+
 function layout(): void {
   const width = host.clientWidth, height = host.clientHeight;
   const portrait = width < 700;
@@ -50,6 +59,7 @@ async function load(): Promise<void> {
   if (version !== current) {next.forEach(card=>{disposeCardMesh(card);card.userData.previewTexture.dispose();});return;}
   cards.forEach(card=>{scene.remove(card);disposeCardMesh(card);card.userData.previewTexture.dispose();});
   cards.splice(0,cards.length,...next);cards.forEach(card=>scene.add(card));
+  palette();
   layout();
   document.querySelector<HTMLElement>('#status')!.textContent = 'Fire · Water · Leaf · Sun';
 }
@@ -68,6 +78,7 @@ document.querySelector('#still')!.addEventListener('click',()=>{
   document.querySelector('#tilt')!.setAttribute('aria-pressed','false');
 });
 document.querySelector('#rank')!.addEventListener('change',()=>void load());
+document.querySelector('#palette')!.addEventListener('change',palette);
 window.addEventListener('resize',layout);
 document.addEventListener('visibilitychange',()=>{
   cancelAnimationFrame(raf);
