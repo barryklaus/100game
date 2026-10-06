@@ -10,5 +10,6 @@ const commit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).
 await writeFile('dist-next/release.json', JSON.stringify({ version: '100next', commit, builtAt: new Date().toISOString() }));
 await writeFile('dist-next/_headers', '/release.json\n  Cache-Control: no-store\n');
 const html = await readFile('dist-next/index.html', 'utf8');
-await writeFile('dist-next/index.html', html.replace(/<title>.*?<\/title>/, '<title>100next — Simple Numbers. Big Reactions.</title>'));
+await writeFile('dist-next/index.html', html.replace(/<title>.*?<\/title>/, '<title>100next — We were friends before this.</title>')
+  .replace(/<meta name="description" content="[^"]*"\s*\/>/, '<meta name="description" content="We were friends before this. Make it someone else’s problem. A card game for 2–8 players." />'));
 console.log(`Built 100next (${commit.slice(0, 7)}) with a separate hosted room service.`);
