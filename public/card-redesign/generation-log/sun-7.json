@@ -1,0 +1,15 @@
+{
+  "rank": "7",
+  "suit": "sun",
+  "subject": "a large elegant brass spotlight selector with a thick downward arrow aimed at ONE gold highlighted player-shaped tabletop token among three distinct tokens; the other two tokens remain subdued. Arrow is huge, persistent and readable, tokens are simple board-game pawns, not people",
+  "prompt": "Use case: stylized-concept. Asset type: ONE finished production FULL-BLEED sun special-card illustration for 100next. Input 1 sets ONLY approved cartoon composition and special symbol language; ignore its frame, corner text and description plaques. Subject: a large elegant brass spotlight selector with a thick downward arrow aimed at ONE gold highlighted player-shaped tabletop token among three distinct tokens; the other two tokens remain subdued. Arrow is huge, persistent and readable, tokens are simple board-game pawns, not people. Suit color and symbolism: amber gold, sunburst motifs. Polished adult TV cartoon with clean thick near-black outlines, crisp saturated flat color and one cel-shadow; simple midnight social club brass furniture and velvet backdrop. Keep main action emblem and key objects fully visible within middle 65% of the image, leave bottom 22% as quiet background for GAME's instruction plaque, quiet top-left for corner word. Portrait 63:88 rectangular canvas, entire scene FULL BLEED edge to edge. RAW ARTWORK ONLY: NO border, frame, card outline, rounded corner, margins, UI, instruction plaque, action word, labels, unrelated numbers or presentation board. Only the central intrinsic emblem may have a numeral if requested. No human characters or body parts. No baked foil, glow or rainbow haze. Crisp high resolution.",
+  "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-a5223534-a849-4d38-b14c-e0c1917b86b8.png",
+  "edits": [
+    {
+      "tool": "built-in image_gen",
+      "prompt": "Edit only the SUN suit Choose Player card shown. Keep the composition, full-bleed rectangular portrait artwork, three small player pawns and the downward selector arrow, thick adult-cartoon ink, flat cel shading and lounge scene. Replace the red selector housing and red/orange arrow with brilliant amber-gold metal, with a clearly engraved little sun symbol on the housing. Change the red felt table to deep honey-gold/mustard velvet, and red upholstery to dark charcoal velvet. The center pawn remains golden, flanked by blue and red pawns. Maintain all proportions and placement exactly. No border, no card frame, no words, no numbers, no rounded corners. This should read as the golden SUN suit rather than FIRE.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-a5223534-a849-4d38-b14c-e0c1917b86b8.png"
+    }
+  ],
+  "originalSource": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-082a2a1a-e1aa-4e30-a39e-eaef5c3d6d12.png"
+}

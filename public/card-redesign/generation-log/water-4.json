@@ -1,0 +1,6 @@
+{
+  "suit": "water",
+  "rank": "4",
+  "prompt": "Use case: precise-object-edit. Edit the supplied full-bleed illustration. Keep the existing four complete icebergs, exact cartoon style, water, skyline, moon, colors and all framing unchanged. Remove ONLY the extra small triangular ice fragment that peeks in at the BOTTOM EDGE, replacing it with continuous blue water matching the surrounding ripples. Exactly four icebergs remain, with no additional ice anywhere. Preserve portrait rectangular full-bleed raw illustration. No border, card shape, numbers or text.",
+  "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-52f1b3c0-211c-4f21-9e88-88504ef9a37d.png"
+}

@@ -2,21 +2,23 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>100next · Card redesign</title>
+<title>100next · Midnight cards</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#07172d;color:#fff2d2;font:16px/1.6 system-ui,sans-serif}main{max-width:1200px;margin:auto;padding:clamp(18px,4vw,48px)}h1{font-size:clamp(30px,5vw,54px);line-height:1.1;margin:10px 0 16px}h2{font-size:25px;margin:30px 0 8px}p{max-width:780px;color:#ced5df;margin:8px 0 20px}.eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#e5bc6d}img{display:block;max-width:100%;height:auto;margin:auto;border-radius:12px}.special{width:100%;max-width:860px}a{color:#ffd086;text-underline-offset:4px}a:focus-visible{outline:3px solid #ffd086;outline-offset:4px}.actions{display:flex;flex-wrap:wrap;gap:20px;margin:22px 0 36px}figure{margin:0}figcaption{color:#b7c3d5;font-size:14px;margin:12px 0 28px}.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:20px 0}.rules div{padding:16px;background:#10243d;border:1px solid #e4be6c33;border-radius:10px}.rules strong{display:block;color:#ffe3a9}.rules span{color:#ced5df}@media(max-width:550px){.rules{grid-template-columns:1fr}}
+@font-face{font-family:'Luckiest Guy';src:url('../assets/fonts/LuckiestGuy-Regular.ttf') format('truetype')}
+*{box-sizing:border-box}body{margin:0;background:#091320;color:#fff2d2;font:16px/1.5 system-ui,sans-serif}main{max-width:1240px;margin:auto;padding:clamp(18px,4vw,48px)}h1{font-size:clamp(32px,5vw,56px);line-height:1.1;margin:12px 0}p{max-width:800px;color:#c9ced7}.eyebrow{font-size:12px;letter-spacing:.16em;color:#e5bc6d}.controls{display:flex;flex-wrap:wrap;align-items:center;gap:24px;margin:26px 0 36px}select{font:inherit;padding:8px 12px;background:#152638;color:#fff2d2;border:1px solid #c79b51;border-radius:8px}label{display:flex;gap:10px;align-items:center}a{color:#e6bd76;text-underline-offset:4px}.deck{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px 24px}figure{margin:0;min-width:0}figure img{display:block;width:100%;height:auto;aspect-ratio:63/88;border-radius:5.5% / 3.95%;background:#162332;box-shadow:0 8px 20px #0008}figcaption{font-weight:700;font-size:13px;margin:12px 0 4px}figure a{font-size:13px}input{accent-color:#deb75e}a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #fce2a0;outline-offset:4px}@media(max-width:680px){.deck{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 14px}main{padding:20px}}
 </style>
 <main>
 <div class="eyebrow">100next · Midnight Social Club</div>
-<h1>A new look for the cards</h1>
-<p>First design concepts: bold cartoon objects, rich suit colors, and clear action symbols. The final cards will share a consistent playing-card shape and readable corner indices.</p>
-<nav class="actions" aria-label="Review links"><a href="/">Play 100next</a><a href="#special">Special cards</a><a href="number-cards-v1.png">Full-size number concepts</a><a href="special-cards-v1.png">Full-size special concepts</a></nav>
-<h2>Number cards</h2>
-<p>Four chilies, four icebergs, four plants, four cake slices. Everyday objects make the value easy to count. Descriptions appear only on special cards.</p>
-<figure><img src="number-cards-v1.png" width="1485" height="1059" alt="Four cartoon number-four card concepts: red fire chilies, blue water icebergs, green leaf plants, and golden sun cake slices."><figcaption>Fire · Water · Leaf · Sun</figcaption></figure>
-<h2 id="special">Special cards</h2>
-<p>Each action keeps a large symbol visible in the illustration, alongside a short explanation.</p>
-<figure><img class="special" src="special-cards-v1.png" width="1060" height="1484" loading="lazy" alt="Choose selects a player token, Reverse uses two blue water arrows around a record, Zero uses a leafy pause emblem, and Minus Ten uses a golden subtraction coin dispenser."></figure>
-<div class="rules"><div><strong>CHOOSE PLAYER</strong><span>Choose who plays next.</span></div><div><strong>REVERSE</strong><span>Reverse the turn order.</span></div><div><strong>ZERO</strong><span>Keep the total unchanged.</span></div><div><strong>−10</strong><span>Subtract 10 from the total.</span></div></div>
+<h1>Your new deck</h1>
+<p>Bold cartoon objects, rich suit colors, and clear action symbols. Full-bleed illustrations with the game's rounded masks, corner indices, and special-card descriptions. Zero adds nothing: the total stays unchanged.</p>
+<nav class="controls" aria-label="Deck controls">
+<a href="../?play=1">Play 100next</a>
+<label>Suit <select id="suit-filter"><option value="all">All four suits</option><option value="fire">Fire</option><option value="water">Water</option><option value="leaf">Leaf</option><option value="sun">Sun</option></select></label>
+<label><input id="actions-only" type="checkbox">Special cards only</label>
+</nav>
+<div id="deck" class="deck" aria-label="New card deck"></div>
+<noscript>Please enable JavaScript to preview the cards.</noscript>
+<p>52 cards. Each suit has values 1–6, four special actions, and three +10 cards sharing one ten-object illustration. Moving foil remains on the borders in the game.</p>
 </main>
+<script src="deck.js" defer></script>
 </html>

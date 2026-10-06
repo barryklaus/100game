@@ -77,13 +77,13 @@ const cameraRight = new THREE.Vector3();
 const cameraUp = new THREE.Vector3();
 const foilSuitIndex: Record<Suit, number> = { fire: 0, water: 1, leaf: 2, sun: 3 };
 
-function cardFoilMaterial(special: boolean, suit: Suit): THREE.ShaderMaterial {
+function cardFoilMaterial(special: boolean, suit: Suit, midnight = false): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
     name: special ? 'prismatic-special-border' : 'metallic-card-border',
     transparent: false,
     depthWrite: true,
     toneMapped: false,
-    uniforms: { uTilt: { value: 0 }, uMotion: { value: 0 }, uSpecial: { value: special ? 1 : 0 }, uSuit: { value: foilSuitIndex[suit] } },
+    uniforms: { uTilt: { value: 0 }, uMotion: { value: 0 }, uSpecial: { value: special ? 1 : 0 }, uSuit: { value: foilSuitIndex[suit] }, uMidnight: { value: midnight ? 1 : 0 } },
     vertexShader: `
       varying vec2 vUv;
       void main() {
@@ -97,6 +97,7 @@ function cardFoilMaterial(special: boolean, suit: Suit): THREE.ShaderMaterial {
       uniform float uMotion;
       uniform float uSpecial;
       uniform float uSuit;
+      uniform float uMidnight;
       float motif(vec2 uv) {
         vec2 p = fract(uv * vec2(16.0, 22.0)) - 0.5;
         if (uSuit < 0.5) { // Repeating little flame tongues.
@@ -135,6 +136,25 @@ function cardFoilMaterial(special: boolean, suit: Suit): THREE.ShaderMaterial {
           darkMetal = vec3(0.20, 0.10, 0.015);
           colorMetal = vec3(0.77, 0.39, 0.035);
           brightMetal = vec3(1.0, 0.85, 0.39);
+        }
+        if (uMidnight > 0.5) {
+          // Saturated linear-light metals: no copper/cream wash on still cards.
+          darkMetal = vec3(0.20, 0.002, 0.001);
+          colorMetal = vec3(0.66, 0.006, 0.002);
+          brightMetal = vec3(1.0, 0.065, 0.005);
+          if (uSuit > 0.5 && uSuit < 1.5) {
+            darkMetal = vec3(0.002, 0.022, 0.22);
+            colorMetal = vec3(0.002, 0.13, 0.75);
+            brightMetal = vec3(0.005, 0.42, 1.0);
+          } else if (uSuit > 1.5 && uSuit < 2.5) {
+            darkMetal = vec3(0.002, 0.13, 0.008);
+            colorMetal = vec3(0.005, 0.40, 0.02);
+            brightMetal = vec3(0.035, 0.78, 0.06);
+          } else if (uSuit > 2.5) {
+            darkMetal = vec3(0.32, 0.12, 0.001);
+            colorMetal = vec3(0.76, 0.36, 0.002);
+            brightMetal = vec3(1.0, 0.68, 0.012);
+          }
         }
         // A fixed tilt changes the reflection; no clock or idle animation is used.
         float phase = vUv.x * 1.0 + vUv.y * 0.61 + uTilt * 0.68;
@@ -204,9 +224,9 @@ export function createCardMesh(front: THREE.Texture, back: THREE.Texture, specia
   reverse.rotation.y = Math.PI;
   reverse.castShadow = true;
   root.add(reverse);
-  const faceInfo = front.userData?.cardFace as { special?: boolean; suit?: Suit } | undefined;
+  const faceInfo = front.userData?.cardFace as { special?: boolean; suit?: Suit; theme?: string } | undefined;
   const isSpecial = Boolean(faceInfo?.special ?? special);
-  const foil = new THREE.Mesh(createCardFoilGeometry(front, height), cardFoilMaterial(isSpecial, faceInfo?.suit ?? 'sun'));
+  const foil = new THREE.Mesh(createCardFoilGeometry(front, height), cardFoilMaterial(isSpecial, faceInfo?.suit ?? 'sun', faceInfo?.theme === 'midnight'));
   foil.name = 'card-border-foil';
   foil.position.z = thickness / 2 + .00035;
   let hasFoilPose = false;

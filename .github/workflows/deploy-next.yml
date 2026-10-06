@@ -29,5 +29,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
       - run: pnpm test:next
+      - run: node scripts/test-midnight-deck.mjs
       - run: pnpm build:next
       - run: pnpm deploy:next

@@ -65,10 +65,11 @@ export async function cardFaceTexture(source: THREE.Texture, face: CardFace): Pr
   ctx.clip();
 
   const border = ctx.createLinearGradient(0, 0, width, height);
-  border.addColorStop(0, '#fff6d9');
+  const suitHighlight = { fire: '#e6280c', water: '#087cec', leaf: '#21b93c', sun: '#edad08' }[face.suit];
+  border.addColorStop(0, face.theme === 'midnight' ? suitHighlight : '#fff6d9');
   border.addColorStop(.13, face.accent);
   border.addColorStop(.51, face.accent);
-  border.addColorStop(.84, '#fff2d0');
+  border.addColorStop(.84, face.theme === 'midnight' ? suitHighlight : '#fff2d0');
   border.addColorStop(1, face.accent);
   ctx.fillStyle = border;
   ctx.fillRect(0, 0, width, height);
@@ -117,7 +118,7 @@ export async function cardFaceTexture(source: THREE.Texture, face: CardFace): Pr
 
   // A quiet hairline lends definition without widening the printed border.
   rounded(ctx, edge * .5, edge * .5, width - edge, height - edge, outerRadius * .78);
-  ctx.strokeStyle = '#fff9e9a8';
+  ctx.strokeStyle = face.theme === 'midnight' ? '#170e1a99' : '#fff9e9a8';
   ctx.lineWidth = width * .004;
   ctx.stroke();
 

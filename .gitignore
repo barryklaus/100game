@@ -10,3 +10,4 @@ coverage/
 .vite/
 .wrangler/
 *.log
+public/card-redesign/deck.js

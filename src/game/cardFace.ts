@@ -7,6 +7,7 @@ export type CardFace = {
   index: string;
   accent: string;
   special: boolean;
+  theme?: 'midnight';
   title?: string;
   detail?: string;
 };
@@ -36,10 +37,15 @@ export function cardFace(card: Pick<Card, 'suit' | 'rank'>): CardFace {
 }
 
 export function cardFaceFromUrl(url: string): CardFace | null {
-  const match = /(?:^|\/)(fire|water|leaf|sun)-(a|[2-9]|10|j|q|k)\.webp(?:[?#]|$)/i.exec(url);
+  const match = /(?:^|\/)(fire|water|leaf|sun)-(a|[2-9]|10|j|q|k)\.(?:webp|png)(?:[?#]|$)/i.exec(url);
   if (!match) return null;
   const suit = match[1].toLowerCase() as Suit;
   const rank = match[2].toUpperCase() as Rank;
   if (!SUITS.includes(suit) || !RANKS.includes(rank)) return null;
-  return cardFace({ suit, rank });
+  const face = cardFace({ suit, rank });
+  if (url.includes('/midnight-v1/')) {
+    face.theme = 'midnight';
+    face.accent = { fire: '#c6130b', water: '#0750d6', leaf: '#0b9028', sun: '#d39804' }[suit];
+  }
+  return face;
 }

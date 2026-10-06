@@ -1,31 +1,26 @@
-# Midnight Social Club card redesign — first concepts
+# Midnight Social Club production deck
 
-Review: `/card-redesign/`. Selected concept artwork and exact built-in imagegen prompts are stored in `public/card-redesign/`.
+Approved for integration on October 6, 2026. Production is complete for 100next only.
 
-## Visual direction
+## Artwork and production
 
-- Bold ink outlines, flat cartoon color and simple cel shading, matching the new lounge and cast.
-- Deep fire red, water blue, leaf green and sun gold frames, with each suit's engraved motifs.
-- Number cards use clearly countable everyday objects. The first board explores four chilies, four icebergs, four potted plants and four cake slices.
-- Only special cards carry instructions. Their persistent symbols are a selector, opposing arrows, a pause and subtraction.
+- 44 individual, full-bleed cartoon illustrations across fire, water, leaf and sun.
+- Number cards 1–6 show countable everyday objects. Positive tens show ten objects; the three +10 ranks J/Q/K share their suit's ten-object illustration.
+- Specials use a player selector, persistent opposing arrows, a shield with a clear 0, and a subtraction dispenser. Zero replaces the ambiguous pause/11 concept symbol.
+- Built-in imagegen produced all illustrations. Exact prompts and source paths are retained in `public/card-redesign/generation-log/` and `production-prompts.json`.
+- `scripts/assets/export-midnight-cards.py` exports 1064 × 1486 rectangular PNG originals and lossless WebP textures. It resamples only; borders and typography are not baked into the source art.
+- The game's renderer applies traditional rounded masks, rich suit frames, Luckiest Guy corner indices and inverted bottom-right indices. Instructions appear only on specials. Suit foil responds to movement on the frame.
+- The gallery at `/card-redesign/` uses the same card renderer as the game, with suit filters and links to full-bleed originals.
 
-## Production layout
+## Rules preserved
 
-These boards establish illustration and color direction. Final individual card exports must use one 63:88 rounded rectangle, matched padding and corner indices. The concept board's layout is not the production atlas. In particular, the wide special headings need to become top-left indices with inverted bottom-right indices in the final card template.
+The deck remains 52 cards: four suits, each with A/1 through 6, four special ranks and three positive-ten ranks. Positive 10 and the −10 special remain distinct.
 
-Use the existing Luckiest Guy font for exact indices. Keep the rounded mask, interaction-driven suit foil and separate artwork/frame areas in the card renderer. Do not bake moving foil or glare into the illustrations. Preserve full-resolution source artwork and export each final face individually.
+| Rank | Corner index | Instruction |
+| --- | --- | --- |
+| 7 | CHOOSE | Choose who plays next. |
+| 8 | REVERSE | Reverse the turn order. |
+| 9 | ZERO | Keep the total unchanged. |
+| 10 | −10 | Subtract 10 from the total. |
 
-## Rules and full deck
-
-Keep the current 52-card deck: four suits, each with numeric A/1 through 6, four special ranks and three positive-ten cards (J/Q/K). Positive 10 cards and the −10 special are distinct. Artwork quantities on number cards must match their displayed values.
-
-Special copy stays synchronized with `src/game/cardFace.ts`:
-
-| Action | Instruction |
-| --- | --- |
-| CHOOSE PLAYER | Choose who plays next. |
-| REVERSE | Reverse the turn order. |
-| ZERO | Keep the total unchanged. |
-| −10 | Subtract 10 from the total. |
-
-The first review contains four numeric and four special concepts. The remaining deck artwork, final card template and playable asset integration are subsequent production work.
+The stable 100 build retains its existing assets. Runtime card asset routing uses the 100next build mode. The production asset check verifies all 52 mappings, 44 exports, PNG dimensions, lossless WebP encoding, mobile/desktop label parity and the distinction between positive tens and −10.

@@ -1,0 +1,364 @@
+{
+  "version": "midnight-v1",
+  "tool": "built-in image_gen",
+  "artworks": [
+    {
+      "suit": "fire",
+      "rank": "10",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/fire-10.webp",
+      "lossless": "assets/cards/midnight-v1/full/fire-10.png"
+    },
+    {
+      "suit": "fire",
+      "rank": "2",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/fire-2.webp",
+      "lossless": "assets/cards/midnight-v1/full/fire-2.png"
+    },
+    {
+      "suit": "fire",
+      "rank": "3",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/fire-3.webp",
+      "lossless": "assets/cards/midnight-v1/full/fire-3.png"
+    },
+    {
+      "suit": "fire",
+      "rank": "4",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/fire-4.webp",
+      "lossless": "assets/cards/midnight-v1/full/fire-4.png"
+    },
+    {
+      "suit": "fire",
+      "rank": "5",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/fire-5.webp",
+      "lossless": "assets/cards/midnight-v1/full/fire-5.png"
+    },
+    {
+      "suit": "fire",
+      "rank": "6",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/fire-6.webp",
+      "lossless": "assets/cards/midnight-v1/full/fire-6.png"
+    },
+    {
+      "suit": "fire",
+      "rank": "7",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/fire-7.webp",
+      "lossless": "assets/cards/midnight-v1/full/fire-7.png"
+    },
+    {
+      "suit": "fire",
+      "rank": "8",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/fire-8.webp",
+      "lossless": "assets/cards/midnight-v1/full/fire-8.png"
+    },
+    {
+      "suit": "fire",
+      "rank": "9",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/fire-9.webp",
+      "lossless": "assets/cards/midnight-v1/full/fire-9.png"
+    },
+    {
+      "suit": "fire",
+      "rank": "A",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/fire-a.webp",
+      "lossless": "assets/cards/midnight-v1/full/fire-a.png"
+    },
+    {
+      "suit": "fire",
+      "rank": "K",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/fire-k.webp",
+      "lossless": "assets/cards/midnight-v1/full/fire-k.png"
+    },
+    {
+      "suit": "leaf",
+      "rank": "10",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/leaf-10.webp",
+      "lossless": "assets/cards/midnight-v1/full/leaf-10.png"
+    },
+    {
+      "suit": "leaf",
+      "rank": "2",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/leaf-2.webp",
+      "lossless": "assets/cards/midnight-v1/full/leaf-2.png"
+    },
+    {
+      "suit": "leaf",
+      "rank": "3",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/leaf-3.webp",
+      "lossless": "assets/cards/midnight-v1/full/leaf-3.png"
+    },
+    {
+      "suit": "leaf",
+      "rank": "4",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/leaf-4.webp",
+      "lossless": "assets/cards/midnight-v1/full/leaf-4.png"
+    },
+    {
+      "suit": "leaf",
+      "rank": "5",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/leaf-5.webp",
+      "lossless": "assets/cards/midnight-v1/full/leaf-5.png"
+    },
+    {
+      "suit": "leaf",
+      "rank": "6",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/leaf-6.webp",
+      "lossless": "assets/cards/midnight-v1/full/leaf-6.png"
+    },
+    {
+      "suit": "leaf",
+      "rank": "7",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/leaf-7.webp",
+      "lossless": "assets/cards/midnight-v1/full/leaf-7.png"
+    },
+    {
+      "suit": "leaf",
+      "rank": "8",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/leaf-8.webp",
+      "lossless": "assets/cards/midnight-v1/full/leaf-8.png"
+    },
+    {
+      "suit": "leaf",
+      "rank": "9",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/leaf-9.webp",
+      "lossless": "assets/cards/midnight-v1/full/leaf-9.png"
+    },
+    {
+      "suit": "leaf",
+      "rank": "A",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/leaf-a.webp",
+      "lossless": "assets/cards/midnight-v1/full/leaf-a.png"
+    },
+    {
+      "suit": "leaf",
+      "rank": "K",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/leaf-k.webp",
+      "lossless": "assets/cards/midnight-v1/full/leaf-k.png"
+    },
+    {
+      "suit": "sun",
+      "rank": "10",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/sun-10.webp",
+      "lossless": "assets/cards/midnight-v1/full/sun-10.png"
+    },
+    {
+      "suit": "sun",
+      "rank": "2",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/sun-2.webp",
+      "lossless": "assets/cards/midnight-v1/full/sun-2.png"
+    },
+    {
+      "suit": "sun",
+      "rank": "3",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/sun-3.webp",
+      "lossless": "assets/cards/midnight-v1/full/sun-3.png"
+    },
+    {
+      "suit": "sun",
+      "rank": "4",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/sun-4.webp",
+      "lossless": "assets/cards/midnight-v1/full/sun-4.png"
+    },
+    {
+      "suit": "sun",
+      "rank": "5",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/sun-5.webp",
+      "lossless": "assets/cards/midnight-v1/full/sun-5.png"
+    },
+    {
+      "suit": "sun",
+      "rank": "6",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/sun-6.webp",
+      "lossless": "assets/cards/midnight-v1/full/sun-6.png"
+    },
+    {
+      "suit": "sun",
+      "rank": "7",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/sun-7.webp",
+      "lossless": "assets/cards/midnight-v1/full/sun-7.png"
+    },
+    {
+      "suit": "sun",
+      "rank": "8",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/sun-8.webp",
+      "lossless": "assets/cards/midnight-v1/full/sun-8.png"
+    },
+    {
+      "suit": "sun",
+      "rank": "9",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/sun-9.webp",
+      "lossless": "assets/cards/midnight-v1/full/sun-9.png"
+    },
+    {
+      "suit": "sun",
+      "rank": "A",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/sun-a.webp",
+      "lossless": "assets/cards/midnight-v1/full/sun-a.png"
+    },
+    {
+      "suit": "sun",
+      "rank": "K",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/sun-k.webp",
+      "lossless": "assets/cards/midnight-v1/full/sun-k.png"
+    },
+    {
+      "suit": "water",
+      "rank": "10",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/water-10.webp",
+      "lossless": "assets/cards/midnight-v1/full/water-10.png"
+    },
+    {
+      "suit": "water",
+      "rank": "2",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/water-2.webp",
+      "lossless": "assets/cards/midnight-v1/full/water-2.png"
+    },
+    {
+      "suit": "water",
+      "rank": "3",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/water-3.webp",
+      "lossless": "assets/cards/midnight-v1/full/water-3.png"
+    },
+    {
+      "suit": "water",
+      "rank": "4",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/water-4.webp",
+      "lossless": "assets/cards/midnight-v1/full/water-4.png"
+    },
+    {
+      "suit": "water",
+      "rank": "5",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/water-5.webp",
+      "lossless": "assets/cards/midnight-v1/full/water-5.png"
+    },
+    {
+      "suit": "water",
+      "rank": "6",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/water-6.webp",
+      "lossless": "assets/cards/midnight-v1/full/water-6.png"
+    },
+    {
+      "suit": "water",
+      "rank": "7",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/water-7.webp",
+      "lossless": "assets/cards/midnight-v1/full/water-7.png"
+    },
+    {
+      "suit": "water",
+      "rank": "8",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/water-8.webp",
+      "lossless": "assets/cards/midnight-v1/full/water-8.png"
+    },
+    {
+      "suit": "water",
+      "rank": "9",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/water-9.webp",
+      "lossless": "assets/cards/midnight-v1/full/water-9.png"
+    },
+    {
+      "suit": "water",
+      "rank": "A",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/water-a.webp",
+      "lossless": "assets/cards/midnight-v1/full/water-a.png"
+    },
+    {
+      "suit": "water",
+      "rank": "K",
+      "width": 1064,
+      "height": 1486,
+      "url": "assets/cards/midnight-v1/water-k.webp",
+      "lossless": "assets/cards/midnight-v1/full/water-k.png"
+    }
+  ],
+  "positiveTenRanks": [
+    "J",
+    "Q",
+    "K"
+  ],
+  "positiveTenArtwork": "K"
+}
