@@ -1,0 +1,2290 @@
+[
+  {
+    "character": "vince",
+    "frame": "nervous",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "nervous-blink-half",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "nervous-blink",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "panic-soft",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "panicked",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "panicked-blink-half",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "panicked-blink",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "shocked",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "amused",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "amused-blink-half",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "amused-blink",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "smug",
+    "mouthRegion": [
+      977,
+      684,
+      1049,
+      731
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "smug-blink-half",
+    "mouthRegion": [
+      977,
+      684,
+      1049,
+      731
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "smug-blink",
+    "mouthRegion": [
+      977,
+      684,
+      1049,
+      731
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "relieved",
+    "mouthRegion": [
+      977,
+      684,
+      1049,
+      731
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "frustrated",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "frustrated-blink-half",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "frustrated-blink",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "defeated",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "defeated-blink-half",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "defeated-blink",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "vince",
+    "frame": "delighted",
+    "mouthRegion": [
+      977,
+      680,
+      1049,
+      737
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "nervous",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "nervous-blink-half",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "nervous-blink",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "panic-soft",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "panicked",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "panicked-blink-half",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "panicked-blink",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "shocked",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "amused",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "amused-blink-half",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "amused-blink",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "smug",
+    "mouthRegion": [
+      993,
+      699,
+      1051,
+      728
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "smug-blink-half",
+    "mouthRegion": [
+      993,
+      699,
+      1051,
+      728
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "smug-blink",
+    "mouthRegion": [
+      993,
+      699,
+      1051,
+      728
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "relieved",
+    "mouthRegion": [
+      993,
+      699,
+      1051,
+      728
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "frustrated",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "frustrated-blink-half",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "frustrated-blink",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "defeated",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "defeated-blink-half",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "defeated-blink",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "finn",
+    "frame": "delighted",
+    "mouthRegion": [
+      987,
+      698,
+      1058,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "nervous",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "nervous-blink-half",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "nervous-blink",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "panic-soft",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "panicked",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "panicked-blink-half",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "panicked-blink",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "shocked",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "amused",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "amused-blink-half",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "amused-blink",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "smug",
+    "mouthRegion": [
+      988,
+      707,
+      1048,
+      745
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "smug-blink-half",
+    "mouthRegion": [
+      988,
+      707,
+      1048,
+      745
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "smug-blink",
+    "mouthRegion": [
+      988,
+      707,
+      1048,
+      745
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "relieved",
+    "mouthRegion": [
+      988,
+      707,
+      1048,
+      745
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "frustrated",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "frustrated-blink-half",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "frustrated-blink",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "defeated",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "defeated-blink-half",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "defeated-blink",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "june",
+    "frame": "delighted",
+    "mouthRegion": [
+      988,
+      705,
+      1065,
+      750
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "nervous",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "nervous-blink-half",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "nervous-blink",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "panic-soft",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "panicked",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "panicked-blink-half",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "panicked-blink",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "shocked",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "amused",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "amused-blink-half",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "amused-blink",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "smug",
+    "mouthRegion": [
+      995,
+      735,
+      1042,
+      762
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "smug-blink-half",
+    "mouthRegion": [
+      995,
+      735,
+      1042,
+      762
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "smug-blink",
+    "mouthRegion": [
+      995,
+      735,
+      1042,
+      762
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "relieved",
+    "mouthRegion": [
+      995,
+      735,
+      1042,
+      762
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "frustrated",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "frustrated-blink-half",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "frustrated-blink",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "defeated",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "defeated-blink-half",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "defeated-blink",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "edgar",
+    "frame": "delighted",
+    "mouthRegion": [
+      979,
+      735,
+      1047,
+      766
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "nervous",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "nervous-blink-half",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "nervous-blink",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "panic-soft",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "panicked",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "panicked-blink-half",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "panicked-blink",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "shocked",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "amused",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "amused-blink-half",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "amused-blink",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "smug",
+    "mouthRegion": [
+      984,
+      700,
+      1060,
+      740
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "smug-blink-half",
+    "mouthRegion": [
+      984,
+      700,
+      1060,
+      740
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "smug-blink",
+    "mouthRegion": [
+      984,
+      700,
+      1060,
+      740
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "relieved",
+    "mouthRegion": [
+      984,
+      700,
+      1060,
+      740
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "frustrated",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "frustrated-blink-half",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "frustrated-blink",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "defeated",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "defeated-blink-half",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "defeated-blink",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "roxie",
+    "frame": "delighted",
+    "mouthRegion": [
+      984,
+      692,
+      1068,
+      746
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "nervous",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "nervous-blink-half",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "nervous-blink",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "panic-soft",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "panicked",
+    "mouthRegion": [
+      997,
+      705,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "panicked-blink-half",
+    "mouthRegion": [
+      997,
+      705,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "panicked-blink",
+    "mouthRegion": [
+      997,
+      705,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "shocked",
+    "mouthRegion": [
+      997,
+      705,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "amused",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "amused-blink-half",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "amused-blink",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "smug",
+    "mouthRegion": [
+      1001,
+      708,
+      1061,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "smug-blink-half",
+    "mouthRegion": [
+      1001,
+      708,
+      1061,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "smug-blink",
+    "mouthRegion": [
+      1001,
+      708,
+      1061,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "relieved",
+    "mouthRegion": [
+      1001,
+      708,
+      1061,
+      734
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "frustrated",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "frustrated-blink-half",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "frustrated-blink",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "defeated",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "defeated-blink-half",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "defeated-blink",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "otis",
+    "frame": "delighted",
+    "mouthRegion": [
+      997,
+      706,
+      1067,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "nervous",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "nervous-blink-half",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "nervous-blink",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "panic-soft",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "panicked",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "panicked-blink-half",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "panicked-blink",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "shocked",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "amused",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "amused-blink-half",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "amused-blink",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "smug",
+    "mouthRegion": [
+      982,
+      724,
+      1044,
+      760
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "smug-blink-half",
+    "mouthRegion": [
+      982,
+      724,
+      1044,
+      760
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "smug-blink",
+    "mouthRegion": [
+      982,
+      724,
+      1044,
+      760
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "relieved",
+    "mouthRegion": [
+      982,
+      724,
+      1044,
+      760
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "frustrated",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "frustrated-blink-half",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "frustrated-blink",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "defeated",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "defeated-blink-half",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "defeated-blink",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "paloma",
+    "frame": "delighted",
+    "mouthRegion": [
+      977,
+      724,
+      1056,
+      770
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "nervous",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "nervous-blink-half",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "nervous-blink",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "panic-soft",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "panicked",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "panicked-blink-half",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "panicked-blink",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "shocked",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "amused",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "amused-blink-half",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "amused-blink",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "smug",
+    "mouthRegion": [
+      978,
+      697,
+      1042,
+      730
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "smug-blink-half",
+    "mouthRegion": [
+      978,
+      697,
+      1042,
+      730
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "smug-blink",
+    "mouthRegion": [
+      978,
+      697,
+      1042,
+      730
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "relieved",
+    "mouthRegion": [
+      978,
+      697,
+      1042,
+      730
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "frustrated",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "frustrated-blink-half",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "frustrated-blink",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "defeated",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "defeated-blink-half",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "defeated-blink",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  },
+  {
+    "character": "bianca",
+    "frame": "delighted",
+    "mouthRegion": [
+      974,
+      697,
+      1054,
+      741
+    ],
+    "eyesBodyAndCardBacksUnchanged": true,
+    "alphaUnchanged": true,
+    "nativePixelsIdentical": true
+  }
+]

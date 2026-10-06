@@ -14,64 +14,14 @@ PREVIOUS=ROOT.parent/'output/100next-master-branch-v1'
 OUT=ROOT.parent/'output/100next-master-branch-v2'
 helpers=runpy.run_path(str(Path(__file__).with_name('build-master-reactions.py')))
 EYES=helpers['EYES'];blink=helpers['blink'];glance=helpers['glance'];gif=helpers['preview_gif']
-MOUTHS={
- 'vince':(977,684,1049,731), 'finn':(993,699,1051,728),
- 'june':(988,707,1048,745), 'edgar':(995,735,1042,762),
- 'roxie':(984,700,1060,740), 'otis':(1001,708,1061,734),
- 'paloma':(982,724,1044,760), 'bianca':(978,697,1042,730),
-}
-FEMALE={'june','roxie','paloma','bianca'}
-
-def mouth_edit(master,slug,kind):
-    box=MOUTHS[slug];crop=master.crop(box);w,h=crop.size
-    mask=Image.new('L',(w,h));draw=ImageDraw.Draw(mask)
-    if slug=='vince':
-        draw.polygon([(1,1),(29,22),(52,32),(69,35),(69,44),(30,44),(1,26)],fill=255)
-    else:
-        draw.rounded_rectangle((1,1,w-2,h-2),radius=5,fill=255)
-    # Reconstruct skin inside the mouth region from the original boundary.
-    active=np.array(mask)>0;a=np.array(crop).astype(float);rgb=a[:,:,:3].copy()
-    rgb[active]=np.median(rgb[~active],axis=0)
-    for _ in range(240):
-        mean=(np.roll(rgb,1,0)+np.roll(rgb,-1,0)+np.roll(rgb,1,1)+np.roll(rgb,-1,1))/4
-        rgb[active]=mean[active]
-    a[:,:,:3]=rgb;repair=Image.fromarray(np.clip(a,0,255).astype('uint8'))
-    patch=Image.composite(repair,crop,mask)
-    # Subpixel antialiasing is local; the master canvas is never resized.
-    marks=Image.new('RGBA',(w*4,h*4));d=ImageDraw.Draw(marks)
-    cx=(w*.40 if slug=='vince' else w*.50)*4;cy=(h*.60 if slug=='vince' else h*.55)*4
-    ink=(38,24,23,255);lip=(151,34,39,255);width=min(w*.65,42)*4
-    if kind in ('nervous','frustrated','defeated','smug','relieved'):
-        height=3*4;points=[]
-        for i in range(25):
-            t=i/24;x=cx-width/2+t*width
-            if kind=='nervous':y=cy+np.sin(t*3*np.pi)*3
-            elif kind in ('frustrated','defeated'):y=cy-12*np.sin(t*np.pi)
-            else:y=cy+12*np.sin(t*np.pi)
-            points.append((x,y))
-        if slug in FEMALE:d.line(points,fill=lip,width=18)
-        d.line(points,fill=ink,width=8 if slug in FEMALE else 10)
-    else:
-        mw=min(width,32*4);mh=min(h*.75*4,26*4)
-        if kind=='panic-soft':mh*=.45;mw*=.75
-        if kind=='shock-soft':mh*=.6
-        if kind in ('amused','delighted'):mw=min(width,40*4);mh*=.7
-        outer=(cx-mw/2,cy-mh/2,cx+mw/2,cy+mh/2)
-        if slug in FEMALE:
-            d.ellipse((outer[0]-5,outer[1]-3,outer[2]+5,outer[3]+3),fill=lip)
-        d.ellipse(outer,fill=ink)
-        clip=Image.new('L',marks.size);ImageDraw.Draw(clip).ellipse(outer,fill=255)
-        inside=Image.new('RGBA',marks.size);e=ImageDraw.Draw(inside)
-        if kind in ('amused','delighted','panicked','panic-soft'):
-            e.rectangle((cx-mw/2,cy-mh/2,cx+mw/2,cy-mh/2+mh*.25),fill=(251,244,224,255))
-        e.ellipse((cx-mw*.25,cy+mh*.15,cx+mw*.35,cy+mh*.6),fill=(213,93,111,255))
-        inside.putalpha(Image.composite(inside.getchannel('A'),Image.new('L',marks.size),clip))
-        marks.alpha_composite(inside)
-    marks=marks.resize((w,h),Image.Resampling.LANCZOS)
-    # Restrict all new ink to the calibrated mouth region.
-    marks.putalpha(Image.composite(marks.getchannel('A'),Image.new('L',(w,h)),mask))
-    patch.alpha_composite(marks)
-    result=master.copy();result.paste(patch,(box[0],box[1]));return result
+# Keep future master exports on the same repaired contour policy as runtime.
+mouth_helpers=runpy.run_path(str(Path(__file__).with_name('repair-master-mouth-lines.py')))
+mouth_edit=mouth_helpers['mouth']
+MOUTHS={}
+for slug,polygon in mouth_helpers['POLYGONS'].items():
+    points=np.array(polygon);lo=points.min(axis=0)-8;hi=points.max(axis=0)+9
+    old=mouth_helpers['OLD_BOXES'][slug]
+    MOUTHS[slug]=(min(old[0],lo[0]),min(old[1],lo[1]),max(old[2],hi[0]),max(old[3],hi[1]))
 
 def build(slug):
     destination=OUT/slug;destination.mkdir(parents=True,exist_ok=True)

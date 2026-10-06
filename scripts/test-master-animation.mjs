@@ -55,6 +55,10 @@ cast.sync(state);await flush();waitDecode=true;await advance(5000);
 const duringBlink=cast.prepareThrow(0);await flush();cast.release(0);await flush();waitDecode=false;pending.splice(0).forEach(resolve=>resolve());await flush();await advance(600);await duringBlink;
 assert.equal(nodes[0].element.dataset.cards,'1');assert.equal(nodes[0].element.dataset.frame,'release');cast.reset();assert.equal(timers.size,0);
 const cardAudit=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/card-back-checks.json'));assert.equal(new Set(cardAudit.map(x=>x.character)).size,8);assert(cardAudit.every(x=>x.handsPreserved&&x.facesAndBodyOutsideCardsUnchanged&&x.cornerRadiusRatio===.055));
+const mouthAudit=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/mouth-line-checks.json'));
+assert.equal(mouthAudit.length,176);assert.equal(new Set(mouthAudit.map(x=>x.character)).size,8);
+assert(mouthAudit.every(x=>x.eyesBodyAndCardBacksUnchanged&&x.alphaUnchanged&&x.nativePixelsIdentical));
+for(const entry of mouthAudit)assert(existsSync(`public/assets/social-club/master-animation-v2/${entry.character}/${entry.frame}.webp`));
 const actionAudit=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/whole-action-checks.json'));assert.equal(actionAudit.length,96);assert(actionAudit.every(x=>x.nativePixelsIdentical));
 const data=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/manifest.json'));assert.equal(data.nativeCanvas,2048);assert.equal(data.resampled,false);
 for(const [id,set] of Object.entries(data.characters))for(const [frame,[x,y,w,h]] of Object.entries(set.bounds)){assert(x>=0&&y>=0&&x+w<=2048&&y+h<=2048);assert(existsSync(`public/assets/social-club/master-animation-v2/${id}/${frame}.webp`));}
