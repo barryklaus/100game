@@ -15,9 +15,8 @@ function artworkSize(texture: THREE.Texture): { width: number; height: number } 
 }
 
 /** The artwork itself fills this traditional playing-card silhouette. */
-export function roundedCardShape(width: number, height: number): THREE.Shape {
+export function roundedCardShape(width: number, height: number, radius = width * CORNER_RADIUS): THREE.Shape {
   const halfWidth = width / 2, halfHeight = height / 2;
-  const radius = width * CORNER_RADIUS;
   const shape = new THREE.Shape();
   shape.moveTo(-halfWidth + radius, -halfHeight);
   shape.lineTo(halfWidth - radius, -halfHeight);
@@ -71,6 +70,21 @@ export function createCardFoilGeometry(texture: THREE.Texture, height = STANDARD
   return geometry;
 }
 
+/** The Midnight laminate fits inside the printed frame and above the rule band. */
+export function createCardArtworkFoilGeometry(texture: THREE.Texture, special: boolean, height = STANDARD_HEIGHT): THREE.ShapeGeometry {
+  const image = artworkSize(texture), width = height * image.width / image.height;
+  const inset = width * 54 / 1064;
+  const band = special ? height * .185 : 0;
+  const shape = roundedCardShape(width - inset * 2, height - inset * 2 - band, width * CORNER_RADIUS * .56);
+  const geometry = new THREE.ShapeGeometry(shape, 16);
+  geometry.translate(0, band / 2, 0);
+  const positions = geometry.getAttribute('position'), uv = geometry.getAttribute('uv');
+  for (let index = 0; index < positions.count; index++)
+    uv.setXY(index, positions.getX(index) / width + .5, positions.getY(index) / height + .5);
+  uv.needsUpdate = true;
+  return geometry;
+}
+
 const foilNormal = new THREE.Vector3();
 const foilPosition = new THREE.Vector3();
 const cameraRight = new THREE.Vector3();
@@ -79,9 +93,9 @@ const foilSuitIndex: Record<Suit, number> = { fire: 0, water: 1, leaf: 2, sun: 3
 
 function cardFoilMaterial(special: boolean, suit: Suit, midnight = false): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
-    name: special ? 'prismatic-special-border' : 'metallic-card-border',
-    transparent: false,
-    depthWrite: true,
+    name: midnight ? 'midnight-artwork-hologram' : special ? 'prismatic-special-border' : 'metallic-card-border',
+    transparent: midnight,
+    depthWrite: !midnight,
     toneMapped: false,
     uniforms: { uTilt: { value: 0 }, uMotion: { value: 0 }, uSpecial: { value: special ? 1 : 0 }, uSuit: { value: foilSuitIndex[suit] }, uMidnight: { value: midnight ? 1 : 0 } },
     vertexShader: `
@@ -160,6 +174,19 @@ function cardFoilMaterial(special: boolean, suit: Suit, midnight = false): THREE
         float phase = vUv.x * 1.0 + vUv.y * 0.61 + uTilt * 0.68;
         float band = 0.5 + 0.5 * cos(phase * 18.0);
         float groove = 0.5 + 0.5 * sin(phase * 48.0);
+        if (uMidnight > 0.5) {
+          // Continuous artwork laminate, including the corner labels; no rectangular cutouts.
+          float sweep = pow(max(0.0, cos(phase * 10.0)), 7.0);
+          float fine = pow(max(0.0, sin(phase * 69.0)), 32.0);
+          float glitter = motif(vUv) * pow(max(0.0, sin(vUv.x * 171.0 + vUv.y * 233.0 + uTilt * 8.0)), 16.0);
+          vec3 reflected = mix(brightMetal, vec3(1.0, 0.96, 0.84), 0.60 + fine * 0.35);
+          reflected = mix(reflected, vec3(1.0, 0.98, 0.94), glitter * 0.75);
+          float moving = sqrt(clamp(uMotion * 1.8, 0.0, 1.0));
+          float alpha = moving * min(0.88, sweep * 0.85 + fine * 0.24 + glitter * 0.82 + motif(vUv) * 0.12) * mix(0.90, 1.0, uSpecial);
+          gl_FragColor = vec4(reflected, alpha);
+          #include <colorspace_fragment>
+          return;
+        }
         vec3 foil = mix(darkMetal, colorMetal, 0.42 + 0.42 * band);
         foil = mix(foil, brightMetal, pow(band, mix(7.0, 4.0, uSpecial)) * (0.37 + 0.26 * uSpecial));
         foil *= 0.84 + 0.16 * groove;
@@ -195,7 +222,7 @@ function createPaperEdge(texture: THREE.Texture, height: number, thickness: numb
   return geometry;
 }
 
-/** Full-resolution printed face with a separate border-only light pass. */
+/** Full-resolution print, with movement-driven artwork foil on Midnight cards. */
 export function createCardMesh(front: THREE.Texture, back: THREE.Texture, special = false, height = STANDARD_HEIGHT): THREE.Group {
   const image = artworkSize(front);
   const width = height * image.width / image.height;
@@ -226,12 +253,14 @@ export function createCardMesh(front: THREE.Texture, back: THREE.Texture, specia
   root.add(reverse);
   const faceInfo = front.userData?.cardFace as { special?: boolean; suit?: Suit; theme?: string } | undefined;
   const isSpecial = Boolean(faceInfo?.special ?? special);
-  const foil = new THREE.Mesh(createCardFoilGeometry(front, height), cardFoilMaterial(isSpecial, faceInfo?.suit ?? 'sun', faceInfo?.theme === 'midnight'));
-  foil.name = 'card-border-foil';
+  const midnight = faceInfo?.theme === 'midnight';
+  const foil = new THREE.Mesh(midnight ? createCardArtworkFoilGeometry(front, isSpecial, height) : createCardFoilGeometry(front, height), cardFoilMaterial(isSpecial, faceInfo?.suit ?? 'sun', midnight));
+  foil.name = midnight ? 'card-artwork-foil' : 'card-border-foil';
   foil.position.z = thickness / 2 + .00035;
   let hasFoilPose = false;
   const lastNormal = new THREE.Vector3();
   const lastPosition = new THREE.Vector3();
+  let motionEnvelope = 0, lastStamp = 0;
   foil.onBeforeRender = (_renderer, _scene, camera, _geometry, material) => {
     const shader = material as THREE.ShaderMaterial;
     foilNormal.set(0, 0, 1).transformDirection(foil.matrixWorld);
@@ -239,8 +268,12 @@ export function createCardMesh(front: THREE.Texture, back: THREE.Texture, specia
     cameraRight.setFromMatrixColumn(camera.matrixWorld, 0);
     cameraUp.setFromMatrixColumn(camera.matrixWorld, 1);
     shader.uniforms.uTilt.value = foilNormal.dot(cameraRight) * .8 + foilNormal.dot(cameraUp) * .5;
-    const motion = hasFoilPose ? Math.min(1, foilPosition.distanceTo(lastPosition) * 28 + foilNormal.distanceTo(lastNormal) * 14) : 0;
-    shader.uniforms.uMotion.value = document.documentElement.classList.contains('reduce-motion') ? 0 : motion;
+    const motion = hasFoilPose ? Math.min(1, foilPosition.distanceTo(lastPosition) * 28 + foilNormal.distanceTo(lastNormal) * (midnight ? 42 : 14)) : 0;
+    const stamp = performance.now();
+    motionEnvelope = Math.max(motion, motionEnvelope * Math.exp(-(stamp - lastStamp) / 65));
+    if (motionEnvelope < .003) motionEnvelope = 0;
+    lastStamp = stamp;
+    shader.uniforms.uMotion.value = document.documentElement.classList.contains('reduce-motion') ? 0 : midnight ? motionEnvelope : motion;
     lastPosition.copy(foilPosition); lastNormal.copy(foilNormal); hasFoilPose = true;
   };
   foil.userData.cardFoil = true;

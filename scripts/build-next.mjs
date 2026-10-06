@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 
 await build({ entryPoints: ['worker/next-pages.ts'], outfile: 'dist-next/_worker.js', bundle: true, format: 'esm', platform: 'neutral', target: 'es2022' });
 await build({ entryPoints: ['src/ui/CardDeckGallery.ts'], outfile: 'dist-next/card-redesign/deck.js', bundle: true, format: 'iife', minify: true, target: 'es2022' });
+await build({ entryPoints: ['src/ui/CardHoloPreview.ts'], outfile: 'dist-next/card-redesign/hologram.js', bundle: true, format: 'iife', minify: true, target: 'es2022' });
 await writeFile('dist-next/_routes.json', JSON.stringify({ version: 1, include: ['/api/*'], exclude: [] }));
 const commit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
 await writeFile('dist-next/release.json', JSON.stringify({ version: '100next', commit, builtAt: new Date().toISOString() }));

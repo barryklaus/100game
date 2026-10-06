@@ -11,3 +11,4 @@ coverage/
 .wrangler/
 *.log
 public/card-redesign/deck.js
+public/card-redesign/hologram.js

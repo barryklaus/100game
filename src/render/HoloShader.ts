@@ -1,5 +1,5 @@
-// Feeds pointer position into the DOM fallback's border-only foil. The 3D
-// cards have their own matching border shader that follows their real tilt.
+// Feeds pointer motion into the DOM fallback's suit foil. Midnight reflects
+// inside the artwork; its printed border matches the deck preview.
 export class HoloShader {
   private isEnabled = true;
   private active: HTMLElement | null = null;

@@ -327,4 +327,31 @@ button:active { translate:0 1px; }
 .world3d-active .hand-card.mesh-ready .card-print {visibility:hidden;}
 .world3d-active .hand-card.mesh-ready::after {display:none!important;}
 .reduce-motion .playing-card::after {--foil-motion:0!important;}
+.midnight-mode .playing-card:not(.card-back) {
+  background:linear-gradient(135deg,var(--card-frame-highlight),var(--card-accent) 13%,var(--card-accent) 51%,var(--card-frame-highlight) 84%,var(--card-accent))!important;
+}
+.midnight-mode .playing-card.suit-fire {--card-frame-highlight:#e6280c;}
+.midnight-mode .playing-card.suit-water {--card-frame-highlight:#087cec;}
+.midnight-mode .playing-card.suit-leaf {--card-frame-highlight:#21b93c;}
+.midnight-mode .playing-card.suit-sun {--card-frame-highlight:#edad08;}
+/* Keep the preview's saturated print frame. Reflect light inside the illustration. */
+.midnight-mode .playing-card:not(.card-back)::after,
+.midnight-mode.world3d-active .hand-card:not(.card-back)::after {
+  inset:3.65% 5.1%;
+  padding:0;
+  z-index:2;
+  border-radius:4% / 2.8%;
+  background:
+    var(--foil-motif) 0 0/32px 32px repeat,
+    repeating-linear-gradient(var(--foil-angle,35deg),transparent 0 30%,var(--foil-bright) 34%,transparent 39% 60%);
+  background-blend-mode:screen;
+  mix-blend-mode:screen;
+  -webkit-mask:none;
+  mask:none;
+  opacity:calc(var(--foil-motion,0) * .65)!important;
+  filter:saturate(1.4)!important;
+}
+.midnight-mode .playing-card.special::after {bottom:22.15%;opacity:calc(var(--foil-motion,0) * .85)!important;}
+.midnight-mode.world3d-active .hand-card.mesh-ready::after {display:none!important;}
+.midnight-mode.world3d-active .hand-card.mesh-ready {background:transparent!important;}
 .draw-flight .playing-card.draw-front {width:100%;height:100%;}
