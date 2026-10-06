@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>100next · Complete master animation review</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#101521;color:#eee5d5;font:16px/1.5 system-ui,sans-serif}main{max-width:1140px;margin:auto;padding:24px}h1{margin:0;font-size:clamp(25px,4vw,38px)}p{margin:8px 0 18px;color:#bdc2d1}button{font:inherit;color:inherit;background:#202738;border:1px solid #596078;border-radius:9px;padding:9px 13px;cursor:pointer}button[aria-pressed=true]{background:#594933;border-color:#e7c16b}button:focus-visible{outline:3px solid #e7c16b;outline-offset:3px}.choices,.controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(250px,1fr);gap:24px}.stage{position:relative;aspect-ratio:1/1;background:#eee5d5;border-radius:12px;overflow:hidden}.stage img{position:absolute;left:-12.5%;top:-12.5%;width:125%;height:125%;object-fit:contain}.stage.face img{width:350%;height:350%;max-width:none;left:-125%;top:-72%;object-fit:contain}.table{display:none;position:absolute;left:-5%;width:110%;height:65%;top:55%;background:#172436;border-top:5px solid #b38a40;border-radius:50% 50% 0 0/12% 12% 0 0;pointer-events:none}.stage.table-view .table{display:block}.stage.face .table{display:none}.info{min-height:70px;font-size:14px}.tag{color:#efc87b}.frame-label{position:absolute;bottom:8px;left:12px;color:#263345;font-size:13px;font-weight:600}.stage.table-view .frame-label{color:#eee5d5}small{display:block;color:#b8becd;margin-top:15px}a{color:#e6c17b}.loading{opacity:.6}#play{min-width:100px}@media(max-width:680px){main{padding:16px}.layout{grid-template-columns:1fr;gap:10px}.stage{max-height:65vh;aspect-ratio:1}.choices button{padding:7px 10px}.info{min-height:0}}
+*{box-sizing:border-box}body{margin:0;background:#101521;color:#eee5d5;font:16px/1.5 system-ui,sans-serif}main{max-width:1140px;margin:auto;padding:24px}h1{margin:0;font-size:clamp(25px,4vw,38px)}p{margin:8px 0 18px;color:#bdc2d1}button{font:inherit;color:inherit;background:#202738;border:1px solid #596078;border-radius:9px;padding:9px 13px;cursor:pointer}button[aria-pressed=true]{background:#594933;border-color:#e7c16b}button:focus-visible{outline:3px solid #e7c16b;outline-offset:3px}.choices,.controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(250px,1fr);gap:24px}.stage{position:relative;aspect-ratio:1/1;background:#eee5d5;border-radius:12px;overflow:hidden}.stage .native{position:absolute;left:-12.5%;top:-12.5%;width:125%;height:125%;object-fit:contain}.stage.face .native{width:350%;height:350%;max-width:none;left:-125%;top:-72%;object-fit:contain}.table{display:none;position:absolute;left:-5%;width:110%;height:65%;top:55%;background:#172436;border-top:5px solid #b38a40;border-radius:50% 50% 0 0/12% 12% 0 0;pointer-events:none}.stage.table-view .table{display:block}.stage.face .table{display:none}.native{position:absolute}.native img{position:absolute;object-fit:fill;max-width:none}.info{min-height:70px;font-size:14px}.tag{color:#efc87b}.frame-label{position:absolute;bottom:8px;left:12px;color:#263345;font-size:13px;font-weight:600}.stage.table-view .frame-label{color:#eee5d5}small{display:block;color:#b8becd;margin-top:15px}a{color:#e6c17b}.loading{opacity:.6}#play{min-width:100px}@media(max-width:680px){main{padding:16px}.layout{grid-template-columns:1fr;gap:10px}.stage{max-height:65vh;aspect-ratio:1}.choices button{padding:7px 10px}.info{min-height:0}}
 </style>
 <main>
 <h1>100next · Master animation review</h1>
@@ -12,16 +12,17 @@
 <nav class="choices" id="characters" aria-label="Choose character"></nav>
 <div class="layout">
 <section>
-<div class="stage" id="stage"><img id="sprite" alt="Finn animation"><div class="table"></div><span class="frame-label" id="frame-label"></span></div>
+<div class="stage" id="stage"><div class="native"><img id="sprite" alt="Finn animation"></div><div class="table"></div><span class="frame-label" id="frame-label"></span></div>
 <div class="controls"><button id="play">Pause</button><button id="back" aria-label="Previous frame">← Frame</button><button id="next" aria-label="Next frame">Frame →</button><button id="master" aria-pressed="false">Original master</button></div>
 <div class="controls"><button id="face" aria-pressed="true">Face close-up</button><button id="full" aria-pressed="false">Full character</button><button id="table" aria-pressed="false">Table coverage</button></div>
 </section>
-<aside><h2 id="name">Finn</h2><div class="choices" id="clips" aria-label="Choose animation"></div><p class="info" id="info"></p><small>Small reactions preserve the master’s head shape, body, clothing, and silhouette. Card gestures protect the original head and lower body. Tumbles reuse the original head at the same physical size on new falling body drawings.</small><small>All eight sets are available here for frame-by-frame inspection. These master-derived movements are active in the playable 100next build.</small><p><a href="/">Open 100next</a></p></aside>
+<aside><h2 id="name">Finn</h2><div class="choices" id="clips" aria-label="Choose animation"></div><p class="info" id="info"></p><small>Small reactions preserve the master’s head shape, body, clothing, and silhouette. Throw and receive use approved complete drawings with the actual rounded card back. Tumbles reuse the original head at the same physical size on new falling body drawings.</small><small>All eight sets are available here for frame-by-frame inspection. These master-derived movements are active in the playable 100next build.</small><p><a href="/">Open 100next</a></p></aside>
 </div>
 </main>
 <script type="module">
-const root='/assets/social-club/master-branch-review-v2/';
-const data=await fetch(root+'manifest.json').then(r=>r.json());
+const root='/assets/social-club/master-animation-v2/';
+const runtime=await fetch(root+'manifest.json').then(r=>r.json());
+const data={characters:Object.entries(runtime.characters).map(([id,set])=>({id,name:id[0].toUpperCase()+id.slice(1),...set,clips:{...set.clips,blink:set.clips['blink-rest']}}))};
 const $=id=>document.getElementById(id);
 const labels={'blink':'Blink','look-left':'Look left','look-right':'Look right','study':'Study cards','alert':'Quick glance','throw-trial':'Throw · trial','pickup-trial':'Pick up · trial','tumble-trial':'Tumble · trial','idle':'Rest / blink','choose-left':'Choose left','choose-right':'Choose right','danger':'Danger','celebrate':'Celebrate','defeat':'Defeat','startle':'Startle','expressions':'Expressions','throw':'Throw','pickup':'Catch / gather','receive-ready':'Reach to receive','tumble':'Fall backward','return':'Get back up'};
 const query=new URLSearchParams(location.search);
@@ -32,14 +33,14 @@ async function imageFor(path){
  if(!cache.has(path))cache.set(path,new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=path}));
  return cache.get(path);
 }
-function draw(){const sequence=character.clips[clip];const id=master?'rest':sequence.frames[index];const path=root+character.id+'/'+id+'.webp';$('sprite').src=path;$('sprite').alt=character.name+' · '+labels[clip];$('frame-label').textContent=master?'Original master':`${index+1} / ${sequence.frames.length} · ${id}`;$('play').textContent=playing?'Pause':'Play';$('master').setAttribute('aria-pressed',String(master));}
+function draw(){const sequence=character.clips[clip];const id=master?'rest':sequence.frames[index];const path=root+character.id+'/'+id+'.webp';const [x,y,w,h]=character.bounds[id];$('sprite').style.cssText=`left:${x/2048*100}%;top:${y/2048*100}%;width:${w/2048*100}%;height:${h/2048*100}%`;$('sprite').src=path;$('sprite').alt=character.name+' · '+(labels[clip]||clip);$('frame-label').textContent=master?'Original master':`${index+1} / ${sequence.frames.length} · ${id}`;$('play').textContent=playing?'Pause':'Play';$('master').setAttribute('aria-pressed',String(master));}
 function schedule(){clearTimeout(timer);if(playing&&!master)timer=setTimeout(()=>{index=(index+1)%character.clips[clip].frames.length;draw();schedule()},character.clips[clip].durations[index]);}
 async function select(c,k){
  const ticket=++selection;clearTimeout(timer);character=c;clip=c.clips[k]?k:'blink';index=0;master=false;
  $('stage').classList.add('loading');$('name').textContent=c.name;
  for(const b of $('characters').children)b.setAttribute('aria-pressed',String(b.dataset.id===c.id));
  $('clips').replaceChildren();
- for(const key of Object.keys(c.clips)){const b=document.createElement('button');b.textContent=labels[key];b.setAttribute('aria-pressed',String(key===clip));b.onclick=()=>select(c,key);$('clips').append(b)}
+ for(const key of Object.keys(c.clips)){const b=document.createElement('button');b.textContent=labels[key]||key;b.setAttribute('aria-pressed',String(key===clip));b.onclick=()=>select(c,key);$('clips').append(b)}
  const movement=['throw','receive-ready','pickup','tumble','return','startle'].includes(clip);
  $('info').textContent=movement?'Complete character drawings. Check card grips, neck joins, and pose transitions with the frame buttons. The tumble finishes low on the floor, feet up, without a chair.':'Only local eye and mouth areas change. Head shape, body, clothing, cards, and original transparent outline stay fixed.';
  if(movement)setView(false);

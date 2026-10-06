@@ -157,34 +157,32 @@
         },
         "throw": {
           "frames": [
-            "rest",
-            "prepare-soft",
-            "prepare",
-            "throw-edge",
-            "empty-release",
-            "release",
-            "settle"
+            "whole-throw-1",
+            "whole-throw-2",
+            "whole-throw-3",
+            "whole-throw-4",
+            "whole-throw-5",
+            "whole-throw-6"
           ],
           "durations": [
-            50,
-            50,
-            50,
-            50,
+            70,
+            90,
+            55,
             45,
-            65,
-            80
+            75,
+            100
           ]
         },
         "pickup": {
           "frames": [
-            "prepare",
-            "prepare-soft",
-            "rest"
+            "whole-receive-4",
+            "whole-receive-5",
+            "whole-receive-6"
           ],
           "durations": [
-            65,
             55,
-            60
+            75,
+            100
           ]
         },
         "tumble": {
@@ -367,14 +365,14 @@
         },
         "receive-ready": {
           "frames": [
-            "release",
-            "reach",
-            "empty-grip"
+            "whole-receive-1",
+            "whole-receive-2",
+            "whole-receive-3"
           ],
           "durations": [
-            40,
-            40,
-            60
+            80,
+            70,
+            10
           ]
         }
       },
@@ -706,23 +704,95 @@
           504,
           502,
           1040
+        ],
+        "whole-throw-1": [
+          742,
+          514,
+          553,
+          1025
+        ],
+        "whole-throw-2": [
+          731,
+          513,
+          692,
+          1026
+        ],
+        "whole-throw-3": [
+          731,
+          513,
+          609,
+          1025
+        ],
+        "whole-throw-4": [
+          731,
+          513,
+          707,
+          1025
+        ],
+        "whole-throw-5": [
+          732,
+          515,
+          763,
+          1024
+        ],
+        "whole-throw-6": [
+          732,
+          513,
+          550,
+          1026
+        ],
+        "whole-receive-1": [
+          742,
+          513,
+          541,
+          1026
+        ],
+        "whole-receive-2": [
+          749,
+          514,
+          595,
+          1024
+        ],
+        "whole-receive-3": [
+          744,
+          514,
+          611,
+          1025
+        ],
+        "whole-receive-4": [
+          745,
+          514,
+          593,
+          1025
+        ],
+        "whole-receive-5": [
+          735,
+          514,
+          588,
+          1025
+        ],
+        "whole-receive-6": [
+          742,
+          514,
+          573,
+          1025
         ]
       },
       "handoff": {
-        "releaseMs": 200,
-        "released": "empty-release",
-        "caught": "prepare",
+        "releaseMs": 215,
+        "released": "whole-throw-4",
+        "caught": "whole-receive-4",
         "release": [
-          266.9327589121717,
-          208.92469219967876,
-          15.268510838913887,
-          21.86444906112984
+          318.7373213304013,
+          216.66295010995051,
+          18.75,
+          26.25
         ],
         "catch": [
-          266.875,
-          209.25,
-          15.268510838913887,
-          21.86444906112984
+          323.5959919977925,
+          252.6394177704194,
+          18.75,
+          26.25
         ]
       }
     },
@@ -880,34 +950,32 @@
         },
         "throw": {
           "frames": [
-            "rest",
-            "prepare-soft",
-            "prepare",
-            "throw-edge",
-            "empty-release",
-            "release",
-            "settle"
+            "whole-throw-1",
+            "whole-throw-2",
+            "whole-throw-3",
+            "whole-throw-4",
+            "whole-throw-5",
+            "whole-throw-6"
           ],
           "durations": [
-            50,
-            50,
-            50,
-            50,
+            70,
+            90,
+            55,
             45,
-            65,
-            80
+            75,
+            100
           ]
         },
         "pickup": {
           "frames": [
-            "prepare",
-            "prepare-soft",
-            "rest"
+            "whole-receive-4",
+            "whole-receive-5",
+            "whole-receive-6"
           ],
           "durations": [
-            65,
             55,
-            60
+            75,
+            100
           ]
         },
         "tumble": {
@@ -1090,14 +1158,14 @@
         },
         "receive-ready": {
           "frames": [
-            "release",
-            "reach",
-            "empty-grip"
+            "whole-receive-1",
+            "whole-receive-2",
+            "whole-receive-3"
           ],
           "durations": [
-            40,
-            40,
-            60
+            80,
+            70,
+            10
           ]
         }
       },
@@ -1429,23 +1497,95 @@
           504,
           462,
           1040
+        ],
+        "whole-throw-1": [
+          775,
+          506,
+          495,
+          1030
+        ],
+        "whole-throw-2": [
+          777,
+          515,
+          604,
+          1020
+        ],
+        "whole-throw-3": [
+          763,
+          509,
+          547,
+          1027
+        ],
+        "whole-throw-4": [
+          766,
+          513,
+          567,
+          1023
+        ],
+        "whole-throw-5": [
+          753,
+          511,
+          734,
+          1025
+        ],
+        "whole-throw-6": [
+          762,
+          511,
+          522,
+          1025
+        ],
+        "whole-receive-1": [
+          778,
+          505,
+          479,
+          1029
+        ],
+        "whole-receive-2": [
+          778,
+          514,
+          544,
+          1021
+        ],
+        "whole-receive-3": [
+          770,
+          508,
+          567,
+          1026
+        ],
+        "whole-receive-4": [
+          771,
+          512,
+          544,
+          1022
+        ],
+        "whole-receive-5": [
+          774,
+          513,
+          490,
+          1023
+        ],
+        "whole-receive-6": [
+          774,
+          509,
+          486,
+          1027
         ]
       },
       "handoff": {
-        "releaseMs": 200,
-        "released": "empty-release",
-        "caught": "prepare",
+        "releaseMs": 215,
+        "released": "whole-throw-4",
+        "caught": "whole-receive-4",
         "release": [
-          274.81129625285143,
-          211.34428526908437,
-          16.023728539317506,
-          19.98718290340182
+          310.14400356974465,
+          217.74053572051378,
+          18.75,
+          26.25
         ],
         "catch": [
-          274.6875,
-          211.875,
-          16.023728539317506,
-          19.98718290340182
+          316.3211176594831,
+          252.71153498630727,
+          18.75,
+          26.25
         ]
       }
     },
@@ -1603,34 +1743,32 @@
         },
         "throw": {
           "frames": [
-            "rest",
-            "prepare-soft",
-            "prepare",
-            "throw-edge",
-            "empty-release",
-            "release",
-            "settle"
+            "whole-throw-1",
+            "whole-throw-2",
+            "whole-throw-3",
+            "whole-throw-4",
+            "whole-throw-5",
+            "whole-throw-6"
           ],
           "durations": [
-            50,
-            50,
-            50,
-            50,
+            70,
+            90,
+            55,
             45,
-            65,
-            80
+            75,
+            100
           ]
         },
         "pickup": {
           "frames": [
-            "prepare",
-            "prepare-soft",
-            "rest"
+            "whole-receive-4",
+            "whole-receive-5",
+            "whole-receive-6"
           ],
           "durations": [
-            65,
             55,
-            60
+            75,
+            100
           ]
         },
         "tumble": {
@@ -1813,14 +1951,14 @@
         },
         "receive-ready": {
           "frames": [
-            "release",
-            "reach",
-            "empty-grip"
+            "whole-receive-1",
+            "whole-receive-2",
+            "whole-receive-3"
           ],
           "durations": [
-            40,
-            40,
-            60
+            80,
+            70,
+            10
           ]
         }
       },
@@ -2152,23 +2290,95 @@
           504,
           455,
           1040
+        ],
+        "whole-throw-1": [
+          791,
+          515,
+          460,
+          1024
+        ],
+        "whole-throw-2": [
+          786,
+          512,
+          586,
+          1027
+        ],
+        "whole-throw-3": [
+          788,
+          515,
+          556,
+          1023
+        ],
+        "whole-throw-4": [
+          786,
+          511,
+          594,
+          1028
+        ],
+        "whole-throw-5": [
+          789,
+          516,
+          721,
+          1022
+        ],
+        "whole-throw-6": [
+          789,
+          510,
+          474,
+          1029
+        ],
+        "whole-receive-1": [
+          789,
+          511,
+          462,
+          1028
+        ],
+        "whole-receive-2": [
+          789,
+          514,
+          528,
+          1024
+        ],
+        "whole-receive-3": [
+          783,
+          514,
+          547,
+          1025
+        ],
+        "whole-receive-4": [
+          785,
+          514,
+          533,
+          1025
+        ],
+        "whole-receive-5": [
+          780,
+          513,
+          471,
+          1025
+        ],
+        "whole-receive-6": [
+          787,
+          513,
+          466,
+          1025
         ]
       },
       "handoff": {
-        "releaseMs": 200,
-        "released": "empty-release",
-        "caught": "prepare",
+        "releaseMs": 215,
+        "released": "whole-throw-4",
+        "caught": "whole-receive-4",
         "release": [
-          263.7221186303533,
-          205.69513027415934,
-          18.668639535770655,
-          23.96165371547788
+          317.297517351842,
+          214.17975840896958,
+          18.75,
+          26.25
         ],
         "catch": [
-          263.75,
-          205.9375,
-          18.668639535770655,
-          23.96165371547788
+          317.5478390957447,
+          241.24910239361702,
+          18.75,
+          26.25
         ]
       }
     },
@@ -2326,34 +2536,32 @@
         },
         "throw": {
           "frames": [
-            "rest",
-            "prepare-soft",
-            "prepare",
-            "throw-edge",
-            "empty-release",
-            "release",
-            "settle"
+            "whole-throw-1",
+            "whole-throw-2",
+            "whole-throw-3",
+            "whole-throw-4",
+            "whole-throw-5",
+            "whole-throw-6"
           ],
           "durations": [
-            50,
-            50,
-            50,
-            50,
+            70,
+            90,
+            55,
             45,
-            65,
-            80
+            75,
+            100
           ]
         },
         "pickup": {
           "frames": [
-            "prepare",
-            "prepare-soft",
-            "rest"
+            "whole-receive-4",
+            "whole-receive-5",
+            "whole-receive-6"
           ],
           "durations": [
-            65,
             55,
-            60
+            75,
+            100
           ]
         },
         "tumble": {
@@ -2536,14 +2744,14 @@
         },
         "receive-ready": {
           "frames": [
-            "release",
-            "reach",
-            "empty-grip"
+            "whole-receive-1",
+            "whole-receive-2",
+            "whole-receive-3"
           ],
           "durations": [
-            40,
-            40,
-            60
+            80,
+            70,
+            10
           ]
         }
       },
@@ -2875,23 +3083,95 @@
           504,
           503,
           1040
+        ],
+        "whole-throw-1": [
+          777,
+          514,
+          490,
+          1024
+        ],
+        "whole-throw-2": [
+          778,
+          511,
+          618,
+          1027
+        ],
+        "whole-throw-3": [
+          758,
+          512,
+          586,
+          1026
+        ],
+        "whole-throw-4": [
+          767,
+          513,
+          642,
+          1025
+        ],
+        "whole-throw-5": [
+          770,
+          512,
+          690,
+          1026
+        ],
+        "whole-throw-6": [
+          774,
+          513,
+          511,
+          1025
+        ],
+        "whole-receive-1": [
+          765,
+          513,
+          511,
+          1025
+        ],
+        "whole-receive-2": [
+          762,
+          513,
+          591,
+          1026
+        ],
+        "whole-receive-3": [
+          778,
+          513,
+          553,
+          1025
+        ],
+        "whole-receive-4": [
+          784,
+          513,
+          542,
+          1025
+        ],
+        "whole-receive-5": [
+          769,
+          514,
+          517,
+          1025
+        ],
+        "whole-receive-6": [
+          766,
+          513,
+          516,
+          1026
         ]
       },
       "handoff": {
-        "releaseMs": 200,
-        "released": "empty-release",
-        "caught": "prepare",
+        "releaseMs": 215,
+        "released": "whole-throw-4",
+        "caught": "whole-receive-4",
         "release": [
-          273.04195489233354,
-          213.01617414097765,
-          16.82000233117131,
-          23.369788312098244
+          319.38766891891896,
+          220.12909876788555,
+          18.75,
+          26.25
         ],
         "catch": [
-          272.875,
-          213.5,
-          16.82000233117131,
-          23.369788312098244
+          319.3283342260311,
+          251.35680779659884,
+          18.75,
+          26.25
         ]
       }
     },
@@ -3049,34 +3329,32 @@
         },
         "throw": {
           "frames": [
-            "rest",
-            "prepare-soft",
-            "prepare",
-            "throw-edge",
-            "empty-release",
-            "release",
-            "settle"
+            "whole-throw-1",
+            "whole-throw-2",
+            "whole-throw-3",
+            "whole-throw-4",
+            "whole-throw-5",
+            "whole-throw-6"
           ],
           "durations": [
-            50,
-            50,
-            50,
-            50,
+            70,
+            90,
+            55,
             45,
-            65,
-            80
+            75,
+            100
           ]
         },
         "pickup": {
           "frames": [
-            "prepare",
-            "prepare-soft",
-            "rest"
+            "whole-receive-4",
+            "whole-receive-5",
+            "whole-receive-6"
           ],
           "durations": [
-            65,
             55,
-            60
+            75,
+            100
           ]
         },
         "tumble": {
@@ -3259,14 +3537,14 @@
         },
         "receive-ready": {
           "frames": [
-            "release",
-            "reach",
-            "empty-grip"
+            "whole-receive-1",
+            "whole-receive-2",
+            "whole-receive-3"
           ],
           "durations": [
-            40,
-            40,
-            60
+            80,
+            70,
+            10
           ]
         }
       },
@@ -3598,23 +3876,95 @@
           504,
           482,
           1040
+        ],
+        "whole-throw-1": [
+          754,
+          514,
+          496,
+          1025
+        ],
+        "whole-throw-2": [
+          758,
+          513,
+          598,
+          1025
+        ],
+        "whole-throw-3": [
+          745,
+          514,
+          559,
+          1025
+        ],
+        "whole-throw-4": [
+          745,
+          514,
+          620,
+          1025
+        ],
+        "whole-throw-5": [
+          760,
+          513,
+          679,
+          1025
+        ],
+        "whole-throw-6": [
+          765,
+          513,
+          487,
+          1026
+        ],
+        "whole-receive-1": [
+          756,
+          512,
+          495,
+          1026
+        ],
+        "whole-receive-2": [
+          766,
+          513,
+          481,
+          1025
+        ],
+        "whole-receive-3": [
+          750,
+          513,
+          535,
+          1025
+        ],
+        "whole-receive-4": [
+          750,
+          513,
+          566,
+          1025
+        ],
+        "whole-receive-5": [
+          758,
+          516,
+          490,
+          1023
+        ],
+        "whole-receive-6": [
+          761,
+          511,
+          483,
+          1028
         ]
       },
       "handoff": {
-        "releaseMs": 200,
-        "released": "empty-release",
-        "caught": "prepare",
+        "releaseMs": 215,
+        "released": "whole-throw-4",
+        "caught": "whole-receive-4",
         "release": [
-          264.6543891947101,
-          205.4831536366878,
-          19.39928022872714,
-          23.37396624750147
+          307.9450020139635,
+          211.97667998120303,
+          18.75,
+          26.25
         ],
         "catch": [
-          264.6875,
-          205.75,
-          19.39928022872714,
-          23.37396624750147
+          316.72293882978727,
+          247.77751828457448,
+          18.75,
+          26.25
         ]
       }
     },
@@ -3772,34 +4122,32 @@
         },
         "throw": {
           "frames": [
-            "rest",
-            "prepare-soft",
-            "prepare",
-            "throw-edge",
-            "empty-release",
-            "release",
-            "settle"
+            "whole-throw-1",
+            "whole-throw-2",
+            "whole-throw-3",
+            "whole-throw-4",
+            "whole-throw-5",
+            "whole-throw-6"
           ],
           "durations": [
-            50,
-            50,
-            50,
-            50,
+            70,
+            90,
+            55,
             45,
-            65,
-            80
+            75,
+            100
           ]
         },
         "pickup": {
           "frames": [
-            "prepare",
-            "prepare-soft",
-            "rest"
+            "whole-receive-4",
+            "whole-receive-5",
+            "whole-receive-6"
           ],
           "durations": [
-            65,
             55,
-            60
+            75,
+            100
           ]
         },
         "tumble": {
@@ -3982,14 +4330,14 @@
         },
         "receive-ready": {
           "frames": [
-            "release",
-            "reach",
-            "empty-grip"
+            "whole-receive-1",
+            "whole-receive-2",
+            "whole-receive-3"
           ],
           "durations": [
-            40,
-            40,
-            60
+            80,
+            70,
+            10
           ]
         }
       },
@@ -4321,23 +4669,95 @@
           504,
           639,
           1040
+        ],
+        "whole-throw-1": [
+          698,
+          513,
+          643,
+          1025
+        ],
+        "whole-throw-2": [
+          698,
+          513,
+          741,
+          1026
+        ],
+        "whole-throw-3": [
+          703,
+          513,
+          685,
+          1025
+        ],
+        "whole-throw-4": [
+          703,
+          513,
+          725,
+          1025
+        ],
+        "whole-throw-5": [
+          699,
+          513,
+          885,
+          1025
+        ],
+        "whole-throw-6": [
+          707,
+          511,
+          628,
+          1027
+        ],
+        "whole-receive-1": [
+          697,
+          510,
+          639,
+          1030
+        ],
+        "whole-receive-2": [
+          705,
+          517,
+          646,
+          1021
+        ],
+        "whole-receive-3": [
+          698,
+          513,
+          692,
+          1025
+        ],
+        "whole-receive-4": [
+          700,
+          513,
+          667,
+          1025
+        ],
+        "whole-receive-5": [
+          699,
+          513,
+          659,
+          1025
+        ],
+        "whole-receive-6": [
+          702,
+          514,
+          643,
+          1025
         ]
       },
       "handoff": {
-        "releaseMs": 200,
-        "released": "empty-release",
-        "caught": "prepare",
+        "releaseMs": 215,
+        "released": "whole-throw-4",
+        "caught": "whole-receive-4",
         "release": [
-          274.1612584681732,
-          203.23352191854264,
-          23.295880230091345,
-          22.580905289703104
+          326.4418176670442,
+          215.70583238958096,
+          18.75,
+          26.25
         ],
         "catch": [
-          274.25,
-          203.75,
-          23.295880230091345,
-          22.580905289703104
+          327.02440377149196,
+          244.51777419578477,
+          18.75,
+          26.25
         ]
       }
     },
@@ -4495,34 +4915,32 @@
         },
         "throw": {
           "frames": [
-            "rest",
-            "prepare-soft",
-            "prepare",
-            "throw-edge",
-            "empty-release",
-            "release",
-            "settle"
+            "whole-throw-1",
+            "whole-throw-2",
+            "whole-throw-3",
+            "whole-throw-4",
+            "whole-throw-5",
+            "whole-throw-6"
           ],
           "durations": [
-            50,
-            50,
-            50,
-            50,
+            70,
+            90,
+            55,
             45,
-            65,
-            80
+            75,
+            100
           ]
         },
         "pickup": {
           "frames": [
-            "prepare",
-            "prepare-soft",
-            "rest"
+            "whole-receive-4",
+            "whole-receive-5",
+            "whole-receive-6"
           ],
           "durations": [
-            65,
             55,
-            60
+            75,
+            100
           ]
         },
         "tumble": {
@@ -4705,14 +5123,14 @@
         },
         "receive-ready": {
           "frames": [
-            "release",
-            "reach",
-            "empty-grip"
+            "whole-receive-1",
+            "whole-receive-2",
+            "whole-receive-3"
           ],
           "durations": [
-            40,
-            40,
-            60
+            80,
+            70,
+            10
           ]
         }
       },
@@ -5044,23 +5462,95 @@
           504,
           487,
           1040
+        ],
+        "whole-throw-1": [
+          780,
+          511,
+          470,
+          1028
+        ],
+        "whole-throw-2": [
+          780,
+          515,
+          596,
+          1024
+        ],
+        "whole-throw-3": [
+          779,
+          512,
+          590,
+          1026
+        ],
+        "whole-throw-4": [
+          777,
+          513,
+          607,
+          1025
+        ],
+        "whole-throw-5": [
+          779,
+          513,
+          758,
+          1025
+        ],
+        "whole-throw-6": [
+          779,
+          513,
+          468,
+          1025
+        ],
+        "whole-receive-1": [
+          788,
+          513,
+          468,
+          1026
+        ],
+        "whole-receive-2": [
+          790,
+          514,
+          515,
+          1024
+        ],
+        "whole-receive-3": [
+          783,
+          514,
+          573,
+          1025
+        ],
+        "whole-receive-4": [
+          785,
+          514,
+          546,
+          1025
+        ],
+        "whole-receive-5": [
+          784,
+          513,
+          472,
+          1025
+        ],
+        "whole-receive-6": [
+          786,
+          513,
+          475,
+          1025
         ]
       },
       "handoff": {
-        "releaseMs": 200,
-        "released": "empty-release",
-        "caught": "prepare",
+        "releaseMs": 215,
+        "released": "whole-throw-4",
+        "caught": "whole-receive-4",
         "release": [
-          270.2661036391833,
-          216.84014783602112,
-          15.508062419270823,
-          20.506096654409877
+          325.1617898474487,
+          221.987662743293,
+          18.75,
+          26.25
         ],
         "catch": [
-          270.0,
-          217.25,
-          15.508062419270823,
-          20.506096654409877
+          321.48387820512824,
+          249.573984375,
+          18.75,
+          26.25
         ]
       }
     },
@@ -5218,34 +5708,32 @@
         },
         "throw": {
           "frames": [
-            "rest",
-            "prepare-soft",
-            "prepare",
-            "throw-edge",
-            "empty-release",
-            "release",
-            "settle"
+            "whole-throw-1",
+            "whole-throw-2",
+            "whole-throw-3",
+            "whole-throw-4",
+            "whole-throw-5",
+            "whole-throw-6"
           ],
           "durations": [
-            50,
-            50,
-            50,
-            50,
+            70,
+            90,
+            55,
             45,
-            65,
-            80
+            75,
+            100
           ]
         },
         "pickup": {
           "frames": [
-            "prepare",
-            "prepare-soft",
-            "rest"
+            "whole-receive-4",
+            "whole-receive-5",
+            "whole-receive-6"
           ],
           "durations": [
-            65,
             55,
-            60
+            75,
+            100
           ]
         },
         "tumble": {
@@ -5428,14 +5916,14 @@
         },
         "receive-ready": {
           "frames": [
-            "release",
-            "reach",
-            "empty-grip"
+            "whole-receive-1",
+            "whole-receive-2",
+            "whole-receive-3"
           ],
           "durations": [
-            40,
-            40,
-            60
+            80,
+            70,
+            10
           ]
         }
       },
@@ -5767,25 +6255,99 @@
           504,
           476,
           1040
+        ],
+        "whole-throw-1": [
+          762,
+          513,
+          466,
+          1025
+        ],
+        "whole-throw-2": [
+          770,
+          513,
+          596,
+          1026
+        ],
+        "whole-throw-3": [
+          753,
+          513,
+          583,
+          1025
+        ],
+        "whole-throw-4": [
+          756,
+          514,
+          576,
+          1025
+        ],
+        "whole-throw-5": [
+          772,
+          511,
+          719,
+          1027
+        ],
+        "whole-throw-6": [
+          772,
+          515,
+          467,
+          1024
+        ],
+        "whole-receive-1": [
+          758,
+          515,
+          472,
+          1024
+        ],
+        "whole-receive-2": [
+          763,
+          513,
+          512,
+          1026
+        ],
+        "whole-receive-3": [
+          764,
+          513,
+          532,
+          1025
+        ],
+        "whole-receive-4": [
+          767,
+          513,
+          550,
+          1025
+        ],
+        "whole-receive-5": [
+          761,
+          513,
+          480,
+          1025
+        ],
+        "whole-receive-6": [
+          770,
+          514,
+          464,
+          1025
         ]
       },
       "handoff": {
-        "releaseMs": 200,
-        "released": "empty-release",
-        "caught": "prepare",
+        "releaseMs": 215,
+        "released": "whole-throw-4",
+        "caught": "whole-receive-4",
         "release": [
-          263.96252493656146,
-          202.93789233413037,
-          15.807598255163121,
-          19.63010784448546
+          311.7570764186296,
+          201.81556142933616,
+          18.75,
+          26.25
         ],
         "catch": [
-          264.0625,
-          203.1875,
-          15.807598255163121,
-          19.63010784448546
+          319.0616626473741,
+          241.30224243033229,
+          18.75,
+          26.25
         ]
       }
     }
-  }
+  },
+  "wholeActionRevision": "approved-eight-v1",
+  "cardBackRevision": "actual-rounded-back-v1"
 }

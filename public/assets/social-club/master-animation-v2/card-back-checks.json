@@ -1,0 +1,3746 @@
+[
+  {
+    "character": "vince",
+    "frame": "airfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "airfall-low",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "amused",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "bounce",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "defeated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "delighted",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "down",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "down-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "fall-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "floor",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "frustrated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "impact",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "left",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "left-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "midfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "nervous",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "panic-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "panicked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "prepare",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "prepare-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "reach",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "recoil",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "relieved",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "rest",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "right",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "right-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "settle",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "shocked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "smug",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "throw-edge",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "tumble-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "down-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "down-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "nervous-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "nervous-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "panicked-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "panicked-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "amused-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "amused-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "smug-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "smug-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "frustrated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "frustrated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "defeated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "defeated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "release-blink-half",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "release-blink",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "empty-grip",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "vince",
+    "frame": "empty-release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "airfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "airfall-low",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "amused",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "bounce",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "defeated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "delighted",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "down",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "down-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "fall-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "floor",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "frustrated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "impact",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "left",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "left-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "midfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "nervous",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "panic-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "panicked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "prepare",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "prepare-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "reach",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "recoil",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "relieved",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "rest",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "right",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "right-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "settle",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "shocked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "smug",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "throw-edge",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "tumble-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "down-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "down-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "nervous-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "nervous-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "panicked-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "panicked-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "amused-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "amused-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "smug-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "smug-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "frustrated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "frustrated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "defeated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "defeated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "release-blink-half",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "release-blink",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "empty-grip",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "finn",
+    "frame": "empty-release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "airfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "airfall-low",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "amused",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "bounce",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "defeated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "delighted",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "down",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "down-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "fall-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "floor",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "frustrated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "impact",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "left",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "left-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "midfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "nervous",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "panic-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "panicked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "prepare",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "prepare-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "reach",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "recoil",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "relieved",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "rest",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "right",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "right-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "settle",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "shocked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "smug",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "throw-edge",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "tumble-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "down-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "down-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "nervous-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "nervous-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "panicked-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "panicked-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "amused-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "amused-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "smug-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "smug-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "frustrated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "frustrated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "defeated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "defeated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "release-blink-half",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "release-blink",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "empty-grip",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "june",
+    "frame": "empty-release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "airfall",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "airfall-low",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "amused",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "bounce",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "defeated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "delighted",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "down",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "down-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "fall-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "floor",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "frustrated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "impact",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "left",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "left-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "midfall",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "nervous",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "panic-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "panicked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "prepare",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "prepare-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "reach",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "recoil",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "relieved",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "rest",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "right",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "right-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "settle",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "shocked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "smug",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "throw-edge",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "tumble-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "down-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "down-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "nervous-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "nervous-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "panicked-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "panicked-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "amused-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "amused-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "smug-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "smug-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "frustrated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "frustrated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "defeated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "defeated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "release-blink-half",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "release-blink",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "empty-grip",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "edgar",
+    "frame": "empty-release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "airfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "airfall-low",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "amused",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "bounce",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "defeated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "delighted",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "down",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "down-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "fall-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "floor",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "frustrated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "impact",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "left",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "left-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "midfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "nervous",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "panic-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "panicked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "prepare",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "prepare-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "reach",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "recoil",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "relieved",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "rest",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "right",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "right-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "settle",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "shocked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "smug",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "throw-edge",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "tumble-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "down-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "down-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "nervous-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "nervous-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "panicked-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "panicked-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "amused-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "amused-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "smug-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "smug-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "frustrated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "frustrated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "defeated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "defeated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "release-blink-half",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "release-blink",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "empty-grip",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "roxie",
+    "frame": "empty-release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "airfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "airfall-low",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "amused",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "bounce",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "defeated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "delighted",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "down",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "down-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "fall-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "floor",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "frustrated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "impact",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "left",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "left-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "midfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "nervous",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "panic-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "panicked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "prepare",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "prepare-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "reach",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "recoil",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "relieved",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "rest",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "right",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "right-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "settle",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "shocked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "smug",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "throw-edge",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "tumble-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "down-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "down-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "nervous-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "nervous-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "panicked-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "panicked-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "amused-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "amused-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "smug-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "smug-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "frustrated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "frustrated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "defeated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "defeated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "release-blink-half",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "release-blink",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "empty-grip",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "otis",
+    "frame": "empty-release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "airfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "airfall-low",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "amused",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "bounce",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "defeated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "delighted",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "down",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "down-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "fall-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "floor",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "frustrated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "impact",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "left",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "left-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "midfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "nervous",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "panic-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "panicked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "prepare",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "prepare-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "reach",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "recoil",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "relieved",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "rest",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "right",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "right-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "settle",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "shocked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "smug",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "throw-edge",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "tumble-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "down-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "down-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "nervous-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "nervous-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "panicked-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "panicked-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "amused-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "amused-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "smug-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "smug-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "frustrated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "frustrated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "defeated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "defeated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "release-blink-half",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "release-blink",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "empty-grip",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "paloma",
+    "frame": "empty-release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "airfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "airfall-low",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "amused",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "bounce",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "defeated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "delighted",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "down",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "down-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "fall-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "floor",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "frustrated",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "impact",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "left",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "left-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "midfall",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "nervous",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "panic-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "panicked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "prepare",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "prepare-soft",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "reach",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "recoil",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "relieved",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "rest",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "right",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "right-mid",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "settle",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "shocked",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "smug",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "throw-edge",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "tumble-start",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "down-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "down-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "nervous-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "nervous-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "panicked-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "panicked-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "amused-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "amused-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "smug-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "smug-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "frustrated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "frustrated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "defeated-blink-half",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "defeated-blink",
+    "cardsReplaced": 2,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "release-blink-half",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "release-blink",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "empty-grip",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  },
+  {
+    "character": "bianca",
+    "frame": "empty-release",
+    "cardsReplaced": 1,
+    "cornerRadiusRatio": 0.055,
+    "facesAndBodyOutsideCardsUnchanged": true,
+    "handsPreserved": true,
+    "nativeResolution": true
+  }
+]

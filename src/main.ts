@@ -241,6 +241,13 @@ async function animateDrawToHand(card: Card): Promise<void> {
 
   receivingCardIds.add(card.id);
   target.classList.add('receiving-card');
+  const drawRound = gameRoundKey();
+  await playerRing.prepareDraw(localSeat());
+  if (drawRound !== gameRoundKey()) {
+    receivingCardIds.delete(card.id);
+    target.classList.remove('receiving-card');
+    return;
+  }
   const reveal=()=>{
     playerRing.received(localSeat());
     receivingCardIds.delete(card.id);

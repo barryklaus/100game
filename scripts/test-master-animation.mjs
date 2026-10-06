@@ -15,16 +15,16 @@ const advance=async ms=>{const end=time+ms;while(true){const next=[...timers.ent
 const state={active:0,total:0,overflow:false,target:false,reducedMotion:false};const cast=new MasterAnimations(root);
 cast.sync(state);await flush();const initial=paints;cast.sync(state);await flush();assert.equal(paints,initial,'Unchanged renders keep the same drawing');
 for(let index=0;index<8;index++){
- const throwing=cast.prepareThrow(index);await flush();await advance(201);assert((await throwing).width>0);
- assert.equal(nodes[index].element.dataset.frame,'throw-edge','Flight waits for the prepared working card');
+ const throwing=cast.prepareThrow(index);await flush();await advance(216);assert((await throwing).width>0);
+ assert.equal(nodes[index].element.dataset.frame,'whole-throw-3','Flight waits for the prepared working card');
  cast.sync(state);await flush();await advance(1600);
- assert.equal(nodes[index].element.dataset.frame,'throw-edge','Renders and idle clocks cannot reset the hand while a flight is being prepared');
- cast.release(index);assert.equal(nodes[index].element.dataset.cards,'1');assert.equal(nodes[index].element.dataset.frame,'empty-release','Card disappears synchronously in the flight start callback');await flush();await advance(300);
- const reaching=cast.prepareDraw(index);await flush();await advance(141);await reaching;
- assert.equal(nodes[index].element.dataset.frame,'empty-grip');assert.equal(nodes[index].element.dataset.cards,'1','No second painted card before the actual flight arrives');
+ assert.equal(nodes[index].element.dataset.frame,'whole-throw-3','Renders and idle clocks cannot reset the hand while a flight is being prepared');
+ cast.release(index);assert.equal(nodes[index].element.dataset.cards,'1');assert.equal(nodes[index].element.dataset.frame,'whole-throw-4','Card disappears synchronously in the flight start callback');await flush();await advance(300);
+ const reaching=cast.prepareDraw(index);await flush();await advance(161);await reaching;
+ assert.equal(nodes[index].element.dataset.frame,'whole-receive-3');assert.equal(nodes[index].element.dataset.cards,'1','No second painted card before the actual flight arrives');
  cast.sync({...state,active:(index+1)%8});await flush();await advance(4000);
- assert.equal(nodes[index].element.dataset.frame,'empty-grip','Slow replacement flights keep the receiving hand held without blinking or turn reactions replacing it');
- const received=cast.received(index);assert.equal(nodes[index].element.dataset.cards,'2');assert.equal(nodes[index].element.dataset.frame,'prepare','The card is caught at the matching grip synchronously');await flush();await advance(1000);await received;
+ assert.equal(nodes[index].element.dataset.frame,'whole-receive-3','Slow replacement flights keep the receiving hand held without blinking or turn reactions replacing it');
+ const received=cast.received(index);assert.equal(nodes[index].element.dataset.cards,'2');assert.equal(nodes[index].element.dataset.frame,'whole-receive-4','The card is caught at the matching grip synchronously');await flush();await advance(1000);await received;
  assert(!nodes[index].element.dataset.animation||nodes[index].element.dataset.animation.startsWith('blink-'),'Draw settles; only an independent short blink may follow');
 }
 cast.chosen(4,1);await flush();assert.equal(nodes[4].element.dataset.animation,'choose-left');await advance(1000);cast.chosen(1,4);await flush();assert.equal(nodes[1].element.dataset.animation,'choose-right');await advance(1000);
@@ -43,7 +43,7 @@ assert(blinkCounts.slice(0,4).every(n=>n>=3),'All four visible seats blink repea
 assert(blinkCounts.slice(4).every(n=>n===0),'Offscreen characters never request or paint idle blinks');
 assert.equal(new Set(nodes.slice(0,4).map(n=>n.history.find(h=>h.url.endsWith('/nervous-blink.webp')).time)).size,4,'Characters blink at separate times');
 await advance(300);assert(nodes.slice(0,4).every(n=>n.element.dataset.frame==='nervous'),'Blink keeps the nervous expression');
-const play=cast.prepareThrow(0);await flush();await advance(201);await play;cast.release(0);await flush();await advance(6000);
+const play=cast.prepareThrow(0);await flush();await advance(216);await play;cast.release(0);await flush();await advance(6000);
 assert(nodes[0].history.some(h=>h.url.endsWith('/release-blink.webp')),'The one-card pose can blink without adding a card');
 assert.equal(nodes[0].element.dataset.cards,'1');
 document.hidden=true;await advance(300);const beforeHidden=paints;await advance(12000);assert.equal(paints,beforeHidden,'Background tabs do not paint blink frames');document.hidden=false;
@@ -54,6 +54,8 @@ cast.reset();nodes.forEach(n=>{n.hidden=false;n.history.length=0;});Math.random=
 cast.sync(state);await flush();waitDecode=true;await advance(5000);
 const duringBlink=cast.prepareThrow(0);await flush();cast.release(0);await flush();waitDecode=false;pending.splice(0).forEach(resolve=>resolve());await flush();await advance(600);await duringBlink;
 assert.equal(nodes[0].element.dataset.cards,'1');assert.equal(nodes[0].element.dataset.frame,'release');cast.reset();assert.equal(timers.size,0);
+const cardAudit=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/card-back-checks.json'));assert.equal(new Set(cardAudit.map(x=>x.character)).size,8);assert(cardAudit.every(x=>x.handsPreserved&&x.facesAndBodyOutsideCardsUnchanged&&x.cornerRadiusRatio===.055));
+const actionAudit=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/whole-action-checks.json'));assert.equal(actionAudit.length,96);assert(actionAudit.every(x=>x.nativePixelsIdentical));
 const data=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/manifest.json'));assert.equal(data.nativeCanvas,2048);assert.equal(data.resampled,false);
 for(const [id,set] of Object.entries(data.characters))for(const [frame,[x,y,w,h]] of Object.entries(set.bounds)){assert(x>=0&&y>=0&&x+w<=2048&&y+h<=2048);assert(existsSync(`public/assets/social-club/master-animation-v2/${id}/${frame}.webp`));}
 console.log('Master animation checks passed: all eight cast actions, held release/catch poses through delayed flights, synchronous card removal/arrival, faster gestures, staggered blinks, expression/card preservation, pauses, reactions, floor landing, cancellation, reduced motion and native assets.');
