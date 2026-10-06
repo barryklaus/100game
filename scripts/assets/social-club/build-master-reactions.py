@@ -6,7 +6,7 @@ the master exactly. No whole-frame fitting, body resizing or pose chaining.
 The owner explicitly approved this pixel-preserving authoring method.
 """
 from pathlib import Path
-import json, hashlib
+import json, hashlib, runpy
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
@@ -73,6 +73,9 @@ def glance(master,boxes,dx=0,dy=0):
  return frame
 
 def blink(master,boxes,closed):
+ if boxes==EYES['bianca']:
+  repair=runpy.run_path(str(Path(__file__).with_name('repair-bianca-blinks.py')))
+  return repair['bianca_blink'](master,closed)
  frame=master.copy()
  for box in boxes:
   crop,mask,iris,white,skin=eye_data(master,box)
@@ -138,6 +141,7 @@ def build(slug):
   'right-mid':glance(master,EYES[slug],3),'right':glance(master,EYES[slug],7),
   'down-mid':glance(master,EYES[slug],0,2),'down':glance(master,EYES[slug],0,5)}
  allowed=np.zeros((2048,2048),bool)
+ if slug=='bianca':allowed[629:677,953:1081]=True
  for x0,y0,x1,y1 in EYES[slug]:allowed[y0:y1,x0:x1]=1
  checks=[]
  for key,frame in frames.items():

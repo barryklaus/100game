@@ -30,6 +30,7 @@ def build(slug):
             shutil.copy2(file,destination/file.name)
     master=Image.open(SOURCE/(slug+'-master'+('-v2' if slug=='finn' else '')+'.png')).convert('RGBA')
     base=np.array(master);allowed=np.zeros((2048,2048),bool)
+    if slug=='bianca':allowed[629:677,953:1081]=True
     for x0,y0,x1,y1 in EYES[slug]+[MOUTHS[slug]]:allowed[y0:y1,x0:x1]=True
     frames={}
     kinds=['nervous','panic-soft','panicked','shock-soft','shocked','amused','smug','relieved','frustrated','defeated','delighted']

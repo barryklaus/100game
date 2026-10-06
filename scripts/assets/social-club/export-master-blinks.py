@@ -15,7 +15,7 @@ helpers = runpy.run_path(str(Path(__file__).with_name('build-master-reactions.py
 data = json.loads((dest / 'manifest.json').read_text())
 checks = []
 for slug, character in data['characters'].items():
-    boxes = helpers['EYES'][slug]
+    boxes = [(953,629,1081,677)] if slug=='bianca' else helpers['EYES'][slug]
     allowed = np.zeros((2048,2048),bool)
     for x0,y0,x1,y1 in boxes: allowed[y0:y1,x0:x1] = True
     lids = {key:Image.open(source/slug/(key+'.png')).convert('RGBA') for key in ['blink-half','blink']}
