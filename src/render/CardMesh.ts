@@ -113,6 +113,11 @@ function cardFoilMaterial(special: boolean, suit: Suit, midnight = false): THREE
       uniform float uSuit;
       uniform float uMidnight;
       uniform float uRainbow;
+      float foilHash(vec2 p) {
+        vec3 h = fract(vec3(p.xyx) * 0.1031);
+        h += dot(h, h.yzx + 33.33);
+        return fract((h.x + h.y) * h.z);
+      }
       float motif(vec2 uv) {
         vec2 p = fract(uv * vec2(16.0, 22.0)) - 0.5;
         if (uSuit < 0.5) { // Repeating little flame tongues.
@@ -177,19 +182,26 @@ function cardFoilMaterial(special: boolean, suit: Suit, midnight = false): THREE
         float groove = 0.5 + 0.5 * sin(phase * 48.0);
         if (uMidnight > 0.5) {
           // Continuous artwork laminate, including the corner labels; no rectangular cutouts.
-          float sweep = pow(max(0.0, cos(phase * 10.0)), 7.0);
-          float fine = pow(max(0.0, sin(phase * 69.0)), 32.0);
-          float glitter = motif(vUv) * pow(max(0.0, sin(vUv.x * 171.0 + vUv.y * 233.0 + uTilt * 8.0)), 16.0);
-          vec3 reflected = mix(brightMetal, vec3(1.0, 0.96, 0.84), 0.60 + fine * 0.35);
-          if (uRainbow > 0.5) {
-            float hue = vUv.x * 0.70 + vUv.y * 0.46 + uTilt * 1.35;
-            vec3 spectrum = 0.5 + 0.5 * cos(6.283185 * (hue + vec3(0.0, 0.333333, 0.666667)));
-            vec3 neonMetal = 0.025 + 0.975 * pow(spectrum, vec3(2.0));
-            reflected = mix(neonMetal, vec3(1.0), fine * 0.48);
+          if (uMotion <= 0.0) {
+            gl_FragColor = vec4(0.0);
+            return;
           }
-          reflected = mix(reflected, vec3(1.0, 0.98, 0.94), glitter * 0.75);
+          // Fixed flecks flash at individual angles, rather than drifting particles.
+          vec2 grainUv = vUv * vec2(230.0, 321.0);
+          float grain = foilHash(floor(grainUv));
+          float facet = 0.5 + 0.5 * sin(grain * 37.0 + uTilt * 19.0);
+          float glint = smoothstep(0.86, 0.995, facet);
+          float grainDetail = 1.0 - smoothstep(1.0, 2.4, max(fwidth(grainUv.x), fwidth(grainUv.y)));
+          float glitter = glint * grainDetail;
+          vec3 reflected = mix(brightMetal, vec3(0.80, 0.87, 0.94), 0.35);
+          if (uRainbow > 0.5) {
+            float hue = grain * 7.31 + uTilt * 0.90;
+            vec3 spectrum = 0.5 + 0.5 * cos(6.283185 * (hue + vec3(0.0, 0.333333, 0.666667)));
+            reflected = 0.008 + 0.992 * pow(spectrum, vec3(1.6));
+          }
+          reflected = mix(reflected, vec3(1.0), smoothstep(0.985, 0.999, facet) * 0.90);
           float moving = sqrt(clamp(uMotion * 1.8, 0.0, 1.0));
-          float alpha = moving * min(0.88, sweep * 0.85 + fine * 0.24 + glitter * 0.82 + motif(vUv) * 0.12) * mix(0.90, 1.0, uSpecial);
+          float alpha = moving * glitter * (0.80 + motif(vUv) * 0.14) * mix(0.80, 1.0, uSpecial);
           gl_FragColor = vec4(reflected, alpha);
           #include <colorspace_fragment>
           return;

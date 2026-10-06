@@ -342,17 +342,19 @@ button:active { translate:0 1px; }
   z-index:2;
   border-radius:4% / 2.8%;
   background:
-    var(--foil-motif) 0 0/32px 32px repeat,
-    repeating-linear-gradient(var(--foil-angle,35deg),transparent 0 20%,#ff15b0 24%,#5140ff 27%,#00dfff 30%,#3fff70 33%,#ffdd12 36%,transparent 41% 65%),
-    repeating-linear-gradient(var(--foil-angle,35deg),transparent 0 30%,var(--foil-bright) 34%,transparent 39% 60%);
+    radial-gradient(ellipse,#fff 0 10%,transparent 32%) 1px 3px/7px 11px repeat,
+    radial-gradient(ellipse,#00dfff 0 10%,transparent 30%) 2px 1px/11px 7px repeat,
+    radial-gradient(ellipse,#ff14ad 0 8%,transparent 28%) 4px 3px/13px 17px repeat,
+    radial-gradient(ellipse,var(--foil-bright) 0 10%,transparent 30%) 3px 2px/17px 13px repeat;
+  background-position:var(--holo-x,50%) var(--holo-y,50%),var(--holo-y,50%) var(--holo-x,50%),var(--holo-x,50%) 3px,3px var(--holo-y,50%);
   background-blend-mode:screen;
   mix-blend-mode:screen;
   -webkit-mask:none;
   mask:none;
-  opacity:calc(var(--foil-motion,0) * .65)!important;
-  filter:saturate(1.4)!important;
+  opacity:calc(var(--foil-motion,0) * .72)!important;
+  filter:saturate(1.6)!important;
 }
-.midnight-mode .playing-card.special::after {bottom:22.15%;opacity:calc(var(--foil-motion,0) * .85)!important;}
+.midnight-mode .playing-card.special::after {bottom:22.15%;opacity:calc(var(--foil-motion,0) * .92)!important;}
 .midnight-mode.world3d-active .hand-card.mesh-ready::after {display:none!important;}
 .midnight-mode.world3d-active .hand-card.mesh-ready {background:transparent!important;}
 .draw-flight .playing-card.draw-front {width:100%;height:100%;}
