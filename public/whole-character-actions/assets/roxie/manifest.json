@@ -1,0 +1,228 @@
+{
+  "character": "roxie",
+  "nativeCanvas": 2048,
+  "authoringCell": 3072,
+  "cellInset": 512,
+  "revision": "whole-eight-v1",
+  "separateHead": false,
+  "clips": {
+    "throw": {
+      "frames": [
+        "throw-1",
+        "throw-2",
+        "throw-3",
+        "throw-4",
+        "throw-5",
+        "throw-6"
+      ],
+      "durations": [
+        70,
+        90,
+        55,
+        45,
+        75,
+        100
+      ],
+      "flight": [
+        215,
+        560
+      ],
+      "hand": [
+        1231.780008055854,
+        847.9067199248121
+      ],
+      "pile": [
+        1470,
+        1300
+      ]
+    },
+    "receive": {
+      "frames": [
+        "receive-1",
+        "receive-2",
+        "receive-3",
+        "receive-4",
+        "receive-5",
+        "receive-6"
+      ],
+      "durations": [
+        80,
+        70,
+        490,
+        55,
+        75,
+        100
+      ],
+      "flight": [
+        160,
+        640
+      ],
+      "hand": [
+        1266.891755319149,
+        991.1100731382979
+      ],
+      "pile": [
+        680,
+        1300
+      ]
+    }
+  },
+  "checks": [
+    {
+      "frame": "throw-1",
+      "bounds": [
+        754,
+        514,
+        1250,
+        1539
+      ],
+      "clearance": 509,
+      "cardCount": 2,
+      "wholeDrawing": true,
+      "scale": 1.103448275862069
+    },
+    {
+      "frame": "throw-2",
+      "bounds": [
+        758,
+        513,
+        1356,
+        1538
+      ],
+      "clearance": 510,
+      "cardCount": 2,
+      "wholeDrawing": true,
+      "scale": 1.103448275862069
+    },
+    {
+      "frame": "throw-3",
+      "bounds": [
+        745,
+        514,
+        1304,
+        1539
+      ],
+      "clearance": 509,
+      "cardCount": 2,
+      "wholeDrawing": true,
+      "scale": 1.099892588614393
+    },
+    {
+      "frame": "throw-4",
+      "bounds": [
+        745,
+        514,
+        1365,
+        1539
+      ],
+      "clearance": 509,
+      "cardCount": 1,
+      "wholeDrawing": true,
+      "scale": 1.099892588614393
+    },
+    {
+      "frame": "throw-5",
+      "bounds": [
+        760,
+        513,
+        1439,
+        1538
+      ],
+      "clearance": 510,
+      "cardCount": 1,
+      "wholeDrawing": true,
+      "scale": 1.094601817210048
+    },
+    {
+      "frame": "throw-6",
+      "bounds": [
+        765,
+        513,
+        1252,
+        1539
+      ],
+      "clearance": 509,
+      "cardCount": 1,
+      "wholeDrawing": true,
+      "scale": 1.094601817210048
+    },
+    {
+      "frame": "receive-1",
+      "bounds": [
+        756,
+        512,
+        1251,
+        1538
+      ],
+      "clearance": 510,
+      "cardCount": 1,
+      "wholeDrawing": true,
+      "scale": 1.072812991094814
+    },
+    {
+      "frame": "receive-2",
+      "bounds": [
+        766,
+        513,
+        1247,
+        1538
+      ],
+      "clearance": 510,
+      "cardCount": 1,
+      "wholeDrawing": true,
+      "scale": 1.072812991094814
+    },
+    {
+      "frame": "receive-3",
+      "bounds": [
+        750,
+        513,
+        1285,
+        1538
+      ],
+      "clearance": 510,
+      "cardCount": 1,
+      "wholeDrawing": true,
+      "scale": 1.0893617021276596
+    },
+    {
+      "frame": "receive-4",
+      "bounds": [
+        750,
+        513,
+        1316,
+        1538
+      ],
+      "clearance": 510,
+      "cardCount": 2,
+      "wholeDrawing": true,
+      "scale": 1.0893617021276596
+    },
+    {
+      "frame": "receive-5",
+      "bounds": [
+        758,
+        516,
+        1248,
+        1539
+      ],
+      "clearance": 509,
+      "cardCount": 2,
+      "wholeDrawing": true,
+      "scale": 1.0928495197438635
+    },
+    {
+      "frame": "receive-6",
+      "bounds": [
+        761,
+        511,
+        1244,
+        1539
+      ],
+      "clearance": 509,
+      "cardCount": 2,
+      "wholeDrawing": true,
+      "scale": 1.0928495197438635
+    }
+  ]
+}
