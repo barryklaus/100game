@@ -1,0 +1,30 @@
+{
+  "tool": "built-in image_gen",
+  "approvedMockup": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-ca9c008d-a283-45e9-b8dc-8963f6a916c7.png",
+  "desktop": {
+    "prompt": "Use case: precise-object-edit. Production background plate for 100next. Input is approved mysterious cartoon game mockup. Remove ALL characters, all cards, all interface/text/buttons/counters, central number, and the entire large foreground oval playing table including its rim and gold markings. Reconstruct the room naturally behind those removals, extending the burgundy curved lounge banquette across the midground and a quiet deep midnight teal floor across the lower half. Preserve the approved room design and exact mature cartoon style: confident crisp ink outlines and simple cel shading, brass-traced tall arched observatory windows, moon behind blue clouds, crooked city rooftops and clock tower outside, warm amber sconces, curved bar and antique brass orrery at far left, dark velvet curtain and moon-emblem hidden doorway at far right, restrained plants. Match the approved composition with arches filling the upper half and dark uncluttered central windows for character heads. Quiet dark lower foreground so a separate live 3D table can be layered in front. Absolutely no large tables, no characters, no cards, no UI, no words or digits, no glowing constellations on the floor. Clean continuous full-bleed landscape room illustration, high resolution wide 16:9. Deliver ONLY the empty environment as one picture, not a screenshot or collage.",
+    "generatedSource": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-2cd84957-43e3-4ba9-868d-563dcd41a93a.png",
+    "master": "../output/100next-mysterious-table-v2/room-master.png",
+    "runtime": "public/assets/scene/midnight-mystery-v2/room-desktop.webp",
+    "size": [
+      1585,
+      992
+    ]
+  },
+  "portrait": {
+    "prompt": "Use case: precise-object-edit. Create the PORTRAIT companion background plate for this exact approved cartoon secret midnight observatory lounge. Same room, cartoon linework, midnight teal floor, plum velvet banquette, amber sconces, antique brass-traced arched windows, blue moonlit cloudy sky, city roofs and clock tower. Recompose vertically for a tall 9:16 mobile screen: windows and upper architecture occupy top 45%, a curved burgundy banquette at about 45-55%, quiet deep teal foreground floor across bottom half where the live game's table will cover it. Show a narrow slice of the brass orrery/bar at far left and curtain/moon door at far right if space allows, prioritizing uncluttered dark window space for four character heads. Moon and clock tower remain visible in upper central window. Clean cel shading and bold drawn outlines, match reference exactly, no realism. No people, no game table, no cards, no UI, no text or numbers. One full bleed portrait empty room image, not a collage, high resolution.",
+    "generatedSource": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-8078f6c7-24d9-4a5e-be3c-c5073d673d77.png",
+    "master": "../output/100next-mysterious-table-v2/room-mobile-master.png",
+    "runtime": "public/assets/scene/midnight-mystery-v2/room-mobile.webp",
+    "size": [
+      941,
+      1672
+    ]
+  },
+  "export": {
+    "format": "WebP",
+    "quality": 94,
+    "method": 6
+  },
+  "table": "Existing 3D geometry; one baked cartoon teal/gold atlas, illustrated walnut rail, ink edges. Existing danger tint and inward event light retained."
+}

@@ -64,7 +64,7 @@ export class ObservatoryScene {
   private bloom?: UnrealBloomPass;
   private ao?: SSAOPass;
   private cardMasks = new WeakMap<THREE.Material, THREE.Material>();
-  private table = new ObservatoryTable();
+  private table: ObservatoryTable;
   private cardFlow = new CardImpactFlow();
   private playKey = '';
   private pendingOverflow = false;
@@ -104,6 +104,7 @@ export class ObservatoryScene {
   private localSeat = 0;
 
   constructor(roomTheme: 'observatory' | 'midnight' = 'observatory') {
+    this.table = new ObservatoryTable(roomTheme === 'midnight');
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.info.autoReset=false;
@@ -121,7 +122,7 @@ export class ObservatoryScene {
     this.backdrop.hidden=true;
     const source=document.createElement('source');
     source.media='(orientation: portrait)';
-    const roomAssets = roomTheme === 'midnight' ? 'midnight-v1' : 'celestial-v1';
+    const roomAssets = roomTheme === 'midnight' ? 'midnight-mystery-v2' : 'celestial-v1';
     source.srcset=`${import.meta.env.BASE_URL}assets/scene/${roomAssets}/room-mobile.webp`;
     const image=document.createElement('img');
     image.src=`${import.meta.env.BASE_URL}assets/scene/${roomAssets}/room-desktop.webp`;

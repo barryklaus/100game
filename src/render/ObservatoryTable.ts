@@ -18,21 +18,27 @@ function inlaidRing(radius:number,width:number,material:THREE.Material):THREE.Me
 }
 
 /** One baked celestial atlas keeps the richer design at a single surface draw call. */
-function engraving():THREE.CanvasTexture {
+function engraving(cartoon=false):THREE.CanvasTexture {
   const canvas=document.createElement('canvas');canvas.width=canvas.height=2048;
   const c=canvas.getContext('2d')!;
-  c.fillStyle='#10243a';c.fillRect(0,0,2048,2048);
+  c.fillStyle=cartoon?'#073e49':'#10243a';c.fillRect(0,0,2048,2048);
   let seed=91;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
-  for(let i=0;i<48000;i++){c.fillStyle=random()>.5?'#ffffff05':'#0000000b';c.fillRect(random()*2048,random()*2048,random()*3+1,1);}
+  if(cartoon){
+    // Broad illustrated felt tones, baked once; no moving grain or extra draw calls.
+    const wash=c.createRadialGradient(880,670,180,1024,1024,1350);
+    wash.addColorStop(0,'#145362');wash.addColorStop(.65,'#0b414d');wash.addColorStop(1,'#062e39');
+    c.fillStyle=wash;c.fillRect(0,0,2048,2048);
+    for(let i=0;i<7000;i++){c.fillStyle=random()>.5?'#72b7b304':'#001c2906';c.fillRect(random()*2048,random()*2048,3,1);}
+  }else for(let i=0;i<48000;i++){c.fillStyle=random()>.5?'#ffffff05':'#0000000b';c.fillRect(random()*2048,random()*2048,random()*3+1,1);}
   c.translate(1024,1024);
-  const gold='#c6a360',fine='#8b754c',bright='#e3c785';
-  const circle=(r:number,color=gold,width=1.5)=>{c.strokeStyle=color;c.lineWidth=width;c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.stroke();};
+  const gold=cartoon?'#d2a950':'#c6a360',fine=cartoon?'#997b40':'#8b754c',bright=cartoon?'#eac16a':'#e3c785';
+  const circle=(r:number,color=gold,width=1.5)=>{c.strokeStyle=color;c.lineWidth=width*(cartoon?1.7:1);c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.stroke();};
   const star=(x:number,y:number,r:number)=>{
     c.save();c.translate(x,y);c.fillStyle=bright;c.beginPath();
     for(let i=0;i<8;i++){const a=i*Math.PI/4,s=i%2?r*.19:r;c.lineTo(Math.sin(a)*s,Math.cos(a)*s);}c.closePath();c.fill();c.restore();
   };
   const glyph=(path:string,x:number,y:number,size:number)=>{
-    c.save();c.translate(x,y);c.scale(size/100,size/100);c.strokeStyle=gold;c.lineWidth=5;c.lineCap='round';c.lineJoin='round';c.stroke(new Path2D(path));c.restore();
+    c.save();c.translate(x,y);c.scale(size/100,size/100);c.strokeStyle=gold;c.lineWidth=cartoon?6.5:5;c.lineCap='round';c.lineJoin='round';c.stroke(new Path2D(path));c.restore();
   };
   // Original vector glyphs stay crisp and identical across browser font families.
   const zodiac=[
@@ -56,10 +62,10 @@ function engraving():THREE.CanvasTexture {
   }
   for(let i=0;i<12;i++){
     const a=-Math.PI/2+i*Math.PI/6,x=Math.cos(a)*862,y=Math.sin(a)*862;
-    c.save();c.translate(x,y);circle(43,fine,1.2);circle(47,'#a98c52',.8);c.restore();glyph(zodiac[i],x,y,61);
+    c.save();c.translate(x,y);circle(cartoon?51:43,fine,1.2);if(!cartoon)circle(47,'#a98c52',.8);c.restore();glyph(zodiac[i],x,y,cartoon?78:61);
     // Spokes and star junctions connect the atlas to the central astrolabe.
     const junction=a+Math.PI/12;
-    c.strokeStyle=fine;c.lineWidth=1.2;c.beginPath();c.moveTo(Math.cos(junction)*815,Math.sin(junction)*815);c.lineTo(Math.cos(junction)*505,Math.sin(junction)*505);c.stroke();
+    c.strokeStyle=fine;c.lineWidth=cartoon?2.2:1.2;c.beginPath();c.moveTo(Math.cos(junction)*815,Math.sin(junction)*815);c.lineTo(Math.cos(junction)*505,Math.sin(junction)*505);c.stroke();
     star(Math.cos(junction)*495,Math.sin(junction)*495,9);
     star(Math.cos(junction)*795,Math.sin(junction)*795,7);
   }
@@ -68,8 +74,8 @@ function engraving():THREE.CanvasTexture {
   for(let i=0;i<24;i++){
     const a=i*Math.PI/12+.08,r=565+(i%3)*76;
     c.save();c.rotate(a);c.translate(r,0);c.rotate(-a+.25*(i%4));
-    const chain=chains[i%chains.length];c.strokeStyle='#a88a536e';c.lineWidth=1.2;c.beginPath();chain.forEach(([x,y],j)=>j?c.lineTo(x,y):c.moveTo(x,y));c.stroke();
-    chain.forEach(([x,y],j)=>{c.fillStyle=gold;c.beginPath();c.arc(x,y,j%2?2:3,0,Math.PI*2);c.fill();if(j%3===0)star(x,y,6);});c.restore();
+    const chain=chains[i%chains.length];c.strokeStyle=cartoon?'#bd965899':'#a88a536e';c.lineWidth=cartoon?2.1:1.2;c.beginPath();chain.forEach(([x,y],j)=>j?c.lineTo(x,y):c.moveTo(x,y));c.stroke();
+    chain.forEach(([x,y],j)=>{c.fillStyle=gold;c.beginPath();c.arc(x,y,(j%2?2:3)*(cartoon?1.4:1),0,Math.PI*2);c.fill();if(j%3===0)star(x,y,cartoon?9:6);});c.restore();
   }
   for(let i=0;i<160;i++){
     const a=random()*Math.PI*2,r=520+random()*258;star(Math.cos(a)*r,Math.sin(a)*r,random()>.93?6:1.2);
@@ -107,13 +113,13 @@ function engraving():THREE.CanvasTexture {
 }
 
 /** Baked walnut grain keeps the physical rim inexpensive at every quality tier. */
-function walnut():THREE.CanvasTexture {
+function walnut(cartoon=false):THREE.CanvasTexture {
   const canvas=document.createElement('canvas');canvas.width=canvas.height=512;
-  const c=canvas.getContext('2d')!;c.fillStyle='#754522';c.fillRect(0,0,512,512);
-  for(let i=0;i<900;i++){
-    c.strokeStyle=i%3===0?'#e8a95a18':'#25120724';c.lineWidth=i%5===0?1.4:.6;
+  const c=canvas.getContext('2d')!;c.fillStyle=cartoon?'#9c5e2d':'#754522';c.fillRect(0,0,512,512);
+  for(let i=0;i<(cartoon?64:900);i++){
+    c.strokeStyle=cartoon?(i%3===0?'#dc984c55':'#50290c55'):(i%3===0?'#e8a95a18':'#25120724');c.lineWidth=cartoon?(i%3===0?3:1.6):(i%5===0?1.4:.6);
     c.beginPath();
-    for(let x=0;x<=512;x+=8){const y=i*.64+Math.sin(x*.018+i*.22)*3+Math.sin(x*.055+i)*.7;x?c.lineTo(x,y):c.moveTo(x,y);}
+    for(let x=0;x<=512;x+=8){const y=i*(cartoon?8:.64)+Math.sin(x*.018+i*.22)*(cartoon?5:3)+Math.sin(x*.055+i)*.7;x?c.lineTo(x,y):c.moveTo(x,y);}
     c.stroke();
   }
   const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;
@@ -126,12 +132,13 @@ export class ObservatoryTable {
   private danger={value:0};
   private flow={value:1};
   private flowStrength={value:0};
-  constructor(){
+  constructor(cartoon=false){
     const metal=this.metal;
-    const wood=new THREE.MeshStandardMaterial({map:walnut(),color:0xf4bd83,metalness:.08,roughness:.3});
-    const base=new THREE.Mesh(new THREE.CylinderGeometry(5.05,4.98,.36,128),wood);base.position.y=.14;base.receiveShadow=true;this.group.add(base);
+    if(cartoon){metal.color.set(0xc39645);metal.metalness=.18;metal.roughness=.75;}
+    const wood=cartoon?new THREE.MeshBasicMaterial({map:walnut(true),color:0xffffff}):new THREE.MeshStandardMaterial({map:walnut(),color:0xf4bd83,metalness:.08,roughness:.3});
+    const base=new THREE.Mesh(new THREE.CylinderGeometry(5.05,4.98,.36,128),cartoon?new THREE.MeshBasicMaterial({color:0x472914}):wood);base.position.y=.14;base.receiveShadow=true;this.group.add(base);
     const rail=new THREE.Mesh(new THREE.RingGeometry(4.72,5.05,128),wood);rail.rotation.x=-Math.PI/2;rail.position.y=.345;rail.receiveShadow=true;this.group.add(rail);
-    const top=new THREE.Mesh(new THREE.CircleGeometry(4.74,128),new THREE.MeshStandardMaterial({map:engraving(),roughness:.91,metalness:.06}));
+    const top=new THREE.Mesh(new THREE.CircleGeometry(4.74,128),new THREE.MeshStandardMaterial({map:engraving(cartoon),roughness:cartoon?1:.91,metalness:cartoon?0:.06}));
     const surface=top.material as THREE.MeshStandardMaterial;
     surface.onBeforeCompile=shader=>{
       shader.uniforms.uTableDanger=this.danger;
@@ -158,8 +165,19 @@ export class ObservatoryTable {
         vec3 restingGold=mix(vec3(1.,.57,.16),vec3(1.,.23,.04),uTableDanger*.6);
         totalEmissiveRadiance+=restingGold*lineMask*.018;
         totalEmissiveRadiance+=flowColor*lineMask*uTableFlowStrength*(wave*(4.6+spokes*2.)+wake*.28+flash*.55+orbitHead*orbitBand*3.2);`);
+      if(cartoon){
+        // Keep the ink/felt palette instead of washing it out with a PBR hotspot.
+        // Retain a little physical light and all gameplay light traveling through the atlas.
+        shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',`
+          outgoingLight=mix(diffuseColor.rgb*.9,outgoingLight,.14)+totalEmissiveRadiance*.86;
+          #include <opaque_fragment>`);
+      }
     };
     top.rotation.x=-Math.PI/2;top.position.y=.3475;top.receiveShadow=true;this.group.add(top);
+    if(cartoon){
+      const ink=new THREE.MeshBasicMaterial({color:0x17190f});
+      this.group.add(ring(4.73,.022,ink,.349),ring(5.035,.023,ink,.346),ring(5.025,.022,ink,-.033));
+    }
     for(const [r,w,y] of [[4.76,.012,.352],[5.015,.014,.335],[5.01,.011,.005]])this.group.add(ring(r,w,metal,y));
   }
   setTotal(total:number):void{
