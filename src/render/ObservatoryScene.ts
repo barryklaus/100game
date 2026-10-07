@@ -2,7 +2,8 @@ import { CardImpactFlow } from './CardImpactFlow';
 import { OverflowFireworks } from './OverflowFireworks';
 import { CardHandoff } from './CardHandoff';
 import type { CardSpin } from '../ui/cardGesture';
-import { boomerangOffset } from '../ui/CardBoomerang';
+import { boomerangOffset, boomerangTiming, boomerangVelocity } from '../ui/CardBoomerang';
+import { PreparedCardFlight } from './PreparedCardFlight';
 import { avatarAnchor } from '../ui/avatarLayout';
 import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -54,6 +55,7 @@ export class ObservatoryScene {
   private renderScale = 1;
   private fastSamples = 0;
   private activeFlights = 0;
+  private preparedThrow=new PreparedCardFlight(url=>this.makeFlyingCard(url),flight=>this.disposeFlyingCard(flight.root));
   private handoff = new CardHandoff();
   private active = false;
   private roundEnded = false;
@@ -205,6 +207,7 @@ export class ObservatoryScene {
   }
 
   update(next: SceneState): void {
+    if(!next.active||next.roundEnded)this.preparedThrow.clear();
     this.active = next.active;
     this.roundEnded = !!next.roundEnded;
     this.playerCount = next.playerCount;
@@ -362,9 +365,24 @@ export class ObservatoryScene {
     root.visible = false;
     const visual = new THREE.Group();
     visual.add(createCardMesh(frontTexture,backTexture,/-[789]|-10\./.test(frontUrl)));
+    // Tessellate while the pointer is held, rather than at the release boundary.
+    visual.userData.flightFlex=flyingCardFlex(visual);
     root.add(visual);
     this.foreground.scene.add(root);
     return { root, visual };
+  }
+
+  warmCardThrow(frontUrl:string):void{if(this.canAnimate)this.preparedThrow.warm(frontUrl);}
+  cancelWarmCardThrow():void{this.preparedThrow.clear();}
+  private disposeFlyingCard(root:THREE.Group):void{
+    root.removeFromParent();
+    root.traverse(object=>{
+      if(object instanceof THREE.Mesh){
+        object.geometry.dispose();
+        const materials=Array.isArray(object.material)?object.material:[object.material];
+        materials.forEach(material=>material.dispose());
+      }
+    });
   }
 
   private animateCardFlight(options: {
@@ -398,7 +416,7 @@ export class ObservatoryScene {
     root.scale.setScalar(startScale);
     fit.apply(root,0);
     visual.rotation.y = draw ? Math.PI : 0;
-    const flex=flyingCardFlex(visual);
+    const flex=visual.userData.flightFlex as ReturnType<typeof flyingCardFlex>;
     onStart?.();
     this.hand.update(0);
     const started = performance.now();
@@ -410,13 +428,16 @@ export class ObservatoryScene {
     const viewHeight=2*start.distanceTo(this.camera.position)*Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2));
     const loopWidth=Math.min(1.25,viewHeight*this.camera.aspect*.20);
     const loopHeight=Math.min(.95,viewHeight*.15);
+    const velocity=boomerang?boomerangVelocity(spin!):{x:0,y:0};
+    const impulse=right.clone().multiplyScalar(velocity.x*duration*viewHeight/innerHeight)
+      .addScaledVector(up,-velocity.y*duration*viewHeight/innerHeight);
     const spinAxis=spin?new THREE.Vector3(spin.x,spin.y,spin.z):undefined;
     const spinRotation=new THREE.Quaternion();
     return new Promise((resolve, reject) => {
       this.activeFlights++;
       const step = (now: number): void => {
         const raw = Math.min(1, (now - started) / duration);
-        const flightT = draw ? raw : Math.min(1,raw/.86);
+        const flightT = draw||boomerang ? raw : Math.min(1,raw/.86);
         const t = flightT*flightT*(3-2*flightT);
         const inverse = 1 - t;
         root.position.set(
@@ -425,17 +446,21 @@ export class ObservatoryScene {
           inverse * inverse * start.z + 2 * inverse * t * control.z + t * t * end.z,
         );
         if(boomerang){
-          const offset=boomerangOffset(t,spin!.z);
+          const timing=boomerangTiming(raw);
+          root.position.copy(start).lerp(end,timing.arrival).addScaledVector(impulse,timing.momentum);
+          root.position.y+=timing.lift*.325;
+          root.position.z-=timing.lift*.15;
+          const offset=boomerangOffset(raw,spin!.z);
           root.position.addScaledVector(right,offset.x*loopWidth).addScaledVector(up,offset.y*loopHeight);
         }
-        if(!draw && raw>.86)root.position.y+=Math.sin((raw-.86)/.14*Math.PI)*.075;
+        if(!draw && !boomerang && raw>.86)root.position.y+=Math.sin((raw-.86)/.14*Math.PI)*.075;
         root.quaternion.slerpQuaternions(startQuaternion, endQuaternion, t);
         root.scale.setScalar(THREE.MathUtils.lerp(startScale, endScale, t));
         fit.apply(root,t);
         flex(this.reducedMotion?0:Math.sin(raw*Math.PI)*(draw?.09:.2));
         visual.rotation.set(0,draw ? Math.PI * (1 - t) : Math.sin(raw * Math.PI) * .24,Math.sin(raw * Math.PI) * (draw ? -.16 : .24));
         if(spin && spinAxis && !this.reducedMotion){
-          spinRotation.setFromAxisAngle(spinAxis,spin.turns*Math.PI*2*t);
+          spinRotation.setFromAxisAngle(spinAxis,spin.turns*Math.PI*2*(boomerang?boomerangTiming(raw).spin:t));
           visual.quaternion.premultiply(spinRotation);
         }
         if (raw < 1) requestAnimationFrame(step);
@@ -447,14 +472,7 @@ export class ObservatoryScene {
             if (released) return;
             released = true;
             root.visible = false;
-            root.removeFromParent();
-            root.traverse(object => {
-              if (object instanceof THREE.Mesh) {
-                object.geometry.dispose();
-                const materials=Array.isArray(object.material)?object.material:[object.material];
-                materials.forEach(material=>material.dispose());
-              }
-            });
+            this.disposeFlyingCard(root);
             this.foreground.render();
             this.pruneTextureCache();
           };
@@ -480,17 +498,33 @@ export class ObservatoryScene {
   }
 
   async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin?:CardSpin, cardId?:string, onStart?:()=>void, onReady?:()=>Promise<DOMRect|undefined>): Promise<void> {
-    const { root, visual } = await this.makeFlyingCard(frontUrl);
+    const { root, visual } = await (cardId?this.preparedThrow.take(frontUrl):this.makeFlyingCard(frontUrl));
     let handRect: DOMRect | undefined;
     try { handRect = await onReady?.(); }
     catch (error) {
-      root.removeFromParent();
-      root.traverse(object => { if (object instanceof THREE.Mesh) { object.geometry.dispose(); const materials = Array.isArray(object.material) ? object.material : [object.material]; materials.forEach(material => material.dispose()); } });
+      this.disposeFlyingCard(root);
       throw error;
     }
     if (handRect) sourceRect = handRect;
     const distance = innerHeight > innerWidth * 1.08 ? 4.9 : 5.35;
-    const pose=cardId?this.hand.cardPose(cardId):undefined;
+    // Keep dragging until this snapshot; clearing it earlier resets tilt/depth.
+    this.hand.update(0);
+    let pose=cardId?this.hand.cardPose(cardId):undefined;
+    if(!pose&&cardId&&spin?.kind==='boomerang'){
+      // Portrait uses a lossless DOM hand. Carry its actual fan/drag rotation
+      // into the 3D flight rather than flattening it at the release boundary.
+      const element=Array.from(document.querySelectorAll<HTMLElement>('.local-hand .hand-card')).find(card=>card.dataset.card===cardId);
+      if(element){
+        const transform=getComputedStyle(element).transform;
+        const matrix=new THREE.Matrix4().fromArray(Array.from(new DOMMatrix(transform==='none'?undefined:transform).toFloat64Array()));
+        const flipY=new THREE.Matrix4().makeScale(1,-1,1);
+        matrix.premultiply(flipY).multiply(flipY);
+        const localRotation=new THREE.Quaternion(),scale=new THREE.Vector3();
+        matrix.decompose(new THREE.Vector3(),localRotation,scale);
+        pose={position:this.screenPoint(sourceRect,distance),quaternion:this.camera.quaternion.clone().multiply(localRotation),
+          scale:cardScreenScale({width:element.offsetWidth*scale.x,height:element.offsetHeight*scale.y},innerHeight,this.camera.fov,distance)};
+      }
+    }
     const start = pose?.position??this.screenPoint(sourceRect, distance);
     const landing = this.discardPile.cardPose(this.discardPile.count);
     const end = landing.position;
@@ -759,6 +793,7 @@ export class ObservatoryScene {
   };
 
   dispose(): void {
+    this.preparedThrow.clear();
     this.handoff.clear();
     this.totalPulse?.cancel();
     cancelAnimationFrame(this.frame);

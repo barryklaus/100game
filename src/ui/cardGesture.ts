@@ -1,5 +1,5 @@
 export type CardGrip = {x:number;y:number};
-export type CardSpin = {x:number;y:number;z:number;turns:number;kind?:'boomerang'};
+export type CardSpin = {x:number;y:number;z:number;turns:number;kind?:'boomerang';velocity?:{x:number;y:number}};
 export type CardGesture = {dx:number;dy:number;duration:number;canceled:boolean;inspecting:boolean;canPlay:boolean;grip?:CardGrip;releaseVX?:number};
 /** Short upward gestures and deliberate inward edge flicks play; slow sways do not. */
 export function isPlayGesture(gesture:CardGesture):boolean {

@@ -23,7 +23,7 @@ import { HoloShader } from './render/HoloShader';
 import { OnlineRoom, newRoomId } from './game/online';
 import { HostedRoom } from './game/hosted';
 import { cardGrip, cardFlickSpin, isDoubleCardTap, isPlayGesture, type CardTap, type CardGrip, type CardSpin } from './ui/cardGesture';
-import { CardSwing, boomerangOffset } from './ui/CardBoomerang';
+import { CardSwing, boomerangOffset, boomerangTiming, boomerangVelocity } from './ui/CardBoomerang';
 import { updateGameView } from './ui/updateGameView';
 import { GyroHand } from './ui/GyroHand';
 import { masterNames, masterCharacter, masterImage, masterAnchors } from './ui/MasterCharacters';
@@ -367,6 +367,7 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   const playState = state, playTurn = state.turn;
   const card = state.players[state.current].hand.find(item => item.id === cardId);
   const throwingSeat = state.current;
+  const immediateBoomerang=!!source&&spin?.kind==='boomerang';
   if (!card) { locked = false; return; }
   if(settings.reducedMotion){audio.play('slap');locked=false;resolveCard(cardId);return;}
   const origin = source || document.querySelector<HTMLElement>(`.seat[data-seat="${state.current}"]`) || document.querySelector<HTMLElement>('.draw-stack')!;
@@ -376,9 +377,10 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
       await observatory.playCardToDiscard(cardImage(card), start, spin, source?cardId:undefined,()=>{
         departingCardId=source?cardId:null;
         source?.classList.add('card-departing');
+        source?.classList.remove('dragging');
         playerRing.release(throwingSeat);
       }, async () => {
-        const hand = await playerRing.prepareThrow(throwingSeat);
+        const hand = immediateBoomerang?undefined:await playerRing.prepareThrow(throwingSeat);
         if (state !== playState || state.turn !== playTurn) throw new Error('The turn changed before the card left.');
         return source ? undefined : hand;
       });
@@ -391,15 +393,15 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
       departingCardId=null;
       source?.classList.remove('card-departing');
       playerRing.cancelThrow(throwingSeat);
-      if (state !== playState || state.turn !== playTurn) { locked = false; return; }
+      if (state !== playState || state.turn !== playTurn) { source?.classList.remove('dragging'); locked = false; return; }
     }
   }
   let flying: HTMLElement;
   try {
-    const hand = await playerRing.prepareThrow(throwingSeat);
+    const hand = immediateBoomerang?undefined:await playerRing.prepareThrow(throwingSeat);
     if (state !== playState || state.turn !== playTurn) throw new Error('The turn changed before the card left.');
     if (!source && hand) start = hand;
-  } catch { playerRing.cancelThrow(throwingSeat); locked = false; return; }
+  } catch { source?.classList.remove('dragging');playerRing.cancelThrow(throwingSeat); locked = false; return; }
   playerRing.release(throwingSeat);
   if (source) {
     flying = source.cloneNode(true) as HTMLElement;
@@ -408,6 +410,7 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
     flying.removeAttribute('data-card-pressed');
     flying.style.cssText = '';
     source.classList.add('card-departing');
+    source.classList.remove('dragging');
   }
   else {
     const wrapper = document.createElement('div');
@@ -422,12 +425,16 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   const dy = target.top + target.height / 2 - (start.top + start.height / 2);
   const landingScale = target.width / Math.max(1, start.width);
   const rotation=(t:number)=>spin?`rotate3d(${-spin.x},${spin.y},${-spin.z},${spin.turns*360*t}deg)`:`rotate(${Math.sin(t*Math.PI)*8}deg)`;
-  const frames=Array.from({length:25},(_,i)=>{
-    const t=i/24;
-    const loop=spin?.kind==='boomerang'?boomerangOffset(t,-spin.z):{x:0,y:0};
-    return {transform:`perspective(900px) translate(${dx*t+loop.x*Math.min(150,innerWidth*.18)}px,${dy*t-Math.sin(t*Math.PI)*35-loop.y*75}px) scale(${1+(landingScale-1)*t+Math.sin(t*Math.PI)*.1}) ${rotation(t)}`,offset:t};
+  const boomerang=spin?.kind==='boomerang';
+  const duration=boomerang?(spin!.turns===3?1080:920):spin?(spin.turns===2?720:560):410;
+  const velocity=boomerang?boomerangVelocity(spin!):{x:0,y:0};
+  const frames=Array.from({length:49},(_,i)=>{
+    const t=i/48;
+    const timing=boomerang?boomerangTiming(t):{arrival:t,momentum:0,lift:Math.sin(t*Math.PI),spin:t};
+    const loop=boomerang?boomerangOffset(t,-spin!.z):{x:0,y:0};
+    return {transform:`perspective(900px) translate(${dx*timing.arrival+velocity.x*duration*timing.momentum+loop.x*Math.min(150,innerWidth*.18)}px,${dy*timing.arrival+velocity.y*duration*timing.momentum-timing.lift*35-loop.y*75}px) scale(${1+(landingScale-1)*timing.arrival+timing.lift*.1}) ${rotation(timing.spin)}`,offset:t};
   });
-  await flying.animate(frames, { duration:spin?.kind==='boomerang'?(spin.turns===3?1080:920):spin?(spin.turns===2?720:560):410, easing:'cubic-bezier(.2,.8,.2,1)', fill:'forwards' }).finished.catch(() => undefined);
+  await flying.animate(frames, { duration, easing:boomerang?'linear':'cubic-bezier(.2,.8,.2,1)', fill:'forwards' }).finished.catch(() => undefined);
   audio.play('slap'); flying.remove();
   if (state !== playState || state.turn !== playTurn) { playerRing.cancelThrow(throwingSeat); locked = false; return; }
   locked = false; resolveCard(cardId);
@@ -711,6 +718,8 @@ app.addEventListener('pointerdown',event=>{
   const now=performance.now();
   const current:CardDrag={element:card,id:card.dataset.card!,x:event.clientX,y:event.clientY,time:now,lastX:event.clientX,lastY:event.clientY,lastTime:now,vx:0,vy:0,moved:false,inspecting:false,grip:cardGrip(card.getBoundingClientRect(),event.clientX,event.clientY),pointerId:event.pointerId,holdTimer:0,baseTransform:getComputedStyle(card).transform};
   if(isNextVersion)current.swing=new CardSwing(event.clientX,event.clientY,now,card.getBoundingClientRect().width);
+  const held=state.players[state.current].hand.find(item=>item.id===current.id);
+  if(isNextVersion&&held&&canControlActor()&&!settings.reducedMotion)observatory?.warmCardThrow(cardImage(held));
   current.holdTimer=window.setTimeout(()=>{if(drag!==current||current.moved)return;current.inspecting=true;card.classList.add('inspecting');card.classList.remove('dragging');},380);
   drag=current;card.setPointerCapture(event.pointerId);audio.play('pickup');
 });
@@ -743,10 +752,10 @@ function endDrag(event:PointerEvent):void{
   const freshVelocity=releasedAt-current.lastTime<100;
   const vx=freshVelocity?current.vx:0,vy=freshVelocity?current.vy:0;
   const canPlay=!canceled&&!current.inspecting&&canControlActor()&&state?.phase==='playing';
-  const boomerang=canPlay?current.swing?.release(releasedAt):undefined;
+  const boomerang=canPlay?current.swing?.release(releasedAt,{x:vx,y:vy}):undefined;
   const shouldPlay=!!boomerang||isPlayGesture({dx,dy,duration:releasedAt-current.time,canceled,inspecting:current.inspecting,canPlay:!!canPlay,grip:current.grip,releaseVX:vx});
   if(current.element.hasPointerCapture(event.pointerId))current.element.releasePointerCapture(event.pointerId);
-  current.element.classList.remove('dragging','flick-ready','inspecting');
+  current.element.classList.remove('flick-ready','inspecting');
   if(shouldPlay){
     lastCardTap=null;
     audio.play('card-flick');
@@ -754,6 +763,8 @@ function endDrag(event:PointerEvent):void{
     void animatePlay(current.id,current.element,spin);
   }
   else{
+    observatory?.cancelWarmCardThrow();
+    current.element.classList.remove('dragging');
     const from=current.element.style.transform;
     current.element.style.transform='';
     delete current.element.dataset.tiltX;delete current.element.dataset.tiltY;delete current.element.dataset.turn;

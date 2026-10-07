@@ -38,11 +38,27 @@ export class CardSwing {
     return this.ready(time);
   }
   ready(time:number):boolean{return this.legs>=4&&time>=this.lastTime&&time-this.lastTime<=900&&time-this.began<=3300;}
-  release(time:number):CardSpin|undefined{
+  release(time:number,velocity?:{x:number;y:number}):CardSpin|undefined{
     if(!this.ready(time))return;
     const direction=this.direction||1;
-    return {x:.12,y:.08,z:direction*Math.sqrt(1-.12**2-.08**2),turns:this.legs>=6?3:2,kind:'boomerang'};
+    return {x:.12,y:.08,z:direction*Math.sqrt(1-.12**2-.08**2),turns:this.legs>=6?3:2,kind:'boomerang',velocity};
   }
+}
+
+/** Hermite travel: retain release velocity, then settle exactly into the pile.
+ * Unlike smoothstep alone, momentum has derivative 1 at release and 0 at landing.
+ * Spin also starts immediately and decelerates only as the card lands.
+ */
+export function boomerangTiming(progress:number):{arrival:number;momentum:number;lift:number;spin:number}{
+  const t=Math.max(0,Math.min(1,progress));
+  return {arrival:t*t*(3-2*t),momentum:t*(1-t)*(1-t),lift:16*t*t*(1-t)*(1-t),spin:t+t*t-t*t*t};
+}
+/** Screen pixels per millisecond; cap only extreme pointer spikes. */
+export function boomerangVelocity(spin:CardSpin):{x:number;y:number}{
+  const velocity=spin.velocity??{x:Math.sign(spin.z||1)*.45,y:-.08};
+  const x=Number.isFinite(velocity.x)?velocity.x:0,y=Number.isFinite(velocity.y)?velocity.y:0;
+  const scale=Math.min(1,1.6/Math.max(.001,Math.hypot(x,y)));
+  return {x:x*scale,y:y*scale};
 }
 
 /** A bounded loop, returning exactly to the normal pile-fitting curve at both ends. */
