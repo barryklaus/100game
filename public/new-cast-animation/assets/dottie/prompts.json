@@ -1,0 +1,90 @@
+{
+  "tool": "built-in imagegen",
+  "selectedSources": [
+    {
+      "id": "dottie",
+      "pose": "prepare",
+      "kind": "action",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nCharacter: dottie.\nAction: Prepare a modest forward wrist throw toward table/viewer. EXACTLY TWO magenta cards: image-RIGHT hand keeps one card at chest; image-LEFT hand holds the second card, extends it just slightly forward near chest toward table. Head, torso, hips, legs and feet match master rest. Do not throw yet.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-f6332c96-fb05-45eb-a98f-9a1855ea848d.png"
+    },
+    {
+      "id": "dottie",
+      "pose": "faces",
+      "kind": "faces",
+      "prompt": "Use case: identity-preserve. Asset type: facial-expression sprite reference sheet. Image 1 is the definitive master HEAD crop edit target. Draw EXACTLY SIX isolated copies of this SAME head on a transparent sheet arranged in an exact 3-column by 2-row equal-cell grid. Entire original hair, ears, neck and head silhouette in EVERY cell with a wide transparent margin (at least 20% cell padding all sides). Uniform camera and head size. Same clean cel shaded adult cartoon linework, skin color, nose, hair, accessories and identity. Change ONLY eyes, eyebrows, mouth for facial emotion; no cross-eyed pupils, no glasses changes, no resized head. Reading order: TOP LEFT calm original, TOP MIDDLE blink with both eyes gently fully CLOSED (closed eyelids, not squinting), TOP RIGHT nervous uneasy subtle open-mouth grimace; BOTTOM LEFT shocked, aligned wide eyes and open surprised mouth; BOTTOM MIDDLE delighted warm laughing mouth and cheerful eyes; BOTTOM RIGHT confident knowing raised eyebrow and closed-mouth smug smile. No body, hands, cards, background, chair, panel grid lines, labels, text, decorations or glow. Genuine transparent alpha. Use as much native detail as possible, preferably a large landscape sheet with six equal cells.\nCharacter: dottie",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-cast-expansion-animation-v1/dottie/head-reference.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-e8652767-969d-491e-864a-03be10f3f269.png"
+    },
+    {
+      "id": "dottie",
+      "pose": "release",
+      "kind": "action",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: dottie.\nAction: Forward wrist release toward the table/viewer. IMAGE-LEFT working hand open and EMPTY slightly forward at chest/waist height, relaxed natural five fingers, palm down. Image-RIGHT hand retains EXACTLY ONE magenta card at chest. Keep head and lower body exactly like master. NO airborne card painted.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/dottie-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-f6332c96-fb05-45eb-a98f-9a1855ea848d.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-afc61d4c-cb45-4b30-aea0-813cbd7e61c4.png"
+    },
+    {
+      "id": "dottie",
+      "pose": "grip",
+      "kind": "action",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: dottie.\nAction: Receive-ready pose. IMAGE-LEFT working hand is EMPTY, thumb and fingers in a loose open pinch slightly forward near chest, ready to catch a card arriving from the table. Image-RIGHT hand retains EXACTLY ONE magenta card at chest. Keep head, torso, hips, legs, feet like master.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/dottie-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-f6332c96-fb05-45eb-a98f-9a1855ea848d.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-a9cbd890-ffd2-414b-a8ab-e55cca2acc62.png"
+    },
+    {
+      "id": "dottie",
+      "pose": "caught",
+      "kind": "action",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: dottie.\nAction: Just received a second card. Image-LEFT working hand slightly forward near chest now holds ONE magenta card with natural fingers in front, other IMAGE-RIGHT hand retains ONE magenta card at chest. EXACTLY TWO cards. Same physical reach as receive-ready; head and lower body like master.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/dottie-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-f6332c96-fb05-45eb-a98f-9a1855ea848d.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-8695505a-72c6-43f3-8b8c-2fcf92fe4e82.png"
+    },
+    {
+      "id": "dottie",
+      "pose": "fall-start",
+      "kind": "tumble",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: dottie.\nAction: Beginning of comic backward fall WITHOUT CHAIR: surprised face, torso leans slightly backward, hips at original seated anchor, both knees start lifting, image-LEFT EMPTY hand opens reacting and image-RIGHT hand retains ONE magenta card. Same head size as master. Entire body and both feet present, no chair.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/dottie-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-f6332c96-fb05-45eb-a98f-9a1855ea848d.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-56844a87-d1bd-4f1c-9f94-8179f0d9a874.png"
+    },
+    {
+      "id": "dottie",
+      "pose": "midfall",
+      "kind": "tumble",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: dottie.\nAction: Middle of backward tumble WITHOUT CHAIR: torso reclines about 45 degrees toward the floor, hips low at center, head moves lower, knees bent and feet swing upward, image-LEFT EMPTY hand reacts and image-RIGHT hand retains ONE magenta card. Same physical head/body scale as master, whole natural adult body, both complete shoes, ample margins.\nImage 3 is the preceding falling pose; continue that backward fall, preserving hand/card identity.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/dottie-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-f6332c96-fb05-45eb-a98f-9a1855ea848d.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-56844a87-d1bd-4f1c-9f94-8179f0d9a874.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-6149bc49-9710-4fb8-b539-fc61fcb2fbc0.png"
+    },
+    {
+      "id": "dottie",
+      "pose": "floor",
+      "kind": "tumble",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: dottie.\nAction: END of comic backward tumble WITHOUT CHAIR: body lies LOW on its back on imaginary floor, head and shoulders low near bottom-middle of drawing; BOTH feet stick UP above torso with bent knees, soles visible. Surprised face and exact master identity, normal head scale and limbs. IMAGE-LEFT EMPTY hand raised open reacting, IMAGE-RIGHT hand retains ONE magenta card. Full body fits inside wide transparent margin. Do not draw floor or chair.\nImage 3 is the preceding falling pose; continue that backward fall, preserving hand/card identity.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/dottie-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-f6332c96-fb05-45eb-a98f-9a1855ea848d.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-6149bc49-9710-4fb8-b539-fc61fcb2fbc0.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-142f97fb-55f5-4795-becf-10e9f72f94db.png"
+    }
+  ]
+}

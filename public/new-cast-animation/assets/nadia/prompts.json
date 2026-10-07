@@ -1,0 +1,90 @@
+{
+  "tool": "built-in imagegen",
+  "selectedSources": [
+    {
+      "id": "nadia",
+      "pose": "prepare",
+      "kind": "action",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nCharacter: nadia.\nAction: Prepare a modest forward wrist throw toward table/viewer. EXACTLY TWO magenta cards: image-RIGHT hand keeps one card at chest; image-LEFT hand holds the second card, extends it just slightly forward near chest toward table. Head, torso, hips, legs and feet match master rest. Do not throw yet.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-537baa98-533b-402e-9b8b-4323b9efc1ef.png"
+    },
+    {
+      "id": "nadia",
+      "pose": "faces",
+      "kind": "faces",
+      "prompt": "Use case: identity-preserve. Asset type: facial-expression sprite reference sheet. Image 1 is the definitive master HEAD crop edit target. Draw EXACTLY SIX isolated copies of this SAME head on a transparent sheet arranged in an exact 3-column by 2-row equal-cell grid. Entire original hair, ears, neck and head silhouette in EVERY cell with a wide transparent margin (at least 20% cell padding all sides). Uniform camera and head size. Same clean cel shaded adult cartoon linework, skin color, nose, hair, accessories and identity. Change ONLY eyes, eyebrows, mouth for facial emotion; no cross-eyed pupils, no glasses changes, no resized head. Reading order: TOP LEFT calm original, TOP MIDDLE blink with both eyes gently fully CLOSED (closed eyelids, not squinting), TOP RIGHT nervous uneasy subtle open-mouth grimace; BOTTOM LEFT shocked, aligned wide eyes and open surprised mouth; BOTTOM MIDDLE delighted warm laughing mouth and cheerful eyes; BOTTOM RIGHT confident knowing raised eyebrow and closed-mouth smug smile. No body, hands, cards, background, chair, panel grid lines, labels, text, decorations or glow. Genuine transparent alpha. Use as much native detail as possible, preferably a large landscape sheet with six equal cells.\nCharacter: nadia",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-cast-expansion-animation-v1/nadia/head-reference.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-1cd12712-aa04-4857-a657-30eb42ee9251.png"
+    },
+    {
+      "id": "nadia",
+      "pose": "release",
+      "kind": "action",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-RIGHT hand is working hand; image-LEFT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: nadia.\nAction: Forward wrist release toward the table/viewer. IMAGE-RIGHT working hand open and EMPTY slightly forward at chest/waist height, relaxed natural five fingers, palm down. Image-LEFT hand retains EXACTLY ONE magenta card at chest. Keep head and lower body exactly like master. NO airborne card painted.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/nadia-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-537baa98-533b-402e-9b8b-4323b9efc1ef.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-2eba4e74-391c-478d-b9aa-8290dbe322b9.png"
+    },
+    {
+      "id": "nadia",
+      "pose": "grip",
+      "kind": "action",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-RIGHT hand is working hand; image-LEFT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: nadia.\nAction: Receive-ready pose. IMAGE-RIGHT working hand is EMPTY, thumb and fingers in a loose open pinch slightly forward near chest, ready to catch a card arriving from the table. Image-LEFT hand retains EXACTLY ONE magenta card at chest. Keep head, torso, hips, legs, feet like master.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/nadia-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-537baa98-533b-402e-9b8b-4323b9efc1ef.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-cf0cfc97-fd5d-4e9b-8c52-c145deae1ebd.png"
+    },
+    {
+      "id": "nadia",
+      "pose": "caught",
+      "kind": "action",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-RIGHT hand is working hand; image-LEFT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: nadia.\nAction: Just received a second card. Image-RIGHT working hand slightly forward near chest now holds ONE magenta card with natural fingers in front, other IMAGE-LEFT hand retains ONE magenta card at chest. EXACTLY TWO cards. Same physical reach as receive-ready; head and lower body like master.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/nadia-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-537baa98-533b-402e-9b8b-4323b9efc1ef.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-ebf892a1-6243-47d7-8414-e2847c4d76ef.png"
+    },
+    {
+      "id": "nadia",
+      "pose": "fall-start",
+      "kind": "tumble",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-RIGHT hand is working hand; image-LEFT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: nadia.\nAction: Beginning of comic backward fall WITHOUT CHAIR: surprised face, torso leans slightly backward, hips at original seated anchor, both knees start lifting, image-RIGHT EMPTY hand opens reacting and image-LEFT hand retains ONE magenta card. Same head size as master. Entire body and both feet present, no chair.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/nadia-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-537baa98-533b-402e-9b8b-4323b9efc1ef.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-301c7c3e-e724-4a8b-8027-7199d5bd7dc9.png"
+    },
+    {
+      "id": "nadia",
+      "pose": "midfall",
+      "kind": "tumble",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-RIGHT hand is working hand; image-LEFT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: nadia.\nAction: Middle of backward tumble WITHOUT CHAIR: torso reclines about 45 degrees toward the floor, hips low at center, head moves lower, knees bent and feet swing upward, image-RIGHT EMPTY hand reacts and image-LEFT hand retains ONE magenta card. Same physical head/body scale as master, whole natural adult body, both complete shoes, ample margins.\nImage 3 is the preceding falling pose; continue that backward fall, preserving hand/card identity.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/nadia-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-537baa98-533b-402e-9b8b-4323b9efc1ef.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-301c7c3e-e724-4a8b-8027-7199d5bd7dc9.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-81a8f7b1-0eb9-4ed6-836d-9d0f1f3b30ad.png"
+    },
+    {
+      "id": "nadia",
+      "pose": "floor",
+      "kind": "tumble",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-RIGHT hand is working hand; image-LEFT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: nadia.\nAction: END of comic backward tumble WITHOUT CHAIR: body lies LOW on its back on imaginary floor, head and shoulders low near bottom-middle of drawing; BOTH feet stick UP above torso with bent knees, soles visible. Surprised face and exact master identity, normal head scale and limbs. IMAGE-RIGHT EMPTY hand raised open reacting, IMAGE-LEFT hand retains ONE magenta card. Full body fits inside wide transparent margin. Do not draw floor or chair.\nImage 3 is the preceding falling pose; continue that backward fall, preserving hand/card identity.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/nadia-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-537baa98-533b-402e-9b8b-4323b9efc1ef.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-81a8f7b1-0eb9-4ed6-836d-9d0f1f3b30ad.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-92a5c86d-80e3-49a9-984d-1fa04f5a082f.png"
+    }
+  ]
+}

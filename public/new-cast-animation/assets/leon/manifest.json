@@ -1,0 +1,939 @@
+{
+  "id": "leon",
+  "name": "Leon",
+  "nativeCanvas": 2048,
+  "actions": "complete character drawings",
+  "runtimeBodyPartLayers": 0,
+  "clips": {
+    "blink": {
+      "frames": [
+        "rest",
+        "blink",
+        "rest"
+      ],
+      "durations": [
+        40,
+        100,
+        60
+      ]
+    },
+    "look-left": {
+      "frames": [
+        "rest",
+        "left-mid",
+        "left",
+        "left-mid",
+        "rest"
+      ],
+      "durations": [
+        60,
+        60,
+        240,
+        60,
+        80
+      ]
+    },
+    "look-right": {
+      "frames": [
+        "rest",
+        "right-mid",
+        "right",
+        "right-mid",
+        "rest"
+      ],
+      "durations": [
+        60,
+        60,
+        240,
+        60,
+        80
+      ]
+    },
+    "study": {
+      "frames": [
+        "rest",
+        "down-mid",
+        "down",
+        "down-mid",
+        "rest"
+      ],
+      "durations": [
+        60,
+        60,
+        220,
+        60,
+        80
+      ]
+    },
+    "danger": {
+      "frames": [
+        "nervous",
+        "shocked",
+        "nervous"
+      ],
+      "durations": [
+        100,
+        180,
+        100
+      ]
+    },
+    "startle": {
+      "frames": [
+        "rest",
+        "shocked"
+      ],
+      "durations": [
+        60,
+        240
+      ]
+    },
+    "celebrate": {
+      "frames": [
+        "confident",
+        "delighted",
+        "confident",
+        "rest"
+      ],
+      "durations": [
+        80,
+        240,
+        100,
+        80
+      ]
+    },
+    "defeat": {
+      "frames": [
+        "rest",
+        "nervous"
+      ],
+      "durations": [
+        80,
+        300
+      ]
+    },
+    "throw": {
+      "frames": [
+        "rest",
+        "prepare",
+        "throw-release",
+        "release"
+      ],
+      "durations": [
+        60,
+        140,
+        100,
+        120
+      ]
+    },
+    "receive-ready": {
+      "frames": [
+        "release",
+        "grip"
+      ],
+      "durations": [
+        80,
+        80
+      ]
+    },
+    "pickup": {
+      "frames": [
+        "caught",
+        "rest"
+      ],
+      "durations": [
+        120,
+        100
+      ]
+    },
+    "tumble": {
+      "frames": [
+        "release",
+        "fall-start",
+        "midfall",
+        "floor"
+      ],
+      "durations": [
+        70,
+        110,
+        140,
+        360
+      ]
+    },
+    "return": {
+      "frames": [
+        "floor",
+        "rest"
+      ],
+      "durations": [
+        200,
+        200
+      ]
+    },
+    "idle": {
+      "frames": [
+        "rest",
+        "blink",
+        "rest"
+      ],
+      "durations": [
+        40,
+        100,
+        60
+      ]
+    },
+    "choose-left": {
+      "frames": [
+        "rest",
+        "left-mid",
+        "left",
+        "left-mid",
+        "rest"
+      ],
+      "durations": [
+        60,
+        60,
+        240,
+        60,
+        80
+      ]
+    },
+    "choose-right": {
+      "frames": [
+        "rest",
+        "right-mid",
+        "right",
+        "right-mid",
+        "rest"
+      ],
+      "durations": [
+        60,
+        60,
+        240,
+        60,
+        80
+      ]
+    },
+    "blink-rest": {
+      "frames": [
+        "rest",
+        "rest-blink",
+        "rest"
+      ],
+      "durations": [
+        40,
+        100,
+        60
+      ]
+    },
+    "blink-left": {
+      "frames": [
+        "left",
+        "left-blink",
+        "left"
+      ],
+      "durations": [
+        40,
+        100,
+        60
+      ]
+    },
+    "blink-right": {
+      "frames": [
+        "right",
+        "right-blink",
+        "right"
+      ],
+      "durations": [
+        40,
+        100,
+        60
+      ]
+    },
+    "blink-down": {
+      "frames": [
+        "down",
+        "down-blink",
+        "down"
+      ],
+      "durations": [
+        40,
+        100,
+        60
+      ]
+    },
+    "blink-nervous": {
+      "frames": [
+        "nervous",
+        "nervous-blink",
+        "nervous"
+      ],
+      "durations": [
+        40,
+        100,
+        60
+      ]
+    },
+    "blink-shocked": {
+      "frames": [
+        "shocked",
+        "shocked-blink",
+        "shocked"
+      ],
+      "durations": [
+        40,
+        100,
+        60
+      ]
+    },
+    "blink-confident": {
+      "frames": [
+        "confident",
+        "confident-blink",
+        "confident"
+      ],
+      "durations": [
+        40,
+        100,
+        60
+      ]
+    },
+    "blink-delighted": {
+      "frames": [
+        "delighted",
+        "delighted-blink",
+        "delighted"
+      ],
+      "durations": [
+        40,
+        100,
+        60
+      ]
+    },
+    "blink-grip": {
+      "frames": [
+        "grip",
+        "grip-blink",
+        "grip"
+      ],
+      "durations": [
+        40,
+        100,
+        60
+      ]
+    },
+    "blink-release": {
+      "frames": [
+        "release",
+        "grip-blink",
+        "release"
+      ],
+      "durations": [
+        40,
+        100,
+        60
+      ]
+    }
+  },
+  "handoff": {
+    "releaseMs": 200,
+    "released": "throw-release",
+    "caught": "caught",
+    "release": [
+      237.8238067626953,
+      216.65015983581543,
+      20,
+      28
+    ],
+    "catch": [
+      237.82374572753906,
+      210.60587692260742,
+      20,
+      28
+    ]
+  },
+  "checks": [
+    {
+      "frame": "rest",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "blink",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "nervous",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "shocked",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "delighted",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "confident",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "prepare",
+      "bounds": [
+        771,
+        532,
+        1296,
+        1524
+      ],
+      "clearance": 524,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "release",
+      "bounds": [
+        763,
+        532,
+        1297,
+        1523
+      ],
+      "clearance": 525,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "grip",
+      "bounds": [
+        763,
+        532,
+        1297,
+        1523
+      ],
+      "clearance": 525,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "caught",
+      "bounds": [
+        763,
+        531,
+        1298,
+        1529
+      ],
+      "clearance": 519,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "fall-start",
+      "bounds": [
+        662,
+        493,
+        1422,
+        1499
+      ],
+      "clearance": 493,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "midfall",
+      "bounds": [
+        449,
+        569,
+        1590,
+        1434
+      ],
+      "clearance": 449,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "floor",
+      "bounds": [
+        452,
+        684,
+        1612,
+        1434
+      ],
+      "clearance": 436,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "left",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "left-mid",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "right",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "right-mid",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "down",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "down-mid",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "rest-blink",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "left-blink",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "right-blink",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "down-blink",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "nervous-blink",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "shocked-blink",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "confident-blink",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "delighted-blink",
+      "bounds": [
+        741,
+        532,
+        1303,
+        1545
+      ],
+      "clearance": 503,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "grip-blink",
+      "bounds": [
+        763,
+        532,
+        1297,
+        1523
+      ],
+      "clearance": 525,
+      "nativePixelsIdentical": true
+    },
+    {
+      "frame": "throw-release",
+      "bounds": [
+        763,
+        532,
+        1299,
+        1524
+      ],
+      "clearance": 524,
+      "nativePixelsIdentical": true
+    }
+  ],
+  "cards": [
+    {
+      "frame": "rest",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "blink",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "nervous",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "shocked",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "delighted",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "confident",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "prepare",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "release",
+      "cardCount": 1,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "grip",
+      "cardCount": 1,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "caught",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "fall-start",
+      "cardCount": 1,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "midfall",
+      "cardCount": 1,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "floor",
+      "cardCount": 1,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "left",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "left-mid",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "right",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "right-mid",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "down",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "down-mid",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "rest",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "left",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "right",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "down",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "nervous",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "shocked",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "confident",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "delighted",
+      "cardCount": 2,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    },
+    {
+      "frame": "grip",
+      "cardCount": 1,
+      "fingersPreserved": true,
+      "placeholderPixelsRemaining": 0,
+      "roundedRadiusRatio": 0.055
+    }
+  ],
+  "registration": [
+    {
+      "frame": "blink",
+      "headScaleCorrection": 0.4873206960117604,
+      "angle": -0.27941770461032045,
+      "matches": 50,
+      "inliers": 39
+    },
+    {
+      "frame": "nervous",
+      "headScaleCorrection": 0.4843058469606493,
+      "angle": -0.8736195691650992,
+      "matches": 46,
+      "inliers": 36
+    },
+    {
+      "frame": "shocked",
+      "headScaleCorrection": 0.4852867183727841,
+      "angle": -0.0960652644933006,
+      "matches": 30,
+      "inliers": 17
+    },
+    {
+      "frame": "delighted",
+      "headScaleCorrection": 0.482978925863031,
+      "angle": -0.2837919254487657,
+      "matches": 51,
+      "inliers": 36
+    },
+    {
+      "frame": "confident",
+      "headScaleCorrection": 0.4837866325506857,
+      "angle": -1.1048568249010895,
+      "matches": 59,
+      "inliers": 48
+    },
+    {
+      "frame": "prepare",
+      "headScaleCorrection": 0.9095526581544838,
+      "angle": -0.9112307783672432,
+      "matches": 96,
+      "inliers": 71
+    },
+    {
+      "frame": "release",
+      "headScaleCorrection": 0.9097757202282734,
+      "angle": -0.9810315687930944,
+      "matches": 74,
+      "inliers": 45
+    },
+    {
+      "frame": "grip",
+      "headScaleCorrection": 0.908077550027935,
+      "angle": -1.056095887113818,
+      "matches": 80,
+      "inliers": 52
+    },
+    {
+      "frame": "caught",
+      "headScaleCorrection": 0.9137719252677433,
+      "angle": -0.7922145439149834,
+      "matches": 73,
+      "inliers": 50
+    }
+  ],
+  "poseAliases": {}
+}

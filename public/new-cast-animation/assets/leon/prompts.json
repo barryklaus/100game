@@ -1,0 +1,93 @@
+{
+  "tool": "built-in imagegen",
+  "selectedSources": [
+    {
+      "id": "leon",
+      "pose": "prepare",
+      "kind": "action",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nCharacter: leon\nAction: Prepare a modest forward wrist throw toward table/viewer. EXACTLY TWO magenta cards: image-RIGHT hand keeps one card at chest; image-LEFT hand holds the second card, extends it just slightly forward near chest toward table. Head, torso, hips, legs and feet match master rest. Do not throw yet.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/leon-master.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-8701e451-0059-418d-8c91-73690d2ce73c.png"
+    },
+    {
+      "id": "leon",
+      "pose": "faces",
+      "kind": "faces",
+      "prompt": "Use case: identity-preserve. Asset type: facial-expression sprite reference sheet. Image 1 is the definitive master HEAD crop edit target. Draw EXACTLY SIX isolated copies of this SAME head on a transparent sheet arranged in an exact 3-column by 2-row equal-cell grid. Entire original hair, ears, neck and head silhouette in EVERY cell with a wide transparent margin (at least 20% cell padding all sides). Uniform camera and head size. Same clean cel shaded adult cartoon linework, skin color, nose, hair, accessories and identity. Change ONLY eyes, eyebrows, mouth for facial emotion; no cross-eyed pupils, no glasses changes, no resized head. Reading order: TOP LEFT calm original, TOP MIDDLE blink with both eyes gently fully CLOSED (closed eyelids, not squinting), TOP RIGHT nervous uneasy subtle open-mouth grimace; BOTTOM LEFT shocked, aligned wide eyes and open surprised mouth; BOTTOM MIDDLE delighted warm laughing mouth and cheerful eyes; BOTTOM RIGHT confident knowing raised eyebrow and closed-mouth smug smile. No body, hands, cards, background, chair, panel grid lines, labels, text, decorations or glow. Genuine transparent alpha. Use as much native detail as possible, preferably a large landscape sheet with six equal cells.\nCharacter: leon",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-cast-expansion-animation-v1/leon/head-reference.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-4e8716b9-eda8-4956-8c27-f719c6abcac7.png"
+    },
+    {
+      "id": "leon",
+      "pose": "release",
+      "kind": "action",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: leon.\nAction: Forward wrist release toward the table/viewer. IMAGE-LEFT working hand open and EMPTY slightly forward at chest/waist height, relaxed natural five fingers, palm down. Image-RIGHT hand retains EXACTLY ONE magenta card at chest. Keep head and lower body exactly like master. NO airborne card painted.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/leon-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-8701e451-0059-418d-8c91-73690d2ce73c.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-ecbf2283-06d8-432f-8bbe-ed72841d6d6a.png"
+    },
+    {
+      "id": "leon",
+      "pose": "grip",
+      "kind": "action",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: leon.\nAction: Receive-ready pose. IMAGE-LEFT working hand is EMPTY, thumb and fingers in a loose open pinch slightly forward near chest, ready to catch a card arriving from the table. Image-RIGHT hand retains EXACTLY ONE magenta card at chest. Keep head, torso, hips, legs, feet like master.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/leon-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-8701e451-0059-418d-8c91-73690d2ce73c.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-d5b2e6b1-aaf0-4ca6-928c-1378ed901ec3.png"
+    },
+    {
+      "id": "leon",
+      "pose": "caught",
+      "kind": "action",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: leon.\nAction: Just received a second card. Image-LEFT working hand slightly forward near chest now holds ONE magenta card with natural fingers in front, other IMAGE-RIGHT hand retains ONE magenta card at chest. EXACTLY TWO cards. Same physical reach as receive-ready; head and lower body like master.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/leon-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-8701e451-0059-418d-8c91-73690d2ce73c.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-665e0a87-7a15-4231-a409-9a5d2ad1a14f.png"
+    },
+    {
+      "id": "leon",
+      "pose": "fall-start",
+      "kind": "tumble",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: leon.\nAction: Beginning of comic backward fall WITHOUT CHAIR: surprised face, torso leans slightly backward, hips at original seated anchor, both knees start lifting, image-LEFT EMPTY hand opens reacting and image-RIGHT hand retains ONE magenta card. Same head size as master. Entire body and both feet present, no chair.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/leon-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-8701e451-0059-418d-8c91-73690d2ce73c.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-30984cf5-e4b1-483a-b78a-95607bbe66fc.png"
+    },
+    {
+      "id": "leon",
+      "pose": "midfall",
+      "kind": "tumble",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: leon.\nAction: Middle of backward tumble WITHOUT CHAIR: torso reclines about 45 degrees toward the floor, hips low at center, head moves lower, knees bent and feet swing upward, image-LEFT EMPTY hand reacts and image-RIGHT hand retains ONE magenta card. Same physical head/body scale as master, whole natural adult body, both complete shoes, ample margins.\nImage 3 is the preceding falling pose; continue that backward fall, preserving hand/card identity.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/leon-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-8701e451-0059-418d-8c91-73690d2ce73c.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-30984cf5-e4b1-483a-b78a-95607bbe66fc.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-0071c558-282f-47ec-a8d6-18447a539ac8.png"
+    },
+    {
+      "id": "leon",
+      "pose": "floor",
+      "kind": "tumble",
+      "prompt": "Use case: identity-preserve. Asset type: ONE complete traditional sprite drawing for 100next. Image 1 is the approved master EDIT TARGET. Keep exactly its character identity, colors, adult anatomy, head size, hair, accessories and clean cel-shaded black linework. Same front-facing seated camera and physical scale. FULL BODY, square canvas, generous transparent margins around entire hair/head, arms and both complete shoes. Genuine transparent RGBA. NO chair, table, background, shadow, captions, labels, motion blur or effect. Cards are blank solid MAGENTA #ff00ff rounded placeholders, no lettering or artwork; natural fingers sit IN FRONT. Image-LEFT hand is working hand; image-RIGHT hand retains a card. Never mirror the figure or swap these hand roles. No magnification or closeup.\nImage 2 is the approved preparation drawing; it establishes the retained hand and gesture continuity. Always preserve the physical master head size.\nCharacter: leon.\nAction: END of comic backward tumble WITHOUT CHAIR: body lies LOW on its back on imaginary floor, head and shoulders low near bottom-middle of drawing; BOTH feet stick UP above torso with bent knees, soles visible. Surprised face and exact master identity, normal head scale and limbs. IMAGE-LEFT EMPTY hand raised open reacting, IMAGE-RIGHT hand retains ONE magenta card. Full body fits inside wide transparent margin. Do not draw floor or chair.\nImage 3 is the preceding falling pose; continue that backward fall, preserving hand/card identity.",
+      "refs": [
+        "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/leon-master.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-8701e451-0059-418d-8c91-73690d2ce73c.png",
+        "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-0071c558-282f-47ec-a8d6-18447a539ac8.png"
+      ],
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-c1d5413b-94c8-4ce4-9704-604483cc22b4.png"
+    }
+  ]
+}

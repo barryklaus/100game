@@ -53,7 +53,7 @@ cast.reset();nodes.forEach(n=>{n.hidden=false;n.history.length=0;});Math.random=
 // A slow blink decode must yield to a real gesture and must not reappear later.
 cast.sync(state);await flush();waitDecode=true;await advance(5000);
 const duringBlink=cast.prepareThrow(0);await flush();cast.release(0);await flush();waitDecode=false;pending.splice(0).forEach(resolve=>resolve());await flush();await advance(600);await duringBlink;
-assert.equal(nodes[0].element.dataset.cards,'1');assert.equal(nodes[0].element.dataset.frame,'release');cast.reset();assert.equal(timers.size,0);
+assert.equal(nodes[0].element.dataset.cards,'1');assert(['release','release-blink'].includes(nodes[0].element.dataset.frame),'Only a matching one-card drawing may follow cancellation; a fresh one-card blink is valid');cast.reset();assert.equal(timers.size,0);
 const cardAudit=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/card-back-checks.json'));assert.equal(new Set(cardAudit.map(x=>x.character)).size,8);assert(cardAudit.every(x=>x.handsPreserved&&x.facesAndBodyOutsideCardsUnchanged&&x.cornerRadiusRatio===.055));
 const mouthAudit=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/mouth-line-checks.json'));
 assert.equal(mouthAudit.length,176);assert.equal(new Set(mouthAudit.map(x=>x.character)).size,8);
