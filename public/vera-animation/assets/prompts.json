@@ -1,0 +1,182 @@
+{
+  "original": {
+    "tool": "built-in imagegen",
+    "reference": "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/vera-master.png",
+    "common": "Use case: identity-preserve. Asset type: traditional complete character animation frame for 100next. Edit target is Vera's approved full-body master. Preserve her exact identity: dark auburn updo with silver white front streak, mature slim face, warm skin, gold diamond earrings, plum velvet blouse and trousers, plum heels and gold bangle. Match exactly the original outlines, colors, anatomy and cel shading. Transparent RGBA background. Front-facing seated at a card table, but DO NOT DRAW A CHAIR, table, floor, ground, shadow, caption, text or effects. One COMPLETE full-body drawing, same square canvas and same camera, head size and physical body scale as master. Generous transparent margins around head, feet, arms. No magnification or close-up. The 2 little cards must be entirely flat solid MAGENTA #ff00ff rounded placeholders with NO ART, NO LETTERING, NO BORDER, no floating cards. Fingers must be drawn naturally IN FRONT of card placeholders. Image-left hand retains a card; image-right hand is working hand.",
+    "jobs": [
+      {
+        "id": "prepare",
+        "type": "action",
+        "desc": "Change only arms and hands: prepare to throw. Vera holds two cards, retaining one in image-left hand at chest, and drawing the second card in image-right hand slightly toward table/viewer. A small loose wrist motion. Keep head, torso, hips, legs, feet identical to master. This is before release."
+      },
+      {
+        "id": "release",
+        "type": "action",
+        "desc": "A modest generic forward wrist throw toward table/viewer. Image-right working arm extends slightly forward at chest-to-waist height, hand open palm down, fingers elegantly relaxed, EMPTY hand. Image-left hand retains EXACTLY ONE magenta card at chest. Keep head and all lower body identical to master. No flying card painted."
+      },
+      {
+        "id": "follow",
+        "type": "action",
+        "desc": "Follow-through of modest forward wrist throw: image-right EMPTY working hand relaxing back toward mid torso, fingers relaxed. Image-left hand retains EXACTLY ONE magenta card at chest. Keep head and all lower body identical to master. No airborne cards."
+      },
+      {
+        "id": "grip",
+        "type": "action",
+        "desc": "Receive-ready pose: Vera's EMPTY image-right hand is poised slightly forward, natural thumb/index grip open, ready to receive one card from table. Image-left hand retains EXACTLY ONE magenta card at chest. Same head and lower body as master."
+      },
+      {
+        "id": "caught",
+        "type": "action",
+        "desc": "Just caught second card: same working hand reach as receiving grip, but image-right thumb and fingers now HOLD ONE solid magenta card slightly forward near chest. Image-left hand retains ONE magenta card at chest. Exactly two cards. Same head and lower body as master."
+      },
+      {
+        "id": "nervous",
+        "type": "emotion",
+        "desc": "Change ONLY eyebrows, eyes and mouth: nervous uneasy expression, eyebrows mildly pinched, lips slightly parted in tense asymmetric grimace, still anatomically beautiful and readable. Entire body, hands and two magenta cards in exact original rest pose."
+      },
+      {
+        "id": "shocked",
+        "type": "emotion",
+        "desc": "Change ONLY eyebrows, eyes and mouth: cartoon shock, wide eyes with pupils aligned, raised brows and surprised open mouth. No change to head shape or size. Entire body, hands and two magenta cards in exact original rest pose."
+      },
+      {
+        "id": "delighted",
+        "type": "emotion",
+        "desc": "Change ONLY eyebrows, eyes and mouth: triumphant warm laugh, cheerful eyes and open laughing mouth. No change to head shape or size. Entire body, hands and two magenta cards in exact original rest pose."
+      },
+      {
+        "id": "confident",
+        "type": "emotion",
+        "desc": "Change ONLY eyebrows, eyes and mouth: knowing raised eyebrow, slightly narrowed eyes and smug closed smile. No change to head shape or size. Entire body, hands and two magenta cards in exact original rest pose."
+      },
+      {
+        "id": "fall-start",
+        "type": "tumble",
+        "desc": "Beginning of comic BACKWARD tumble WITHOUT CHAIR: Vera leans torso slightly back, surprised face, knees lifting a little, hips at same seated anchor, arms lifting reactively. Image-left hand retains EXACTLY ONE magenta card, image-right empty. Entire full body present at SAME physical scale, no enlarged head."
+      },
+      {
+        "id": "midfall",
+        "type": "tumble",
+        "desc": "Middle of comic BACKWARD tumble WITHOUT CHAIR: Vera tips backward into a low reclined position, face looking up/viewer surprised, torso lowered and legs swinging upwards, knees bent, feet lifted. Image-left hand retains EXACTLY ONE magenta card; image-right hand empty reacting. Head must remain original physical size, no enlarging. All parts fit well within generous transparent canvas, hips near original seated anchor."
+      },
+      {
+        "id": "floor",
+        "type": "tumble",
+        "desc": "Final comic backward tumble WITHOUT CHAIR: Vera lying LOW on her back on imaginary floor, upper body and head near bottom of canvas, knees bent and BOTH feet sticking UP above torso, heels visible. Face surprised, original hair and head size. Image-left hand retains EXACTLY ONE magenta card; image-right hand empty. Full body at same physical scale as master, no extra legs or impossible joints. Use wide surrounding transparency so nothing touches borders."
+      }
+    ]
+  },
+  "corrections": {
+    "corrections": [
+      {
+        "id": "follow",
+        "prompt": "Edit Vera master, full body same camera and pixel proportions. Her IMAGE-RIGHT hand (the hand WITHOUT gold bangle) retains ONE solid magenta #ff00ff card at chest. Her IMAGE-LEFT hand (WITH gold bangle) is EMPTY after throwing, relaxed naturally at chest/waist. VERY IMPORTANT: do not switch hands; no card in bangle hand. Preserve original updo/silver streak, face, neck, jacket, trousers, heels. Genuine clean transparent RGBA background, no gray fog, no chair, no ground or shadows. Same generous margin around complete head and feet. This is modest throw follow-through, front seated pose. No airborne card.",
+        "refs": [
+          "/Users/barryklaus/Documents/Codex/CARD100/Cards/output/100next-new-eight-masters-v1/masters/vera-master.png",
+          "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-3baa2473-8c3d-4ab8-b274-1b2757f52171.png"
+        ]
+      },
+      {
+        "id": "fall-start",
+        "prompt": "Edit this backward-tumble pose ONLY the two hands and card: the IMAGE-RIGHT hand WITHOUT gold bangle must retain ONE flat magenta rounded card. The IMAGE-LEFT hand WITH gold bangle is EMPTY with natural five fingers. Preserve pose, surprised face, auburn/silver updo, clothing, scale, full body, feet, canvas and transparency. No chair or floor. Do not mirror the whole figure. Do not change which wrist wears the bangle.",
+        "refs": [
+          "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-944e7a66-f560-43f5-9464-10d1e336e31b.png"
+        ]
+      },
+      {
+        "id": "midfall",
+        "prompt": "Edit this midfall pose ONLY the two hands and card: the IMAGE-RIGHT hand WITHOUT gold bangle must retain ONE flat magenta rounded card with natural thumb and fingers in front. The IMAGE-LEFT hand WITH gold bangle is EMPTY with natural five fingers. Preserve pose, surprised face, auburn/silver updo, clothing, full body, feet, canvas and transparency. No chair or floor. Do not mirror the whole figure. Do not change which wrist wears the bangle.",
+        "refs": [
+          "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-f0f15f70-5705-46e5-a4b3-52c8a727e073.png"
+        ]
+      }
+    ],
+    "finalMidfall": "Use case: identity-preserve. Create ONE complete traditional animation drawing of Vera midway through FALLING BACKWARD, halfway between the attached surprised seated leaning pose and floor landing. Image 1 is definitive master identity and size; image 2 is the approved fall beginning; image 3 is approved floor ending. Same physical HEAD SIZE as image 1 (hair head approximately 250 native pixels across on 1254 canvas), NOT enlarged. Front three-quarter view, hips remain near center, torso reclines about 45 degrees, both knees bent and heels lift. IMPORTANT asymmetric identity anchor: gold bangle is on IMAGE-LEFT wrist, that bangle hand is EMPTY and raised open. IMAGE-RIGHT hand WITHOUT bangle holds ONE flat magenta #ff00ff rounded playing-card placeholder, natural fingers in front. Do not mirror or swap her hands; do not shift gold bangle to opposite wrist. Preserve Vera's auburn updo/silver front streak, plum velvet blouse/pants, earrings and heels, natural five fingers. No chair, no table, no ground/shadow or effects. Genuine transparent alpha. Entire body in a square canvas with WIDE padding so all head, arms, feet fit well within frame. Not closeup. No floating card artwork."
+  },
+  "selectedSources": [
+    {
+      "id": "prepare",
+      "type": "action",
+      "desc": "Change only arms and hands: prepare to throw. Vera holds two cards, retaining one in image-left hand at chest, and drawing the second card in image-right hand slightly toward table/viewer. A small loose wrist motion. Keep head, torso, hips, legs, feet identical to master. This is before release.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-ce1a3d47-e075-4c56-8702-752f7ce9dc06.png"
+    },
+    {
+      "id": "release",
+      "type": "action",
+      "desc": "A modest generic forward wrist throw toward table/viewer. Image-right working arm extends slightly forward at chest-to-waist height, hand open palm down, fingers elegantly relaxed, EMPTY hand. Image-left hand retains EXACTLY ONE magenta card at chest. Keep head and all lower body identical to master. No flying card painted.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-3baa2473-8c3d-4ab8-b274-1b2757f52171.png"
+    },
+    {
+      "id": "follow",
+      "type": "action",
+      "desc": "Follow-through of modest forward wrist throw: image-right EMPTY working hand relaxing back toward mid torso, fingers relaxed. Image-left hand retains EXACTLY ONE magenta card at chest. Keep head and all lower body identical to master. No airborne cards.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-aff3b7a7-4c80-466b-a53f-60b755859420.png",
+      "previousSource": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-c5c607e2-9761-4b85-8fcc-7c39b651fc4f.png",
+      "correctionPrompt": "Edit Vera master, full body same camera and pixel proportions. Her IMAGE-RIGHT hand (the hand WITHOUT gold bangle) retains ONE solid magenta #ff00ff card at chest. Her IMAGE-LEFT hand (WITH gold bangle) is EMPTY after throwing, relaxed naturally at chest/waist. VERY IMPORTANT: do not switch hands; no card in bangle hand. Preserve original updo/silver streak, face, neck, jacket, trousers, heels. Genuine clean transparent RGBA background, no gray fog, no chair, no ground or shadows. Same generous margin around complete head and feet. This is modest throw follow-through, front seated pose. No airborne card."
+    },
+    {
+      "id": "grip",
+      "type": "action",
+      "desc": "Receive-ready pose: Vera's EMPTY image-right hand is poised slightly forward, natural thumb/index grip open, ready to receive one card from table. Image-left hand retains EXACTLY ONE magenta card at chest. Same head and lower body as master.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-9ada6b5c-c05f-43a5-8a4f-c0004fb7eaf6.png"
+    },
+    {
+      "id": "caught",
+      "type": "action",
+      "desc": "Just caught second card: same working hand reach as receiving grip, but image-right thumb and fingers now HOLD ONE solid magenta card slightly forward near chest. Image-left hand retains ONE magenta card at chest. Exactly two cards. Same head and lower body as master.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-9bd88409-bc75-4ea9-a172-2600a89796e1.png"
+    },
+    {
+      "id": "nervous",
+      "type": "emotion",
+      "desc": "Change ONLY eyebrows, eyes and mouth: nervous uneasy expression, eyebrows mildly pinched, lips slightly parted in tense asymmetric grimace, still anatomically beautiful and readable. Entire body, hands and two magenta cards in exact original rest pose.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-00860a3d-12a2-4050-b62e-8fd2414c80e4.png"
+    },
+    {
+      "id": "shocked",
+      "type": "emotion",
+      "desc": "Change ONLY eyebrows, eyes and mouth: cartoon shock, wide eyes with pupils aligned, raised brows and surprised open mouth. No change to head shape or size. Entire body, hands and two magenta cards in exact original rest pose.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-49c9cb71-c792-4e2e-96ad-f99db2d0dff3.png"
+    },
+    {
+      "id": "delighted",
+      "type": "emotion",
+      "desc": "Change ONLY eyebrows, eyes and mouth: triumphant warm laugh, cheerful eyes and open laughing mouth. No change to head shape or size. Entire body, hands and two magenta cards in exact original rest pose.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-d5a178b7-9dd6-4e36-8b41-7862d02ff2d9.png"
+    },
+    {
+      "id": "confident",
+      "type": "emotion",
+      "desc": "Change ONLY eyebrows, eyes and mouth: knowing raised eyebrow, slightly narrowed eyes and smug closed smile. No change to head shape or size. Entire body, hands and two magenta cards in exact original rest pose.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-7028fea1-8be1-40f6-8772-ffb19b37d1ff.png"
+    },
+    {
+      "id": "fall-start",
+      "type": "tumble",
+      "desc": "Beginning of comic BACKWARD tumble WITHOUT CHAIR: Vera leans torso slightly back, surprised face, knees lifting a little, hips at same seated anchor, arms lifting reactively. Image-left hand retains EXACTLY ONE magenta card, image-right empty. Entire full body present at SAME physical scale, no enlarged head.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-6433a6e8-9764-482a-bb28-0c1a0ab93715.png",
+      "previousSource": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-944e7a66-f560-43f5-9464-10d1e336e31b.png",
+      "correctionPrompt": "Edit this backward-tumble pose ONLY the two hands and card: the IMAGE-RIGHT hand WITHOUT gold bangle must retain ONE flat magenta rounded card. The IMAGE-LEFT hand WITH gold bangle is EMPTY with natural five fingers. Preserve pose, surprised face, auburn/silver updo, clothing, scale, full body, feet, canvas and transparency. No chair or floor. Do not mirror the whole figure. Do not change which wrist wears the bangle."
+    },
+    {
+      "id": "midfall",
+      "type": "tumble",
+      "desc": "Middle of comic BACKWARD tumble WITHOUT CHAIR: Vera tips backward into a low reclined position, face looking up/viewer surprised, torso lowered and legs swinging upwards, knees bent, feet lifted. Image-left hand retains EXACTLY ONE magenta card; image-right hand empty reacting. Head must remain original physical size, no enlarging. All parts fit well within generous transparent canvas, hips near original seated anchor.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-1add357e-e2f7-4859-a424-a7846469bf75.png",
+      "previousSource": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-904a8c2f-a687-487d-ba77-5a8a042263be.png",
+      "correctionPrompt": "Use case: identity-preserve. Create ONE complete traditional animation drawing of Vera midway through FALLING BACKWARD, halfway between the attached surprised seated leaning pose and floor landing. Image 1 is definitive master identity and size; image 2 is the approved fall beginning; image 3 is approved floor ending. Same physical HEAD SIZE as image 1 (hair head approximately 250 native pixels across on 1254 canvas), NOT enlarged. Front three-quarter view, hips remain near center, torso reclines about 45 degrees, both knees bent and heels lift. IMPORTANT asymmetric identity anchor: gold bangle is on IMAGE-LEFT wrist, that bangle hand is EMPTY and raised open. IMAGE-RIGHT hand WITHOUT bangle holds ONE flat magenta #ff00ff rounded playing-card placeholder, natural fingers in front. Do not mirror or swap her hands; do not shift gold bangle to opposite wrist. Preserve Vera's auburn updo/silver front streak, plum velvet blouse/pants, earrings and heels, natural five fingers. No chair, no table, no ground/shadow or effects. Genuine transparent alpha. Entire body in a square canvas with WIDE padding so all head, arms, feet fit well within frame. Not closeup. No floating card artwork."
+    },
+    {
+      "id": "floor",
+      "type": "tumble",
+      "desc": "Final comic backward tumble WITHOUT CHAIR: Vera lying LOW on her back on imaginary floor, upper body and head near bottom of canvas, knees bent and BOTH feet sticking UP above torso, heels visible. Face surprised, original hair and head size. Image-left hand retains EXACTLY ONE magenta card; image-right hand empty. Full body at same physical scale as master, no extra legs or impossible joints. Use wide surrounding transparency so nothing touches borders.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-6fc7adea-3f6e-498e-9239-84e2b560befc.png"
+    },
+    {
+      "id": "blink",
+      "type": "emotion",
+      "desc": "Change ONLY the eyes into gently fully CLOSED eyes for a natural fast blink. Upper eyelids with elegant black lashes, no eyeballs showing and NO new lines outside eyes. Keep eyebrows and the smiling lips EXACTLY unchanged. Keep the rest of the complete seated master identical, including two blank magenta rounded card placeholders. No changes in skull, outline, face geometry, hair, head size, clothing, hands, feet, scale or position.",
+      "source": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-b0a84daf-fc60-466e-ba0a-f39cd46a520a.png"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import {existsSync,readFileSync} from 'node:fs';
+import {build} from 'esbuild';
+const bundle=await build({entryPoints:['src/ui/MasterAnimations.ts'],bundle:true,platform:'node',format:'esm',write:false,define:{'import.meta.env.BASE_URL':'"/"'}});
+const {MasterAnimations}=await import(`data:text/javascript;base64,${Buffer.from(bundle.outputFiles[0].text).toString('base64')}`);
+let time=0,key=0,waitDecode=false,pending=[];const timers=new Map();
+globalThis.performance={now:()=>time};globalThis.window=globalThis;
+globalThis.setTimeout=(fn,ms)=>{timers.set(++key,{fn,at:time+ms});return key;};globalThis.clearTimeout=k=>timers.delete(k);
+globalThis.Image=class{decode(){return waitDecode?new Promise(resolve=>pending.push(resolve)):Promise.resolve();}};
+const names=['vera'];let paints=0;
+const nodes=names.map((id,index)=>{const history=[];const image={isConnected:true,style:{cssText:''},get src(){return this.url;},set src(url){this.url=url;paints++;history.push({url,time});}};const element={dataset:{character:id},querySelector:()=>image};return {dataset:{seat:String(index),mood:'Normal'},hidden:false,history,element,image,getBoundingClientRect:()=>({left:index*200,top:100,width:100,height:100})};});
+const root={querySelector(selector){const n=nodes[Number(selector.match(/data-seat="(\d+)"/)?.[1])];if(selector.includes('master-hand'))return {getBoundingClientRect:n.getBoundingClientRect};return selector.includes('master-sprite')?n.element:n;},querySelectorAll(){return nodes.filter(n=>!n.hidden);}};
+const flush=async()=>{for(let i=0;i<20;i++)await Promise.resolve();};
+const advance=async ms=>{const end=time+ms;while(true){const next=[...timers.entries()].filter(([,v])=>v.at<=end).sort((a,b)=>a[1].at-b[1].at)[0];if(!next)break;time=next[1].at;timers.delete(next[0]);next[1].fn();await flush();}time=end;await flush();};
+const state={active:0,total:0,overflow:false,target:false,reducedMotion:false};const cast=new MasterAnimations(root);
+cast.sync(state);await flush();const initial=paints;cast.sync(state);await flush();assert.equal(paints,initial,'Unchanged renders keep the same drawing');
+
+const preparing=cast.prepareThrow(0);await flush();await advance(201);await preparing;
+assert.equal(nodes[0].element.dataset.frame,'prepare');
+cast.sync(state);await flush();await advance(4000);assert.equal(nodes[0].element.dataset.frame,'prepare','Prepared card survives delayed flight');
+cast.release(0);assert.equal(nodes[0].element.dataset.frame,'throw-release');assert.equal(nodes[0].element.dataset.cards,'1');await flush();await advance(350);
+const drawing=cast.prepareDraw(0);await flush();await advance(161);await drawing;assert.equal(nodes[0].element.dataset.frame,'grip');
+cast.sync({...state,total:95});await flush();await advance(4000);assert.equal(nodes[0].element.dataset.frame,'grip','No blink/reaction redraw can add a card before arrival');
+const caught=cast.received(0);assert.equal(nodes[0].element.dataset.frame,'caught');assert.equal(nodes[0].element.dataset.cards,'2');await flush();await advance(500);await caught;
+await advance(6000);assert(nodes[0].history.some(h=>h.url.includes('shocked-blink')),'Vera blinks in a danger expression');
+const fall=cast.tumble(0);await flush();await advance(1000);await fall;assert.equal(nodes[0].element.dataset.frame,'floor');cast.sync({...state,overflow:true});await flush();assert.equal(nodes[0].element.dataset.frame,'floor');cast.reset();assert.equal(timers.size,0);
+const data=JSON.parse(readFileSync('public/vera-animation/assets/manifest.json'));assert.equal(data.nativeCanvas,2048);assert(data.checks.every(x=>x.nativePixelsIdentical&&x.clearance>=300));
+assert(data.cards.every(x=>x.placeholderPixelsRemaining===0),'No magenta registration pixels remain');
+for(const check of data.checks){assert(existsSync('public/vera-animation/assets/'+check.frame+'.webp'));assert(existsSync('public/assets/social-club/master-animation-v2/vera/'+check.frame+'.webp'));}
+for(const clip of Object.values(data.clips))assert.equal(clip.frames.length,clip.durations.length);
+assert(data.cards.every(c=>c.fingersPreserved&&c.cardCount===(['prepare','caught','rest','left','left-mid','right','right-mid','down','down-mid','blink','nervous','shocked','delighted','confident'].includes(c.frame)?2:1)),'Correct card count on every action/reaction');
+console.log('Vera checks passed: synchronized card release/catch, waiting grips, expression blinks, held floor landing, canceled timers, fixed padding and complete assets.');

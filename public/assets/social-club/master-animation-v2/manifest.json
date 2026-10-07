@@ -6346,6 +6346,550 @@
           26.25
         ]
       }
+    },
+    "vera": {
+      "clips": {
+        "blink": {
+          "frames": [
+            "rest",
+            "blink",
+            "rest"
+          ],
+          "durations": [
+            40,
+            100,
+            60
+          ]
+        },
+        "look-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            240,
+            60,
+            80
+          ]
+        },
+        "look-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            240,
+            60,
+            80
+          ]
+        },
+        "study": {
+          "frames": [
+            "rest",
+            "down-mid",
+            "down",
+            "down-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            220,
+            60,
+            80
+          ]
+        },
+        "danger": {
+          "frames": [
+            "nervous",
+            "shocked",
+            "nervous"
+          ],
+          "durations": [
+            100,
+            180,
+            100
+          ]
+        },
+        "startle": {
+          "frames": [
+            "rest",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            240
+          ]
+        },
+        "celebrate": {
+          "frames": [
+            "confident",
+            "delighted",
+            "confident",
+            "rest"
+          ],
+          "durations": [
+            80,
+            240,
+            100,
+            80
+          ]
+        },
+        "defeat": {
+          "frames": [
+            "rest",
+            "nervous"
+          ],
+          "durations": [
+            80,
+            300
+          ]
+        },
+        "throw": {
+          "frames": [
+            "rest",
+            "prepare",
+            "throw-release",
+            "release"
+          ],
+          "durations": [
+            60,
+            140,
+            100,
+            120
+          ]
+        },
+        "receive-ready": {
+          "frames": [
+            "follow",
+            "grip"
+          ],
+          "durations": [
+            80,
+            80
+          ]
+        },
+        "pickup": {
+          "frames": [
+            "caught",
+            "rest"
+          ],
+          "durations": [
+            120,
+            100
+          ]
+        },
+        "tumble": {
+          "frames": [
+            "release",
+            "fall-start",
+            "midfall",
+            "floor"
+          ],
+          "durations": [
+            70,
+            110,
+            140,
+            260
+          ]
+        },
+        "return": {
+          "frames": [
+            "floor",
+            "rest"
+          ],
+          "durations": [
+            200,
+            200
+          ]
+        },
+        "idle": {
+          "frames": [
+            "rest",
+            "blink",
+            "rest"
+          ],
+          "durations": [
+            40,
+            100,
+            60
+          ]
+        },
+        "choose-left": {
+          "frames": [
+            "rest",
+            "left-mid",
+            "left",
+            "left-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            240,
+            60,
+            80
+          ]
+        },
+        "choose-right": {
+          "frames": [
+            "rest",
+            "right-mid",
+            "right",
+            "right-mid",
+            "rest"
+          ],
+          "durations": [
+            60,
+            60,
+            240,
+            60,
+            80
+          ]
+        },
+        "blink-rest": {
+          "frames": [
+            "rest",
+            "rest-blink",
+            "rest"
+          ],
+          "durations": [
+            40,
+            100,
+            60
+          ]
+        },
+        "blink-nervous": {
+          "frames": [
+            "nervous",
+            "nervous-blink",
+            "nervous"
+          ],
+          "durations": [
+            40,
+            100,
+            60
+          ]
+        },
+        "blink-shocked": {
+          "frames": [
+            "shocked",
+            "shocked-blink",
+            "shocked"
+          ],
+          "durations": [
+            40,
+            100,
+            60
+          ]
+        },
+        "blink-delighted": {
+          "frames": [
+            "delighted",
+            "delighted-blink",
+            "delighted"
+          ],
+          "durations": [
+            40,
+            100,
+            60
+          ]
+        },
+        "blink-confident": {
+          "frames": [
+            "confident",
+            "confident-blink",
+            "confident"
+          ],
+          "durations": [
+            40,
+            100,
+            60
+          ]
+        },
+        "blink-left": {
+          "frames": [
+            "left",
+            "left-blink",
+            "left"
+          ],
+          "durations": [
+            40,
+            100,
+            60
+          ]
+        },
+        "blink-right": {
+          "frames": [
+            "right",
+            "right-blink",
+            "right"
+          ],
+          "durations": [
+            40,
+            100,
+            60
+          ]
+        },
+        "blink-down": {
+          "frames": [
+            "down",
+            "down-blink",
+            "down"
+          ],
+          "durations": [
+            40,
+            100,
+            60
+          ]
+        },
+        "blink-follow": {
+          "frames": [
+            "follow",
+            "follow-blink",
+            "follow"
+          ],
+          "durations": [
+            40,
+            100,
+            60
+          ]
+        },
+        "blink-release": {
+          "frames": [
+            "release",
+            "follow-blink",
+            "release"
+          ],
+          "durations": [
+            40,
+            100,
+            60
+          ]
+        }
+      },
+      "emotions": {
+        "calm": "rest",
+        "focused": "down",
+        "confident": "confident",
+        "smug": "confident",
+        "amused": "delighted",
+        "nervous": "nervous",
+        "panicked": "shocked",
+        "shocked": "shocked",
+        "relieved": "delighted",
+        "frustrated": "nervous",
+        "defeated": "nervous"
+      },
+      "bounds": {
+        "rest": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "prepare": [
+          529,
+          461,
+          925,
+          1154
+        ],
+        "release": [
+          512,
+          461,
+          841,
+          1107
+        ],
+        "follow": [
+          512,
+          461,
+          841,
+          1107
+        ],
+        "grip": [
+          521,
+          462,
+          1016,
+          1050
+        ],
+        "caught": [
+          516,
+          460,
+          1042,
+          1097
+        ],
+        "nervous": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "shocked": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "delighted": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "confident": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "fall-start": [
+          494,
+          454,
+          1113,
+          1162
+        ],
+        "midfall": [
+          494,
+          415,
+          1095,
+          1161
+        ],
+        "floor": [
+          492,
+          465,
+          1119,
+          1151
+        ],
+        "blink": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "left": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "left-mid": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "right": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "right-mid": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "down": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "down-mid": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "rest-blink": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "nervous-blink": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "shocked-blink": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "delighted-blink": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "confident-blink": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "left-blink": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "right-blink": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "down-blink": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "follow-blink": [
+          512,
+          461,
+          841,
+          1107
+        ],
+        "throw-release": [
+          498,
+          460,
+          935,
+          1114
+        ]
+      },
+      "handoff": {
+        "releaseMs": 200,
+        "released": "throw-release",
+        "caught": "caught",
+        "release": [
+          249.33676147460938,
+          248.34742736816406,
+          20,
+          28
+        ],
+        "catch": [
+          237.31298828125,
+          212.15901565551758,
+          20,
+          28
+        ]
+      }
     }
   },
   "wholeActionRevision": "approved-eight-v1",

@@ -3,10 +3,10 @@ import { readFileSync, existsSync } from 'node:fs';
 import { build } from 'esbuild';
 const bundled = await build({entryPoints:['src/ui/MasterCharacters.ts'],bundle:true,platform:'node',format:'esm',write:false,define:{'import.meta.env.BASE_URL':'"/"'}});
 const {masterNames,masterCharacter,masterImage,masterAnchors,masterHandRect} = await import(`data:text/javascript;base64,${Buffer.from(bundled.outputFiles[0].text).toString('base64')}`);
-assert.equal(masterNames.length,8);
-assert.equal(new Set(masterNames).size,8,'All seats have unique named artwork');
-assert.equal(masterCharacter(8).id,masterCharacter(0).id);
-assert.equal(masterCharacter(-1).name,'Bianca','Migrated avatar numbers wrap safely');
+assert.equal(masterNames.length,9);
+assert.equal(new Set(masterNames).size,9,'All seats have unique named artwork');
+assert.equal(masterCharacter(9).id,masterCharacter(0).id);
+assert.equal(masterCharacter(-1).name,'Vera','Migrated avatar numbers wrap safely');
 const manifest = JSON.parse(readFileSync('public/assets/social-club/masters-v1/manifest.json','utf8'));
 assert.equal(manifest.characters.length,8);
 for(let i=0;i<8;i++) {
@@ -22,6 +22,8 @@ for(let i=0;i<8;i++) {
   }
   assert.equal((masterAnchors(i).match(/aria-hidden="true"/g)||[]).length,2);
 }
+assert.equal(masterCharacter(8).id,'vera');
+for(const portrait of [false,true])assert.ok(existsSync('public'+masterImage(8,portrait)),'Vera has full art and picker portrait');
 let requested;
 const rectangle={left:200,top:100,width:20,height:30};
 const root={querySelector(selector){requested=selector;return {getBoundingClientRect:()=>rectangle};}};
@@ -30,4 +32,4 @@ assert.ok(requested.includes('data-seat="4"')&&requested.includes('master-hand-c
 assert.equal(masterHandRect(root,4,false),rectangle);
 assert.ok(requested.includes('master-hand-release'),'Throws start at the retained card fan');
 assert.equal(masterHandRect({querySelector:()=>null},4),undefined,'Non-master seats retain the existing handoff path');
-console.log('Master cast checks passed: eight unique assets, safe avatar wrapping, protected padding, and independent throw/catch anchors.');
+console.log('Master cast checks passed: nine unique characters, safe avatar wrapping, protected padding, and independent throw/catch anchors.');
