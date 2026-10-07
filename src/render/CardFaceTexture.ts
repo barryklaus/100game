@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import type { CardFace } from '../game/cardFace';
+import { cardFrameImage } from './CardFrame';
 
 const FONT = 'Luckiest Guy';
 const EDGE = 54; // Roughly five percent of the card width: B's frame, made thicker.
@@ -50,9 +51,9 @@ function lines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): s
   return result;
 }
 
-/** Print fixed card information once. Moving light is a separate border-only mesh. */
+/** Print fixed card information once. Moving artwork light is a separate mesh. */
 export async function cardFaceTexture(source: THREE.Texture, face: CardFace): Promise<THREE.CanvasTexture> {
-  await loadFaceFont();
+  const [, frame] = await Promise.all([loadFaceFont(), cardFrameImage(face.suit)]);
   const image = source.image as CanvasImageSource & { width: number; height: number };
   const width = image.width || 1064, height = image.height || 1478;
   const edge = width * EDGE / 1064;
@@ -108,19 +109,15 @@ export async function cardFaceTexture(source: THREE.Texture, face: CardFace): Pr
   }
 
   const wordIndex = face.index.length > 3;
-  const indexSize = width * (wordIndex ? face.index === 'ZERO' ? .14 : .095 : face.index.length > 1 ? .205 : .249);
+  const indexSize = width * (wordIndex ? face.index === 'ZERO' ? .14 : .095 : 1.5 * (face.index.length > 1 ? .205 : .249));
   index(ctx, face.index, width * .073, height * .052, indexSize);
   ctx.save();
   ctx.translate(width, height);
   ctx.rotate(Math.PI);
-  index(ctx, face.index, width * .073, height * .052, indexSize * (wordIndex ? 1 : .68), face.special);
+  index(ctx, face.index, width * .073, height * .052, indexSize * (face.special && !wordIndex ? .68 : 1), face.special);
   ctx.restore();
 
-  // A quiet hairline lends definition without widening the printed border.
-  rounded(ctx, edge * .5, edge * .5, width - edge, height - edge, outerRadius * .78);
-  ctx.strokeStyle = face.theme === 'midnight' ? '#170e1a99' : '#fff9e9a8';
-  ctx.lineWidth = width * .004;
-  ctx.stroke();
+  ctx.drawImage(frame, 0, 0, width, height);
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;

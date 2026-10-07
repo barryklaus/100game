@@ -253,11 +253,12 @@ button:active { translate:0 1px; }
   border-radius:4% / 2.8%!important;
 }
 .playing-card .card-print {position:absolute;inset:0;z-index:3;pointer-events:none;}
+.playing-card .card-frame {position:absolute;inset:0;background-size:100% 100%;background-repeat:no-repeat;pointer-events:none;}
 .playing-card .card-index {
   position:absolute;
   display:block;
   color:#fffdf4;
-  font:400 24.9cqw/.95 'Luckiest Guy',system-ui,sans-serif;
+  font:400 37.35cqw/.95 'Luckiest Guy',system-ui,sans-serif;
   letter-spacing:-.035em;
   -webkit-text-stroke:.9cqw #191525;
   paint-order:stroke fill;
@@ -267,10 +268,11 @@ button:active { translate:0 1px; }
 .playing-card .card-index.top {top:4.8%;left:7.3%;}
 .playing-card .card-index.bottom {right:7.3%;bottom:4.8%;transform:rotate(180deg);}
 .playing-card.special .card-index.bottom {color:#211927;-webkit-text-stroke:.55cqw #fff9e9;text-shadow:none;}
-.playing-card.special .card-index {font-size:20.5cqw;}
+.playing-card .card-index[data-index="10"],
+.playing-card.special .card-index {font-size:30.75cqw;}
 .playing-card.special .card-index.word-index {font-size:9.5cqw;letter-spacing:0;-webkit-text-stroke:.5cqw #191525;}
 .playing-card.special .card-index[data-index="ZERO"] {font-size:14cqw;}
-.playing-card.special .card-index.bottom:not(.word-index) {font-size:13.94cqw;}
+.playing-card.special .card-index.bottom:not(.word-index) {font-size:20.91cqw;}
 .playing-card.special .card-index.bottom.word-index {-webkit-text-stroke:.4cqw #fff9e9;}
 .playing-card .card-action {
   position:absolute;

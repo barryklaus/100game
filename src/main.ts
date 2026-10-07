@@ -13,6 +13,7 @@ import { CONFIG, MOODS, moodSymbols, suitSymbols } from './data/config';
 import { defaultSeats, loadSettings, loadStats, saveSettings, saveStats, type Settings, type Stats } from './data/storage';
 import { backImage, cardDisplayRank, cardImage, cardImageLossless, prefersLosslessHand } from './game/deck';
 import { cardFace } from './game/cardFace';
+import { cardFrameUrl } from './render/CardFrame';
 import { cpuActionDelay } from './game/cpuTiming';
 import { chooseCpuCard, chooseCpuTarget } from './game/cpu';
 import { createGame, playCard, selectTarget } from './game/rules';
@@ -475,7 +476,7 @@ function cardElement(card: Card, selected = false, extra = ''): string {
   const hand = extra.includes('hand-card');
   const handSources = hand ? ` data-standard-src="${cardImage(card)}" data-full-src="${cardImageLossless(card)}"` : '';
   const image = hand && prefersLosslessHand() ? cardImageLossless(card) : cardImage(card);
-  return `<div class="playing-card suit-${face.suit} ${special ? 'special' : 'standard'} ${selected ? 'selected' : ''} ${extra}" data-card="${card.id}" role="${interactive?'button':'img'}" ${interactive?'tabindex="0"':''} aria-label="${rank} of ${card.suit}${special ? ', special card' : ''}"><img src="${image}"${handSources} alt="${rank} of ${card.suit}" draggable="false"><span class="card-print" aria-hidden="true"><span class="card-index top ${face.index.length>3?'word-index':''}" data-index="${face.index}">${face.index}</span>${special ? `<span class="card-action"><strong>${face.title}</strong><small>${face.detail}</small></span>` : ''}<span class="card-index bottom ${face.index.length>3?'word-index':''}" data-index="${face.index}">${face.index}</span></span></div>`;
+  return `<div class="playing-card suit-${face.suit} ${special ? 'special' : 'standard'} ${selected ? 'selected' : ''} ${extra}" data-card="${card.id}" role="${interactive?'button':'img'}" ${interactive?'tabindex="0"':''} aria-label="${rank} of ${card.suit}${special ? ', special card' : ''}"><img src="${image}"${handSources} alt="${rank} of ${card.suit}" draggable="false"><span class="card-print" aria-hidden="true"><span class="card-frame" style="background-image:url(&quot;${cardFrameUrl(face.suit)}&quot;)"></span><span class="card-index top ${face.index.length>3?'word-index':''}" data-index="${face.index}">${face.index}</span>${special ? `<span class="card-action"><strong>${face.title}</strong><small>${face.detail}</small></span>` : ''}<span class="card-index bottom ${face.index.length>3?'word-index':''}" data-index="${face.index}">${face.index}</span></span></div>`;
 }
 function setupView(): string {
   return `<main class="setup-page">
