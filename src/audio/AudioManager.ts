@@ -1,4 +1,5 @@
 import {SuspenseTrack, anxietyLevel, makeSeamlessLoop} from './SuspenseTrack';
+import {AudioRecovery} from './AudioRecovery';
 
 export type AudioCue = 'card-hover'|'card-select'|'card-flick'|'card-impact'|'card-draw'|'draw-pile'|'shuffle'|'center-energy'|'total-increase'|'reverse'|'zero'|'minus-ten'|'win'|'loss'|'avatar-reaction'|'emote'|'button'|'tavern-ambience'|'fire-ambience'|'city-ambience';
 type LegacyCue = 'pickup'|'slap'|'draw'|'target'|'minus'|'bust'|'click';
@@ -32,25 +33,48 @@ export class AudioManager extends EventTarget {
   private suspenseTotal:number|null=null;
   private backgrounded=false;
   private disposed=false;
+  private recovery?:AudioRecovery;
+  private rebuiltForReturn=false;
+  private recordings=new Map<string,AudioBuffer>();
+  private voices=new Set<AudioScheduledSourceNode>();
+  private pendingCue?:{cue:AudioCue;options:AudioOptions;time:number};
   private previousClip=new Map<AudioCue,string>();
   private settings:SoundSettings={volume:.55,sfxVolume:.8,musicVolume:.45,ambienceVolume:.3,muted:false};
   get volume():number{return this.settings.volume;}
   set volume(value:number){this.settings.volume=value;this.applyGains();}
   configure(settings:SoundSettings):void{this.settings={...settings};this.applyGains();}
-  unlock():void{
+  private createContext(rebuilding=false):boolean{
+    let context:AudioContext;
+    try{context=new AudioContext();}catch{return false;}
+    const old=this.context;
+    this.recovery?.dispose();this.suspense?.dispose();this.anxiety?.dispose();this.stopVoices();
+    this.context=context;this.master=this.context.createGain();this.master.connect(this.context.destination);
+    this.channels.clear();
+    for(const channel of ['sfx','music','ambience','ui'] as const){const gain=this.context.createGain();gain.connect(this.master);this.channels.set(channel,gain);}
+    this.suspense=new SuspenseTrack(this.context,this.channels.get('music')!);
+    this.anxiety=new SuspenseTrack(this.context,this.channels.get('music')!,anxietyLevel,makeSeamlessLoop,true);
+    // A replacement restores the current loop, never an old suspense one-shot.
+    if(rebuilding){this.suspense.setTotal(this.suspenseTotal,false);this.anxiety.setTotal(this.suspenseTotal,false);}
+    const rising=this.recordings.get('Cartoon-Suspense-X.wav'),anxiety=this.recordings.get('Anxiety-Repeat.wav');
+    if(rising)this.suspense.setBuffer(rising);
+    if(anxiety)this.anxiety.setBuffer(anxiety);
+    this.recovery=new AudioRecovery(this.context,()=>{this.syncSuspense();this.flushCue();},gesture=>{
+      if(this.disposed||this.backgrounded||(!gesture&&this.rebuiltForReturn))return;
+      this.rebuiltForReturn=true;if(this.createContext(true))this.recovery?.recover(gesture);
+    });
+    if(this.backgrounded)this.recovery.setBackgrounded(true);
+    this.applyGains();
+    if(old)void old.close().catch(()=>undefined);
+    return true;
+  }
+  unlock(gesture=false):void{
     if(this.disposed)return;
-    if(!this.context){
-      this.context=new AudioContext();this.master=this.context.createGain();this.master.connect(this.context.destination);
-      for(const channel of ['sfx','music','ambience','ui'] as const){const gain=this.context.createGain();gain.connect(this.master);this.channels.set(channel,gain);}
-      this.suspense=new SuspenseTrack(this.context,this.channels.get('music')!);
-      this.anxiety=new SuspenseTrack(this.context,this.channels.get('music')!,anxietyLevel,makeSeamlessLoop,true);
-      this.applyGains();
-    }
-    if(this.context.state==='suspended')void this.context.resume();
+    if(!this.context&&!this.createContext())return;
+    this.recovery?.recover(gesture);
     // Preload on the first interaction, well before the table normally reaches 70.
     this.suspenseLoad ??= Promise.allSettled([
-      this.loadRecording('Cartoon-Suspense-X.wav').then(buffer=>this.suspense?.setBuffer(buffer)),
-      this.loadRecording('Anxiety-Repeat.wav').then(buffer=>this.anxiety?.setBuffer(buffer)),
+      this.loadRecording('Cartoon-Suspense-X.wav').then(buffer=>{this.recordings.set('Cartoon-Suspense-X.wav',buffer);this.suspense?.setBuffer(buffer);}),
+      this.loadRecording('Anxiety-Repeat.wav').then(buffer=>{this.recordings.set('Anxiety-Repeat.wav',buffer);this.anxiety?.setBuffer(buffer);}),
       this.loadRecording('Explosion.wav').then(buffer=>{
         if(!this.disposed)this.clips.set('loss',{buffer,channel:'sfx',loop:false});
       }),
@@ -67,16 +91,23 @@ export class AudioManager extends EventTarget {
     this.suspenseTotal=total;this.syncSuspense();
     if(overflow&&!this.backgrounded&&!this.disposed)this.play('bust');
   }
-  setBackgrounded(hidden:boolean):void{this.backgrounded=hidden;this.syncSuspense();}
+  setBackgrounded(hidden:boolean):void{
+    if(this.disposed)return;
+    if(this.backgrounded!==hidden)this.rebuiltForReturn=false;
+    this.backgrounded=hidden;
+    if(hidden){this.pendingCue=undefined;this.stopVoices();}
+    this.applyGains();this.recovery?.setBackgrounded(hidden);
+  }
   private syncSuspense():void{
-    const audible=!this.backgrounded&&!this.settings.muted&&this.settings.volume>0&&this.settings.musicVolume>0;
+    const audible=this.context?.state==='running'&&!this.backgrounded&&!this.settings.muted&&this.settings.volume>0&&this.settings.musicVolume>0;
     this.suspense?.setTotal(this.suspenseTotal,audible);
     this.anxiety?.setTotal(this.suspenseTotal,audible);
   }
   private applyGains():void{
+    if(this.settings.muted||!this.settings.volume)this.pendingCue=undefined;
     if(!this.context||!this.master)return;
     const now=this.context.currentTime;
-    this.master.gain.setTargetAtTime(this.settings.muted?0:this.settings.volume,now,.03);
+    this.master.gain.setTargetAtTime(this.settings.muted||this.backgrounded?0:this.settings.volume,now,.03);
     for(const [channel,gain] of this.channels)gain.gain.setTargetAtTime(channel==='music'?this.settings.musicVolume:channel==='ambience'?this.settings.ambienceVolume:this.settings.sfxVolume,now,.03);
     this.syncSuspense();
   }
@@ -91,6 +122,15 @@ export class AudioManager extends EventTarget {
     )).then(() => undefined);
   }
   stop(name:string):void{const source=this.loops.get(name);if(source){source.stop();this.loops.delete(name);}}
+  private stopVoices():void{
+    for(const source of this.voices){try{source.stop(this.context?.currentTime);}catch{/* Already ended. */}source.disconnect();}
+    this.voices.clear();this.loops.clear();
+  }
+  private flushCue():void{
+    if(this.backgrounded||this.disposed||this.context?.state!=='running')return;
+    const pending=this.pendingCue;this.pendingCue=undefined;
+    if(pending&&performance.now()-pending.time<200&&!this.settings.muted&&this.volume)this.playSound(pending.cue,pending.options);
+  }
   private output(channel:Channel,options:AudioOptions):AudioNode{
     const ctx=this.context!;const gain=ctx.createGain();gain.gain.value=options.volume??1;
     if(options.position){const panner=ctx.createPanner();panner.panningModel='HRTF';panner.distanceModel='inverse';panner.refDistance=7;panner.maxDistance=35;panner.rolloffFactor=.65;panner.positionX.value=options.position.x;panner.positionY.value=options.position.y;panner.positionZ.value=options.position.z;gain.connect(panner);panner.connect(this.channels.get(channel)!);}else gain.connect(this.channels.get(channel)!);
@@ -100,25 +140,31 @@ export class AudioManager extends EventTarget {
     const ctx=this.context!;const now=ctx.currentTime+delay;const oscillator=ctx.createOscillator();const envelope=ctx.createGain();
     oscillator.type=type;oscillator.frequency.setValueAtTime(freq,now);oscillator.frequency.exponentialRampToValueAtTime(Math.max(20,freq*slide),now+duration);
     envelope.gain.setValueAtTime(.0001,now);envelope.gain.exponentialRampToValueAtTime(Math.max(.0002,gain*(options.intensity??1)),now+.008);envelope.gain.exponentialRampToValueAtTime(.0001,now+duration);
-    const output=this.output('sfx',options);oscillator.connect(envelope).connect(output);oscillator.start(now);oscillator.stop(now+duration+.02);oscillator.onended=()=>{oscillator.disconnect();envelope.disconnect();output.disconnect();};
+    const output=this.output('sfx',options);oscillator.connect(envelope).connect(output);this.voices.add(oscillator);oscillator.start(now);oscillator.stop(now+duration+.02);oscillator.onended=()=>{this.voices.delete(oscillator);oscillator.disconnect();envelope.disconnect();output.disconnect();};
   }
   private paper(duration:number,options:AudioOptions):void{
     const ctx=this.context!,length=Math.floor(ctx.sampleRate*duration);const buffer=ctx.createBuffer(1,length,ctx.sampleRate);const samples=buffer.getChannelData(0);
     for(let i=0;i<length;i++)samples[i]=(Math.random()*2-1)*Math.pow(1-i/length,2)*.12;
     const source=ctx.createBufferSource();source.buffer=buffer;const filter=ctx.createBiquadFilter();filter.type='highpass';filter.frequency.value=1100;
-    const output=this.output('sfx',options);source.connect(filter).connect(output);source.start();source.onended=()=>{source.disconnect();filter.disconnect();output.disconnect();};
+    const output=this.output('sfx',options);source.connect(filter).connect(output);this.voices.add(source);source.start();source.onended=()=>{this.voices.delete(source);source.disconnect();filter.disconnect();output.disconnect();};
   }
   play(name:AudioCue|LegacyCue,options:AudioOptions={}):void{
+    if(this.disposed)return;
     const cue=aliases[name as LegacyCue]??name as AudioCue;
     this.dispatchEvent(new CustomEvent('cue',{detail:{name:cue,...options}}));
+    if(this.backgrounded)return;
     this.unlock();if(this.settings.muted||!this.volume)return;
+    if(this.context?.state!=='running'){this.pendingCue={cue,options,time:performance.now()};return;}
+    this.playSound(cue,options);
+  }
+  private playSound(cue:AudioCue,options:AudioOptions):void{
     const choices=cardCueClips[cue]?.filter(key=>this.clips.has(key));
     const previous=this.previousClip.get(cue);
     const candidates=choices && choices.length>1 ? choices.filter(key=>key!==previous) : choices;
     const chosen=candidates?.[Math.floor(Math.random()*candidates.length)] ?? cue;
     if(choices?.length)this.previousClip.set(cue,chosen);
     const clip=this.clips.get(chosen);
-    if(clip){if(clip.loop&&this.loops.has(cue))return;const source=this.context!.createBufferSource();source.buffer=clip.buffer;source.loop=clip.loop;const output=this.output(clip.channel,options);source.connect(output);source.start();if(clip.loop)this.loops.set(cue,source);source.onended=()=>{source.disconnect();output.disconnect();this.loops.delete(cue);};return;}
+    if(clip){if(clip.loop&&this.loops.has(cue))return;const source=this.context!.createBufferSource();source.buffer=clip.buffer;source.loop=clip.loop;const output=this.output(clip.channel,options);source.connect(output);this.voices.add(source);source.start();if(clip.loop)this.loops.set(cue,source);source.onended=()=>{this.voices.delete(source);source.disconnect();output.disconnect();if(this.loops.get(cue)===source)this.loops.delete(cue);};return;}
     if(cue==='card-hover')this.tone(430,.04,'sine',.014,1.06,options);
     else if(cue==='card-select'){this.paper(.07,options);this.tone(320,.07,'sine',.028,1.16,options);}
     else if(cue==='card-flick'||cue==='shuffle')this.paper(.14,options);
@@ -134,5 +180,5 @@ export class AudioManager extends EventTarget {
     else if(cue==='total-increase'||cue==='center-energy')this.tone(170,.2,'sine',.035,1.3,options);
     // Ambience and music are independent loop buses, silent until a real clip is registered.
   }
-  dispose():void{this.disposed=true;this.suspense?.dispose();this.anxiety?.dispose();for(const source of this.loops.values())source.stop();this.loops.clear();void this.context?.close();}
+  dispose():void{this.disposed=true;this.pendingCue=undefined;this.recovery?.dispose();this.suspense?.dispose();this.anxiety?.dispose();this.stopVoices();void this.context?.close().catch(()=>undefined);}
 }

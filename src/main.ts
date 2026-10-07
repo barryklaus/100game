@@ -24,6 +24,8 @@ import { OnlineRoom, newRoomId } from './game/online';
 import { HostedRoom } from './game/hosted';
 import { cardGrip, cardFlickSpin, isDoubleCardTap, isPlayGesture, type CardTap, type CardGrip, type CardSpin } from './ui/cardGesture';
 import { CardSwing, boomerangOffset, boomerangTiming, boomerangVelocity } from './ui/CardBoomerang';
+import { RemoteCardAudio } from './audio/RemoteCardAudio';
+import { bindAudioLifecycle } from './audio/AudioLifecycle';
 import { updateGameView } from './ui/updateGameView';
 import { GyroHand } from './ui/GyroHand';
 import { masterNames, masterCharacter, masterImage, masterAnchors } from './ui/MasterCharacters';
@@ -81,6 +83,7 @@ const remoteSnapshots: GameState[] = [];
 let observedOnlineHand = new Set<string>();
 let observedOnlineRound = 0;
 const audio = new AudioManager();
+const remoteCardAudio=new RemoteCardAudio(cue=>audio.play(cue));
 const holo = new HoloShader();
 const gyro = new GyroHand();
 gyro.onStatusChange = () => {
@@ -93,8 +96,7 @@ gyro.onStatusChange = () => {
   if (message) message.textContent = gyro.status === 'denied' ? 'Motion access was denied. You can still drag cards to tilt them.' : gyro.status === 'unavailable' ? 'Motion sensors are unavailable in this browser.' : gyro.status === 'on' ? 'Move your phone gently to tilt the cards. Dragging a card takes control.' : 'Available on supported phones.';
 };
 audio.configure(settings);
-audio.setBackgrounded(document.hidden);
-document.addEventListener('visibilitychange',()=>audio.setBackgrounded(document.hidden));
+bindAudioLifecycle(audio);
 document.documentElement.classList.add('observatory-mode');
 document.documentElement.classList.toggle('midnight-mode', isNextVersion);
 const presentedTotal = new TotalPresentation();
@@ -150,6 +152,7 @@ function roomChanged(): void {
     if (online.cpuCount !== roomCpuCount) { online.setCpuCount(roomCpuCount); return; }
   }
   if (snapshotRoom !== online || online.status !== 'playing') {
+    remoteCardAudio.reset();
     snapshotRoom = online;remoteSnapshots.length = 0;remoteFlightKey = '';
   }
   if (online.status === 'playing' && online.state && online.state !== state && !remoteSnapshots.includes(online.state)) remoteSnapshots.push(online.state);
@@ -162,9 +165,10 @@ function roomChanged(): void {
   if (presentedTotal.pending && incomingTop && previous?.round === incoming?.round && incomingTop.id !== previous?.played.at(-1)?.id) return;
   if(observatory?.canAnimate && !settings.reducedMotion && incomingTop && previous && incoming?.round===previous.round && incoming.log[0]!==previous.log[0] && incomingTop.id!==previous.played.at(-1)?.id && previous.current!==online.localSeat && remoteKey!==remoteFlightKey){
     const seat=document.querySelector<HTMLElement>(`.seat[data-seat="${previous.current}"]`);
-    if(seat){const room=online,actor=previous.current;remoteFlight=true;remoteFlightKey=remoteKey;void observatory.playCardToDiscard(cardImage(incomingTop),seat.getBoundingClientRect(),undefined,undefined,()=>playerRing.release(actor),()=>playerRing.prepareThrow(actor)).catch(()=>playerRing.cancelThrow(actor)).finally(()=>{remoteFlight=false;if(online===room)roomChanged();});return;}
+    if(seat){const room=online,actor=previous.current;remoteFlight=true;remoteFlightKey=remoteKey;void observatory.playCardToDiscard(cardImage(incomingTop),seat.getBoundingClientRect(),undefined,undefined,()=>{playerRing.release(actor);remoteCardAudio.throw(remoteKey);},()=>playerRing.prepareThrow(actor)).then(()=>{if(online===room)remoteCardAudio.land(remoteKey);}).catch(()=>playerRing.cancelThrow(actor)).finally(()=>{remoteFlight=false;if(online===room)roomChanged();});return;}
   }
   state = incoming;
+  if(previous&&state&&previous.round===state.round&&previous.played.at(-1)?.id!==state.played.at(-1)?.id&&previous.current!==online.localSeat)remoteCardAudio.land(remoteKey);
   if (previous && state && previous.played.at(-1)?.id !== state.played.at(-1)?.id) playerRing.played(previous.current, ['seven','reverse','zero','minus'].includes(state.event));
   if (remoteSnapshots[0] === incoming) remoteSnapshots.shift();
   const drawnForLocal = state && observedOnlineRound === state.round
@@ -687,7 +691,6 @@ app.addEventListener('input', event => {
   if (['volume','sfxVolume','musicVolume','ambienceVolume','uiScale'].includes(el.id)) { const key=el.id as 'volume'|'sfxVolume'|'musicVolume'|'ambienceVolume'|'uiScale';settings[key]=Number(el.value);save();const output=document.querySelector(`output[for="${el.id}"]`);if(output)output.textContent=`${Math.round(Number(el.value)*100)}%`; }
 });
 app.addEventListener('keydown', event => {
-  audio.unlock(); void audio.loadCardClips();
   const target = event.target as HTMLElement;
   if ((event.key === 'Enter'||event.key===' ') && target.matches('.hand-card:not(.waiting-hand)') && canControlActor()) {
     event.preventDefault();
@@ -710,8 +713,6 @@ app.addEventListener('pointerover',event=>{
   if(card && card.dataset.card!==lastHover && !card.classList.contains('waiting-hand')){lastHover=card.dataset.card!;audio.play('card-hover');}
 });
 app.addEventListener('pointerdown',event=>{
-  audio.unlock();
-  void audio.loadCardClips();
   if((event.target as HTMLElement).closest('[data-action="emotes"]')){emoteHeld=false;emoteHoldTimer=window.setTimeout(()=>{emoteHeld=true;emotesOpen=true;render();},350);}
   const card=(event.target as HTMLElement).closest<HTMLElement>('.hand-card');
   if(openingDeal||!card||card.classList.contains('waiting-hand')||!state||locked||awaitingNetwork||drag||event.button!==0)return;

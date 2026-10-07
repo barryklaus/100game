@@ -1,0 +1,11 @@
+# 100next mobile and multiplayer audio
+
+- Handle both suspended and interrupted audio contexts. Recover on visibility, page restoration, focus, document resume, and trusted pointer/touch-end/click/keyboard gestures anywhere in the page, including the lobby and waiting turns.
+- Resume calls are made directly within the gesture. An earlier unresolved/rejected promise cannot block another touch-end. A 750 ms check catches a non-running context or a reported-running clock that is frozen.
+- Rebuild a stuck graph at most once automatically per foreground session; another trusted gesture may repair a still-blocked graph. Reuse decoded card clips and recordings, preserve volumes and mute, consume old suspense one-shots, and restore only the current exact-100 Anxiety loop. No permanent polling timer runs.
+- Backgrounding stops effect voices, clears pending cues, silences the master, and disables tension playback. Hidden multiplayer changes never accumulate sound effects for later playback. A resume may play only the single latest effect if it is still under 200 ms old.
+- Remote human/CPU card flights now play flick at release and impact at landing on the host/other clients. The same impact is deduplicated when the snapshot is applied. HTML/reduced-motion fallback plays one impact when it receives a new remote card. Local throws retain their existing sounds.
+
+`scripts/test-audio-recovery.mjs` covers interrupted/suspended return, a frozen running clock, hanging/rejected resumes, bounded replacement, cached recordings, first-tap recovery, remote-human cues, hidden-event suppression, exact-100 loop restoration, suspense consumption, mute, lifecycle bindings, and cleanup. Existing suspense/overflow synchronization tests remain in the publishing gate. These are deterministic simulations; desktop browser checks cannot establish behavior on a physical iPhone.
+
+Browser references: [MDN audio-context interruption](https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state), [WebKit frozen clock on foreground return](https://bugs.webkit.org/show_bug.cgi?id=263627), [WebKit unresolved background resume](https://bugs.webkit.org/show_bug.cgi?id=281566).
