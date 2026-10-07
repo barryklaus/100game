@@ -1,0 +1,9 @@
+# 100next boomerang throw
+
+Hold a playable card, sway it back and forth twice, then release when the small release cue appears. Three round trips add a third spin. Horizontal or vertical swings work; the last stroke chooses the loop/spin direction. Keyboard alternative: focus a card and press Shift + Enter (or Shift + Space).
+
+Each stroke needs 16% of card width, clamped to 22–42 screen pixels. Four alternating strokes arm two spins; six arm three. More than 650 ms between pointer movements resets the sequence, and a sequence runs for at most 2.4 seconds. A charge expires 900 ms after the last movement. Tiny shakes, single long drags, canceled pointers, lost capture, tab switching, and old holds cannot trigger it.
+
+This is a presentation action in 100next. It feeds the existing single-play lock, turn validation, online acknowledgment, foreground card layer, physical pile fit, and replacement draw. The loop returns to exactly zero offset at both ends and keeps integer rotations. It is bounded to portrait/desktop camera space; the flight lasts 920 ms (two spins) or 1080 ms (three). Reduced Motion resolves the play directly. A matching loop is used in the HTML fallback. Other players retain the normal network card animation, as with the existing edge-flick spins; the trick is local presentation and does not alter rules or network messages.
+
+The detector uses a few numbers per held pointer. There is no physics engine, trail, particle emitter, extra canvas, or permanent animation. `scripts/test-boomerang.mjs` checks charge thresholds, two/three swings, directions, touch widths, noise, pauses, reset, and continuous bounded landing; it is included in the publishing test gate. Real local desktop flight captures are saved under `../output/100next-boomerang-v1/`.

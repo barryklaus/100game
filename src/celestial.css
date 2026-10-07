@@ -51,3 +51,5 @@
 /* Midnight v2: the illustrated room already supplies its lighting. */
 .midnight-mode .observatory-backdrop::after{background:linear-gradient(#03071720,transparent 34%,#010c1514 72%,#01091435);}
 .midnight-mode:not(.world3d-active) .table-felt::before{border-color:#9c5e2d!important;background:repeating-radial-gradient(ellipse,#0b414d 0 14%,#b18f4655 14.2%,#0b414d 14.5% 16%);box-shadow:0 5px 0 4px #472914,0 16px 22px #0008;}
+.boomerang-cue{position:fixed;z-index:40;transform:translate(-50%,-100%);pointer-events:none;padding:6px 10px;border:1px solid #c5a965;border-radius:14px;background:#0b1827ed;color:#f5dda2;font:600 10px/1.2 system-ui;letter-spacing:.08em;white-space:nowrap;}
+.boomerang-cue[hidden]{display:none!important;}

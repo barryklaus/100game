@@ -2,6 +2,7 @@ import { CardImpactFlow } from './CardImpactFlow';
 import { OverflowFireworks } from './OverflowFireworks';
 import { CardHandoff } from './CardHandoff';
 import type { CardSpin } from '../ui/cardGesture';
+import { boomerangOffset } from '../ui/CardBoomerang';
 import { avatarAnchor } from '../ui/avatarLayout';
 import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -401,7 +402,14 @@ export class ObservatoryScene {
     onStart?.();
     this.hand.update(0);
     const started = performance.now();
-    const duration = this.reducedMotion ? 80 : draw ? 520 : spin ? (spin.turns===2?720:560) : 440;
+    const boomerang=!draw&&spin?.kind==='boomerang'&&!this.reducedMotion;
+    const duration = this.reducedMotion ? 80 : draw ? 520 : boomerang ? (spin!.turns===3?1080:920) : spin ? (spin.turns===2?720:560) : 440;
+    const right=new THREE.Vector3(1,0,0).applyQuaternion(this.camera.quaternion);
+    const up=new THREE.Vector3(0,1,0).applyQuaternion(this.camera.quaternion);
+    // Keep the loop inside the camera view, including narrow portrait screens.
+    const viewHeight=2*start.distanceTo(this.camera.position)*Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2));
+    const loopWidth=Math.min(1.25,viewHeight*this.camera.aspect*.20);
+    const loopHeight=Math.min(.95,viewHeight*.15);
     const spinAxis=spin?new THREE.Vector3(spin.x,spin.y,spin.z):undefined;
     const spinRotation=new THREE.Quaternion();
     return new Promise((resolve, reject) => {
@@ -416,6 +424,10 @@ export class ObservatoryScene {
           inverse * inverse * start.y + 2 * inverse * t * control.y + t * t * end.y,
           inverse * inverse * start.z + 2 * inverse * t * control.z + t * t * end.z,
         );
+        if(boomerang){
+          const offset=boomerangOffset(t,spin!.z);
+          root.position.addScaledVector(right,offset.x*loopWidth).addScaledVector(up,offset.y*loopHeight);
+        }
         if(!draw && raw>.86)root.position.y+=Math.sin((raw-.86)/.14*Math.PI)*.075;
         root.quaternion.slerpQuaternions(startQuaternion, endQuaternion, t);
         root.scale.setScalar(THREE.MathUtils.lerp(startScale, endScale, t));
