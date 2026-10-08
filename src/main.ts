@@ -1,5 +1,7 @@
+import { accountPoints, gamePoints, localPointsKey, LocalPoints } from './game/points';
 import { createDeathDemo } from './game/DeathDemo';
 import './death-demo.css';
+import './character-picker.css';
 import { conditionForScore } from './game/conditions';
 import { deathScene } from './ui/DeathScene';
 import './death.css';
@@ -76,15 +78,18 @@ if (deathDemo) {
   settings.seats.splice(0, 4, ...sample.players.map(({name, kind, mood, avatar}) => ({name, kind, mood, avatar})));
 }
 let stats: Stats = loadStats();
+const lifetimeHistory = new LocalPoints({getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)});
+const pointsCast = (): string => masterCast?'midnight':trialCast?'finn-june':'observatory';
 let practiceRound:RoundAccounts|null=null;
 let dismissedDeathKey="";
-const account=isNextVersion&&!deathDemo?new AccountClient(()=>{if(account?.snapshot.user){settings.seats[0]={...settings.seats[0],name:account.snapshot.user.username,kind:'human'};save();}render();}):null;
+const account=isNextVersion&&!deathDemo?new AccountClient(()=>{if(account?.snapshot.user){settings.seats[0]={...settings.seats[0],name:account.snapshot.user.username,kind:'human'};if(state&&!online)state.players[0].lifetimePoints=accountPoints(totalAccountStats(account.snapshot));save();}render();}):null;
 let state: GameState | null = null;
 let selectedCard: string | null = null;
 let locked = false;
 let departingCardId: string | null = null;
 const receivingCardIds = new Set<string>();
-let modal: 'rules' | 'settings' | 'stats' | 'history' | 'menu' | 'account' | null = null;
+let modal: 'rules' | 'settings' | 'stats' | 'history' | 'menu' | 'account' | 'characters' | null = null;
+let characterSeat = 0;
 let emotesOpen = false;
 let emoteHoldTimer:number|undefined;
 let emoteHeld=false;
@@ -214,6 +219,11 @@ function roomChanged(): void {
     else audio.play('total-increase',{position:{x:0,y:1,z:-3}});
   }
   if (state?.phase === 'ended' && recordedRound !== state.round) { recordedRound = state.round; finishRound(); }
+  // The server sends settled lifetime points after its first end-of-round snapshot.
+  if(isNextVersion&&state?.phase==='ended'&&!account?.snapshot.user){
+    const player=state.players[online.localSeat];
+    if(player?.lifetimePoints!==undefined)lifetimeHistory.set(localPointsKey({...player,kind:'human'},pointsCast()),player.lifetimePoints);
+  }
   render();
   if (drawnForLocal) void animateDrawToHand(drawnForLocal);
   if (previous && state && previous.round === state.round && previous.played.at(-1)?.id !== state.played.at(-1)?.id && state.phase !== 'ended') {
@@ -232,7 +242,7 @@ function connectOnline(mode: 'host' | 'join'): void {
   online?.close(); online = null; state = null; awaitingNetwork = false; selectedCard = null; lastTurnKey = ''; observedOnlineHand.clear(); observedOnlineRound = 0;
   hostedLobbyInitialized = false;
   const Room = isHostedVersion ? HostedRoom : OnlineRoom;
-  online = new Room(mode === 'join' ? 'guest' : 'host', code, { name, avatar, mood: settings.seats[0].mood }, roomChanged);
+  online = new Room(mode === 'join' ? 'guest' : 'host', code, { name, avatar, mood: settings.seats[0].mood, ...(isNextVersion?{lifetimePoints:account?.snapshot.user?accountPoints(totalAccountStats(account.snapshot)):lifetimeHistory.get(localPointsKey(settings.seats[0],pointsCast()))}:{}) }, roomChanged);
   onlineMode = mode; recordedRound = 0;
   if (mode === 'host') { online.setCpuCount(roomCpuCount); history.replaceState(null, '', castPath(code)); }
   render();
@@ -338,11 +348,16 @@ function startGame(round = 1): void {
   const seats = settings.seats.slice(0, settings.playerCount).map((seat, i) => ({ ...seat, name: seat.name.trim() || defaultSeats[i].name }));
   const previous=state?.match;
   state = deathDemo ? createDeathDemo(demoCharacter, 20 + demoRun++) : createGame(seats, round, Math.random, isNextVersion?(state&&round>state.round&&!previous?.complete?previous??true:true):undefined);
+  if(isNextVersion&&!deathDemo)state.players.forEach((player,index)=>{player.lifetimePoints=index===0&&account?.snapshot.user?accountPoints(totalAccountStats(account.snapshot)):lifetimeHistory.get(localPointsKey(player,pointsCast()));});
   dismissedDeathKey="";
   save(); render(); scheduleCpu();
 }
 function finishRound(): void {
   if (!state || deathDemo) return;
+  if(isNextVersion){
+    if(!online)lifetimeHistory.settle(state,pointsCast(),account?.snapshot.user?0:-1);
+    else if(!account?.snapshot.user&&state.players[localSeat()]?.lifetimePoints!==undefined)lifetimeHistory.set(localPointsKey({...state.players[localSeat()],kind:'human'},pointsCast()),state.players[localSeat()].lifetimePoints!);
+  }
   const humans = (online ? [state.players[online.localSeat]] : [state.players[localSeat()]]).filter(player => player?.kind === 'human'&&(!state!.match?.dead.includes(player.id)||state!.match.newlyDead.includes(player.id)));
   if(account){if(online){void account.refresh();setTimeout(()=>void account.refresh(),2000);}else if(practiceRound&&!practiceRound.committed){practiceRound.committed=true;const owner=practiceRound.accounts[0];const delta=roundDelta(practiceRound,state,0);if(delta.rounds)void account.practice(owner,practiceRound.id,delta);}}
   if(humans.length)stats.rounds++;
@@ -519,12 +534,12 @@ function setupView(): string {
     <section class="setup-panel"><div class="panel-top"><span class="eyebrow">GATHER ROUND</span><div class="top-links">${account?`<button data-action="account">${escapeHtml(account.snapshot.user?.username??'Sign in')}</button>`:''}<button data-action="rules">How to play</button><button data-action="stats">Stats</button><button data-action="settings">⚙ Settings</button></div></div><h2>Set the table</h2><p class="muted">Choose 2–8 players. Any seat can be Human or CPU.</p>
       ${isNextVersion ? `<label class="cast-choice">CHARACTERS<select id="character-cast"><option value="observatory" ${!trialCast&&!masterCast?'selected':''}>Observatory</option><option value="finn-june" ${trialCast?'selected':''}>Finn &amp; June</option><option value="midnight-eight" ${masterCast?'selected':''}>Midnight Social Club · 16 characters</option></select></label>` : ''}
       <div class="setup-controls"><label>PLAYERS<select id="player-count">${Array.from({length:7},(_,i)=>`<option value="${i+2}" ${settings.playerCount===i+2?'selected':''}>${i+2} players${i+2===4?' · recommended':''}</option>`).join('')}</select></label><label>CPU DIFFICULTY<select id="difficulty"><option value="easy" ${settings.difficulty==='easy'?'selected':''}>Easy</option><option value="normal" ${settings.difficulty==='normal'?'selected':''}>Normal</option></select></label></div>
-      <div class="seat-editor">${settings.seats.slice(0,settings.playerCount).map((seat,i)=>`<div class="seat-row"><div class="seat-number">${String(i+1).padStart(2,'0')}</div><div class="avatar-tiny"><img src="${avatarImage(seat.avatar)}" alt=""></div><input aria-label="Player ${i+1} name" data-seat-name="${i}" ${i===0&&account?.snapshot.user?'readonly':''} maxlength="15" value="${escapeHtml(seat.name)}"><select aria-label="Player ${i+1} type" data-seat-kind="${i}"><option value="human" ${seat.kind==='human'?'selected':''}>Human</option><option value="cpu" ${seat.kind==='cpu'?'selected':''}>CPU</option></select><select aria-label="Player ${i+1} avatar" data-seat-avatar="${i}">${avatarNames.map((name,v)=>`<option value="${v}" ${seat.avatar===v?'selected':''}>${escapeHtml(name)}</option>`).join('')}</select><select aria-label="Player ${i+1} mood" data-seat-mood="${i}">${MOODS.map(m=>`<option ${seat.mood===m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}</div>
+      <div class="seat-editor">${settings.seats.slice(0,settings.playerCount).map((seat,i)=>`<div class="seat-row"><div class="seat-number">${String(i+1).padStart(2,'0')}</div>${isNextVersion?`<button type="button" class="avatar-tiny character-picker-trigger" data-character-seat="${i}" aria-label="Player ${i+1} character: ${escapeHtml(avatarNames[seat.avatar % avatarNames.length])}. Choose character" aria-haspopup="dialog" title="Choose character"><img src="${avatarImage(seat.avatar)}" alt=""></button>`:`<div class="avatar-tiny"><img src="${avatarImage(seat.avatar)}" alt=""></div>`}<input aria-label="Player ${i+1} name" data-seat-name="${i}" ${i===0&&account?.snapshot.user?'readonly':''} maxlength="15" value="${escapeHtml(seat.name)}"><select aria-label="Player ${i+1} type" data-seat-kind="${i}"><option value="human" ${seat.kind==='human'?'selected':''}>Human</option><option value="cpu" ${seat.kind==='cpu'?'selected':''}>CPU</option></select>${isNextVersion?'':`<select aria-label="Player ${i+1} avatar" data-seat-avatar="${i}">${avatarNames.map((name,v)=>`<option value="${v}" ${seat.avatar===v?'selected':''}>${escapeHtml(name)}</option>`).join('')}</select>`}<select aria-label="Player ${i+1} mood" data-seat-mood="${i}">${MOODS.map(m=>`<option ${seat.mood===m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}</div>
       <button class="primary-button start-button" data-action="start">START LOCAL GAME <span>➜</span></button><button class="secondary-button online-entry" data-action="online-setup">PLAY ONLINE WITH FRIENDS</button><p class="setup-note">Local: pass one device · Online: share a room link, one Human per device</p>
     </section></main>`;
 }
-function avatarPicker(): string {
-  return `<div class="avatar-picker" role="group" aria-label="Choose a character">${avatarNames.map((name, index) => `<button class="avatar-choice ${settings.seats[0].avatar === index ? 'chosen' : ''}" data-avatar-choice="${index}" aria-label="${escapeHtml(name)}" aria-pressed="${settings.seats[0].avatar === index}"><img src="${avatarImage(index)}" alt=""><span>${escapeHtml(name)}</span></button>`).join('')}</div>`;
+function avatarPicker(seatIndex = 0): string {
+  return `<div class="avatar-picker" role="group" aria-label="Choose a character">${avatarNames.map((name, index) => `<button class="avatar-choice ${settings.seats[seatIndex].avatar === index ? 'chosen' : ''}" data-avatar-choice="${index}" data-avatar-seat="${seatIndex}" aria-label="${escapeHtml(name)}" aria-pressed="${settings.seats[seatIndex].avatar === index}"><img src="${avatarImage(index)}" alt=""><span>${escapeHtml(name)}</span></button>`).join('')}</div>`;
 }
 function onlineView(): string {
   return `<main class="online-page"><section class="online-panel"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">PLAY TOGETHER</div><h1>Online table</h1><p>Each friend plays from their own browser. Share a room link to play together.</p><div class="online-tabs"><button class="${onlineMode === 'host' ? 'current' : ''}" data-action="host-tab">Create room</button><button class="${onlineMode === 'join' ? 'current' : ''}" data-action="join-tab">Join room</button></div>${account?`<button class="text-button" data-action="account">${escapeHtml(account.snapshot.user?.username??'Sign in to save your statistics')}</button>`:''}<label class="online-field">YOUR NAME<input ${account?.snapshot.user?'readonly':''} id="online-name" maxlength="15" value="${escapeHtml(settings.seats[0].name)}"></label><div class="online-avatar-heading">YOUR CHARACTER <span>${escapeHtml(avatarNames[settings.seats[0].avatar % avatarNames.length])}</span></div>${avatarPicker()}${onlineMode === 'join' ? `<label class="online-field">ROOM CODE OR INVITE LINK<input id="room-code" autocomplete="off" value="${escapeHtml(joinCode)}" placeholder="100-abc123…"></label>` : ''}<button class="primary-button start-button" data-action="${onlineMode === 'join' ? 'join-room' : 'create-room'}">${onlineMode === 'join' ? 'JOIN ROOM' : 'CREATE ROOM'} ➜</button><button class="text-button" data-action="back-setup">Back to local setup</button></section></main>`;
@@ -540,7 +555,7 @@ function seatHtml(player: GameState['players'][number], index: number, count: nu
   const active = state.phase !== 'ended' && (state.phase === 'target' ? state.pendingSevens.at(-1) === index : state.current === index);
   const targetable = state.phase === 'target' && canControlActor() && index !== state.pendingSevens.at(-1) && !state.match?.dead.includes(index);
   const suit = ['fire','water','leaf','sun'][index%4] as keyof typeof suitSymbols;
-  return `<button class="seat sprite-seat ${index===localSeat()?'local-seat':''} ${masterCast?'traditional-seat master-seat':trialCast?'traditional-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit}" data-seat="${index}" ${trialCast?`data-traditional="${trialCharacter(player.avatar)}"`:''} data-condition="${shownCondition(index)}" data-mood="${player.mood}" style="--seat-x:${x}%;--seat-y:${y}%;--seat-index:${index}" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards"><span class="reaction-bubble">${reaction[index]||''}</span>${masterCast?`<span class="character"><span class="master-sprite" data-character="${masterCharacter(player.avatar).id}" data-condition="${Math.min(3,shownCondition(index))}"><img class="master-frame" src="${masterFrameUrl(masterCharacter(player.avatar).id,shownCondition(index)===4?'floor':'rest',Math.min(3,shownCondition(index)))}" style="${masterFrameStyle(masterCharacter(player.avatar).id,shownCondition(index)===4?'floor':'rest',Math.min(3,shownCondition(index)))}" alt="" loading="lazy" decoding="async"></span><span class="master-hands">${masterAnchors(player.avatar,Math.min(3,shownCondition(index)))}</span></span>`:trialCast?`<span class="character"><canvas class="traditional-sprite" data-character="${trialCharacter(player.avatar)}" width="512" height="512" aria-hidden="true"></canvas><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="sprite-hand-anchor" aria-hidden="true"></span>`:`<span class="character"><span class="character-sprite" data-avatar="${player.avatar}" data-sprite-url="${characterSheet(player.avatar)}" style="background-image:url('${characterSheet(player.avatar)}')" aria-hidden="true"></span><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="character-tumble" data-tumble-url="${tumbleSheet(player.avatar)}" aria-hidden="true"></span><span class="sprite-hand-anchor" aria-hidden="true"></span>`}</span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)} <span class="seat-count" aria-hidden="true">${player.hand.length}</span></span><span class="seat-meta">★ ${state.match?(state.match.scores[index]>=0?'+':'')+state.match.scores[index]:(player.ratingDelta>=0?'+':'')+player.ratingDelta} · ${index===localSeat()?'YOU':player.kind==='cpu'?'CPU':'PLAYER'}</span>${state.phase==='ended'?`<span class="seat-score ${player.ratingDelta<0?'negative':''}">${player.ratingDelta>=0?'+':''}${player.ratingDelta}</span>`:''}</span></button>`;
+  return `<button class="seat sprite-seat ${index===localSeat()?'local-seat':''} ${masterCast?'traditional-seat master-seat':trialCast?'traditional-seat':''} ${active?'active':''} ${targetable?'targetable':''} ${reaction[index]?'reacting':''} suit-${suit}" data-seat="${index}" ${trialCast?`data-traditional="${trialCharacter(player.avatar)}"`:''} data-condition="${shownCondition(index)}" data-mood="${player.mood}" style="--seat-x:${x}%;--seat-y:${y}%;--seat-index:${index}" ${targetable?'data-target="'+index+'"':''} aria-label="${escapeHtml(player.name)}, ${player.kind}, ${player.hand.length} cards"><span class="reaction-bubble">${reaction[index]||''}</span>${masterCast?`<span class="character"><span class="master-sprite" data-character="${masterCharacter(player.avatar).id}" data-condition="${Math.min(3,shownCondition(index))}"><img class="master-frame" src="${masterFrameUrl(masterCharacter(player.avatar).id,shownCondition(index)===4?'floor':'rest',Math.min(3,shownCondition(index)))}" style="${masterFrameStyle(masterCharacter(player.avatar).id,shownCondition(index)===4?'floor':'rest',Math.min(3,shownCondition(index)))}" alt="" loading="lazy" decoding="async"></span><span class="master-hands">${masterAnchors(player.avatar,Math.min(3,shownCondition(index)))}</span></span>`:trialCast?`<span class="character"><canvas class="traditional-sprite" data-character="${trialCharacter(player.avatar)}" width="512" height="512" aria-hidden="true"></canvas><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="sprite-hand-anchor" aria-hidden="true"></span>`:`<span class="character"><span class="character-sprite" data-avatar="${player.avatar}" data-sprite-url="${characterSheet(player.avatar)}" style="background-image:url('${characterSheet(player.avatar)}')" aria-hidden="true"></span><img class="sprite-fallback" src="${avatarImage(player.avatar)}" alt="" loading="lazy"><span class="character-tumble" data-tumble-url="${tumbleSheet(player.avatar)}" aria-hidden="true"></span><span class="sprite-hand-anchor" aria-hidden="true"></span>`}</span><span class="seat-info"><span class="seat-name">${escapeHtml(player.name)} ${isNextVersion?`<span class="seat-count seat-lifetime" title="Lifetime points" aria-label="Lifetime points: ${player.lifetimePoints??0}">${(player.lifetimePoints??0).toLocaleString()}</span>`:`<span class="seat-count" aria-hidden="true">${player.hand.length}</span>`}</span><span class="seat-meta" ${isNextVersion?'title="Points in this game"':''}>★ ${isNextVersion?(gamePoints(state,index)>=0?'+':'')+gamePoints(state,index):(player.ratingDelta>=0?'+':'')+player.ratingDelta} · ${index===localSeat()?'YOU':player.kind==='cpu'?'CPU':'PLAYER'}</span>${state.phase==='ended'?`<span class="seat-score ${player.ratingDelta<0?'negative':''}">${player.ratingDelta>=0?'+':''}${player.ratingDelta}</span>`:''}</span></button>`;
 }
 function gameLogLine(item: string): string {
   const playerIndex = state?.players.findIndex(player => item.startsWith(`${player.name} `)) ?? -1;
@@ -582,12 +597,17 @@ function resultView(): string {
 }
 function modalView(): string {
   if (!modal) return '';
-  const body = modal==='account'&&account?accountView(account)+(online?'<p>Sign in before joining a room to record its online statistics.</p>':''):modal==='stats'&&account?.snapshot.user?accountStatistics(account):modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. They cannot play twice in a row.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>${isNextVersion?"Survive +1. Hit exactly 100 +1, once per player per round. Set up the next player’s Overflow +1. Overflow −5. Match scores persist: −1 to −5 bruised, −6 to −10 battered, −11 to −15 bandaged, −16 or below Death. Dead players sit out. A table with fewer than two living players ends; start a new match to play again.":"Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5."} Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Flick the right edge left or the left edge right to flip it. Flick upward from the top edge or double-tap the top edge for a somersault. Corners tumble diagonally; slow sideways drags stay in your hand.${isNextVersion?' Hold a card and swing it back and forth twice (or three times), then release for a spinning boomerang throw. Look for the release cue. Keyboard: focus a card and press Shift + Enter.':''}</p>`
+  const body = modal==='characters'?`<h2 id="character-picker-title">Choose a character</h2><p>Player ${characterSeat+1} · ${escapeHtml(settings.seats[characterSeat].name)}</p>${avatarPicker(characterSeat)}`:modal==='account'&&account?accountView(account)+(online?'<p>Sign in before joining a room to record its online statistics.</p>':''):modal==='stats'&&account?.snapshot.user?accountStatistics(account):modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. They cannot play twice in a row.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>${isNextVersion?"Survive +1. Hit exactly 100 +1, once per player per round. Set up the next player’s Overflow +1. Overflow −5. Match scores persist: −1 to −5 bruised, −6 to −10 battered, −11 to −15 bandaged, −16 or below Death. Dead players sit out. A table with fewer than two living players ends; start a new match to play again.":"Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5."} Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Flick the right edge left or the left edge right to flip it. Flick upward from the top edge or double-tap the top edge for a somersault. Corners tumble diagonally; slow sideways drags stay in your hand.${isNextVersion?' Hold a card and swing it back and forth twice (or three times), then release for a spinning boomerang throw. Look for the release cue. Keyboard: focus a card and press Shift + Enter.':''}</p>`
   : modal==='settings' ? `<h2>Table settings</h2><div class="modal-setting"><label for="graphics">Visual quality</label><select id="graphics">${(['ultra','high','medium','mobile'] as const).map(tier=>`<option value="${tier}" ${settings.graphics===tier?'selected':''}>${tier==='mobile'?'Lite / Mobile':tier.charAt(0).toUpperCase()+tier.slice(1)}</option>`).join('')}</select><small>Ultra adds richer shadows, reflections and glow. Mobile keeps the same world with lighter effects.</small></div>${[['volume','Master volume',settings.volume],['sfxVolume','Sound effects',settings.sfxVolume],['musicVolume','Music',settings.musicVolume],['ambienceVolume','Ambience',settings.ambienceVolume]].map(([id,label,value])=>`<div class="modal-setting"><label for="${id}">${label}<output for="${id}">${Math.round(Number(value)*100)}%</output></label><input id="${id}" type="range" min="0" max="1" step=".01" value="${value}"></div>`).join('')}<label class="setting-toggle"><input id="muted" type="checkbox" ${settings.muted?'checked':''}>Mute all sounds</label><label class="setting-toggle"><input id="reducedMotion" type="checkbox" ${settings.reducedMotion?'checked':''}>Reduced motion</label><div class="modal-setting gyro-setting"><label>Phone tilt</label><button class="secondary-button" data-action="gyro-enable" ${!gyro.available || settings.reducedMotion ? 'disabled' : ''}>${gyro.status === 'on' ? 'Recenter phone tilt' : gyro.status === 'waiting' ? 'Waiting for motion…' : 'Enable phone tilt'}</button><small id="gyro-status">${settings.reducedMotion ? 'Turn off Reduced motion to use phone tilt.' : gyro.status === 'on' ? 'Move your phone gently to tilt the cards. Dragging a card takes control.' : gyro.status === 'denied' ? 'Motion access was denied. You can still drag cards to tilt them.' : gyro.available ? 'Available on supported phones.' : 'Motion sensors are unavailable in this browser.'}</small></div><div class="modal-setting"><label for="uiScale">Interface size <output for="uiScale">${Math.round(settings.uiScale*100)}%</output></label><input id="uiScale" type="range" min=".85" max="1.2" step=".05" value="${settings.uiScale}"></div><p>Settings save on this device.</p>`
   : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Freedom',stats.freedoms],['Death',stats.deaths],['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Overflows',stats.busts],['Cards played',stats.cards],['Choose Player',stats.sevens],['Reverse',stats.eights],['Zero',stats.nines],['Minus Ten',stats.tens]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Your statistics are saved on this device.</p>`
   : modal==='history' ? `<h2>Game history</h2><p>Recent moves at this table.</p><ul class="history-list">${state?.log.length ? state.log.map(gameLogLine).join('') : '<li>No cards have been played yet.</li>'}</ul>`
   : `<h2>Game menu</h2><p>Round ${state?.round || 1} · ${state?.players.length || settings.playerCount} players</p><div class="menu-actions">${account?`<button class="secondary-button" data-action="account">${account.snapshot.user?'My account':'Sign in / Create account'}</button>`:''}${!online || (online.isHost && !(online instanceof HostedRoom)) ? '<button class="secondary-button" data-action="restart">Restart round</button>' : ''}<button class="secondary-button" data-action="${online?'leave-room':'new-game'}">${online?'Leave online room':'Return to setup'}</button><button class="secondary-button" data-action="settings">Sound & display</button><button class="secondary-button" data-action="history">Table activity</button><button class="secondary-button" data-action="stats">Statistics</button></div>`;
-  return `<div class="overlay modal-overlay" data-action="close-modal"><section class="modal-panel" role="dialog" aria-modal="true"><button class="close-button" data-action="close-modal" aria-label="Close">×</button>${body}</section></div>`;
+  return `<div class="overlay modal-overlay" data-action="close-modal"><section class="modal-panel ${modal==='characters'?'character-selector':''}" role="dialog" aria-modal="true" ${modal==='characters'?'aria-labelledby="character-picker-title"':''}><button class="close-button" data-action="close-modal" aria-label="Close">×</button>${body}</section></div>`;
+}
+function closeModal(): void {
+  const wasCharacters = modal === 'characters';
+  modal = null; render();
+  if (wasCharacters) app.querySelector<HTMLButtonElement>(`[data-character-seat="${characterSeat}"]`)?.focus({preventScroll:true});
 }
 let presentedRound='';
 let openingDeal=false;
@@ -623,6 +643,11 @@ function render(): void {
   updateGameView(app, (online && online.status !== 'playing' ? lobbyView() : state ? gameView() : onlineMode ? onlineView() : setupView()) + modalView());
   for(const [name,value] of accountFields){const input=document.querySelector<HTMLInputElement>(`#account-form input[name="${name}"]`);if(input)input.value=value;}
   syncPlayerRing();
+  if (modal === 'characters') {
+    for (const child of Array.from(app.children)) if (!child.classList.contains('modal-overlay')) (child as HTMLElement).inert = true;
+    const picker=app.querySelector<HTMLElement>('.character-selector');
+    if (picker && !picker.contains(document.activeElement)) picker.querySelector<HTMLButtonElement>('.avatar-choice.chosen')?.focus({preventScroll:true});
+  }
   const cemetery=app.querySelector<HTMLElement>('.death-scene');
   for(const sibling of Array.from(app.querySelector('.game-page')?.children??[]))if(sibling!==cemetery)(sibling as HTMLElement).inert=!!cemetery;
   if(cemetery&&!cemetery.contains(document.activeElement))cemetery.querySelector<HTMLButtonElement>('button')?.focus({preventScroll:true});
@@ -684,6 +709,21 @@ app.addEventListener('click', event => {
   if (ringStep) { playerRing.browse(Number(ringStep.dataset.ringStep)); return; }
   const ringFocus = target.closest<HTMLElement>('[data-ring-focus]');
   if (ringFocus) { playerRing.show(Number(ringFocus.dataset.ringFocus)); return; }
+  const character = target.closest<HTMLElement>('[data-character-seat]');
+  if (character && isNextVersion && !state && !online) {
+    characterSeat = Number(character.dataset.characterSeat);
+    modal = 'characters'; audio.play('click'); render(); return;
+  }
+  const avatar = target.closest<HTMLElement>('[data-avatar-choice]');
+  if (avatar) {
+    const index = Number(avatar.dataset.avatarSeat ?? 0), choice = Number(avatar.dataset.avatarChoice);
+    if (!settings.seats[index] || !Number.isInteger(choice) || choice < 0 || choice >= avatarNames.length) return;
+    const wasCharacters = modal === 'characters';
+    if (wasCharacters) modal = null;
+    setSeat(index, {avatar:choice}); audio.play('click');
+    if (wasCharacters) app.querySelector<HTMLButtonElement>(`[data-character-seat="${index}"]`)?.focus({preventScroll:true});
+    return;
+  }
   const action = target.closest<HTMLElement>('[data-action]')?.dataset.action;
   if (action) {
     if (action === 'close-modal' && target.closest('.modal-panel') && !target.closest('.close-button')) return;
@@ -709,7 +749,7 @@ app.addEventListener('click', event => {
     if (action === 'rules' || action === 'settings' || action === 'stats' || action === 'history' || action === 'account') { modal = action; emotesOpen = false; render(); if(account&&(action==='account'||action==='stats'))void account.refresh(); }
     if (action === 'menu') { modal = 'menu'; render(); }
     if (action === 'emotes') { if(emoteHeld){emoteHeld=false;}else{emotesOpen = !emotesOpen; render();} }
-    if (action === 'close-modal') { modal = null; render(); }
+    if (action === 'close-modal') closeModal();
     if (action === 'gyro-enable') {
       if (gyro.status === 'on') gyro.recenter();
       else void gyro.enable();
@@ -728,8 +768,7 @@ app.addEventListener('click', event => {
   }
   const seat = target.closest<HTMLElement>('[data-target]');
   if (seat?.dataset.target) { chooseTarget(Number(seat.dataset.target)); return; }
-  const avatar = target.closest<HTMLElement>('[data-avatar-choice]');
-  if (avatar?.dataset.avatarChoice) { settings.seats[0].avatar = Number(avatar.dataset.avatarChoice); save(); render(); }
+
 });
 app.addEventListener('change', event => {
   const el = event.target as HTMLInputElement | HTMLSelectElement;
@@ -747,7 +786,7 @@ app.addEventListener('change', event => {
   if (el.dataset.seatKind) setSeat(Number(el.dataset.seatKind), { kind: el.value as PlayerConfig['kind'] });
   if (el.dataset.seatAvatar) setSeat(Number(el.dataset.seatAvatar), { avatar: Number(el.value) });
   if (el.dataset.seatMood) setSeat(Number(el.dataset.seatMood), { mood: el.value as PlayerConfig['mood'] });
-  if (el.dataset.seatName) setSeat(Number(el.dataset.seatName), { name: el.value });
+  if (el.dataset.seatName) { settings.seats[Number(el.dataset.seatName)].name = el.value; save(); }
   if (el.id === 'live-mood' && state) { const seat = localSeat(); if (online) online.setMood(seat, el.value as PlayerConfig['mood']); else { state.players[seat].mood = el.value as PlayerConfig['mood']; settings.seats[seat].mood = el.value as PlayerConfig['mood']; save(); render(); } }
   if (el.id === 'graphics') { settings.graphics = el.value as Settings['graphics']; save(); }
   if (el.id === 'muted' || el.id === 'reducedMotion') { settings[el.id]=(el as HTMLInputElement).checked;save(); if (el.id === 'reducedMotion') render(); }
@@ -755,6 +794,7 @@ app.addEventListener('change', event => {
 app.addEventListener('input', event => {
   const el = event.target as HTMLInputElement;
   if (el.id === 'room-code') joinCode = el.value;
+  if(el.dataset.seatName!==undefined){settings.seats[Number(el.dataset.seatName)].name=el.value;save();}
   if (['volume','sfxVolume','musicVolume','ambienceVolume','uiScale'].includes(el.id)) { const key=el.id as 'volume'|'sfxVolume'|'musicVolume'|'ambienceVolume'|'uiScale';settings[key]=Number(el.value);save();const output=document.querySelector(`output[for="${el.id}"]`);if(output)output.textContent=`${Math.round(Number(el.value)*100)}%`; }
 });
 app.addEventListener('keydown', event => {
@@ -764,7 +804,13 @@ app.addEventListener('keydown', event => {
     const spin=isNextVersion&&event.shiftKey?{x:.12,y:.08,z:Math.sqrt(1-.12**2-.08**2),turns:2,kind:'boomerang' as const}:undefined;
     void animatePlay(target.dataset.card!, target,spin);
   }
-  if (event.key === 'Escape' && modal) { modal = null; render(); }
+  if (event.key === 'Escape' && modal) closeModal();
+  if (event.key === 'Tab' && modal === 'characters') {
+    const buttons=Array.from(app.querySelectorAll<HTMLButtonElement>('.character-selector button'));
+    const first=buttons[0], last=buttons.at(-1);
+    if (event.shiftKey && target===first) { event.preventDefault(); last?.focus(); }
+    else if (!event.shiftKey && target===last) { event.preventDefault(); first?.focus(); }
+  }
 });
 
 type CardDrag = {element:HTMLElement;id:string;x:number;y:number;time:number;lastX:number;lastY:number;lastTime:number;vx:number;vy:number;moved:boolean;inspecting:boolean;grip:CardGrip;pointerId:number;holdTimer:number;baseTransform:string;swing?:CardSwing};

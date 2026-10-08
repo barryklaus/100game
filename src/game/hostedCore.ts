@@ -5,7 +5,7 @@ import { projectForSeat } from './projection';
 import { createGame, playCard, selectTarget } from './rules';
 import type { GameState, PlayerConfig } from './types';
 
-export type Profile = Pick<PlayerConfig, 'name' | 'avatar' | 'mood'>;
+export type Profile = Pick<PlayerConfig, 'name' | 'avatar' | 'mood' | 'lifetimePoints'>;
 export type RoomCommand =
   | { type: 'cpu-count'; count: number }
   | { type: 'start'; round?: number }
@@ -15,6 +15,7 @@ export type RoomCommand =
   | { type: 'leave' };
 export interface Member { token: string; seat: number; profile: Profile; disconnectedAt: number | null; accountId?: string }
 export interface RoomData {
+  lifetimeSettledRound?: string;
   nextRules?:boolean;
   id: string;
   seats: PlayerConfig[];
@@ -42,6 +43,7 @@ export function cleanProfile(input: unknown): Profile {
     name: String(profile.name || 'Player').trim().slice(0, 15) || 'Player',
     avatar: Number.isInteger(profile.avatar) ? Math.max(0, Math.min(15, profile.avatar!)) : 0,
     mood: profile.mood && MOODS.includes(profile.mood) ? profile.mood : 'Normal',
+    ...(Number.isSafeInteger(profile.lifetimePoints) ? {lifetimePoints:Math.max(-1e9,Math.min(1e9,profile.lifetimePoints!))} : {}),
   };
 }
 
@@ -74,6 +76,7 @@ export function joinRoom(room: RoomData, profile: unknown, token: string | null,
       room.state.players[existing.seat].name = existing.profile.name;
       room.state.players[existing.seat].mood = existing.profile.mood;
       room.state.players[existing.seat].avatar = existing.profile.avatar;
+      room.state.players[existing.seat].lifetimePoints = existing.profile.lifetimePoints;
     }
     if (room.hostSeat < 0) room.hostSeat = existing.seat;
     touch(room, now);

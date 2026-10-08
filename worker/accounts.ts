@@ -1,4 +1,5 @@
 import { ACCOUNT_STAT_KEYS, cleanStatDelta, emptyAccountStats, type AccountStats, type AccountUser } from '../src/account/model';
+import { accountPoints } from '../src/game/points';
 import { digest, equalSecret, normalizeRecovery, passwordHash, randomToken, recoveryCode, verifyPassword } from './accountCrypto';
 
 const COOKIE='__Host-100next-session';
@@ -37,6 +38,7 @@ export class AccountStore {
     this.sql.exec('CREATE INDEX IF NOT EXISTS sessions_user ON sessions(user_id)');
     this.sql.exec('CREATE TABLE IF NOT EXISTS events (event_id TEXT NOT NULL, user_id TEXT NOT NULL, kind TEXT NOT NULL, PRIMARY KEY(event_id,user_id,kind))');
     this.sql.exec('CREATE TABLE IF NOT EXISTS limits (key TEXT PRIMARY KEY, count INTEGER NOT NULL, expires INTEGER NOT NULL)');
+    this.sql.exec('CREATE TABLE IF NOT EXISTS character_points (avatar INTEGER PRIMARY KEY, points INTEGER NOT NULL)');
   }
   private one<T extends Record<string,SqlStorageValue>>(query:string,...args:SqlStorageValue[]):T|undefined {
     return this.sql.exec<T>(query,...args).toArray()[0];
@@ -51,8 +53,11 @@ export class AccountStore {
     const token=cookieToken(request);if(!token)return;
     return this.one<UserRow>('SELECT users.* FROM users JOIN sessions ON sessions.user_id=users.id WHERE sessions.token=? AND sessions.expires>?',await digest(token),Date.now());
   }
+  private publicUser(user:UserRow):AccountUser {
+    return {id:user.id,username:user.username,lifetimePoints:accountPoints(JSON.parse(user.online))+accountPoints(JSON.parse(user.practice))};
+  }
   private view(user?:UserRow) {
-    return {user:user?{id:user.id,username:user.username}:null,online:user?JSON.parse(user.online) as AccountStats:emptyAccountStats(),practice:user?JSON.parse(user.practice) as AccountStats:emptyAccountStats()};
+    return {user:user?this.publicUser(user):null,online:user?JSON.parse(user.online) as AccountStats:emptyAccountStats(),practice:user?JSON.parse(user.practice) as AccountStats:emptyAccountStats()};
   }
   private async newSession(user:UserRow,recovery?:string):Promise<Response> {
     const token=randomToken();
@@ -82,7 +87,7 @@ export class AccountStore {
   private async handle(request:Request):Promise<Response> {
     const path=new URL(request.url).pathname;
     const internal=path.startsWith('/internal/');
-    if(path==='/internal/session'&&request.method==='GET'){const user=await this.current(request);return json({user:user?{id:user.id,username:user.username}:null});}
+    if(path==='/internal/session'&&request.method==='GET'){const user=await this.current(request);return json({user:user?this.publicUser(user):null});}
     if(path==='/api/account/me'&&request.method==='GET')return json(this.view(await this.current(request)));
     if(request.method!=='POST')return json({error:'Endpoint not found.'},404);
     if(!internal){
@@ -90,11 +95,27 @@ export class AccountStore {
       if(origin!==new URL(request.url).origin||request.headers.get('Sec-Fetch-Site')==='cross-site')throw new AccountError('Open the account form from the game.',403);
       if(!request.headers.get('Content-Type')?.startsWith('application/json'))throw new AccountError('JSON required.',415);
     }
-    if(!['/api/account/register','/api/account/login','/api/account/logout','/api/account/recover','/api/account/practice','/internal/record'].includes(path))return json({error:'Endpoint not found.'},404);
+    if(!['/api/account/register','/api/account/login','/api/account/logout','/api/account/recover','/api/account/practice','/internal/record','/internal/points','/internal/cpu-record'].includes(path))return json({error:'Endpoint not found.'},404);
     const length=Number(request.headers.get('Content-Length')??0);if(length>4096)throw new AccountError('Request is too large.',413);
     const raw=await request.text();if(raw.length>4096)throw new AccountError('Request is too large.',413);
     let body:Record<string,unknown>;try{body=JSON.parse(raw);}catch{throw new AccountError('Invalid request.');}
     if(!body||typeof body!=='object'||Array.isArray(body))throw new AccountError('Invalid request.');
+    if(path==='/internal/points') {
+      const ids=Array.isArray(body.accounts)?body.accounts.filter(id=>typeof id==='string').slice(0,8) as string[]:[];
+      const avatars=Array.isArray(body.cpus)?body.cpus.filter(avatar=>Number.isInteger(avatar)&&avatar>=0&&avatar<16).slice(0,8) as number[]:[];
+      return json({accounts:Object.fromEntries(ids.map(id=>{const user=this.one<UserRow>('SELECT * FROM users WHERE id=?',id);return [id,user?this.publicUser(user).lifetimePoints:0];})),cpus:Object.fromEntries(avatars.map(avatar=>[avatar,this.one<{points:number}>('SELECT points FROM character_points WHERE avatar=?',avatar)?.points??0]))});
+    }
+    if(path==='/internal/cpu-record') {
+      const avatar=Number(body.avatar),delta=Number(body.delta),eventId=String(body.eventId??''),key=`cpu:${avatar}`;
+      if(!Number.isInteger(avatar)||avatar<0||avatar>=16||!Number.isSafeInteger(delta)||Math.abs(delta)>10000||!/^[a-zA-Z0-9:_-]{8,150}$/.test(eventId))throw new AccountError('Invalid character result.');
+      if(!this.one('SELECT event_id FROM events WHERE event_id=? AND user_id=? AND kind=?',eventId,key,'cpu')) {
+        this.ctx.storage.transactionSync(()=>{
+          this.sql.exec('INSERT INTO character_points(avatar,points) VALUES(?,?) ON CONFLICT(avatar) DO UPDATE SET points=MAX(-1000000000,MIN(1000000000,points+excluded.points))',avatar,delta);
+          this.sql.exec('INSERT INTO events(event_id,user_id,kind) VALUES(?,?,?)',eventId,key,'cpu');
+        });
+      }
+      return json({ok:true});
+    }
     this.sql.exec('DELETE FROM sessions WHERE expires<?',Date.now());this.sql.exec('DELETE FROM limits WHERE expires<?',Date.now());
     if(path==='/internal/record'){
       const user=typeof body.userId==='string'?this.one<UserRow>('SELECT * FROM users WHERE id=?',body.userId):undefined;

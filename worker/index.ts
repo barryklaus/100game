@@ -50,8 +50,34 @@ export class GameRoom {
         const response=await store.fetch(new Request('https://accounts.internal/internal/record',{method:'POST',body:JSON.stringify({userId,eventId:record.id,delta:roundDelta(record,state,Number(seat))})}));
         if(!response.ok)throw new Error('Statistics pending.');
       }
+      if(this.room!.lifetimeSettledRound!==record.id) {
+        for(const member of this.room!.members) if(!member.accountId) {
+          member.profile.lifetimePoints=(member.profile.lifetimePoints??0)+state.players[member.seat].ratingDelta;
+        }
+        this.room!.lifetimeSettledRound=record.id;
+        await this.ctx.storage.put('room',this.room);
+      }
+      for(const player of state.players) if(!this.room!.members.some(member=>member.seat===player.id)) {
+        const response=await store.fetch(new Request('https://accounts.internal/internal/cpu-record',{method:'POST',body:JSON.stringify({eventId:record.id,avatar:player.avatar,delta:player.ratingDelta})}));
+        if(!response.ok)throw new Error('Character points pending.');
+      }
+      await this.refreshPoints();
+      await this.ctx.storage.put('room',this.room);
       record.committed=true;await this.ctx.storage.put('accountRound',record);
+      this.broadcast();
     }catch {/* The persisted pending result retries on the room alarm. */}
+  }
+  private async refreshPoints():Promise<void> {
+    if(!this.room||!this.env.ACCOUNTS)return;
+    const room=this.room;
+    const response=await this.env.ACCOUNTS.getByName('accounts-v1').fetch(new Request('https://accounts.internal/internal/points',{method:'POST',body:JSON.stringify({accounts:room.members.flatMap(member=>member.accountId?[member.accountId]:[]),cpus:room.seats.filter((_,seat)=>!room.members.some(member=>member.seat===seat)).map(player=>player.avatar)})}));
+    if(!response.ok)throw new Error('Lifetime points unavailable.');
+    const points=await response.json() as {accounts:Record<string,number>;cpus:Record<number,number>};
+    room.seats.forEach((player,seat)=>{
+      const member=room.members.find(member=>member.seat===seat);
+      player.lifetimePoints=member?.accountId?points.accounts[member.accountId]??0:member?member.profile.lifetimePoints??0:points.cpus[player.avatar]??0;
+      if(room.state)room.state.players[seat].lifetimePoints=player.lifetimePoints;
+    });
   }
   private broadcast(): void {
     if (!this.room) return;
@@ -87,13 +113,14 @@ export class GameRoom {
       try {
         const id = new URL(request.url).pathname.split('/')[3];
         const account=await accountForRequest(request,this.env.ACCOUNTS);
-        if(account) input.profile={...(input.profile&&typeof input.profile==='object'?input.profile:{}),name:account.username};
+        if(account) input.profile={...(input.profile&&typeof input.profile==='object'?input.profile:{}),name:account.username,lifetimePoints:account.lifetimePoints??0};
         if (action === 'create') {
           if (this.room) throw new RoomError('This room code is already in use. Create a new room.', 409);
           const token = crypto.randomUUID();
           this.room = createRoom(id, input.profile, token);
           this.room.nextRules=!!this.env.ACCOUNTS;
           if(account)this.room.members[0].accountId=account.id;
+          await this.refreshPoints();
           await this.save();
           return json({ token, seat: 0 });
         }
@@ -103,8 +130,10 @@ export class GameRoom {
           if(previous?.accountId&&previous.accountId!==account?.id)throw new RoomError('Sign in to the account that joined this seat.',403);
           if(account&&this.room.members.some(member=>member.accountId===account.id&&member!==previous))throw new RoomError('This account already has a seat. Rejoin from your original browser.',409);
           if(this.room.state&&previous&&!previous.accountId&&account)throw new RoomError('Finish this guest round before joining with your account.',409);
+          if(previous&&!account&&this.room.nextRules)input.profile={...(input.profile&&typeof input.profile==='object'?input.profile:{}),lifetimePoints:previous.profile.lifetimePoints??0};
           const result = joinRoom(this.room, input.profile, typeof input.token === 'string' ? input.token : null, crypto.randomUUID());
           if(account)this.room.members.find(member=>member.seat===result.seat)!.accountId=account.id;
+          await this.refreshPoints();
           await this.save();
           this.broadcast();
           return json(result);
@@ -133,6 +162,7 @@ export class GameRoom {
           if (other !== socket && (other.deserializeAttachment() as SocketAttachment | null)?.token === token) other.close(1000, 'Reconnected in another tab.');
         }
         setConnected(this.room, seat, true);
+        await this.refreshPoints();
         await this.save();
         this.broadcast();
         return;
@@ -140,9 +170,10 @@ export class GameRoom {
       const attachment = socket.deserializeAttachment() as SocketAttachment | null;
       if (!attachment || seatForToken(this.room, attachment.token) !== attachment.seat) { socket.close(1008, 'Join the room first.'); return; }
       try {
-        if(input.type==='start'){await this.saveAccounts();if(this.accountRound&&!this.accountRound.committed&&this.room.state?.phase==='ended')throw new RoomError('Saving round statistics. Please retry in a moment.',503);}
+        if(input.type==='start'){await this.saveAccounts();if(this.accountRound&&!this.accountRound.committed&&this.room.state?.phase==='ended')throw new RoomError('Saving round statistics. Please retry in a moment.',503);await this.refreshPoints();}
         const before=this.room.state?structuredClone(this.room.state):null;
         applyCommand(this.room, attachment.seat, input as RoomCommand);
+        if(input.type==='cpu-count')await this.refreshPoints();
         if(input.type==='start'&&this.env.ACCOUNTS)this.accountRound=newRoundAccounts(Object.fromEntries(this.room.members.filter(member=>member.accountId).map(member=>[member.seat,member.accountId!])));
         else if(before&&this.accountRound&&this.room.state)recordPlayed(this.accountRound,before,this.room.state);
         await this.save();

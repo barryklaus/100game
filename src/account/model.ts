@@ -1,10 +1,10 @@
 export const ACCOUNT_STAT_KEYS = ['freedoms','deaths','rounds','exacts','survives','busts','cards','sevens','eights','nines','tens','setups'] as const;
 export type AccountStats = Record<typeof ACCOUNT_STAT_KEYS[number], number>;
-export interface AccountUser { id: string; username: string }
+export interface AccountUser { id: string; username: string; lifetimePoints?: number }
 export interface AccountSnapshot { user: AccountUser | null; online: AccountStats; practice: AccountStats }
 export const emptyAccountStats = (): AccountStats => Object.fromEntries(ACCOUNT_STAT_KEYS.map(key => [key,0])) as AccountStats;
 export function totalAccountStats(snapshot: AccountSnapshot): AccountStats {
-  return Object.fromEntries(ACCOUNT_STAT_KEYS.map(key => [key,snapshot.online[key]+snapshot.practice[key]])) as AccountStats;
+  return Object.fromEntries(ACCOUNT_STAT_KEYS.map(key => [key,(snapshot.online[key]??0)+(snapshot.practice[key]??0)])) as AccountStats;
 }
 export function cleanStatDelta(input: unknown, practice: boolean): AccountStats {
   const data = input && typeof input === 'object' ? input as Record<string,unknown> : {};

@@ -1,8 +1,9 @@
 import type { AccountClient } from './AccountClient';
+import { accountPoints } from '../game/points';
 import type { AccountStats } from './model';
 const escape=(s:string)=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 export function statsGrid(stats:AccountStats):string {
-  return `<div class="stats-grid">${Object.entries({Freedom:stats.freedoms,Death:stats.deaths,Rounds:stats.rounds,'Exact 100s':stats.exacts,Survivals:stats.survives,Overflows:stats.busts,'Cards played':stats.cards,'Setups':stats.setups,'Choose Player':stats.sevens,Reverse:stats.eights,Zero:stats.nines,'Minus Ten':stats.tens}).map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div>`;
+  return `<div class="stats-grid">${Object.entries({'Lifetime points':accountPoints(stats),Freedom:stats.freedoms,Death:stats.deaths,Rounds:stats.rounds,'Exact 100s':stats.exacts,Survivals:stats.survives,Overflows:stats.busts,'Cards played':stats.cards,'Setups':stats.setups,'Choose Player':stats.sevens,Reverse:stats.eights,Zero:stats.nines,'Minus Ten':stats.tens}).map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div>`;
 }
 export function accountStatistics(account:AccountClient):string {
   return `<h2>${escape(account.snapshot.user!.username)} · Statistics</h2><h3>Online · Server verified</h3>${statsGrid(account.snapshot.online)}<h3>Local practice · Player reported</h3>${statsGrid(account.snapshot.practice)}<p>These statistics follow your account across devices. Guest history stays on its original device. Death is recorded once when a settled match score reaches −16 or below. Online results are server verified; local practice remains player reported. Freedom is reserved for the upcoming match finish.</p>`;

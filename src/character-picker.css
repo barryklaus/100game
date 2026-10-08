@@ -1,0 +1,23 @@
+.midnight-mode .seat-row {
+  grid-template-columns: 28px 42px minmax(70px, 1fr) 83px 104px;
+}
+.character-picker-trigger {
+  padding: 0;
+  cursor: pointer;
+  justify-self: center;
+}
+.character-picker-trigger:hover { border-color: #ffe0a0; }
+.character-picker-trigger:focus-visible { outline: 3px solid #ffe0a0; outline-offset: 3px; }
+.modal-panel.character-selector { width: min(100%, 620px); }
+.character-selector h2 { padding-right: 24px; font-size: clamp(25px, 5vw, 36px); }
+.character-selector .avatar-picker { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.character-selector .avatar-choice { padding: 6px; }
+.character-selector .avatar-choice span { font-size: 14px; padding: 3px 0; }
+.character-selector .avatar-choice:focus-visible { outline: 3px solid #ffe0a0; outline-offset: 2px; }
+@media (max-width: 720px) {
+  .midnight-mode .seat-row { grid-template-columns: 18px 38px minmax(54px, 1fr) 62px 78px; }
+  .midnight-mode .seat-row .character-picker-trigger { width: 36px; height: 36px; }
+  .character-selector .avatar-picker { gap: 6px; }
+  .character-selector .avatar-choice { padding: 3px; }
+  .character-selector .avatar-choice span { font-size: 12px; }
+}

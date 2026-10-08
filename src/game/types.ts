@@ -1,7 +1,7 @@
 import type { Mood, Rank, Suit } from '../data/config';
 
 export interface Card { id: string; suit: Suit; rank: Rank }
-export interface PlayerConfig { name: string; kind: 'human' | 'cpu'; mood: Mood; avatar: number }
+export interface PlayerConfig { name: string; kind: 'human' | 'cpu'; mood: Mood; avatar: number; lifetimePoints?: number }
 export interface Player extends PlayerConfig { id: number; hand: Card[]; ratingDelta: number; exacts: number }
 export type Phase = 'playing' | 'target' | 'ended';
 export interface GameState {
