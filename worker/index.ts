@@ -3,7 +3,7 @@ import { resetsPoints } from '../src/game/points';
 import { newRoundAccounts, recordPlayed, roundDelta, type RoundAccounts } from './roundAccounts';
 import {
   advanceCpu, applyCommand, createRoom, joinRoom, ROOM_EXPIRY_MS, roomAlarmAt, scheduleCpuAction,
-  RoomError, seatForToken, setConnected, snapshotForSeat, sweepDisconnected,
+  RoomError, seatForToken, setConnected, snapshotForSeat, sweepDisconnected, roomParticipants,
   type RoomCommand, type RoomData,
 } from '../src/game/hostedCore';
 
@@ -52,13 +52,13 @@ export class GameRoom {
         if(!response.ok)throw new Error('Statistics pending.');
       }
       if(this.room!.lifetimeSettledRound!==record.id) {
-        for(const member of this.room!.members) if(!member.accountId) {
+        for(const member of roomParticipants(this.room!)) if(!member.accountId) {
           member.profile.lifetimePoints=resetsPoints(state,member.seat)?0:(member.profile.lifetimePoints??0)+state.players[member.seat].ratingDelta;
         }
         this.room!.lifetimeSettledRound=record.id;
         await this.ctx.storage.put('room',this.room);
       }
-      for(const player of state.players) if(!this.room!.members.some(member=>member.seat===player.id)) {
+      for(const player of state.players) if(!roomParticipants(this.room!).some(member=>member.seat===player.id)) {
         const response=await store.fetch(new Request('https://accounts.internal/internal/cpu-record',{method:'POST',body:JSON.stringify({eventId:record.id,avatar:player.avatar,delta:player.ratingDelta,reset:resetsPoints(state,player.id)})}));
         if(!response.ok)throw new Error('Character points pending.');
       }
@@ -71,11 +71,12 @@ export class GameRoom {
   private async refreshPoints():Promise<void> {
     if(!this.room||!this.env.ACCOUNTS)return;
     const room=this.room;
-    const response=await this.env.ACCOUNTS.getByName('accounts-v1').fetch(new Request('https://accounts.internal/internal/points',{method:'POST',body:JSON.stringify({accounts:room.members.flatMap(member=>member.accountId?[member.accountId]:[]),cpus:room.seats.filter((_,seat)=>!room.members.some(member=>member.seat===seat)).map(player=>player.avatar)})}));
+    const participants=roomParticipants(room);
+    const response=await this.env.ACCOUNTS.getByName('accounts-v1').fetch(new Request('https://accounts.internal/internal/points',{method:'POST',body:JSON.stringify({accounts:participants.flatMap(member=>member.accountId?[member.accountId]:[]),cpus:room.seats.filter((_,seat)=>!participants.some(member=>member.seat===seat)).map(player=>player.avatar)})}));
     if(!response.ok)throw new Error('Lifetime points unavailable.');
     const points=await response.json() as {accounts:Record<string,number>;cpus:Record<number,number>};
     room.seats.forEach((player,seat)=>{
-      const member=room.members.find(member=>member.seat===seat);
+      const member=participants.find(member=>member.seat===seat);
       player.lifetimePoints=member?.accountId?points.accounts[member.accountId]??0:member?member.profile.lifetimePoints??0:points.cpus[player.avatar]??0;
       if(room.state)room.state.players[seat].lifetimePoints=player.lifetimePoints;
     });
@@ -85,6 +86,7 @@ export class GameRoom {
     for (const socket of this.ctx.getWebSockets()) {
       const attachment = socket.deserializeAttachment() as SocketAttachment | null;
       if (!attachment || seatForToken(this.room, attachment.token) !== attachment.seat) continue;
+      if(this.room.state&&!this.room.members.some(member=>member.seat===attachment.seat)&&!resetsPoints(this.room.state,attachment.seat))continue;
       try { socket.send(JSON.stringify(snapshotForSeat(this.room, attachment.seat))); }
       catch { /* Closing sockets are handled by webSocketClose. */ }
     }

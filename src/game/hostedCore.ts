@@ -1,4 +1,5 @@
 import { cpuActionDelay } from './cpuTiming';
+import { isOut } from './conditions';
 import { CONFIG, MOODS } from '../data/config';
 import { chooseCpuCard, chooseCpuTarget } from './cpu';
 import { projectForSeat } from './projection';
@@ -13,13 +14,15 @@ export type RoomCommand =
   | { type: 'target'; seat: number; turn?: number }
   | { type: 'mood'; mood: PlayerConfig['mood'] }
   | { type: 'leave' };
-export interface Member { token: string; seat: number; profile: Profile; disconnectedAt: number | null; accountId?: string }
+export interface Member { token: string; seat: number; profile: Profile; disconnectedAt: number | null; accountId?: string; left?:boolean }
 export interface RoomData {
   lifetimeSettledRound?: string;
   nextRules?:boolean;
   id: string;
   seats: PlayerConfig[];
   members: Member[];
+  /** Outcome delivery/account history only; these are no longer room members. */
+  retiredMembers?:Member[];
   cpuCount: number;
   hostSeat: number;
   state: GameState | null;
@@ -54,7 +57,18 @@ function rebuildLobby(room: RoomData): void {
   room.seats = [...room.members.map(member => human(member.profile)), ...Array.from({ length: room.cpuCount }, (_, i) => cpu(i))];
 }
 
-function touch(room: RoomData, now: number): void { room.revision++; room.updatedAt = now; scheduleCpuAction(room, now); }
+export function roomParticipants(room:RoomData):Member[]{return [...room.members,...room.retiredMembers??[]];}
+function retireOutcomes(room:RoomData):void {
+  if(!room.state?.match)return;
+  const leaving=room.members.filter(member=>isOut(room.state!,member.seat));
+  if(leaving.length){
+    room.retiredMembers??=[];room.retiredMembers.push(...leaving);
+    room.members=room.members.filter(member=>!isOut(room.state!,member.seat));
+  }
+  if(room.hostSeat>=0&&isOut(room.state,room.hostSeat))promoteHost(room);
+  room.cpuCount=room.seats.filter((player,seat)=>player.kind==='cpu'&&!isOut(room.state!,seat)).length;
+}
+function touch(room: RoomData, now: number): void { retireOutcomes(room);room.revision++; room.updatedAt = now; scheduleCpuAction(room, now); }
 
 export function createRoom(id: string, profile: unknown, token: string, now = Date.now()): RoomData {
   const first = cleanProfile(profile);
@@ -62,10 +76,12 @@ export function createRoom(id: string, profile: unknown, token: string, now = Da
 }
 
 export function seatForToken(room: RoomData, token: string): number | null {
-  return room.members.find(member => member.token === token)?.seat ?? null;
+  return token?roomParticipants(room).find(member => !member.left&&member.token === token)?.seat ?? null:null;
 }
 
 export function joinRoom(room: RoomData, profile: unknown, token: string | null, newToken: string, now = Date.now()): { seat: number; token: string } {
+  retireOutcomes(room);
+  if(token&&room.retiredMembers?.some(member=>member.token===token))throw new RoomError('You have left this game after Freedom or Death. Join a new room.',403);
   const existing = token ? room.members.find(member => member.token === token) : undefined;
   if (existing) {
     existing.disconnectedAt = null;
@@ -103,7 +119,7 @@ export function setConnected(room: RoomData, seat: number, connected: boolean, n
 }
 
 function promoteHost(room: RoomData): void {
-  const next = room.members.find(member => member.disconnectedAt === null && room.seats[member.seat]?.kind === 'human');
+  const next = room.members.find(member => member.disconnectedAt === null && room.seats[member.seat]?.kind === 'human'&&(!room.state||!isOut(room.state,member.seat)));
   room.hostSeat = next?.seat ?? -1;
 }
 
@@ -117,7 +133,7 @@ function removeLobbyMember(room: RoomData, seat: number): void {
 
 function cpuTurnKey(room: RoomData): string | null {
   const state = room.state;
-  if (!state || state.phase === 'ended' || !state.players.some(player => player.kind === 'human')) return null;
+  if (!state || state.phase === 'ended' || !state.players.some(player => player.kind === 'human'&&!isOut(state,player.id))) return null;
   const actor = state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current;
   return state.players[actor]?.kind === 'cpu' ? `${state.round}:${state.turn ?? 0}:${state.phase}:${actor}` : null;
 }
@@ -171,6 +187,12 @@ export function sweepDisconnected(room: RoomData, now = Date.now()): boolean {
 }
 
 export function applyCommand(room: RoomData, seat: number, command: RoomCommand, now = Date.now()): void {
+  retireOutcomes(room);
+  const retired=room.retiredMembers?.find(member=>member.seat===seat);
+  if(retired){
+    if(command.type==='leave'){retired.left=true;touch(room,now);return;}
+    throw new RoomError('You have left this game after Freedom or Death.',403);
+  }
   const member = room.members.find(item => item.seat === seat);
   if (!member || room.seats[seat]?.kind !== 'human') throw new RoomError('Your seat is no longer active.', 403);
   if (command.type === 'leave') {
@@ -191,6 +213,7 @@ export function applyCommand(room: RoomData, seat: number, command: RoomCommand,
   } else if (command.type === 'start') {
     if (seat !== room.hostSeat || room.seats.length < CONFIG.PLAYER_MIN) throw new RoomError('Only the host can start a table with at least two players.', 403);
     if (room.state && room.state.phase !== 'ended') throw new RoomError('Finish the current round first.', 409);
+    if(room.state?.match?.complete)throw new RoomError('This table is finished. Create a new room.',409);
     const nextRound = room.state&&!room.state.match?.complete ? room.state.round + 1 : 1;
     room.state = createGame(room.seats, nextRound, Math.random, room.nextRules?(room.state?.match?.complete?true:room.state?.match??true):undefined);
   } else if (command.type === 'play') {

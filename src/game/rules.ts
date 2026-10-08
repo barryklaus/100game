@@ -68,6 +68,7 @@ function finishPlay(state: GameState, actor: number): void {
 export function playCard(state: GameState, cardId: string): GameState {
   if (state.phase !== 'playing') throw new Error('A card cannot be played now');
   const player = state.players[state.current];
+  if(isOut(state,player.id))throw new Error('This player has left the table.');
   const index = player.hand.findIndex(card => card.id === cardId);
   if (index < 0) throw new Error('Card is not in the active hand');
   state.turn = (state.turn ?? 0) + 1;
@@ -105,6 +106,7 @@ export function playCard(state: GameState, cardId: string): GameState {
           if(overall>=FREEDOM_POINTS||match.scores[other.id]>=FREEDOM_POINTS){match.freed.push(other.id);match.newlyFreed.push(other.id);match.outcomePoints[other.id]=Math.max(overall,match.scores[other.id]);addLog(state,`${other.name} earned Freedom. Overall ${overall} · Game ${match.scores[other.id]}.`);}
         }
       }
+      for(const other of state.players)if(isOut(state,other.id)&&other.hand.length){state.drawPile.push(...other.hand);other.hand=[];}
       match.complete=state.players.filter(other=>!isOut(state,other.id)).length<2;
     }
     addLog(state, `${player.name} busted at ${state.total}.`);

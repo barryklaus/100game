@@ -4,7 +4,7 @@ import { TraditionalCharacters } from './TraditionalCharacters';
 import { masterHandRect } from './MasterCharacters';
 import { MasterAnimations } from './MasterAnimations';
 
-type RingState = { roundKey: string; count: number; active: number; total: number; overflow: boolean; overflowSeat?: number; reducedMotion: boolean; target: boolean };
+type RingState = { roundKey: string; count: number; seats?:number[]; active: number; total: number; overflow: boolean; overflowSeat?: number; reducedMotion: boolean; target: boolean };
 type OverflowStage = 'idle' | 'focus' | 'fall' | 'complete';
 /** Event-driven sprite frames; the ring has no idle animation loop. */
 export class PlayerRing {
@@ -54,6 +54,7 @@ export class PlayerRing {
   sync(next: RingState): void {
     const roundChanged = this.state.roundKey !== next.roundKey;
     const actorChanged = this.state.active !== next.active;
+    const rosterChanged=(this.state.seats??[]).join(',')!==(next.seats??[]).join(',');
     this.state = next;
     if (roundChanged) {
       this.traditional.reset();
@@ -70,7 +71,10 @@ export class PlayerRing {
       this.drawWaiters.forEach(waiter => waiter.resolve()); this.drawWaiters.clear();
       this.recoverTimers.forEach(clearTimeout); this.recoverTimers.clear();
       clearTimeout(this.reliefTimer); this.relieved = -1;
-      this.center = this.targetCenter = next.active + .5;
+      this.center = this.targetCenter = Math.max(0,this.slot(next.active)) + .5;
+    } else if(rosterChanged){
+      this.cancelMove();
+      this.center=this.targetCenter=next.count<=4?(next.count-1)/2:Math.max(0,this.slot(next.active))+.5;
     } else if (actorChanged && !next.overflow) {
       if (this.dragging || this.throws.size) this.deferredFocus = next.active;
       else void this.focus(next.active);
@@ -86,6 +90,7 @@ export class PlayerRing {
   }
 
   scoresReady(roundKey: string): boolean { return this.state.roundKey === roundKey && this.overflowStage === 'complete'; }
+  private slot(index:number):number{return this.state.seats?this.state.seats.indexOf(index):index;}
 
   private tumbleReady(index: number): Promise<void> {
     if(this.masters.has(index))return this.masters.warm(index,'tumble');
@@ -100,7 +105,8 @@ export class PlayerRing {
     this.dragging = undefined; this.finishDrag?.(); this.finishDrag = undefined; this.dragReleased = undefined;
     this.overflowSeat = index; this.overflowStage = 'focus'; this.tumbleFrame = 0; this.tumbleDrop = 0;
     if (this.state.count <= 4) this.center = (this.state.count - 1) / 2;
-    const center = this.state.count <= 4 ? index : this.center + seatDistance(index, this.center, this.state.count);
+    const slot=Math.max(0,this.slot(index));
+    const center = this.state.count <= 4 ? slot : this.center + seatDistance(slot, this.center, this.state.count);
     const finish = () => {
       if (!current()) return;
       this.overflowStage = 'complete'; this.paint();
@@ -169,7 +175,8 @@ export class PlayerRing {
   focus(index: number): Promise<void> {
     if (this.overflowStage !== 'idle') return Promise.resolve();
     if (!this.state.count || this.state.count <= 4) return Promise.resolve();
-    return this.rotate(nearestCenter(index, this.center, this.state.count));
+    const slot=this.slot(index);if(slot<0)return Promise.resolve();
+    return this.rotate(nearestCenter(slot, this.center, this.state.count));
   }
   /** Keep the throwing hand and replacement-card destination still during a flight. */
   show(index: number): void { if (!this.busy) void this.focus(index); }
@@ -313,9 +320,10 @@ export class PlayerRing {
     this.root.querySelectorAll<HTMLButtonElement>('[data-ring-focus], [data-ring-step]').forEach(button => { button.disabled = this.busy; });
     this.root.querySelectorAll<HTMLElement>('.seat').forEach(seat => {
       const index = Number(seat.dataset.seat);
-      const culprit = this.overflowStage !== 'idle' && index === this.overflowSeat;
+      const spotlight=this.overflowStage!=='idle'&&this.slot(this.overflowSeat)>=0;
+      const culprit = spotlight && index === this.overflowSeat;
       seat.classList.toggle('overflow-culprit', culprit);
-      seat.classList.toggle('overflow-support', this.overflowStage !== 'idle' && !culprit);
+      seat.classList.toggle('overflow-support', spotlight && !culprit);
       const tumble = seat.querySelector<HTMLElement>('.character-tumble');
       const falling = culprit && ['fall', 'complete'].includes(this.overflowStage) && !this.state.reducedMotion;
       if (tumble) {
@@ -354,7 +362,9 @@ export class PlayerRing {
     const portrait = innerHeight > innerWidth * 1.08;
     this.root.querySelectorAll<HTMLElement>('.seat').forEach(seat => {
       const index = Number(seat.dataset.seat), layout=this.traditional.has(index)||seat.classList.contains('master-seat')?traditionalRingSeat:ringSeat;
-      const pose = layout(index, this.center, this.state.count, portrait, this.overflowStage !== 'idle');
+      const slot=this.slot(index);
+      if(slot<0){seat.hidden=true;seat.inert=true;seat.setAttribute('aria-hidden','true');return;}
+      const pose = layout(slot, this.center, this.state.count, portrait, this.overflowStage !== 'idle');
       seat.style.setProperty('--ring-x', `${pose.x * 100}vw`);
       seat.style.setProperty('--ring-y', `${pose.y * 100}svh`);
       seat.style.setProperty('--ring-scale', String(pose.scale));
@@ -367,7 +377,7 @@ export class PlayerRing {
       if (pose.visible) void this.spriteReady(index);
     });
     this.root.querySelectorAll<HTMLElement>('[data-ring-focus]').forEach(marker => {
-      const pose = ringSeat(Number(marker.dataset.ringFocus), this.center, this.state.count, portrait, this.overflowStage !== 'idle');
+      const pose = ringSeat(this.slot(Number(marker.dataset.ringFocus)), this.center, this.state.count, portrait, this.overflowStage !== 'idle');
       marker.classList.toggle('in-view', pose.visible);
       marker.setAttribute('aria-pressed', String(pose.visible));
     });

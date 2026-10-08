@@ -1,4 +1,5 @@
 import type { RoomCommand, Profile } from './hostedCore';
+import { isOut } from './conditions';
 import type { GameState, PlayerConfig } from './types';
 
 type Snapshot = { type: 'snapshot'; roomId: string; seat: number; hostSeat: number; seats: PlayerConfig[]; cpuCount: number; revision: number; state: GameState | null };
@@ -80,6 +81,9 @@ export class HostedRoom {
         this.clearCommandTimer(); this.error = message.message; this.notify(); return;
       }
       if (message.type !== 'snapshot' || message.roomId !== this.roomId || message.seat !== this.localSeat || message.revision < this.revision) return;
+      // A departed player's last outcome must remain available even if the
+      // remaining host advances before they finish watching its animation.
+      if(this.state&&isOut(this.state,this.localSeat)&&message.state?.round!==this.state.round)return;
       this.clearCommandTimer();
       if (this.connectTimer !== null) clearTimeout(this.connectTimer);
       this.connectTimer = null;
@@ -98,6 +102,9 @@ export class HostedRoom {
       this.clearCommandTimer();
       if (this.connectTimer !== null) clearTimeout(this.connectTimer);
       this.connectTimer = null;
+      if(this.state&&isOut(this.state,this.localSeat)){
+        this.status='playing';this.error='';this.notify();return;
+      }
       if (this.reconnects >= 6) {
         this.status = 'disconnected';
         this.error = 'Connection to the game service was lost. Try joining again.';
