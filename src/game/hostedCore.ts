@@ -13,7 +13,7 @@ export type RoomCommand =
   | { type: 'target'; seat: number; turn?: number }
   | { type: 'mood'; mood: PlayerConfig['mood'] }
   | { type: 'leave' };
-export interface Member { token: string; seat: number; profile: Profile; disconnectedAt: number | null }
+export interface Member { token: string; seat: number; profile: Profile; disconnectedAt: number | null; accountId?: string }
 export interface RoomData {
   id: string;
   seats: PlayerConfig[];

@@ -1,0 +1,19 @@
+export const ACCOUNT_STAT_KEYS = ['freedoms','deaths','rounds','exacts','survives','busts','cards','sevens','eights','nines','tens','setups'] as const;
+export type AccountStats = Record<typeof ACCOUNT_STAT_KEYS[number], number>;
+export interface AccountUser { id: string; username: string }
+export interface AccountSnapshot { user: AccountUser | null; online: AccountStats; practice: AccountStats }
+export const emptyAccountStats = (): AccountStats => Object.fromEntries(ACCOUNT_STAT_KEYS.map(key => [key,0])) as AccountStats;
+export function totalAccountStats(snapshot: AccountSnapshot): AccountStats {
+  return Object.fromEntries(ACCOUNT_STAT_KEYS.map(key => [key,snapshot.online[key]+snapshot.practice[key]])) as AccountStats;
+}
+export function cleanStatDelta(input: unknown, practice: boolean): AccountStats {
+  const data = input && typeof input === 'object' ? input as Record<string,unknown> : {};
+  const result = emptyAccountStats();
+  for (const key of ACCOUNT_STAT_KEYS) {
+    const value = data[key];
+    if (typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= 10000) result[key]=value;
+  }
+  // Practice reports cannot grant lifetime match outcomes.
+  if (practice) { result.freedoms=0; result.deaths=0; }
+  return result;
+}

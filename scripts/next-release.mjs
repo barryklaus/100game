@@ -16,4 +16,5 @@ export function deployNext() {
   run('pnpm', ['exec', 'wrangler', 'deploy', '--config', 'wrangler.next-rooms.jsonc']);
   run('pnpm', ['exec', 'wrangler', 'pages', 'deploy', '../../dist-next', '--cwd', 'hosting/next', '--project-name', '100next', '--branch', '100next']);
   run('node', ['scripts/verify-next-live.mjs']);
+  run('node', ['scripts/verify-accounts-live.mjs']);
 }

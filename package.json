@@ -11,12 +11,14 @@
     "test:next": "node scripts/test-next.mjs",
     "deploy:next": "node scripts/deploy-next.mjs",
     "publish:next": "node scripts/publish-next.mjs",
-    "test": "node scripts/test-rules.mjs && node scripts/test-online.mjs && node scripts/test-hosted.mjs && node scripts/test-presentation.mjs && node scripts/test-gyro.mjs && node scripts/test-suspense.mjs && node scripts/test-player-ring.mjs && node scripts/test-traditional.mjs && node scripts/test-master-cast.mjs && node scripts/test-master-animation.mjs && node scripts/test-vera-animation.mjs && node scripts/test-expanded-cast.mjs && node scripts/test-boomerang.mjs && node scripts/test-audio-recovery.mjs",
+    "test": "node scripts/test-rules.mjs && node scripts/test-online.mjs && node scripts/test-hosted.mjs && node scripts/test-presentation.mjs && node scripts/test-gyro.mjs && node scripts/test-suspense.mjs && node scripts/test-player-ring.mjs && node scripts/test-traditional.mjs && node scripts/test-master-cast.mjs && node scripts/test-master-animation.mjs && node scripts/test-vera-animation.mjs && node scripts/test-expanded-cast.mjs && node scripts/test-boomerang.mjs && node scripts/test-audio-recovery.mjs && pnpm test:accounts",
     "preview": "vite preview --host 0.0.0.0",
     "dev:cloudflare": "wrangler dev --local",
-    "deploy:cloudflare": "pnpm build:cloudflare && wrangler deploy"
+    "deploy:cloudflare": "pnpm build:cloudflare && wrangler deploy",
+    "test:accounts": "node scripts/test-accounts.mjs"
   },
   "dependencies": {
+    "@noble/hashes": "^2.4.0",
     "peerjs": "^1.5.5",
     "three": "^0.180.0"
   },

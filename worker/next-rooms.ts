@@ -1,5 +1,6 @@
 // This separate script gives 100next its own room storage and alarms.
 export { GameRoom } from './index';
+export { AccountStore } from './accounts';
 
 export default {
   fetch(): Response {

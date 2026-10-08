@@ -1,3 +1,8 @@
+import { AccountClient } from './account/AccountClient';
+import { accountView, accountStatistics } from './account/view';
+import { totalAccountStats } from './account/model';
+import { newRoundAccounts, recordPlayed, roundDelta, type RoundAccounts } from '../worker/roundAccounts';
+import './account.css';
 import { TotalPresentation } from './ui/TotalPresentation';
 import { totalMarkup } from './ui/totalFeedback';
 import { PlayerRing } from './ui/PlayerRing';
@@ -58,12 +63,14 @@ if(masterCast&&new URLSearchParams(location.search).get('characters')==='new-eig
   settings.seats=settings.seats.map((seat,index)=>({...seat,name:masterNames[index+8],avatar:index+8,kind:index===0?'human':'cpu',mood:'Normal'}));
 }
 let stats: Stats = loadStats();
+let practiceRound:RoundAccounts|null=null;
+const account=isNextVersion?new AccountClient(()=>{if(account?.snapshot.user){settings.seats[0]={...settings.seats[0],name:account.snapshot.user.username,kind:'human'};save();}render();}):null;
 let state: GameState | null = null;
 let selectedCard: string | null = null;
 let locked = false;
 let departingCardId: string | null = null;
 const receivingCardIds = new Set<string>();
-let modal: 'rules' | 'settings' | 'stats' | 'history' | 'menu' | null = null;
+let modal: 'rules' | 'settings' | 'stats' | 'history' | 'menu' | 'account' | null = null;
 let emotesOpen = false;
 let emoteHoldTimer:number|undefined;
 let emoteHeld=false;
@@ -310,6 +317,8 @@ function setSeat(index: number, update: Partial<PlayerConfig>): void {
 }
 function startGame(round = 1): void {
   clearCpu(); selectedCard = null; locked = false; reaction = {};
+  if(account?.snapshot.user)settings.seats[0]={...settings.seats[0],name:account.snapshot.user.username,kind:'human'};
+  practiceRound=account?.snapshot.user?newRoundAccounts({0:account.snapshot.user.id}):null;
   const seats = settings.seats.slice(0, settings.playerCount).map((seat, i) => ({ ...seat, name: seat.name.trim() || defaultSeats[i].name }));
   state = createGame(seats, round);
   save(); render(); scheduleCpu();
@@ -317,6 +326,7 @@ function startGame(round = 1): void {
 function finishRound(): void {
   if (!state) return;
   const humans = (online ? [state.players[online.localSeat]] : [state.players[localSeat()]]).filter(player => player?.kind === 'human');
+  if(account){if(online){void account.refresh();setTimeout(()=>void account.refresh(),2000);}else if(practiceRound&&!practiceRound.committed){practiceRound.committed=true;const owner=practiceRound.accounts[0];void account.practice(owner,practiceRound.id,roundDelta(practiceRound,state,0));}}
   stats.rounds++;
   stats.exacts += humans.reduce((sum, player) => sum + player.exacts, 0);
   stats.survives += humans.filter(player => player.id !== state!.bust).length;
@@ -343,7 +353,9 @@ function resolveCard(cardId: string): void {
     online.play(cardId); return;
   }
   const previousLocalHand = new Set(state.players[localSeat()].hand.map(item => item.id));
+  const beforePractice=practiceRound?structuredClone(state):null;
   playCard(state, cardId);
+  if(practiceRound&&beforePractice)recordPlayed(practiceRound,beforePractice,state);
   playerRing.played(actor, ['seven','reverse','zero','minus'].includes(state.event));
   const drawnForLocal = state.players[localSeat()].hand.find(item => !previousLocalHand.has(item.id));
   stats.cards++;
@@ -483,10 +495,10 @@ function cardElement(card: Card, selected = false, extra = ''): string {
 function setupView(): string {
   return `<main class="setup-page">
     <div class="setup-hero"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">THE CARD GAME</div><h1>${headlineMarkup}</h1><p>Look at your two cards. Make your move. Don't be the one who goes over 100.</p><div class="hero-cards">${cardElement({id:'fire-7',suit:'fire',rank:'7'},false,'hero-card one')}${cardElement({id:'water-8',suit:'water',rank:'8'},false,'hero-card two')}${cardElement({id:'sun-10',suit:'sun',rank:'10'},false,'hero-card three')}</div><div class="hero-footer">${gameTagline}</div></div>
-    <section class="setup-panel"><div class="panel-top"><span class="eyebrow">GATHER ROUND</span><div class="top-links"><button data-action="rules">How to play</button><button data-action="stats">Stats</button><button data-action="settings">⚙ Settings</button></div></div><h2>Set the table</h2><p class="muted">Choose 2–8 players. Any seat can be Human or CPU.</p>
+    <section class="setup-panel"><div class="panel-top"><span class="eyebrow">GATHER ROUND</span><div class="top-links">${account?`<button data-action="account">${escapeHtml(account.snapshot.user?.username??'Sign in')}</button>`:''}<button data-action="rules">How to play</button><button data-action="stats">Stats</button><button data-action="settings">⚙ Settings</button></div></div><h2>Set the table</h2><p class="muted">Choose 2–8 players. Any seat can be Human or CPU.</p>
       ${isNextVersion ? `<label class="cast-choice">CHARACTERS<select id="character-cast"><option value="observatory" ${!trialCast&&!masterCast?'selected':''}>Observatory</option><option value="finn-june" ${trialCast?'selected':''}>Finn &amp; June</option><option value="midnight-eight" ${masterCast?'selected':''}>Midnight Social Club · 16 characters</option></select></label>` : ''}
       <div class="setup-controls"><label>PLAYERS<select id="player-count">${Array.from({length:7},(_,i)=>`<option value="${i+2}" ${settings.playerCount===i+2?'selected':''}>${i+2} players${i+2===4?' · recommended':''}</option>`).join('')}</select></label><label>CPU DIFFICULTY<select id="difficulty"><option value="easy" ${settings.difficulty==='easy'?'selected':''}>Easy</option><option value="normal" ${settings.difficulty==='normal'?'selected':''}>Normal</option></select></label></div>
-      <div class="seat-editor">${settings.seats.slice(0,settings.playerCount).map((seat,i)=>`<div class="seat-row"><div class="seat-number">${String(i+1).padStart(2,'0')}</div><div class="avatar-tiny"><img src="${avatarImage(seat.avatar)}" alt=""></div><input aria-label="Player ${i+1} name" data-seat-name="${i}" maxlength="15" value="${escapeHtml(seat.name)}"><select aria-label="Player ${i+1} type" data-seat-kind="${i}"><option value="human" ${seat.kind==='human'?'selected':''}>Human</option><option value="cpu" ${seat.kind==='cpu'?'selected':''}>CPU</option></select><select aria-label="Player ${i+1} avatar" data-seat-avatar="${i}">${avatarNames.map((name,v)=>`<option value="${v}" ${seat.avatar===v?'selected':''}>${escapeHtml(name)}</option>`).join('')}</select><select aria-label="Player ${i+1} mood" data-seat-mood="${i}">${MOODS.map(m=>`<option ${seat.mood===m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}</div>
+      <div class="seat-editor">${settings.seats.slice(0,settings.playerCount).map((seat,i)=>`<div class="seat-row"><div class="seat-number">${String(i+1).padStart(2,'0')}</div><div class="avatar-tiny"><img src="${avatarImage(seat.avatar)}" alt=""></div><input aria-label="Player ${i+1} name" data-seat-name="${i}" ${i===0&&account?.snapshot.user?'readonly':''} maxlength="15" value="${escapeHtml(seat.name)}"><select aria-label="Player ${i+1} type" data-seat-kind="${i}"><option value="human" ${seat.kind==='human'?'selected':''}>Human</option><option value="cpu" ${seat.kind==='cpu'?'selected':''}>CPU</option></select><select aria-label="Player ${i+1} avatar" data-seat-avatar="${i}">${avatarNames.map((name,v)=>`<option value="${v}" ${seat.avatar===v?'selected':''}>${escapeHtml(name)}</option>`).join('')}</select><select aria-label="Player ${i+1} mood" data-seat-mood="${i}">${MOODS.map(m=>`<option ${seat.mood===m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}</div>
       <button class="primary-button start-button" data-action="start">START LOCAL GAME <span>➜</span></button><button class="secondary-button online-entry" data-action="online-setup">PLAY ONLINE WITH FRIENDS</button><p class="setup-note">Local: pass one device · Online: share a room link, one Human per device</p>
     </section></main>`;
 }
@@ -494,7 +506,7 @@ function avatarPicker(): string {
   return `<div class="avatar-picker" role="group" aria-label="Choose a character">${avatarNames.map((name, index) => `<button class="avatar-choice ${settings.seats[0].avatar === index ? 'chosen' : ''}" data-avatar-choice="${index}" aria-label="${escapeHtml(name)}" aria-pressed="${settings.seats[0].avatar === index}"><img src="${avatarImage(index)}" alt=""><span>${escapeHtml(name)}</span></button>`).join('')}</div>`;
 }
 function onlineView(): string {
-  return `<main class="online-page"><section class="online-panel"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">PLAY TOGETHER</div><h1>Online table</h1><p>Each friend plays from their own browser. Share a room link to play together.</p><div class="online-tabs"><button class="${onlineMode === 'host' ? 'current' : ''}" data-action="host-tab">Create room</button><button class="${onlineMode === 'join' ? 'current' : ''}" data-action="join-tab">Join room</button></div><label class="online-field">YOUR NAME<input id="online-name" maxlength="15" value="${escapeHtml(settings.seats[0].name)}"></label><div class="online-avatar-heading">YOUR CHARACTER <span>${escapeHtml(avatarNames[settings.seats[0].avatar % avatarNames.length])}</span></div>${avatarPicker()}${onlineMode === 'join' ? `<label class="online-field">ROOM CODE OR INVITE LINK<input id="room-code" autocomplete="off" value="${escapeHtml(joinCode)}" placeholder="100-abc123…"></label>` : ''}<button class="primary-button start-button" data-action="${onlineMode === 'join' ? 'join-room' : 'create-room'}">${onlineMode === 'join' ? 'JOIN ROOM' : 'CREATE ROOM'} ➜</button><button class="text-button" data-action="back-setup">Back to local setup</button></section></main>`;
+  return `<main class="online-page"><section class="online-panel"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">PLAY TOGETHER</div><h1>Online table</h1><p>Each friend plays from their own browser. Share a room link to play together.</p><div class="online-tabs"><button class="${onlineMode === 'host' ? 'current' : ''}" data-action="host-tab">Create room</button><button class="${onlineMode === 'join' ? 'current' : ''}" data-action="join-tab">Join room</button></div>${account?`<button class="text-button" data-action="account">${escapeHtml(account.snapshot.user?.username??'Sign in to save your statistics')}</button>`:''}<label class="online-field">YOUR NAME<input ${account?.snapshot.user?'readonly':''} id="online-name" maxlength="15" value="${escapeHtml(settings.seats[0].name)}"></label><div class="online-avatar-heading">YOUR CHARACTER <span>${escapeHtml(avatarNames[settings.seats[0].avatar % avatarNames.length])}</span></div>${avatarPicker()}${onlineMode === 'join' ? `<label class="online-field">ROOM CODE OR INVITE LINK<input id="room-code" autocomplete="off" value="${escapeHtml(joinCode)}" placeholder="100-abc123…"></label>` : ''}<button class="primary-button start-button" data-action="${onlineMode === 'join' ? 'join-room' : 'create-room'}">${onlineMode === 'join' ? 'JOIN ROOM' : 'CREATE ROOM'} ➜</button><button class="text-button" data-action="back-setup">Back to local setup</button></section></main>`;
 }
 function lobbyView(): string {
   if (!online) return onlineView();
@@ -525,7 +537,7 @@ function gameView(): string {
   const hand = state.phase !== 'ended' && mine?.kind === 'human' ? mine.hand : [];
   const totalStyle = totalClass(presentedTotal.visible.total);
 
-  return `<main class="game-page" data-event="${state.event}" data-phase="${state.phase}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>${brandMarkup}</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>100 <span>OBSERVATORY</span></strong><small>${online?'Private online table':'Local table'} · Round ${state.round}</small></div></div>${outcomeCounters(stats,import.meta.env.BASE_URL)}<div class="header-status"><span class="round-pill">Round ${state.round}</span><span class="turn-pill">${state.phase==='ended'?'Round scores':`${actor===localSeat()?'Your':escapeHtml(active.name)+'’s'} ${state.phase==='target'?'choice':'turn'}`}</span></div><div class="header-actions"><button data-action="history" aria-label="Game history">▤</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}
+  return `<main class="game-page" data-event="${state.event}" data-phase="${state.phase}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>${brandMarkup}</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>100 <span>OBSERVATORY</span></strong><small>${online?'Private online table':'Local table'} · Round ${state.round}</small></div></div>${outcomeCounters(account?.snapshot.user?totalAccountStats(account.snapshot):stats,import.meta.env.BASE_URL)}<div class="header-status"><span class="round-pill">Round ${state.round}</span><span class="turn-pill">${state.phase==='ended'?'Round scores':`${actor===localSeat()?'Your':escapeHtml(active.name)+'’s'} ${state.phase==='target'?'choice':'turn'}`}</span></div><div class="header-actions"><button data-action="history" aria-label="Game history">▤</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}
     <div class="game-layout"><section class="arena" aria-label="Game table"><div class="table-rim"><div class="table-felt"><div class="energy-system ${totalStyle}"><div class="total-wrap ${totalStyle}"><span class="total-caption">SHARED TOTAL</span><div class="total-number" role="status" aria-live="polite" aria-label="Shared total">${totalMarkup(presentedTotal.visible.total)}</div><div class="total-event">${presentedTotal.visible.caption}</div><div class="ring-direction" aria-label="${state.direction===1?'Clockwise':'Counterclockwise'} turn order">${state.direction===1?'› · › · ›':'‹ · ‹ · ‹'}</div></div></div><div class="table-cards"><div class="pile-wrap"><div class="draw-stack"><div class="playing-card card-back" role="img" aria-label="Draw pile"><img src="${backImage}" alt="Draw pile" draggable="false"></div></div></div><div class="pile-wrap"><div class="played-slot">${top?cardElement(top,false,'last-card'):'<span class="empty-slot">PLAY HERE</span>'}</div></div></div></div></div>
       <div class="seat-layer player-ring" aria-label="Players around the table" style="--player-count:${state.players.length}">${state.players.map((player,i)=>seatHtml(player,i,state!.players.length)).join('')}</div>
       <nav class="ring-controls" aria-label="Browse players"><button data-ring-step="-1" aria-label="Previous players" ${state.players.length<=4?'hidden':''}>‹</button><div class="ring-markers">${state.players.map((player,i)=>`<button data-ring-focus="${i}" class="ring-marker ${i===actor?'current':''} ${state!.phase==='target'&&canControlActor()&&i!==actor?'eligible':''}" aria-label="Show ${escapeHtml(player.name)}${i===actor?', active player':''}" title="${escapeHtml(player.name)}">${i+1}</button>`).join('')}</div><button data-ring-step="1" aria-label="Next players" ${state.players.length<=4?'hidden':''}>›</button></nav>
@@ -541,11 +553,11 @@ function resultView(): string {
 }
 function modalView(): string {
   if (!modal) return '';
-  const body = modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. They cannot play twice in a row.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Flick the right edge left or the left edge right to flip it. Flick upward from the top edge or double-tap the top edge for a somersault. Corners tumble diagonally; slow sideways drags stay in your hand.${isNextVersion?' Hold a card and swing it back and forth twice (or three times), then release for a spinning boomerang throw. Look for the release cue. Keyboard: focus a card and press Shift + Enter.':''}</p>`
+  const body = modal==='account'&&account?accountView(account)+(online?'<p>Sign in before joining a room to record its online statistics.</p>':''):modal==='stats'&&account?.snapshot.user?accountStatistics(account):modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. They cannot play twice in a row.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5. Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Flick the right edge left or the left edge right to flip it. Flick upward from the top edge or double-tap the top edge for a somersault. Corners tumble diagonally; slow sideways drags stay in your hand.${isNextVersion?' Hold a card and swing it back and forth twice (or three times), then release for a spinning boomerang throw. Look for the release cue. Keyboard: focus a card and press Shift + Enter.':''}</p>`
   : modal==='settings' ? `<h2>Table settings</h2><div class="modal-setting"><label for="graphics">Visual quality</label><select id="graphics">${(['ultra','high','medium','mobile'] as const).map(tier=>`<option value="${tier}" ${settings.graphics===tier?'selected':''}>${tier==='mobile'?'Lite / Mobile':tier.charAt(0).toUpperCase()+tier.slice(1)}</option>`).join('')}</select><small>Ultra adds richer shadows, reflections and glow. Mobile keeps the same world with lighter effects.</small></div>${[['volume','Master volume',settings.volume],['sfxVolume','Sound effects',settings.sfxVolume],['musicVolume','Music',settings.musicVolume],['ambienceVolume','Ambience',settings.ambienceVolume]].map(([id,label,value])=>`<div class="modal-setting"><label for="${id}">${label}<output for="${id}">${Math.round(Number(value)*100)}%</output></label><input id="${id}" type="range" min="0" max="1" step=".01" value="${value}"></div>`).join('')}<label class="setting-toggle"><input id="muted" type="checkbox" ${settings.muted?'checked':''}>Mute all sounds</label><label class="setting-toggle"><input id="reducedMotion" type="checkbox" ${settings.reducedMotion?'checked':''}>Reduced motion</label><div class="modal-setting gyro-setting"><label>Phone tilt</label><button class="secondary-button" data-action="gyro-enable" ${!gyro.available || settings.reducedMotion ? 'disabled' : ''}>${gyro.status === 'on' ? 'Recenter phone tilt' : gyro.status === 'waiting' ? 'Waiting for motion…' : 'Enable phone tilt'}</button><small id="gyro-status">${settings.reducedMotion ? 'Turn off Reduced motion to use phone tilt.' : gyro.status === 'on' ? 'Move your phone gently to tilt the cards. Dragging a card takes control.' : gyro.status === 'denied' ? 'Motion access was denied. You can still drag cards to tilt them.' : gyro.available ? 'Available on supported phones.' : 'Motion sensors are unavailable in this browser.'}</small></div><div class="modal-setting"><label for="uiScale">Interface size <output for="uiScale">${Math.round(settings.uiScale*100)}%</output></label><input id="uiScale" type="range" min=".85" max="1.2" step=".05" value="${settings.uiScale}"></div><p>Settings save on this device.</p>`
   : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Freedom',stats.freedoms],['Death',stats.deaths],['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Overflows',stats.busts],['Cards played',stats.cards],['Choose Player',stats.sevens],['Reverse',stats.eights],['Zero',stats.nines],['Minus Ten',stats.tens]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Your statistics are saved on this device.</p>`
   : modal==='history' ? `<h2>Game history</h2><p>Recent moves at this table.</p><ul class="history-list">${state?.log.length ? state.log.map(gameLogLine).join('') : '<li>No cards have been played yet.</li>'}</ul>`
-  : `<h2>Game menu</h2><p>Round ${state?.round || 1} · ${state?.players.length || settings.playerCount} players</p><div class="menu-actions">${!online || (online.isHost && !(online instanceof HostedRoom)) ? '<button class="secondary-button" data-action="restart">Restart round</button>' : ''}<button class="secondary-button" data-action="${online?'leave-room':'new-game'}">${online?'Leave online room':'Return to setup'}</button><button class="secondary-button" data-action="settings">Sound & display</button><button class="secondary-button" data-action="history">Table activity</button><button class="secondary-button" data-action="stats">Local statistics</button></div>`;
+  : `<h2>Game menu</h2><p>Round ${state?.round || 1} · ${state?.players.length || settings.playerCount} players</p><div class="menu-actions">${account?`<button class="secondary-button" data-action="account">${account.snapshot.user?'My account':'Sign in / Create account'}</button>`:''}${!online || (online.isHost && !(online instanceof HostedRoom)) ? '<button class="secondary-button" data-action="restart">Restart round</button>' : ''}<button class="secondary-button" data-action="${online?'leave-room':'new-game'}">${online?'Leave online room':'Return to setup'}</button><button class="secondary-button" data-action="settings">Sound & display</button><button class="secondary-button" data-action="history">Table activity</button><button class="secondary-button" data-action="stats">Statistics</button></div>`;
   return `<div class="overlay modal-overlay" data-action="close-modal"><section class="modal-panel" role="dialog" aria-modal="true"><button class="close-button" data-action="close-modal" aria-label="Close">×</button>${body}</section></div>`;
 }
 let presentedRound='';
@@ -571,6 +583,7 @@ function syncPlayerRing(): void {
   playerRing.sync({ roundKey: active ? `${state!.round}:${state!.players.map(player=>player.name).join(':')}` : '', count: active ? state!.players.length : 0, active: state?.phase === 'target' ? state.pendingSevens.at(-1)! : state?.current ?? 0, total: presentedTotal.visible.total, overflow: active && presentedTotal.visible.total > 100, overflowSeat: state?.bust ?? undefined, reducedMotion: settings.reducedMotion, target: state?.phase === 'target' });
 }
 function render(): void {
+  const accountFields=modal==='account'&&!account?.snapshot.user?Array.from(document.querySelectorAll<HTMLInputElement>('#account-form input')).map(input=>[input.name,input.value] as const):[];
   const discard = state?.played.at(-1);
   const playKey = state&&discard?`${state.round}:${discard.id}:${state.played.length}`:'';
   const active = !!state && (!online || online.status === 'playing');
@@ -579,6 +592,7 @@ function render(): void {
     caption: !state?'':state.total>100?'OVERFLOW':state.event==='exact'?'EXACT 100 · +3':state.event==='zero'?'ZERO · TOTAL HELD':state.event==='minus'?'−10':state.phase==='target'?'CHOOSE A PLAYER':'',
   }, !!observatory?.canAnimate && !settings.reducedMotion);
   updateGameView(app, (online && online.status !== 'playing' ? lobbyView() : state ? gameView() : onlineMode ? onlineView() : setupView()) + modalView());
+  for(const [name,value] of accountFields){const input=document.querySelector<HTMLInputElement>(`#account-form input[name="${name}"]`);if(input)input.value=value;}
   syncPlayerRing();
   // Use the held score during the wave, and the immediate score in motion/HTML fallback.
   audio.setPresentedTotal(active?presentedTotal.visible.total:null);
@@ -620,6 +634,18 @@ render();
 if(masterCast&&!onlineMode&&new URLSearchParams(location.search).get('play')==='1')startGame();
 if (isHostedVersion && onlineMode === 'join' && /^100-[a-z0-9]{12}$/.test(joinCode) && localStorage.getItem(`100game:room:${joinCode}`)) connectOnline('join');
 
+app.addEventListener('submit',event=>{
+  if(!(event.target instanceof HTMLFormElement)||event.target.id!=='account-form'||!account)return;
+  event.preventDefault();const data=new FormData(event.target);const values:Record<string,string>={};data.forEach((value,key)=>{values[key]=String(value);});void account.submit(values);
+});
+app.addEventListener('click',event=>{
+  if(!account)return;const target=(event.target as HTMLElement).closest<HTMLElement>('[data-account-mode],[data-action]');if(!target)return;
+  const mode=target.dataset.accountMode;if(mode==='register'||mode==='login'||mode==='recover'){account.mode=mode;account.error='';document.querySelector('#account-form')?.remove();render();}
+  if(target.dataset.action==='account-logout')void account.logout();
+  if(target.dataset.action==='saved-recovery'){account.recoveryCode='';render();}
+  if(target.dataset.action==='copy-recovery')void navigator.clipboard.writeText(account.recoveryCode).then(()=>{target.textContent='Copied';}).catch(()=>{target.textContent='Select and copy the code above';});
+});
+if(account){void account.refresh();document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&modal!=='account')void account.refresh();});}
 app.addEventListener('click', event => {
   const target = event.target as HTMLElement;
   const ringStep = target.closest<HTMLElement>('[data-ring-step]');
@@ -642,7 +668,7 @@ app.addEventListener('click', event => {
     if (action === 'again' && state) { modal = null; if (online) online.startRound(state.round + 1); else startGame(state.round + 1); }
     if (action === 'restart' && state) { modal = null; if (online) online.startRound(state.round); else startGame(state.round); }
     if (action === 'new-game') { clearCpu(); state = null; selectedCard = null; render(); }
-    if (action === 'rules' || action === 'settings' || action === 'stats' || action === 'history') { modal = action; emotesOpen = false; render(); }
+    if (action === 'rules' || action === 'settings' || action === 'stats' || action === 'history' || action === 'account') { modal = action; emotesOpen = false; render(); if(account&&(action==='account'||action==='stats'))void account.refresh(); }
     if (action === 'menu') { modal = 'menu'; render(); }
     if (action === 'emotes') { if(emoteHeld){emoteHeld=false;}else{emotesOpen = !emotesOpen; render();} }
     if (action === 'close-modal') { modal = null; render(); }

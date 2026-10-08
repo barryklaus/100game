@@ -8,6 +8,7 @@ let assets = 0;
 let selectedRoom;
 let forwardedRequest;
 const env = {
+  ACCOUNTS:{getByName:id=>{assert.equal(id,'accounts-v1');return {fetch:async()=>new Response('account')};}},
   ASSETS: { fetch: async () => { assets++; return new Response('asset'); } },
   ROOMS: { getByName: id => { selectedRoom = id; return { fetch: async request => { forwardedRequest = request; return new Response('room'); } }; } },
 };
@@ -19,6 +20,8 @@ assert.equal(assets, 0);
 assert.equal((await pages.fetch(new Request('https://100next.pages.dev/api/rooms/invalid/create'), env)).status, 404);
 assert.equal(assets, 0, 'Invalid API URLs must not return the game HTML');
 assert.equal(await (await pages.fetch(new Request('https://100next.pages.dev/assets/card.png'), env)).text(), 'asset');
+assert.equal(await(await pages.fetch(new Request('https://100next.pages.dev/api/account/me'),env)).text(),'account');
+assert.notEqual(await(await pages.fetch(new Request('https://100next.pages.dev/api/account/internal/record'),env)).text(),'account');
 const next = JSON.parse(readFileSync('wrangler.next-rooms.jsonc', 'utf8'));
 const stable = JSON.parse(readFileSync('wrangler.jsonc', 'utf8'));
 const frontend = JSON.parse(readFileSync('hosting/next/wrangler.jsonc', 'utf8'));
