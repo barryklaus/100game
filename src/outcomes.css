@@ -1,0 +1,32 @@
+/* Named, static outcome counters replace the ornamental reward wallet. */
+.game-header .outcome-counters { gap:8px; }
+.game-header .outcome-counter {
+  display:flex;align-items:center;gap:8px;min-width:106px;min-height:44px;
+  padding:7px 11px;border:1px solid #c7a16680;border-radius:8px;
+  background:#08121fe6;color:#fff3d6;box-shadow:inset 0 1px #fff3d60a;
+  text-align:left;cursor:pointer;font-family:inherit;
+}
+.game-header .outcome-counter:hover { background:#132133;border-color:#e4c786; }
+.game-header .outcome-counter:focus-visible { outline:2px solid #fff0b8;outline-offset:3px; }
+.game-header .outcome-counter img { display:block;flex:none;width:28px;height:28px; }
+.outcome-copy { display:flex;flex-direction:column;gap:2px;min-width:0; }
+.outcome-label { font:600 10px/1.1 system-ui,sans-serif;letter-spacing:.025em;color:#d9c7a3; }
+.outcome-value { font:800 18px/1.1 system-ui,sans-serif;font-variant-numeric:tabular-nums; }
+.outcome-death .outcome-label { color:#e7d4c5; }
+@media(max-width:600px) {
+  .game-header .outcome-counters { gap:4px; }
+  .game-header .outcome-counter { min-width:72px;min-height:36px;padding:4px 6px;gap:4px;border-radius:6px; }
+  .game-header .outcome-counter img { width:20px;height:20px; }
+  .outcome-label { font-size:8px;letter-spacing:0; }
+  .outcome-value { font-size:15px; }
+}
+@media(max-width:360px) and (orientation:portrait) {
+  .game-header .outcome-counter { min-width:68px;padding-inline:5px; }
+  .game-header .outcome-counter img { width:18px;height:18px; }
+}
+@media(orientation:landscape) and (max-height:520px) {
+  .game-header .outcome-counter { min-width:82px;min-height:34px;padding:4px 7px;gap:5px; }
+  .game-header .outcome-counter img { width:21px;height:21px; }
+  .outcome-label { font-size:8px; }
+  .outcome-value { font-size:15px; }
+}

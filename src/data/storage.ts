@@ -2,7 +2,7 @@ import { MOODS } from './config';
 import type { PlayerConfig } from '../game/types';
 import { defaultQuality, normalizeQuality, type QualityPreset } from '../render/quality';
 
-export interface Stats { rounds: number; exacts: number; survives: number; busts: number; cards: number; sevens: number; eights: number; nines: number; tens: number; rating: number; currency: number }
+export interface Stats { freedoms: number; deaths: number; rounds: number; exacts: number; survives: number; busts: number; cards: number; sevens: number; eights: number; nines: number; tens: number; rating: number; currency: number }
 export interface Settings {
   volume: number;
   sfxVolume: number;
@@ -18,7 +18,7 @@ export interface Settings {
 }
 const defaultNames = ['You', 'Mira', 'Kai', 'Luma', 'Sol', 'Ren', 'Ari', 'Nova'];
 export const defaultSeats: PlayerConfig[] = defaultNames.map((name, i) => ({ name, kind: i ? 'cpu' : 'human', mood: MOODS[i % MOODS.length], avatar: i }));
-const statsDefaults: Stats = { rounds: 0, exacts: 0, survives: 0, busts: 0, cards: 0, sevens: 0, eights: 0, nines: 0, tens: 0, rating: 0, currency: 0 };
+const statsDefaults: Stats = { freedoms: 0, deaths: 0, rounds: 0, exacts: 0, survives: 0, busts: 0, cards: 0, sevens: 0, eights: 0, nines: 0, tens: 0, rating: 0, currency: 0 };
 function record(value: unknown): Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {};
 }

@@ -2,7 +2,17 @@ import assert from 'node:assert/strict';
 import {build} from 'esbuild';
 import {Group, Matrix4, Vector3, Quaternion} from 'three';
 const load=async path=>{const result=await build({entryPoints:[path],bundle:true,platform:'node',format:'esm',write:false});return import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);};
-const {normalizeSettings}=await load('src/data/storage.ts');
+const {normalizeSettings,loadStats,saveStats}=await load('src/data/storage.ts');
+// Existing installs retain their history; wallet totals are not match outcomes.
+const saved=new Map([['100.stats.v1',JSON.stringify({rounds:20,rating:-4,currency:99,exacts:7})]]);
+globalThis.localStorage={getItem:key=>saved.get(key)??null,setItem:(key,value)=>saved.set(key,value)};
+const existingStats=loadStats();
+assert.equal(existingStats.freedoms,0);assert.equal(existingStats.deaths,0);
+assert.equal(existingStats.rounds,20);assert.equal(existingStats.exacts,7);assert.equal(existingStats.rating,-4);
+saveStats({...existingStats,freedoms:3,deaths:2});
+assert.equal(loadStats().freedoms,3);assert.equal(loadStats().deaths,2);
+assert.equal(loadStats().rounds,20,'Outcome counters must preserve existing round history');
+delete globalThis.localStorage;
 assert.equal(normalizeSettings({}).graphics,'high','High fidelity is the default');
 globalThis.matchMedia=()=>({matches:true});
 assert.equal(normalizeSettings({}).graphics,'high','Touch devices also start in High fidelity');
