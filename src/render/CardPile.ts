@@ -79,47 +79,56 @@ export class CardPile {
 
   setCards(fronts: string[], backUrl: string): Promise<void> {
     if (backUrl === this.backUrl && fronts.length === this.count && fronts.every((url, i) => url === this.requested[i])) return this.pending;
-    this.pending = this.buildCards(fronts, backUrl);
-    return this.pending;
+    const pending=this.buildCards(fronts,backUrl);this.pending=pending;
+    void pending.catch(()=>{if(this.pending===pending)this.backUrl='';});
+    return pending;
   }
 
   private async buildCards(fronts: string[], backUrl: string): Promise<void> {
     this.requested = [...fronts]; this.backUrl = backUrl;
     const revision = ++this.revision;
     const firstVisible = Math.max(0, fronts.length - (this.draw ? DRAW_VISIBLE_CARDS : this.visibleDiscards));
-    if (!this.draw && firstVisible) {
+    const keys = fronts.slice(firstVisible).map((url, offset) => `${firstVisible + offset}:${url}`);
+    // Keep the complete painted stack while textures are loading. This also
+    // preserves the top card during a deck reshuffle or a quality change.
+    const staged = new Map<string, THREE.Group>();
+    if(fronts.length){
+      const back=await this.load(backUrl);
+      if(this.disposed||revision!==this.revision)return;
+      const results=await Promise.allSettled(fronts.slice(firstVisible).map(async(url,offset)=>{
+        const key=keys[offset];if(this.cards.has(key))return;
+        const front=await this.load(url);
+        if(this.disposed||revision!==this.revision)return;
+        const card=createCardMesh(front,back),pose=this.localPose(firstVisible+offset);
+        card.position.copy(pose.position);card.quaternion.copy(pose.quaternion);
+        staged.set(key,card);
+      }));
+      const failed=results.find(result=>result.status==='rejected');
+      if(this.disposed||revision!==this.revision||failed){
+        for(const card of staged.values())disposeCardMesh(card);
+        if(failed&&failed.status==='rejected')throw failed.reason;
+        return;
+      }
+    }
+    // Commit in one synchronous step, after every required face is ready.
+    for(const [key,card] of staged){this.cards.set(key,card);this.group.add(card);}
+    for(const [key,card] of this.cards){
+      if(keys.includes(key))continue;
+      this.group.remove(card);disposeCardMesh(card);this.cards.delete(key);
+    }
+    if(!this.draw&&firstVisible){
       for(let i=0;i<firstVisible;i++){
         const pose=this.localPose(i);
         this.buried.setMatrixAt(i,new THREE.Matrix4().compose(pose.position,pose.quaternion,new THREE.Vector3(1,1,1)));
       }
       this.buried.count=firstVisible;this.buried.instanceMatrix.needsUpdate=true;this.buried.computeBoundingSphere();
       if(!this.buried.parent)this.group.add(this.buried);
-    } else this.group.remove(this.buried);
-    const keys = fronts.slice(firstVisible).map((url, offset) => `${firstVisible + offset}:${url}`);
-    this.sideTexture.repeat.y = firstVisible;
-    this.sideTexture.needsUpdate = true;
-    if (firstVisible && this.draw) {
-      this.body.scale.y = firstVisible * CARD_PITCH;
-      this.body.position.y = CARD_TABLE_HEIGHT;
-      if (this.body.parent !== this.group) this.group.add(this.body);
-    } else this.group.remove(this.body);
-    for (const [key, card] of this.cards) {
-      if (keys.includes(key)) continue;
-      this.group.remove(card); disposeCardMesh(card); this.cards.delete(key);
-    }
-    if (!fronts.length) return;
-    const back = await this.load(backUrl);
-    await Promise.all(fronts.slice(firstVisible).map(async (url, offset) => {
-      const index = firstVisible + offset;
-      const key = keys[offset];
-      if (this.cards.has(key)) return;
-      const front = await this.load(url);
-      if (this.disposed || revision !== this.revision) return;
-      const card = createCardMesh(front, back);
-      const pose = this.localPose(index);
-      card.position.copy(pose.position); card.quaternion.copy(pose.quaternion);
-      this.cards.set(key, card); this.group.add(card);
-    }));
+    }else this.group.remove(this.buried);
+    this.sideTexture.repeat.y=firstVisible;this.sideTexture.needsUpdate=true;
+    if(firstVisible&&this.draw){
+      this.body.scale.y=firstVisible*CARD_PITCH;this.body.position.y=CARD_TABLE_HEIGHT;
+      if(this.body.parent!==this.group)this.group.add(this.body);
+    }else this.group.remove(this.body);
   }
 
   private localPose(index: number): {position: THREE.Vector3; quaternion: THREE.Quaternion} {

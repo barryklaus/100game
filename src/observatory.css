@@ -219,3 +219,5 @@
 @media(prefers-reduced-motion:reduce){.total-value,.total-shard{animation:none!important;}.total-shard{display:none!important;}}
 
 .observatory-mode .energy-system .total-number{animation:none!important;}
+
+.alpha-build{position:fixed;left:10px;bottom:calc(3px + env(safe-area-inset-bottom));z-index:140;pointer-events:none;font:9px/1.4 system-ui,sans-serif;letter-spacing:.06em;color:#d6ccb9;opacity:.65;text-shadow:0 1px 2px #000;}

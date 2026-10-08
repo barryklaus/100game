@@ -423,14 +423,14 @@ function resolveCard(cardId: string): void {
   if (actor !== localSeat() && (state as GameState).phase !== 'ended' && state.players[actor].hand.length === CONFIG.HAND_SIZE) animateOpponentDraw(actor);
   scheduleCpu();
 }
-async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin): Promise<void> {
+async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin, releaseVelocity?:{x:number;y:number}): Promise<void> {
   if(openingDeal)return;
   if (!state || locked || awaitingNetwork || state.phase !== 'playing' || (online && state.turn !== online.state?.turn)) return;
   locked = true; clearCpu();
   const playState = state, playTurn = state.turn;
   const card = state.players[state.current].hand.find(item => item.id === cardId);
   const throwingSeat = state.current;
-  const immediateBoomerang=!!source&&spin?.kind==='boomerang';
+  const immediateRelease=!!source;
   if (!card) { locked = false; return; }
   if(settings.reducedMotion){audio.play('slap');locked=false;resolveCard(cardId);return;}
   const origin = source || document.querySelector<HTMLElement>(`.seat[data-seat="${state.current}"]`) || document.querySelector<HTMLElement>('.draw-stack')!;
@@ -443,10 +443,10 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
         source?.classList.remove('dragging');
         playerRing.release(throwingSeat);
       }, async () => {
-        const hand = immediateBoomerang?undefined:await playerRing.prepareThrow(throwingSeat);
+        const hand = immediateRelease?undefined:await playerRing.prepareThrow(throwingSeat);
         if (state !== playState || state.turn !== playTurn) throw new Error('The turn changed before the card left.');
         return source ? undefined : hand;
-      });
+      },releaseVelocity);
       if (state !== playState || state.turn !== playTurn) { playerRing.cancelThrow(throwingSeat); locked = false; return; }
       audio.play('slap');
       locked = false;
@@ -461,7 +461,7 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   }
   let flying: HTMLElement;
   try {
-    const hand = immediateBoomerang?undefined:await playerRing.prepareThrow(throwingSeat);
+    const hand = immediateRelease?undefined:await playerRing.prepareThrow(throwingSeat);
     if (state !== playState || state.turn !== playTurn) throw new Error('The turn changed before the card left.');
     if (!source && hand) start = hand;
   } catch { source?.classList.remove('dragging');playerRing.cancelThrow(throwingSeat); locked = false; return; }
@@ -490,17 +490,21 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   const rotation=(t:number)=>spin?`rotate3d(${-spin.x},${spin.y},${-spin.z},${spin.turns*360*t}deg)`:`rotate(${Math.sin(t*Math.PI)*8}deg)`;
   const boomerang=spin?.kind==='boomerang';
   const duration=boomerang?(spin!.turns===3?1080:920):spin?(spin.turns===2?720:560):410;
-  const velocity=boomerang?boomerangVelocity(spin!):{x:0,y:0};
+  const momentum=boomerang||!!releaseVelocity;
+  const velocity=momentum?boomerangVelocity({velocity:releaseVelocity??spin?.velocity,z:spin?.z??1} as CardSpin):{x:0,y:0};
   const frames=Array.from({length:49},(_,i)=>{
     const t=i/48;
-    const timing=boomerang?boomerangTiming(t):{arrival:t,momentum:0,lift:Math.sin(t*Math.PI),spin:t};
+    const timing=momentum?boomerangTiming(t):{arrival:t,momentum:0,lift:Math.sin(t*Math.PI),spin:t};
     const loop=boomerang?boomerangOffset(t,-spin!.z):{x:0,y:0};
     return {transform:`perspective(900px) translate(${dx*timing.arrival+velocity.x*duration*timing.momentum+loop.x*Math.min(150,innerWidth*.18)}px,${dy*timing.arrival+velocity.y*duration*timing.momentum-timing.lift*35-loop.y*75}px) scale(${1+(landingScale-1)*timing.arrival+timing.lift*.1}) ${rotation(timing.spin)}`,offset:t};
   });
-  await flying.animate(frames, { duration, easing:boomerang?'linear':'cubic-bezier(.2,.8,.2,1)', fill:'forwards' }).finished.catch(() => undefined);
-  audio.play('slap'); flying.remove();
-  if (state !== playState || state.turn !== playTurn) { playerRing.cancelThrow(throwingSeat); locked = false; return; }
+  await flying.animate(frames, { duration, easing:momentum?'linear':'cubic-bezier(.2,.8,.2,1)', fill:'forwards' }).finished.catch(() => undefined);
+  audio.play('slap');
+  if (state !== playState || state.turn !== playTurn) { flying.remove();playerRing.cancelThrow(throwingSeat); locked = false; return; }
   locked = false; resolveCard(cardId);
+  if(online&&awaitingNetwork){
+    const detach=()=>{if(!awaitingNetwork||state!==playState){flying.remove();return;}requestAnimationFrame(detach);};requestAnimationFrame(detach);
+  }else requestAnimationFrame(()=>flying.remove());
 }
 function chooseTarget(target: number): void {
   if (!state || state.phase !== 'target' || locked || awaitingNetwork || (online && state.turn !== online.state?.turn)) return;
@@ -581,7 +585,7 @@ function gameView(): string {
   const hand = state.phase !== 'ended' && mine?.kind === 'human' ? mine.hand : [];
   const totalStyle = totalClass(presentedTotal.visible.total);
 
-  return `<main class="game-page" data-event="${state.event}" data-phase="${state.phase}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>${brandMarkup}</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>100 <span>OBSERVATORY</span></strong><small>${outcomeDemo?(freedomDemo?'Freedom':'Death')+' demo · No statistics saved':`${online?'Private online table':'Local table'} · Round ${state.round}`}</small></div></div>${outcomeDemo?'':outcomeCounters(account?.snapshot.user?totalAccountStats(account.snapshot):stats,import.meta.env.BASE_URL)}<div class="header-status"><span class="round-pill">Round ${state.round}</span><span class="turn-pill">${state.phase==='ended'?'Round scores':`${actor===localSeat()?'Your':escapeHtml(active.name)+'’s'} ${state.phase==='target'?'choice':'turn'}`}</span></div><div class="header-actions"><button data-action="history" aria-label="Game history">▤</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}
+  return `<main class="game-page" data-event="${state.event}" data-phase="${state.phase}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>${brandMarkup}</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>100 <span>OBSERVATORY</span></strong><small>${outcomeDemo?(freedomDemo?'Freedom':'Death')+' demo · No statistics saved':`${online?'Private online table':'Local table'} · Round ${state.round}`}</small></div></div>${outcomeDemo?'':outcomeCounters(account?.snapshot.user?totalAccountStats(account.snapshot):stats,import.meta.env.BASE_URL)}<div class="header-status"><span class="round-pill">Round ${state.round}</span><span class="turn-pill">${state.phase==='ended'?'Round scores':`${actor===localSeat()?'Your':escapeHtml(active.name)+'’s'} ${state.phase==='target'?'choice':'turn'}`}</span></div><div class="header-actions"><button data-action="history" aria-label="Game history">▤</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}${isNextVersion?`<small class="alpha-build">ALPHA 0.1.0 · ${escapeHtml(import.meta.env.VITE_BUILD_ID)}</small>`:''}
     ${outcomeDemo && state.phase==='playing'?`<div class="death-demo-note" role="region" aria-label="${freedomDemo?'Freedom':'Last card'} demo"><span><strong>${escapeHtml(mine.name)}: ${freedomDemo?28:-12} points</strong> · Total 99<small>${freedomDemo?'Play Zero. The next Overflow earns +2 → Freedom at 30.':'Play one last card. Overflow −5 → Death at −17.'}</small></span><button class="primary-button" data-action="demo-play" ${state.current!==0||locked?'disabled':''}>${state.current!==0?'Watching the final turn…':freedomDemo?'Play Zero →':'Play final card →'}</button></div>`:''}
     <div class="game-layout"><section class="arena" aria-label="Game table"><div class="table-rim"><div class="table-felt"><div class="energy-system ${totalStyle}"><div class="total-wrap ${totalStyle}"><span class="total-caption">SHARED TOTAL</span><div class="total-number" role="status" aria-live="polite" aria-label="Shared total">${totalMarkup(presentedTotal.visible.total)}</div><div class="total-event">${presentedTotal.visible.caption}</div><div class="ring-direction" aria-label="${state.direction===1?'Clockwise':'Counterclockwise'} turn order">${state.direction===1?'› · › · ›':'‹ · ‹ · ‹'}</div></div></div><div class="table-cards"><div class="pile-wrap"><div class="draw-stack"><div class="playing-card card-back" role="img" aria-label="Draw pile"><img src="${backImage}" alt="Draw pile" draggable="false"></div></div></div><div class="pile-wrap"><div class="played-slot">${top?cardElement(top,false,'last-card'):'<span class="empty-slot">PLAY HERE</span>'}</div></div></div></div></div>
       <div class="seat-layer player-ring" aria-label="Players around the table" style="--player-count:${state.players.length}">${state.players.map((player,i)=>seatHtml(player,i,state!.players.length)).join('')}</div>
@@ -883,7 +887,7 @@ function endDrag(event:PointerEvent):void{
     lastCardTap=null;
     audio.play('card-flick');
     const spin=boomerang??cardFlickSpin(current.grip,dx,dy,Math.hypot(vx,vy));
-    void animatePlay(current.id,current.element,spin);
+    void animatePlay(current.id,current.element,spin,{x:vx,y:vy});
   }
   else{
     observatory?.cancelWarmCardThrow();

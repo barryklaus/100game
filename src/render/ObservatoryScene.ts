@@ -398,6 +398,7 @@ export class ObservatoryScene {
     endMatrix?: THREE.Matrix4;
     draw: boolean;
     spin?: CardSpin;
+    releaseVelocity?:{x:number;y:number};
     onStart?: () => void;
     onArrive?: () => void;
   }): Promise<void> {
@@ -419,16 +420,20 @@ export class ObservatoryScene {
     const flex=visual.userData.flightFlex as ReturnType<typeof flyingCardFlex>;
     onStart?.();
     this.hand.update(0);
+    this.foreground.render();
     const started = performance.now();
     const boomerang=!draw&&spin?.kind==='boomerang'&&!this.reducedMotion;
     const duration = this.reducedMotion ? 80 : draw ? 520 : boomerang ? (spin!.turns===3?1080:920) : spin ? (spin.turns===2?720:560) : 440;
     const right=new THREE.Vector3(1,0,0).applyQuaternion(this.camera.quaternion);
     const up=new THREE.Vector3(0,1,0).applyQuaternion(this.camera.quaternion);
     // Keep the loop inside the camera view, including narrow portrait screens.
-    const viewHeight=2*start.distanceTo(this.camera.position)*Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2));
+    const forward=new THREE.Vector3(0,0,-1).applyQuaternion(this.camera.quaternion);
+    const depth=Math.max(.1,start.clone().sub(this.camera.position).dot(forward));
+    const viewHeight=2*depth*Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2));
     const loopWidth=Math.min(1.25,viewHeight*this.camera.aspect*.20);
     const loopHeight=Math.min(.95,viewHeight*.15);
-    const velocity=boomerang?boomerangVelocity(spin!):{x:0,y:0};
+    const momentum=boomerang||!!options.releaseVelocity;
+    const velocity=momentum?boomerangVelocity({velocity:options.releaseVelocity??spin?.velocity,z:spin?.z??1} as CardSpin):{x:0,y:0};
     const impulse=right.clone().multiplyScalar(velocity.x*duration*viewHeight/innerHeight)
       .addScaledVector(up,-velocity.y*duration*viewHeight/innerHeight);
     const spinAxis=spin?new THREE.Vector3(spin.x,spin.y,spin.z):undefined;
@@ -437,7 +442,7 @@ export class ObservatoryScene {
       this.activeFlights++;
       const step = (now: number): void => {
         const raw = Math.min(1, (now - started) / duration);
-        const flightT = draw||boomerang ? raw : Math.min(1,raw/.86);
+        const flightT = raw;
         const t = flightT*flightT*(3-2*flightT);
         const inverse = 1 - t;
         root.position.set(
@@ -445,22 +450,21 @@ export class ObservatoryScene {
           inverse * inverse * start.y + 2 * inverse * t * control.y + t * t * end.y,
           inverse * inverse * start.z + 2 * inverse * t * control.z + t * t * end.z,
         );
-        if(boomerang){
+        if(momentum){
           const timing=boomerangTiming(raw);
           root.position.copy(start).lerp(end,timing.arrival).addScaledVector(impulse,timing.momentum);
           root.position.y+=timing.lift*.325;
           root.position.z-=timing.lift*.15;
-          const offset=boomerangOffset(raw,spin!.z);
+          const offset=boomerang?boomerangOffset(raw,spin!.z):{x:0,y:0};
           root.position.addScaledVector(right,offset.x*loopWidth).addScaledVector(up,offset.y*loopHeight);
         }
-        if(!draw && !boomerang && raw>.86)root.position.y+=Math.sin((raw-.86)/.14*Math.PI)*.075;
         root.quaternion.slerpQuaternions(startQuaternion, endQuaternion, t);
         root.scale.setScalar(THREE.MathUtils.lerp(startScale, endScale, t));
         fit.apply(root,t);
         flex(this.reducedMotion?0:Math.sin(raw*Math.PI)*(draw?.09:.2));
         visual.rotation.set(0,draw ? Math.PI * (1 - t) : Math.sin(raw * Math.PI) * .24,Math.sin(raw * Math.PI) * (draw ? -.16 : .24));
         if(spin && spinAxis && !this.reducedMotion){
-          spinRotation.setFromAxisAngle(spinAxis,spin.turns*Math.PI*2*(boomerang?boomerangTiming(raw).spin:t));
+          spinRotation.setFromAxisAngle(spinAxis,spin.turns*Math.PI*2*(momentum?boomerangTiming(raw).spin:t));
           visual.quaternion.premultiply(spinRotation);
         }
         if (raw < 1) requestAnimationFrame(step);
@@ -471,17 +475,27 @@ export class ObservatoryScene {
           const release=()=>{
             if (released) return;
             released = true;
-            root.visible = false;
-            this.disposeFlyingCard(root);
-            this.foreground.render();
-            this.pruneTextureCache();
+            // Paint the authoritative pile before erasing its foreground cover.
+            // Texture readiness alone does not mean the new mesh has reached
+            // the screen, particularly between frames on mobile compositors.
+            try {
+              if(!draw&&this.active&&!this.contextLost){
+                if(QUALITY_PRESETS[this.quality].bloom)this.renderWithCleanCards();
+                else this.renderer.render(this.scene,this.camera);
+              }
+            } finally {
+              root.visible = false;
+              this.disposeFlyingCard(root);
+              this.foreground.render();
+              this.pruneTextureCache();
+            }
           };
           try {
             onArrive?.();
             this.hand.update(0);
             if (!draw) {
-              // A landed card joins the pile's depth layer until its replacement is ready.
-              this.scene.add(root);
+              // Keep the landing in its current layer until the real pile is
+              // painted. Reparenting between canvases here creates a blank frame.
               this.handoff.retain(this.lastEventKey,release);
             }
             resolve();
@@ -497,7 +511,7 @@ export class ObservatoryScene {
     });
   }
 
-  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin?:CardSpin, cardId?:string, onStart?:()=>void, onReady?:()=>Promise<DOMRect|undefined>): Promise<void> {
+  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin?:CardSpin, cardId?:string, onStart?:()=>void, onReady?:()=>Promise<DOMRect|undefined>,releaseVelocity?:{x:number;y:number}): Promise<void> {
     const { root, visual } = await (cardId?this.preparedThrow.take(frontUrl):this.makeFlyingCard(frontUrl));
     let handRect: DOMRect | undefined;
     try { handRect = await onReady?.(); }
@@ -510,7 +524,7 @@ export class ObservatoryScene {
     // Keep dragging until this snapshot; clearing it earlier resets tilt/depth.
     this.hand.update(0);
     let pose=cardId?this.hand.cardPose(cardId):undefined;
-    if(!pose&&cardId&&spin?.kind==='boomerang'){
+    if(!pose&&cardId){
       // Portrait uses a lossless DOM hand. Carry its actual fan/drag rotation
       // into the 3D flight rather than flattening it at the release boundary.
       const element=Array.from(document.querySelectorAll<HTMLElement>('.local-hand .hand-card')).find(card=>card.dataset.card===cardId);
@@ -530,7 +544,7 @@ export class ObservatoryScene {
     const end = landing.position;
     const startQuaternion = pose?.quaternion??this.camera.quaternion.clone();
     const endQuaternion = landing.quaternion;
-    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: pose?.scale??this.screenScale(sourceRect, distance), endScale: 1, endMatrix:landing.matrix, draw: false, spin, onStart });
+    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: pose?.scale??this.screenScale(sourceRect, distance), endScale: 1, endMatrix:landing.matrix, draw: false, spin, onStart,releaseVelocity });
   }
 
   async drawCardToHand(frontUrl: string, targetRect: DOMRect, cardId?:string, onArrive?:()=>void): Promise<void> {
