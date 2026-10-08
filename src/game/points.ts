@@ -5,6 +5,13 @@ import type { GameState, PlayerConfig } from './types';
 export function accountPoints(stats: Partial<AccountStats>): number {
   return (stats.survives ?? 0) + (stats.exacts ?? 0) + (stats.setups ?? 0) - 5 * (stats.busts ?? 0);
 }
+/** Older account snapshots fall back to their existing cumulative score. */
+export function overallAccountPoints(snapshot: {user:{lifetimePoints?:number}|null; online:Partial<AccountStats>; practice:Partial<AccountStats>}):number {
+  return snapshot.user?.lifetimePoints ?? accountPoints(snapshot.online)+accountPoints(snapshot.practice);
+}
+export function resetsPoints(state:GameState,seat:number):boolean {
+  return !!(state.match?.newlyDead?.includes(seat)||state.match?.newlyFreed?.includes(seat));
+}
 export function gamePoints(state: GameState, seat: number): number {
   return (state.match?.scores[seat] ?? 0) + (state.phase === 'ended' && state.match ? 0 : state.players[seat].ratingDelta);
 }
@@ -39,10 +46,11 @@ export class LocalPoints {
       const key = localPointsKey(player, cast);
       deltas.set(key, (deltas.get(key) ?? 0) + player.ratingDelta);
     }
-    for (const [key, delta] of deltas) this.set(key, this.get(key) + delta);
+    const resetKeys=new Set(state.players.filter(player=>player.id!==accountSeat&&resetsPoints(state,player.id)).map(player=>localPointsKey(player,cast)));
+    for (const [key, delta] of deltas) this.set(key, resetKeys.has(key)?0:this.get(key) + delta);
     for (const player of state.players) {
       player.lifetimePoints = player.id === accountSeat
-        ? (player.lifetimePoints ?? 0) + player.ratingDelta
+        ? resetsPoints(state,player.id)?0:(player.lifetimePoints ?? 0) + player.ratingDelta
         : this.get(localPointsKey(player, cast));
     }
   }

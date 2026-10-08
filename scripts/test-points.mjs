@@ -1,9 +1,13 @@
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
-const bundle=await build({entryPoints:['src/game/points.ts'],bundle:true,platform:'node',format:'esm',write:false});
-const {accountPoints,gamePoints,localPointsKey,LocalPoints}=await import(`data:text/javascript;base64,${Buffer.from(bundle.outputFiles[0].text).toString('base64')}`);
+const bundle=await build({entryPoints:['src/game/points.ts','src/account/AccountClient.ts'],bundle:true,platform:'node',format:'esm',write:false,outdir:'/tmp/points-check'});
+const modules=await Promise.all(bundle.outputFiles.map(file=>import(`data:text/javascript;base64,${Buffer.from(file.text).toString('base64')}`)));
+const {accountPoints,overallAccountPoints,gamePoints,localPointsKey,LocalPoints}=modules.find(module=>module.LocalPoints);
+const {AccountClient}=modules.find(module=>module.AccountClient);
 assert.equal(accountPoints({survives:20,exacts:3,setups:4,busts:2}),17);
 assert.equal(accountPoints({}),0);
+assert.equal(overallAccountPoints({user:{lifetimePoints:0},online:{survives:80},practice:{busts:2}}),0,'Reset balance is distinct from all-time statistics');
+assert.equal(overallAccountPoints({user:{},online:{survives:20},practice:{busts:1}}),15,'Older snapshots retain their original balance');
 const players=[{id:0,name:' Guest ',avatar:0,kind:'human',ratingDelta:1,lifetimePoints:10},{id:1,name:'Finn',avatar:1,kind:'cpu',ratingDelta:-5}];
 const state={players,phase:'playing',match:{scores:[3,0]}};
 assert.equal(gamePoints(state,0),4,'Show an exact-100 award before the round settles');
@@ -21,6 +25,27 @@ const signedState={...state,players:players.map(player=>({...player})),phase:'en
 history.settle(signedState,'midnight',0);
 assert.equal(history.get(humanKey),11,'Signed-in points must not be added to a guest history');
 assert.equal(signedState.players[0].lifetimePoints,12);
+const ending={...state,players:players.map(player=>({...player})),match:{scores:[30,-17],newlyDead:[1],newlyFreed:[0]}};
+history.settle(ending,'midnight');history.settle(ending,'midnight');
+assert.deepEqual(ending.players.map(player=>player.lifetimePoints),[0,0]);
+assert.equal(new LocalPoints(storage).get(humanKey),0,'Freedom reset survives reopening');
+assert.equal(new LocalPoints(storage).get(cpuKey),0,'Death reset survives reopening');
 const blocked=new LocalPoints({getItem(){throw Error('Unavailable');},setItem(){throw Error('Unavailable');}});
 blocked.set(humanKey,9);assert.equal(blocked.get(humanKey),9);
+const originalFetch=globalThis.fetch,originalStorage=globalThis.localStorage;
+try{
+ globalThis.localStorage=storage;globalThis.fetch=async()=>{throw Error('Offline');};
+ const client=new AccountClient(()=>{});client.snapshot.user={id:'sample',username:'Sample',lifetimePoints:29};
+ const delta={rounds:1,survives:1,freedoms:1};
+ await client.practice('sample','pending-freedom',delta);await client.practice('sample','pending-freedom',delta);
+ assert.equal(client.overallPoints,0,'A pending account Freedom reset is visible while offline');
+ await client.practice('sample','pending-next-life',{rounds:1,survives:1});assert.equal(client.overallPoints,1,'A new game starts earning from the reset balance');
+ let received=[];globalThis.fetch=async(_url,options)=>{
+  const body=options.body?JSON.parse(options.body):null;
+  if(body)received.push(body.eventId);
+  return Response.json({...client.snapshot,user:{id:'sample',username:'Sample',lifetimePoints:body?.eventId==='pending-freedom'?0:1}});
+ };
+ await client.refresh();assert.deepEqual(received,['pending-freedom','pending-next-life']);assert.equal(client.overallPoints,1,'Syncing must not apply queued points twice');
+ assert.equal(JSON.parse(storage.getItem('100next.account.practice.v1')).length,0);
+}finally{globalThis.fetch=originalFetch;if(originalStorage===undefined)delete globalThis.localStorage;else globalThis.localStorage=originalStorage;}
 console.log('Points checks passed: lifetime awards, current-game reset, settled-score display, persistent guest/CPU histories, duplicate protection and account isolation.');

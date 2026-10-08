@@ -11,6 +11,6 @@ export function recordPlayed(record:RoundAccounts,before:GameState,after:GameSta
   record.previous=actor;
 }
 export function roundDelta(record:RoundAccounts,state:GameState,seat:number):AccountStats {
-  const alreadyDead=state.match?.dead.includes(seat)&&!state.match.newlyDead.includes(seat);
-  return {...emptyAccountStats(),...record.actions[seat],rounds:alreadyDead?0:1,exacts:state.players[seat].exacts,survives:alreadyDead||state.bust===seat?0:1,busts:state.bust===seat?1:0,setups:record.setup===seat?1:0,deaths:state.match?.newlyDead.includes(seat)?1:0};
+  const alreadyOut=(state.match?.dead.includes(seat)&&!state.match.newlyDead.includes(seat))||(state.match?.freed?.includes(seat)&&!state.match.newlyFreed?.includes(seat));
+  return {...emptyAccountStats(),...record.actions[seat],rounds:alreadyOut?0:1,exacts:state.players[seat].exacts,survives:alreadyOut||state.bust===seat?0:1,busts:state.bust===seat?1:0,setups:record.setup===seat?1:0,deaths:state.match?.newlyDead.includes(seat)?1:0,freedoms:state.match?.newlyFreed?.includes(seat)?1:0};
 }

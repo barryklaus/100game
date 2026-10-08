@@ -13,7 +13,7 @@ export function cleanStatDelta(input: unknown, practice: boolean): AccountStats 
     const value = data[key];
     if (typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= 10000) result[key]=value;
   }
-  // Practice cannot grant verified online outcomes; a local death is recorded in the separately labeled practice bucket.
-  if (practice) { result.freedoms=0; result.deaths=data.deaths===1?1:0; }
+  // Local outcomes stay in the separate, player-reported practice bucket.
+  if (practice) { result.freedoms=data.freedoms===1?1:0; result.deaths=data.deaths===1?1:0; }
   return result;
 }

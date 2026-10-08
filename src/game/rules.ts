@@ -1,4 +1,5 @@
 import { CONFIG } from '../data/config';
+import { isOut, FREEDOM_POINTS, DEATH_POINTS } from './conditions';
 import { cardDisplayRank, makeDeck, shuffle } from './deckCore';
 import type { Card, GameState, PlayerConfig } from './types';
 
@@ -13,7 +14,7 @@ export function cardValue(card: Card): number {
 export function nextSeat(state: GameState, from: number): number {
   for(let step=1;step<=state.players.length;step++) {
     const next=(from + step*state.direction + state.players.length*step)%state.players.length;
-    if(!state.match?.dead.includes(next))return next;
+    if(!isOut(state,next))return next;
   }
   return from;
 }
@@ -26,10 +27,10 @@ function addLog(state: GameState, message: string): void {
 export function createGame(configs: PlayerConfig[], round = 1, random = Math.random, nextMatch?: GameState['match']|true): GameState {
   if (configs.length < CONFIG.PLAYER_MIN || configs.length > CONFIG.PLAYER_MAX) throw new Error('Invalid player count');
   const drawPile = shuffle(makeDeck(), random);
-  const match=nextMatch===true?{scores:configs.map(()=>0),dead:[],newlyDead:[],previous:null,setup:null,complete:false}:nextMatch?{...nextMatch,scores:[...nextMatch.scores],dead:[...nextMatch.dead],newlyDead:[],previous:null,setup:null}:undefined;
+  const match=nextMatch===true?{scores:configs.map(()=>0),dead:[],newlyDead:[],freed:[],newlyFreed:[],previous:null,setup:null,complete:false}:nextMatch?{...nextMatch,scores:[...nextMatch.scores],dead:[...nextMatch.dead],freed:[...nextMatch.freed??[]],newlyDead:[],newlyFreed:[],previous:null,setup:null}:undefined;
   if(match?.complete)throw new Error('Start a new match after the table is cleared.');
-  const players = configs.map((config, id) => ({ ...config, id, hand: match?.dead.includes(id)?[]:drawPile.splice(0, CONFIG.HAND_SIZE), ratingDelta: 0, exacts: 0 }));
-  const living=players.filter(player=>!match?.dead.includes(player.id));
+  const players = configs.map((config, id) => ({ ...config, id, hand: match?.dead.includes(id)||match?.freed?.includes(id)?[]:drawPile.splice(0, CONFIG.HAND_SIZE), ratingDelta: 0, exacts: 0 }));
+  const living=players.filter(player=>!match?.dead.includes(player.id)&&!match?.freed?.includes(player.id));
   if(living.length<2)throw new Error('A round needs at least two living players.');
   const start = living[Math.floor(random() * living.length)].id;
   return { ...(match?{match}:{}), players, drawPile, played: [], total: 0, direction: 1, current: start, turn: 0, phase: 'playing', pendingSevens: [], rootTurn: start, forced: false, round, exactEvents: [], bust: null, log: [`Round ${round} begins. ${players[start].name} plays first.`], event: 'none' };
@@ -89,17 +90,22 @@ export function playCard(state: GameState, cardId: string): GameState {
     state.phase = 'ended';
     state.event = 'bust';
     player.ratingDelta += CONFIG.RATING_BUST;
-    state.players.forEach(other => { if (other.id !== player.id&&!state.match?.dead.includes(other.id)) other.ratingDelta += CONFIG.RATING_SURVIVE; });
+    state.players.forEach(other => { if (other.id !== player.id&&!isOut(state,other.id)) other.ratingDelta += CONFIG.RATING_SURVIVE; });
     if(state.match){
       const match=state.match;
       match.setup=match.previous!==player.id?match.previous:null;
       if(match.setup!==null)state.players[match.setup].ratingDelta++;
+      match.freed??=[];match.newlyFreed??=[];match.outcomePoints??={};
       for(const other of state.players){
-        if(match.dead.includes(other.id))continue;
+        if(isOut(state,other.id))continue;
         match.scores[other.id]+=other.ratingDelta;
-        if(match.scores[other.id]<=-16){match.dead.push(other.id);match.newlyDead.push(other.id);}
+        if(match.scores[other.id]<=DEATH_POINTS){match.dead.push(other.id);match.newlyDead.push(other.id);match.outcomePoints[other.id]=match.scores[other.id];}
+        else {
+          const overall=other.lifetimePoints===undefined?match.scores[other.id]:other.lifetimePoints+other.ratingDelta;
+          if(overall>=FREEDOM_POINTS||match.scores[other.id]>=FREEDOM_POINTS){match.freed.push(other.id);match.newlyFreed.push(other.id);match.outcomePoints[other.id]=Math.max(overall,match.scores[other.id]);addLog(state,`${other.name} earned Freedom. Overall ${overall} · Game ${match.scores[other.id]}.`);}
+        }
       }
-      match.complete=state.players.length-match.dead.length<2;
+      match.complete=state.players.filter(other=>!isOut(state,other.id)).length<2;
     }
     addLog(state, `${player.name} busted at ${state.total}.`);
     return state;
@@ -130,7 +136,7 @@ export function playCard(state: GameState, cardId: string): GameState {
 export function selectTarget(state: GameState, target: number): GameState {
   if (state.phase !== 'target') throw new Error('No target selection now');
   const chooser = state.pendingSevens.at(-1)!;
-  if (target === chooser || !state.players[target] || state.match?.dead.includes(target)) throw new Error('Choose another living player');
+  if (target === chooser || !state.players[target] || isOut(state,target)) throw new Error('Choose another living player');
   state.turn = (state.turn ?? 0) + 1;
   state.current = target;
   state.forced = true;

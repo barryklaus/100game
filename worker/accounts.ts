@@ -39,6 +39,7 @@ export class AccountStore {
     this.sql.exec('CREATE TABLE IF NOT EXISTS events (event_id TEXT NOT NULL, user_id TEXT NOT NULL, kind TEXT NOT NULL, PRIMARY KEY(event_id,user_id,kind))');
     this.sql.exec('CREATE TABLE IF NOT EXISTS limits (key TEXT PRIMARY KEY, count INTEGER NOT NULL, expires INTEGER NOT NULL)');
     this.sql.exec('CREATE TABLE IF NOT EXISTS character_points (avatar INTEGER PRIMARY KEY, points INTEGER NOT NULL)');
+    this.sql.exec('CREATE TABLE IF NOT EXISTS account_points (user_id TEXT PRIMARY KEY, points INTEGER NOT NULL)');
   }
   private one<T extends Record<string,SqlStorageValue>>(query:string,...args:SqlStorageValue[]):T|undefined {
     return this.sql.exec<T>(query,...args).toArray()[0];
@@ -54,7 +55,8 @@ export class AccountStore {
     return this.one<UserRow>('SELECT users.* FROM users JOIN sessions ON sessions.user_id=users.id WHERE sessions.token=? AND sessions.expires>?',await digest(token),Date.now());
   }
   private publicUser(user:UserRow):AccountUser {
-    return {id:user.id,username:user.username,lifetimePoints:accountPoints(JSON.parse(user.online))+accountPoints(JSON.parse(user.practice))};
+    const points=this.one<{points:number}>('SELECT points FROM account_points WHERE user_id=?',user.id)?.points;
+    return {id:user.id,username:user.username,lifetimePoints:points??accountPoints(JSON.parse(user.online))+accountPoints(JSON.parse(user.practice))};
   }
   private view(user?:UserRow) {
     return {user:user?this.publicUser(user):null,online:user?JSON.parse(user.online) as AccountStats:emptyAccountStats(),practice:user?JSON.parse(user.practice) as AccountStats:emptyAccountStats()};
@@ -72,9 +74,11 @@ export class AccountStore {
     const delta=cleanStatDelta(input,kind==='practice');
     if(kind==='practice'&&(delta.rounds!==1||delta.survives+delta.busts!==1||delta.cards>1000||delta.exacts>1000))throw new AccountError('Invalid practice result.');
     const stats=JSON.parse(user[kind]) as AccountStats;
+    const balance=delta.freedoms||delta.deaths?0:Math.max(-1e9,Math.min(1e9,(this.publicUser(user).lifetimePoints??0)+accountPoints(delta)));
     for(const key of ACCOUNT_STAT_KEYS)stats[key]=Math.min(1e9,(stats[key]??0)+delta[key]);
     this.ctx.storage.transactionSync(()=>{
       this.sql.exec(`UPDATE users SET ${kind}=? WHERE id=?`,JSON.stringify(stats),user.id);
+      this.sql.exec('INSERT INTO account_points(user_id,points) VALUES(?,?) ON CONFLICT(user_id) DO UPDATE SET points=excluded.points',user.id,balance);
       this.sql.exec('INSERT INTO events(event_id,user_id,kind) VALUES(?,?,?)',eventId,user.id,kind);
     });
   }
@@ -110,7 +114,8 @@ export class AccountStore {
       if(!Number.isInteger(avatar)||avatar<0||avatar>=16||!Number.isSafeInteger(delta)||Math.abs(delta)>10000||!/^[a-zA-Z0-9:_-]{8,150}$/.test(eventId))throw new AccountError('Invalid character result.');
       if(!this.one('SELECT event_id FROM events WHERE event_id=? AND user_id=? AND kind=?',eventId,key,'cpu')) {
         this.ctx.storage.transactionSync(()=>{
-          this.sql.exec('INSERT INTO character_points(avatar,points) VALUES(?,?) ON CONFLICT(avatar) DO UPDATE SET points=MAX(-1000000000,MIN(1000000000,points+excluded.points))',avatar,delta);
+          if(body.reset===true)this.sql.exec('INSERT INTO character_points(avatar,points) VALUES(?,0) ON CONFLICT(avatar) DO UPDATE SET points=0',avatar);
+          else this.sql.exec('INSERT INTO character_points(avatar,points) VALUES(?,?) ON CONFLICT(avatar) DO UPDATE SET points=MAX(-1000000000,MIN(1000000000,points+excluded.points))',avatar,delta);
           this.sql.exec('INSERT INTO events(event_id,user_id,kind) VALUES(?,?,?)',eventId,key,'cpu');
         });
       }

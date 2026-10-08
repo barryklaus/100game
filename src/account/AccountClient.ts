@@ -1,4 +1,5 @@
 import { emptyAccountStats, type AccountSnapshot, type AccountStats } from './model';
+import { accountPoints, overallAccountPoints } from '../game/points';
 interface PracticeEntry { owner:string; eventId:string; delta:AccountStats }
 const QUEUE='100next.account.practice.v1';
 export class AccountClient {
@@ -28,6 +29,11 @@ export class AccountClient {
     finally{this.busy=false;this.changed();}
   }
   private queue():PracticeEntry[]{try{return JSON.parse(localStorage.getItem(QUEUE)??'[]') as PracticeEntry[];}catch{return [];}}
+  get overallPoints():number {
+    let points=overallAccountPoints(this.snapshot);
+    for(const item of this.queue().filter(item=>item.owner===this.snapshot.user?.id))points=item.delta.freedoms||item.delta.deaths?0:points+accountPoints(item.delta);
+    return points;
+  }
   async practice(owner:string,eventId:string,delta:AccountStats):Promise<void>{
     const queue=this.queue();if(!queue.some(item=>item.eventId===eventId))queue.push({owner,eventId,delta});
     localStorage.setItem(QUEUE,JSON.stringify(queue));await this.flush();this.changed();

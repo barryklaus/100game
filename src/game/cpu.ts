@@ -1,4 +1,5 @@
 import { cardValue, nextSeat } from './rules';
+import { isOut } from './conditions';
 import type { Card, GameState } from './types';
 
 export function chooseCpuCard(state: GameState, difficulty: 'easy' | 'normal', random = Math.random): Card {
@@ -23,7 +24,7 @@ export function chooseCpuCard(state: GameState, difficulty: 'easy' | 'normal', r
 
 export function chooseCpuTarget(state: GameState, difficulty: 'easy' | 'normal', random = Math.random): number {
   const chooser = state.pendingSevens.at(-1)!;
-  const others = state.players.filter(player => player.id !== chooser&&!state.match?.dead.includes(player.id));
+  const others = state.players.filter(player => player.id !== chooser&&!isOut(state,player.id));
   if (difficulty === 'easy') return others[Math.floor(random() * others.length)].id;
   // Uses only public seat/kind information; never examines hidden hands.
   return [...others].sort((a,b) => (b.kind === 'human' ? 1 : 0) - (a.kind === 'human' ? 1 : 0) || random() - .5)[0].id;

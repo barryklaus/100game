@@ -1,4 +1,5 @@
 import { accountForRequest } from './accounts';
+import { resetsPoints } from '../src/game/points';
 import { newRoundAccounts, recordPlayed, roundDelta, type RoundAccounts } from './roundAccounts';
 import {
   advanceCpu, applyCommand, createRoom, joinRoom, ROOM_EXPIRY_MS, roomAlarmAt, scheduleCpuAction,
@@ -52,13 +53,13 @@ export class GameRoom {
       }
       if(this.room!.lifetimeSettledRound!==record.id) {
         for(const member of this.room!.members) if(!member.accountId) {
-          member.profile.lifetimePoints=(member.profile.lifetimePoints??0)+state.players[member.seat].ratingDelta;
+          member.profile.lifetimePoints=resetsPoints(state,member.seat)?0:(member.profile.lifetimePoints??0)+state.players[member.seat].ratingDelta;
         }
         this.room!.lifetimeSettledRound=record.id;
         await this.ctx.storage.put('room',this.room);
       }
       for(const player of state.players) if(!this.room!.members.some(member=>member.seat===player.id)) {
-        const response=await store.fetch(new Request('https://accounts.internal/internal/cpu-record',{method:'POST',body:JSON.stringify({eventId:record.id,avatar:player.avatar,delta:player.ratingDelta})}));
+        const response=await store.fetch(new Request('https://accounts.internal/internal/cpu-record',{method:'POST',body:JSON.stringify({eventId:record.id,avatar:player.avatar,delta:player.ratingDelta,reset:resetsPoints(state,player.id)})}));
         if(!response.ok)throw new Error('Character points pending.');
       }
       await this.refreshPoints();
