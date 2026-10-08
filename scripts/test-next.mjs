@@ -6,9 +6,9 @@ const result = await build({ entryPoints: ['worker/next-pages.ts'], bundle: true
 const { default: pages } = await import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);
 let assets = 0;
 let selectedRoom;
-let forwardedRequest;
+let forwardedRequest;let accountRequest;
 const env = {
-  ACCOUNTS:{getByName:id=>{assert.equal(id,'accounts-v1');return {fetch:async()=>new Response('account')};}},
+  ACCOUNTS:{getByName:id=>{assert.equal(id,'accounts-v1');return {fetch:async request=>{accountRequest=request;return new Response('account');}};}},
   ASSETS: { fetch: async () => { assets++; return new Response('asset'); } },
   ROOMS: { getByName: id => { selectedRoom = id; return { fetch: async request => { forwardedRequest = request; return new Response('room'); } }; } },
 };
@@ -22,6 +22,11 @@ assert.equal(assets, 0, 'Invalid API URLs must not return the game HTML');
 assert.equal(await (await pages.fetch(new Request('https://100next.pages.dev/assets/card.png'), env)).text(), 'asset');
 assert.equal(await(await pages.fetch(new Request('https://100next.pages.dev/api/account/me'),env)).text(),'account');
 assert.notEqual(await(await pages.fetch(new Request('https://100next.pages.dev/api/account/internal/record'),env)).text(),'account');
+const countryRequest=new Request('https://100next.pages.dev/api/account/login',{method:'POST',headers:{'X-100next-Country':'ZZ'}});Object.defineProperty(countryRequest,'cf',{value:{country:'CA'}});
+await pages.fetch(countryRequest,env);assert.equal(accountRequest.headers.get('X-100next-Country'),'CA','Country comes from Cloudflare, not a client header');
+await pages.fetch(new Request('https://100next.pages.dev/api/account/me',{headers:{'X-100next-Country':'US'}}),env);assert.equal(accountRequest.headers.get('X-100next-Country'),null);
+assert.equal(await(await pages.fetch(new Request('https://100next.pages.dev/api/admin/users'),env)).text(),'account');
+assert.equal(await(await pages.fetch(new Request('https://100next.pages.dev/api/admin/user-login',{method:'POST'}),env)).text(),'account');
 const next = JSON.parse(readFileSync('wrangler.next-rooms.jsonc', 'utf8'));
 const stable = JSON.parse(readFileSync('wrangler.jsonc', 'utf8'));
 const frontend = JSON.parse(readFileSync('hosting/next/wrangler.jsonc', 'utf8'));

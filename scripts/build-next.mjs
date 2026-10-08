@@ -3,6 +3,7 @@ import { writeFile, readFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 
 await build({ entryPoints: ['worker/next-pages.ts'], outfile: 'dist-next/_worker.js', bundle: true, format: 'esm', platform: 'neutral', target: 'es2022' });
+await build({ entryPoints: ['src/admin/AdminDashboard.ts'], outfile: 'dist-next/velvet-ledger/admin.js', bundle: true, format: 'esm', minify: true, target: 'es2022' });
 await build({ entryPoints: ['src/ui/CardDeckGallery.ts'], outfile: 'dist-next/card-redesign/deck.js', bundle: true, format: 'iife', minify: true, target: 'es2022' });
 await build({ entryPoints: ['src/ui/CardHoloPreview.ts'], outfile: 'dist-next/card-redesign/hologram.js', bundle: true, format: 'iife', minify: true, target: 'es2022' });
 await build({entryPoints:['src/ui/ConditionPreview.ts'],outfile:'dist-next/condition-preview/preview.js',external:['/assets/*'],bundle:true,format:'iife',target:'es2022',define:{'import.meta.env.BASE_URL':'"/"'}});
@@ -11,7 +12,7 @@ await writeFile('dist-next/condition-preview/index.html',conditionPage.replace('
 await writeFile('dist-next/_routes.json', JSON.stringify({ version: 1, include: ['/api/*'], exclude: [] }));
 const commit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
 await writeFile('dist-next/release.json', JSON.stringify({ version: '100next', commit, builtAt: new Date().toISOString() }));
-await writeFile('dist-next/_headers', '/release.json\n  Cache-Control: no-store\n');
+await writeFile('dist-next/_headers', '/release.json\n  Cache-Control: no-store\n/velvet-ledger/*\n  X-Robots-Tag: noindex, nofollow\n  Referrer-Policy: same-origin\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: default-src \'self\'; script-src \'self\'; style-src \'self\'; connect-src \'self\'; img-src \'self\' data:; form-action \'self\'; frame-ancestors \'none\'; base-uri \'none\'\n');
 const html = await readFile('dist-next/index.html', 'utf8');
 await writeFile('dist-next/index.html', html.replace(/<title>.*?<\/title>/, '<title>100next — We were friends before this.</title>')
   .replace(/<meta name="description" content="[^"]*"\s*\/>/, '<meta name="description" content="We were friends before this. Make it someone else’s problem. A card game for 2–8 players." />'));

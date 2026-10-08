@@ -12,3 +12,4 @@ coverage/
 *.log
 public/card-redesign/deck.js
 public/card-redesign/hologram.js
+public/velvet-ledger/admin.js

@@ -5,6 +5,7 @@ import { digest, equalSecret, normalizeRecovery, passwordHash, randomToken, reco
 const COOKIE='__Host-100next-session';
 const SESSION_MS=30*24*60*60*1000;
 type UserRow={id:string;username:string;password:string;recovery:string;online:string;practice:string};
+interface AccountEnv { ADMIN_BOOTSTRAP_USERNAME?:string; ADMIN_BOOTSTRAP_PASSWORD_HASH?:string }
 class AccountError extends Error { constructor(message:string,readonly status=400){super(message);} }
 function json(body:unknown,status=200,cookie?:string):Response {
   const headers:Record<string,string>={'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
@@ -20,7 +21,7 @@ function cookieToken(request:Request):string {
 }
 function username(input:unknown):string {
   const name=typeof input==='string'?input.trim():'';
-  if(!/^[a-zA-Z0-9_]{3,15}$/.test(name))throw new AccountError('Use 3–15 letters, numbers or underscores for your name.');
+  if(!/^[a-zA-Z0-9_]{3,15}$/.test(name)&&!(name.length<=254&&/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9.-]*[a-zA-Z0-9])?\.[a-zA-Z]{2,}$/.test(name)))throw new AccountError('Use a name with 3–15 letters, numbers or underscores, or an email address.');
   return name;
 }
 function password(input:unknown,newPassword:boolean):string {
@@ -31,7 +32,7 @@ function password(input:unknown,newPassword:boolean):string {
 /** Private account database, accessed only through the 100next namespace binding. */
 export class AccountStore {
   private sql:SqlStorage;
-  constructor(private ctx:DurableObjectState) {
+  constructor(private ctx:DurableObjectState,private env:AccountEnv={}) {
     this.sql=ctx.storage.sql;
     this.sql.exec('CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, username TEXT NOT NULL UNIQUE COLLATE NOCASE, password TEXT NOT NULL, recovery TEXT NOT NULL, online TEXT NOT NULL, practice TEXT NOT NULL, created INTEGER NOT NULL)');
     this.sql.exec('CREATE TABLE IF NOT EXISTS sessions (token TEXT PRIMARY KEY, user_id TEXT NOT NULL, expires INTEGER NOT NULL)');
@@ -40,6 +41,8 @@ export class AccountStore {
     this.sql.exec('CREATE TABLE IF NOT EXISTS limits (key TEXT PRIMARY KEY, count INTEGER NOT NULL, expires INTEGER NOT NULL)');
     this.sql.exec('CREATE TABLE IF NOT EXISTS character_points (avatar INTEGER PRIMARY KEY, points INTEGER NOT NULL)');
     this.sql.exec('CREATE TABLE IF NOT EXISTS account_points (user_id TEXT PRIMARY KEY, points INTEGER NOT NULL)');
+    this.sql.exec('CREATE TABLE IF NOT EXISTS administrators (user_id TEXT PRIMARY KEY)');
+    if(!this.sql.exec<{name:string}>('PRAGMA table_info(users)').toArray().some(column=>column.name==='country'))this.sql.exec("ALTER TABLE users ADD COLUMN country TEXT NOT NULL DEFAULT ''");
   }
   private one<T extends Record<string,SqlStorageValue>>(query:string,...args:SqlStorageValue[]):T|undefined {
     return this.sql.exec<T>(query,...args).toArray()[0];
@@ -56,7 +59,35 @@ export class AccountStore {
   }
   private publicUser(user:UserRow):AccountUser {
     const points=this.one<{points:number}>('SELECT points FROM account_points WHERE user_id=?',user.id)?.points;
-    return {id:user.id,username:user.username,lifetimePoints:points??accountPoints(JSON.parse(user.online))+accountPoints(JSON.parse(user.practice))};
+    return {id:user.id,username:user.username,lifetimePoints:points??accountPoints(JSON.parse(user.online))+accountPoints(JSON.parse(user.practice)),...(this.isAdmin(user.id)?{admin:true}:{})};
+  }
+  private isAdmin(id:string):boolean { return !!this.one('SELECT user_id FROM administrators WHERE user_id=?',id); }
+  private bootstrapName(name:string):boolean { return !!this.env.ADMIN_BOOTSTRAP_USERNAME&&name.toLowerCase()===this.env.ADMIN_BOOTSTRAP_USERNAME.toLowerCase()&&!this.one('SELECT user_id FROM administrators LIMIT 1'); }
+  private registrationCountry(request:Request):string { const country=request.headers.get('X-100next-Country')??'';return /^[A-Z]{2}$/.test(country)&&!['XX','T1','ZZ'].includes(country)?country:''; }
+  private async bootstrap(name:string,pass:string,request:Request):Promise<UserRow|undefined> {
+    if(!this.bootstrapName(name)||!this.env.ADMIN_BOOTSTRAP_PASSWORD_HASH||!await verifyPassword(pass,this.env.ADMIN_BOOTSTRAP_PASSWORD_HASH))return;
+    const id=crypto.randomUUID(),recovery=await digest(normalizeRecovery(recoveryCode()));
+    this.ctx.storage.transactionSync(()=>{
+      this.sql.exec('INSERT INTO users(id,username,password,recovery,online,practice,created) VALUES(?,?,?,?,?,?,?)',id,name,this.env.ADMIN_BOOTSTRAP_PASSWORD_HASH!,recovery,JSON.stringify(emptyAccountStats()),JSON.stringify(emptyAccountStats()),Date.now());
+      this.sql.exec('INSERT INTO administrators(user_id) VALUES(?)',id);
+      this.sql.exec('UPDATE users SET country=? WHERE id=?',this.registrationCountry(request),id);
+    });
+    // The owner can create a recovery code after sign-in; no bootstrap code is exposed.
+    return this.one<UserRow>('SELECT * FROM users WHERE id=?',id);
+  }
+  private async requireAdmin(request:Request):Promise<UserRow> {
+    const user=await this.current(request);if(!user)throw new AccountError('Sign in to your administrator account.',401);
+    if(!this.isAdmin(user.id))throw new AccountError('Administrator access required.',403);return user;
+  }
+  private async adminUsers(request:Request):Promise<Response> {
+    await this.requireAdmin(request);
+    const url=new URL(request.url),search=(url.searchParams.get('search')??'').trim().slice(0,254),page=Math.max(1,Math.min(100000,Number(url.searchParams.get('page'))||1))|0;
+    const filter='%'+search.replace(/[\\%_]/g,'\\$&')+'%';
+    const total=this.one<{count:number}>("SELECT COUNT(*) AS count FROM users WHERE username LIKE ? ESCAPE '\\'",filter)!.count;
+    const rows=this.sql.exec<{id:string;username:string;country:string;created:number;online:string;practice:string;points:number|null}>("SELECT users.id,username,country,created,online,practice,account_points.points FROM users LEFT JOIN account_points ON account_points.user_id=users.id WHERE username LIKE ? ESCAPE '\\' ORDER BY created DESC,users.id LIMIT 50 OFFSET ?",filter,(page-1)*50).toArray();
+    const users=rows.map(row=>{const online=JSON.parse(row.online) as AccountStats,practice=JSON.parse(row.practice) as AccountStats;return {id:row.id,username:row.username,country:row.country,created:row.created,overallPoints:row.points??accountPoints(online)+accountPoints(practice),online,practice,admin:this.isAdmin(row.id)};});
+    const totals=this.one<{users:number;freedoms:number;deaths:number;rounds:number}>("SELECT COUNT(*) AS users,COALESCE(SUM(json_extract(online,'$.freedoms')+json_extract(practice,'$.freedoms')),0) AS freedoms,COALESCE(SUM(json_extract(online,'$.deaths')+json_extract(practice,'$.deaths')),0) AS deaths,COALESCE(SUM(json_extract(online,'$.rounds')+json_extract(practice,'$.rounds')),0) AS rounds FROM users");
+    return json({users,total,page,pageSize:50,totals});
   }
   private view(user?:UserRow) {
     return {user:user?this.publicUser(user):null,online:user?JSON.parse(user.online) as AccountStats:emptyAccountStats(),practice:user?JSON.parse(user.practice) as AccountStats:emptyAccountStats()};
@@ -91,6 +122,7 @@ export class AccountStore {
   private async handle(request:Request):Promise<Response> {
     const path=new URL(request.url).pathname;
     const internal=path.startsWith('/internal/');
+    if(path==='/api/admin/users'&&request.method==='GET')return this.adminUsers(request);
     if(path==='/internal/session'&&request.method==='GET'){const user=await this.current(request);return json({user:user?this.publicUser(user):null});}
     if(path==='/api/account/me'&&request.method==='GET')return json(this.view(await this.current(request)));
     if(request.method!=='POST')return json({error:'Endpoint not found.'},404);
@@ -99,11 +131,37 @@ export class AccountStore {
       if(origin!==new URL(request.url).origin||request.headers.get('Sec-Fetch-Site')==='cross-site')throw new AccountError('Open the account form from the game.',403);
       if(!request.headers.get('Content-Type')?.startsWith('application/json'))throw new AccountError('JSON required.',415);
     }
-    if(!['/api/account/register','/api/account/login','/api/account/logout','/api/account/recover','/api/account/practice','/internal/record','/internal/points','/internal/cpu-record'].includes(path))return json({error:'Endpoint not found.'},404);
+    if(!['/api/account/register','/api/account/login','/api/account/logout','/api/account/recover','/api/account/practice','/api/account/security','/api/admin/user-login','/internal/record','/internal/points','/internal/cpu-record'].includes(path))return json({error:'Endpoint not found.'},404);
     const length=Number(request.headers.get('Content-Length')??0);if(length>4096)throw new AccountError('Request is too large.',413);
     const raw=await request.text();if(raw.length>4096)throw new AccountError('Request is too large.',413);
     let body:Record<string,unknown>;try{body=JSON.parse(raw);}catch{throw new AccountError('Invalid request.');}
     if(!body||typeof body!=='object'||Array.isArray(body))throw new AccountError('Invalid request.');
+    if(path==='/api/admin/user-login') {
+      const admin=await this.requireAdmin(request);this.limit('admin-security:'+admin.id,10);
+      if(!await verifyPassword(password(body.currentPassword,false),admin.password))throw new AccountError('Your administrator password is incorrect.',401);
+      const target=typeof body.userId==='string'?this.one<UserRow>('SELECT * FROM users WHERE id=?',body.userId):undefined;
+      if(!target)throw new AccountError('User not found.',404);
+      if(target.id===admin.id)throw new AccountError('Use My login to change your own account.',400);
+      const nextName=body.username?username(body.username):target.username;
+      const taken=this.one<{id:string}>('SELECT id FROM users WHERE username=?',nextName);if(taken&&taken.id!==target.id)throw new AccountError('That name is already taken.',409);
+      const hash=body.newPassword?await passwordHash(password(body.newPassword,true)):target.password;
+      if(!body.username&&!body.newPassword)throw new AccountError('Enter a new name or password.',400);
+      this.ctx.storage.transactionSync(()=>{this.sql.exec('UPDATE users SET username=?,password=? WHERE id=?',nextName,hash,target.id);this.sql.exec('DELETE FROM sessions WHERE user_id=?',target.id);});
+      return json({ok:true,username:nextName});
+    }
+    if(path==='/api/account/security') {
+      const user=await this.current(request);if(!user)throw new AccountError('Sign in to change your login.',401);
+      this.limit('security:'+user.id,10);
+      if(!await verifyPassword(password(body.currentPassword,false),user.password))throw new AccountError('Current password is incorrect.',401);
+      const nextName=body.username?username(body.username):user.username;
+      const taken=this.one<{id:string}>('SELECT id FROM users WHERE username=?',nextName);if(taken&&taken.id!==user.id)throw new AccountError('That name is already taken.',409);
+      if(this.bootstrapName(nextName)&&nextName.toLowerCase()!==user.username.toLowerCase())throw new AccountError('That name is unavailable.',409);
+      const hash=body.newPassword?await passwordHash(password(body.newPassword,true)):user.password;
+      const code=body.rotateRecovery===true?recoveryCode():undefined;
+      const recovery=code?await digest(normalizeRecovery(code)):user.recovery;
+      this.ctx.storage.transactionSync(()=>{this.sql.exec('UPDATE users SET username=?,password=?,recovery=? WHERE id=?',nextName,hash,recovery,user.id);this.sql.exec('DELETE FROM sessions WHERE user_id=?',user.id);});
+      return this.newSession(this.one<UserRow>('SELECT * FROM users WHERE id=?',user.id)!,code);
+    }
     if(path==='/internal/points') {
       const ids=Array.isArray(body.accounts)?body.accounts.filter(id=>typeof id==='string').slice(0,8) as string[]:[];
       const avatars=Array.isArray(body.cpus)?body.cpus.filter(avatar=>Number.isInteger(avatar)&&avatar>=0&&avatar<16).slice(0,8) as number[]:[];
@@ -141,15 +199,17 @@ export class AccountStore {
     const name=username(body.username);
     this.limit('auth-name:'+name.toLowerCase(),10);
     if(path==='/api/account/register'){
+      if(this.bootstrapName(name))throw new AccountError('That name is unavailable.',409);
       this.limit('register:'+ip,5,60*60*1000);
       const pass=password(body.password,true);
       if(this.one('SELECT id FROM users WHERE username=?',name))throw new AccountError('That name is taken. Try another.',409);
       const code=recoveryCode(),id=crypto.randomUUID();
       const hash=await passwordHash(pass);
       this.sql.exec('INSERT INTO users(id,username,password,recovery,online,practice,created) VALUES(?,?,?,?,?,?,?)',id,name,hash,await digest(normalizeRecovery(code)),JSON.stringify(emptyAccountStats()),JSON.stringify(emptyAccountStats()),Date.now());
+      this.sql.exec('UPDATE users SET country=? WHERE id=?',this.registrationCountry(request),id);
       return this.newSession(this.one<UserRow>('SELECT * FROM users WHERE id=?',id)!,code);
     }
-    const user=this.one<UserRow>('SELECT * FROM users WHERE username=?',name);
+    const user=this.one<UserRow>('SELECT * FROM users WHERE username=?',name)??(path==='/api/account/login'?await this.bootstrap(name,password(body.password,false),request):undefined);
     if(path==='/api/account/recover'){
       const pass=password(body.password,true),code=typeof body.recoveryCode==='string'?normalizeRecovery(body.recoveryCode):'';
       if(!user||!equalSecret(await digest(code),user.recovery))throw new AccountError('Name or recovery code is incorrect.',401);

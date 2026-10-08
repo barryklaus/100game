@@ -1,6 +1,6 @@
 export const ACCOUNT_STAT_KEYS = ['freedoms','deaths','rounds','exacts','survives','busts','cards','sevens','eights','nines','tens','setups'] as const;
 export type AccountStats = Record<typeof ACCOUNT_STAT_KEYS[number], number>;
-export interface AccountUser { id: string; username: string; lifetimePoints?: number }
+export interface AccountUser { id: string; username: string; lifetimePoints?: number; admin?:boolean }
 export interface AccountSnapshot { user: AccountUser | null; online: AccountStats; practice: AccountStats }
 export const emptyAccountStats = (): AccountStats => Object.fromEntries(ACCOUNT_STAT_KEYS.map(key => [key,0])) as AccountStats;
 export function totalAccountStats(snapshot: AccountSnapshot): AccountStats {

@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import { DatabaseSync } from 'node:sqlite';
 import { build } from 'esbuild';
-const bundle=await build({entryPoints:['worker/accounts.ts','worker/roundAccounts.ts'],bundle:true,platform:'node',format:'esm',write:false,outdir:'/tmp/accounts-check'});
+const bundle=await build({entryPoints:['worker/accounts.ts','worker/roundAccounts.ts','worker/accountCrypto.ts'],bundle:true,platform:'node',format:'esm',write:false,outdir:'/tmp/accounts-check'});
 const modules=await Promise.all(bundle.outputFiles.map(file=>import(`data:text/javascript;base64,${Buffer.from(file.text).toString('base64')}`)));
 const {AccountStore}=modules.find(module=>module.AccountStore);
+const {passwordHash}=modules.find(module=>module.passwordHash);
 const {newRoundAccounts,recordPlayed,roundDelta}=modules.find(module=>module.newRoundAccounts);
 const db=new DatabaseSync(':memory:');
 let serial=Promise.resolve();
@@ -167,4 +168,41 @@ await call('/internal/record',{userId:otherId,eventId:'verified-after-freedom',d
 assert.equal((await call('/api/account/me',undefined,{cookie:secondAuth})).data.user.lifetimePoints,1,'The next life accumulates from zero');
 await call('/internal/cpu-record',{avatar:2,delta:1,reset:true,eventId:'cpu-points-reset-1'});
 assert.equal((await call('/internal/points',{cpus:[2]})).data.cpus[2],0,'CPU overall points also reset on an outcome');
+// Administrator bootstrap, scoped data access and login management.
+const ownerPass='owner test password only',ownerName='owner@example.test';
+const adminStore=new AccountStore(ctx,{ADMIN_BOOTSTRAP_USERNAME:ownerName,ADMIN_BOOTSTRAP_PASSWORD_HASH:await passwordHash(ownerPass)});
+let adminCookie='';
+async function adminCall(path,body,options={}){
+  const response=await adminStore.fetch(new Request('https://game.test'+path,{method:body===undefined?'GET':'POST',headers:{'Content-Type':'application/json',Origin:options.origin??'https://game.test',Cookie:options.cookie??adminCookie,'CF-Connecting-IP':'admin-test','X-100next-Country':options.country??'AE'},body:body===undefined?undefined:JSON.stringify(body)}));
+  return {response,data:await response.json()};
+}
+assert.equal((await adminCall('/api/admin/users')).response.status,401);
+assert.equal((await adminCall('/api/account/register',{username:ownerName,password:pass})).response.status,409,'Public signup cannot reserve the owner login');
+assert.equal((await adminCall('/api/account/login',{username:ownerName,password:'wrong password'})).response.status,401);
+assert.equal(db.prepare('SELECT COUNT(*) AS n FROM administrators').get().n,0);
+result=await adminCall('/api/account/login',{username:ownerName,password:ownerPass});assert.equal(result.response.status,200);assert.equal(result.data.user.admin,true);
+const ownerId=result.data.user.id;adminCookie=result.response.headers.get('Set-Cookie').split(';')[0];const priorOwnerCookie=adminCookie;
+result=await adminCall('/api/admin/users');assert.equal(result.response.status,200);assert.equal(result.data.total,3);
+assert.equal(result.data.users.find(user=>user.id===ownerId).country,'AE');assert.equal(result.data.users.find(user=>user.id===userId).country,'','Older accounts remain unknown');
+assert(!JSON.stringify(result.data).includes('scrypt:'));assert(!JSON.stringify(result.data).includes(ownerPass));assert(!JSON.stringify(result.data).includes('recovery'));assert(!JSON.stringify(result.data).includes('sessions'));
+const playerLogin=await call('/api/account/login',{username:'Other_User',password:pass});const playerCookie=playerLogin.response.headers.get('Set-Cookie').split(';')[0];
+assert.equal((await adminCall('/api/admin/users',undefined,{cookie:playerCookie})).response.status,403);
+assert.equal((await adminCall('/api/admin/user-login',{userId:ownerId,username:'takeover',currentPassword:pass},{cookie:playerCookie})).response.status,403);
+assert.equal((await adminCall('/api/admin/user-login',{userId:otherId,username:'renamed@example.test',currentPassword:'incorrect'})).response.status,401);
+assert.equal((await adminCall('/api/admin/user-login',{userId:otherId,username:'renamed@example.test',currentPassword:ownerPass},{origin:'https://evil.test'})).response.status,403);
+const beforeRename=(await call('/api/account/me',undefined,{cookie:playerCookie})).data;
+assert.equal((await adminCall('/api/admin/user-login',{userId:otherId,username:'renamed@example.test',newPassword:'new player test password',currentPassword:ownerPass})).response.status,200);
+assert.equal((await call('/api/account/me',undefined,{cookie:playerCookie})).data.user,null,'Admin login changes revoke player sessions');
+result=await call('/api/account/login',{username:'renamed@example.test',password:'new player test password'});assert.equal(result.response.status,200);assert.equal(result.data.user.id,otherId);assert.deepEqual(result.data.online,beforeRename.online);assert.equal(result.data.user.lifetimePoints,beforeRename.user.lifetimePoints);
+assert.equal((await adminCall('/api/admin/users?search=renamed%40example.test')).data.total,1);assert.equal((await adminCall('/api/admin/users?search=%25')).data.total,0,'Search wildcards are literal');
+assert.equal((await adminCall('/api/account/security',{username:'new_owner@example.test',newPassword:'new owner test password',rotateRecovery:true,currentPassword:ownerPass})).response.status,200);
+result=await adminCall('/api/account/login',{username:'new_owner@example.test',password:'new owner test password'});assert.equal(result.data.user.admin,true);assert.equal(result.data.user.id,ownerId);adminCookie=result.response.headers.get('Set-Cookie').split(';')[0];
+assert.equal((await adminCall('/api/account/me',undefined,{cookie:priorOwnerCookie})).data.user,null,'Changing an owner login revokes all old sessions');
+assert.equal((await adminCall('/api/account/login',{username:ownerName,password:ownerPass})).response.status,401,'Bootstrap cannot recreate or resurrect the old administrator');
+result=await adminCall('/api/account/security',{currentPassword:'new owner test password',rotateRecovery:true});const ownerRecovery=result.data.recoveryCode;assert.equal(result.data.user.admin,true);assert(ownerRecovery);
+result=await adminCall('/api/account/recover',{username:'new_owner@example.test',recoveryCode:ownerRecovery,password:'recovered owner test password'});assert.equal(result.data.user.admin,true);adminCookie=result.response.headers.get('Set-Cookie').split(';')[0];
+for(let i=0;i<52;i++)db.prepare('INSERT INTO users(id,username,password,recovery,online,practice,created,country) VALUES(?,?,?,?,?,?,?,?)').run('page-'+i,'page_'+i,'hash','hash',JSON.stringify(result.data.online),JSON.stringify(result.data.practice),Date.now()+i,'JP');
+result=await adminCall('/api/admin/users');assert.equal(result.data.users.length,50);assert.equal(result.data.total,55);assert.equal((await adminCall('/api/admin/users?page=2')).data.users.length,5);
+assert.equal((await adminCall('/api/account/logout',{})).response.status,200);assert.equal((await adminCall('/api/admin/users')).response.status,401);
+console.log('Administrator checks passed: private bootstrap, session authorization, country migration, secret exclusion, paginated search, user login changes, role persistence, recovery and session revocation.');
 console.log('Account checks passed: signup, unique names, secure hashes/cookies, login, devices, recovery, session expiry, isolation, origin checks, rate limits, idempotent online/practice statistics and round attribution.');
