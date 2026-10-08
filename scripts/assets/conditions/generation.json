@@ -1,0 +1,70 @@
+{
+  "method": "builtin-imagegen",
+  "prompt": "Use case: identity-preserve. PRODUCTION GAME ART. Image1 is this character's exact master. Image2 is Finn's approved 3 condition progression, reference only for damage severity, NOT his identity. Make 3 full-body drawings of the Image1 character, uniform horizontal THREE-column strip, transparent alpha. Keep EXACT original face, skin tone, gender, age, hair, glasses/accessories, clothing colors, original body proportions, seated front-facing pose and limb positions. No chair. Equal figure scale and same head and feet baseline in all3 cells, generous transparent margins around every figure. C1 left: prominent cartoon purple facial black eye/cheek and forearm bruises, outfit intact. C2 middle: more bruises, ragged shoulder/sleeve/elbow tears and knee holes, dusty fabric. C3 right: much more shredded upper clothing, ragged open shoulders/sleeves/elbows/lapels/hems and dangling torn fragments, bruises, dense white forehead/cheek/forearm/knee/ankle bandages. Torso covered, no nudity or gore. Hands hold 2 blank solid HOT MAGENTA #ff00ff rounded card placeholders with black outline in same locations as Image1, preserve fingers in front, no numbers or designs. Crisp high quality cartoon whole-body drawings, no text or board or UI or backdrop, output largest landscape available. No changes in body size between conditions.",
+  "sources": [
+    {
+      "id": "finn",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-5ef6a74d-30af-4d42-aba4-601a385bc28b.png"
+    },
+    {
+      "id": "bianca",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-d1f8034c-e1bc-4997-8ce4-a77c1ce8abdb.png"
+    },
+    {
+      "id": "vince",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-68b4b853-84e8-42ab-8eb6-b08d16128fa5.png"
+    },
+    {
+      "id": "june",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-d93450ce-4540-4505-bce6-eee4e112df0f.png"
+    },
+    {
+      "id": "edgar",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-7e848940-0565-43fc-8ab2-699c36e2b1dd.png"
+    },
+    {
+      "id": "roxie",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-cf394c48-0954-4e58-a66e-d9abb5461119.png"
+    },
+    {
+      "id": "otis",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-16d4d266-d1a7-4048-be5e-3bc051fdfb29.png"
+    },
+    {
+      "id": "paloma",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-25b9641a-0324-4399-8f3b-54b4ee6e2360.png"
+    },
+    {
+      "id": "vera",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-0cce012b-0b0c-4bf7-b184-5517c34c184e.png"
+    },
+    {
+      "id": "tess",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-c5cefcf2-e57c-4748-bf0f-581009711907.png"
+    },
+    {
+      "id": "nadia",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-b8ec224d-af2d-4fc3-b097-6cc552ca571b.png"
+    },
+    {
+      "id": "dottie",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-8baea0a6-c656-4256-a770-16e109307740.png"
+    },
+    {
+      "id": "malik",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-950c6adf-5e13-4c67-8e79-3b233062e6f3.png"
+    },
+    {
+      "id": "hugo",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-49f5d108-3e97-42bc-b583-df3bd2360d1f.png"
+    },
+    {
+      "id": "jasper",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-b4bd2f19-bede-49c9-8c26-72d05dbdf73e.png"
+    },
+    {
+      "id": "leon",
+      "path": "/Users/barryklaus/.codex/generated_images/01a0b3eb-7f6a-7191-9b2a-9e61f45bf813/exec-bc761d4e-52c4-499a-bbe0-bfce400e5c4e.png"
+    }
+  ]
+}

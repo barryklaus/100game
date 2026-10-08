@@ -1,3 +1,4 @@
+import { conditionAnimations } from './ConditionAnimationData';
 import { masterCharacterData } from './MasterSpriteData';
 import { masterAnimations } from './MasterAnimationData';
 
@@ -15,10 +16,10 @@ export function masterImage(index: number, portrait = false): string {
 export function masterHandRect(root: HTMLElement, index: number, catching = false): DOMRect | undefined {
   return root.querySelector<HTMLElement>(`.seat[data-seat="${index}"] .master-hand-${catching ? 'catch' : 'release'}`)?.getBoundingClientRect();
 }
-export function masterAnchors(index: number): string {
+export function masterAnchors(index: number,condition=0): string {
   const character = masterCharacter(index);
   return (['release', 'catch'] as const).map(kind => {
-    const [x, y, w, h] = masterAnimations[character.id]?.handoff?.[kind] ?? character[kind];
+    const [x, y, w, h] = (conditionAnimations[character.id]?.[condition]??masterAnimations[character.id])?.handoff?.[kind] ?? character[kind];
     return `<span class="master-hand-${kind}" aria-hidden="true" style="left:${(x-w/2)/512*100}%;top:${(y-h/2)/512*100}%;width:${w/512*100}%;height:${h/512*100}%"></span>`;
   }).join('');
 }

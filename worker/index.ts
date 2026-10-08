@@ -26,7 +26,7 @@ export class GameRoom {
   private accountRound:RoundAccounts|null=null;
 
   constructor(private ctx: DurableObjectState, private env: Env) {
-    ctx.blockConcurrencyWhile(async () => { this.room = await ctx.storage.get<RoomData>('room') ?? null; this.accountRound=await ctx.storage.get<RoundAccounts>('accountRound')??null; });
+    ctx.blockConcurrencyWhile(async () => { this.room = await ctx.storage.get<RoomData>('room') ?? null; this.accountRound=await ctx.storage.get<RoundAccounts>('accountRound')??null;if(this.room&&env.ACCOUNTS)this.room.nextRules=true; });
   }
 
   private async save(): Promise<void> {
@@ -92,6 +92,7 @@ export class GameRoom {
           if (this.room) throw new RoomError('This room code is already in use. Create a new room.', 409);
           const token = crypto.randomUUID();
           this.room = createRoom(id, input.profile, token);
+          this.room.nextRules=!!this.env.ACCOUNTS;
           if(account)this.room.members[0].accountId=account.id;
           await this.save();
           return json({ token, seat: 0 });

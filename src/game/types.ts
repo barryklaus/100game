@@ -5,6 +5,8 @@ export interface PlayerConfig { name: string; kind: 'human' | 'cpu'; mood: Mood;
 export interface Player extends PlayerConfig { id: number; hand: Card[]; ratingDelta: number; exacts: number }
 export type Phase = 'playing' | 'target' | 'ended';
 export interface GameState {
+  /** Present only in 100next. Settled scores persist between rounds. */
+  match?: { scores:number[]; dead:number[]; newlyDead:number[]; previous:number|null; setup:number|null; complete:boolean };
   players: Player[];
   drawPile: Card[];
   played: Card[];

@@ -54,6 +54,23 @@ cast.reset();nodes.forEach(n=>{n.hidden=false;n.history.length=0;});Math.random=
 cast.sync(state);await flush();waitDecode=true;await advance(5000);
 const duringBlink=cast.prepareThrow(0);await flush();cast.release(0);await flush();waitDecode=false;pending.splice(0).forEach(resolve=>resolve());await flush();await advance(600);await duringBlink;
 assert.equal(nodes[0].element.dataset.cards,'1');assert(['release','release-blink'].includes(nodes[0].element.dataset.frame),'Only a matching one-card drawing may follow cancellation; a fresh one-card blink is valid');cast.reset();assert.equal(timers.size,0);
+// Condition swaps retain one-card ownership and use condition-specific drawings.
+for(const stage of [1,2,3]){
+ nodes[0].element.dataset.condition=String(stage);nodes[0].dataset.condition=String(stage);
+ cast.sync(state);await flush();assert(nodes[0].image.src.includes(`/condition-animation-v1/vince/${stage}/`));
+ const prepare=cast.prepareThrow(0);await flush();await advance(216);await prepare;
+ assert.equal(nodes[0].element.dataset.frame,'prepare');
+ cast.release(0);assert.equal(nodes[0].element.dataset.frame,'release');assert.equal(nodes[0].element.dataset.cards,'1');
+ await flush();await advance(500);
+ const draw=cast.prepareDraw(0);await flush();await advance(161);await draw;
+ assert.equal(nodes[0].element.dataset.frame,'receive-hold');assert.equal(nodes[0].element.dataset.cards,'1');
+ const received=cast.received(0);assert.equal(nodes[0].element.dataset.frame,'receive-caught');
+ await flush();await advance(300);await received;cast.reset();
+}
+nodes[0].dataset.condition='4';nodes[0].element.dataset.condition='3';cast.sync(state);await flush();
+assert.equal(nodes[0].element.dataset.frame,'floor');await advance(10000);
+assert.equal(nodes[0].element.dataset.frame,'floor','Dead seats never restart a gaze or blink');cast.reset();
+delete nodes[0].dataset.condition;delete nodes[0].element.dataset.condition;
 const cardAudit=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/card-back-checks.json'));assert.equal(new Set(cardAudit.map(x=>x.character)).size,8);assert(cardAudit.every(x=>x.handsPreserved&&x.facesAndBodyOutsideCardsUnchanged&&x.cornerRadiusRatio===.055));
 const mouthAudit=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/mouth-line-checks.json'));
 assert.equal(mouthAudit.length,176);assert.equal(new Set(mouthAudit.map(x=>x.character)).size,8);

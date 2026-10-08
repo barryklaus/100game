@@ -33,9 +33,12 @@ const practice={eventId:'practice-round-1',delta:{rounds:1,survives:1,cards:4,fr
 assert.equal((await call('/api/account/practice',practice)).response.status,200);
 await call('/api/account/practice',practice);
 result=await call('/api/account/me');assert.equal(result.data.practice.rounds,1);assert.equal(result.data.practice.freedoms,0);assert.equal(result.data.online.rounds,0);
+const localDeath={eventId:'practice-death-1',delta:{rounds:1,busts:1,deaths:1}};
+await call('/api/account/practice',localDeath);await call('/api/account/practice',localDeath);
+assert.equal((await call('/api/account/me')).data.practice.deaths,1);
 const online={userId,eventId:'verified-round-1',delta:{rounds:1,busts:1,cards:3}};
 await call('/internal/record',online);await call('/internal/record',online);
-result=await call('/api/account/me',undefined,{cookie:otherCookie});assert.equal(result.data.online.rounds,1);assert.equal(result.data.online.busts,1);assert.equal(result.data.practice.rounds,1);
+result=await call('/api/account/me',undefined,{cookie:otherCookie});assert.equal(result.data.online.rounds,1);assert.equal(result.data.online.busts,1);assert.equal(result.data.practice.rounds,2);
 assert.equal((await call('/api/account/practice',{eventId:'bad-practice-1',delta:{rounds:2,survives:1}})).response.status,400);
 assert.equal((await call('/api/account/logout',{})).response.status,200);assert.equal((await call('/api/account/me')).data.user,null);
 assert.equal((await call('/api/account/practice',practice)).response.status,401);
@@ -56,6 +59,13 @@ for(let i=0;i<11;i++)result=await call('/api/account/login',{username:'missing_u
 const tracker=newRoundAccounts({0:'id'});const before={current:1,played:[]};const after={played:[{id:'c1',rank:'8'}],phase:'playing'};recordPlayed(tracker,before,after);
 recordPlayed(tracker,{current:0,played:after.played},{played:[...after.played,{id:'c2',rank:'6'}],phase:'ended'});
 const delta=roundDelta(tracker,{players:[{exacts:1},{exacts:0}],bust:0},0);assert.equal(delta.busts,1);assert.equal(delta.cards,1);assert.equal(delta.exacts,1);assert.equal(tracker.setup,1);
+// A death belongs to its settled match round and cannot be recorded again.
+const deathState={players:[{exacts:0},{exacts:0}],bust:0,match:{dead:[0],newlyDead:[0]}};
+assert.equal(roundDelta(tracker,deathState,0).deaths,1);
+deathState.match.newlyDead=[];
+assert.equal(roundDelta(tracker,deathState,0).deaths,0);
+assert.equal(roundDelta(tracker,deathState,0).rounds,0);
+assert.equal(roundDelta(tracker,deathState,0).survives,0);
 // Exercise the actual room boundary, including private account identity and server-authored results.
 db.prepare('DELETE FROM limits').run();
 const firstLogin=await call('/api/account/login',{username:'Sample_User',password:'a different long password'});
@@ -95,4 +105,15 @@ assert.equal(saved.data.online.rounds,2);assert.equal(saved.data.online.cards,3+
 await room.webSocketMessage(hostSocket,JSON.stringify({type:'mood',mood:'Happy'}));
 assert.equal((await call('/api/account/me',undefined,{cookie:firstAuth})).data.online.rounds,2,'Repeated snapshots/moods cannot award a round twice');
 const projection=JSON.stringify(kv.get('room').state);assert(!projection.includes(userId),'Private account IDs never enter the game state');
+// Exercise a server-authored death and repeated snapshots on the same round.
+await room.webSocketMessage(hostSocket,JSON.stringify({type:'start'}));
+const deathRound=kv.get('room').state;deathRound.current=0;deathRound.rootTurn=0;deathRound.total=100;deathRound.match.scores[0]=-12;
+deathRound.players[0].hand[0]={id:'death-card',rank:'6',suit:'fire'};
+await room.webSocketMessage(hostSocket,JSON.stringify({type:'play',cardId:'death-card',turn:deathRound.turn}));
+assert.equal((await call('/api/account/me',undefined,{cookie:firstAuth})).data.online.deaths,1);
+await room.webSocketMessage(hostSocket,JSON.stringify({type:'mood',mood:'Sad'}));
+assert.equal((await call('/api/account/me',undefined,{cookie:firstAuth})).data.online.deaths,1,'A death is counted once');
+assert.equal(kv.get('room').state.match.complete,true,'One surviving seat closes the match');
+await room.webSocketMessage(hostSocket,JSON.stringify({type:'start'}));
+assert.deepEqual(kv.get('room').state.match.scores,[0,0]);assert.deepEqual(kv.get('room').state.match.dead,[]);
 console.log('Account checks passed: signup, unique names, secure hashes/cookies, login, devices, recovery, session expiry, isolation, origin checks, rate limits, idempotent online/practice statistics and round attribution.');

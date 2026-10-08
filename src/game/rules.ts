@@ -11,7 +11,11 @@ export function cardValue(card: Card): number {
 }
 
 export function nextSeat(state: GameState, from: number): number {
-  return (from + state.direction + state.players.length) % state.players.length;
+  for(let step=1;step<=state.players.length;step++) {
+    const next=(from + step*state.direction + state.players.length*step)%state.players.length;
+    if(!state.match?.dead.includes(next))return next;
+  }
+  return from;
 }
 
 function addLog(state: GameState, message: string): void {
@@ -19,12 +23,16 @@ function addLog(state: GameState, message: string): void {
   state.log = state.log.slice(0, 24);
 }
 
-export function createGame(configs: PlayerConfig[], round = 1, random = Math.random): GameState {
+export function createGame(configs: PlayerConfig[], round = 1, random = Math.random, nextMatch?: GameState['match']|true): GameState {
   if (configs.length < CONFIG.PLAYER_MIN || configs.length > CONFIG.PLAYER_MAX) throw new Error('Invalid player count');
   const drawPile = shuffle(makeDeck(), random);
-  const players = configs.map((config, id) => ({ ...config, id, hand: drawPile.splice(0, CONFIG.HAND_SIZE), ratingDelta: 0, exacts: 0 }));
-  const start = Math.floor(random() * players.length);
-  return { players, drawPile, played: [], total: 0, direction: 1, current: start, turn: 0, phase: 'playing', pendingSevens: [], rootTurn: start, forced: false, round, exactEvents: [], bust: null, log: [`Round ${round} begins. ${players[start].name} plays first.`], event: 'none' };
+  const match=nextMatch===true?{scores:configs.map(()=>0),dead:[],newlyDead:[],previous:null,setup:null,complete:false}:nextMatch?{...nextMatch,scores:[...nextMatch.scores],dead:[...nextMatch.dead],newlyDead:[],previous:null,setup:null}:undefined;
+  if(match?.complete)throw new Error('Start a new match after the table is cleared.');
+  const players = configs.map((config, id) => ({ ...config, id, hand: match?.dead.includes(id)?[]:drawPile.splice(0, CONFIG.HAND_SIZE), ratingDelta: 0, exacts: 0 }));
+  const living=players.filter(player=>!match?.dead.includes(player.id));
+  if(living.length<2)throw new Error('A round needs at least two living players.');
+  const start = living[Math.floor(random() * living.length)].id;
+  return { ...(match?{match}:{}), players, drawPile, played: [], total: 0, direction: 1, current: start, turn: 0, phase: 'playing', pendingSevens: [], rootTurn: start, forced: false, round, exactEvents: [], bust: null, log: [`Round ${round} begins. ${players[start].name} plays first.`], event: 'none' };
 }
 
 function drawReplacement(state: GameState, playerIndex: number, random = Math.random): void {
@@ -69,10 +77,10 @@ export function playCard(state: GameState, cardId: string): GameState {
   state.event = 'none';
   addLog(state, `${player.name} played ${cardDisplayRank(card)} ${card.suit.toUpperCase()} · Total ${state.total}`);
 
-  if (previousTotal !== 100 && state.total === 100) {
+  if (previousTotal !== 100 && state.total === 100 && (!state.match || player.exacts===0)) {
     state.exactEvents.push({ player: player.id, total: 100 });
     player.exacts++;
-    player.ratingDelta += CONFIG.RATING_EXACT_100;
+    player.ratingDelta += state.match?1:CONFIG.RATING_EXACT_100;
     state.event = 'exact';
     addLog(state, `✦ ${player.name} hit exactly 100!`);
   }
@@ -81,10 +89,23 @@ export function playCard(state: GameState, cardId: string): GameState {
     state.phase = 'ended';
     state.event = 'bust';
     player.ratingDelta += CONFIG.RATING_BUST;
-    state.players.forEach(other => { if (other.id !== player.id) other.ratingDelta += CONFIG.RATING_SURVIVE; });
+    state.players.forEach(other => { if (other.id !== player.id&&!state.match?.dead.includes(other.id)) other.ratingDelta += CONFIG.RATING_SURVIVE; });
+    if(state.match){
+      const match=state.match;
+      match.setup=match.previous!==player.id?match.previous:null;
+      if(match.setup!==null)state.players[match.setup].ratingDelta++;
+      for(const other of state.players){
+        if(match.dead.includes(other.id))continue;
+        match.scores[other.id]+=other.ratingDelta;
+        if(match.scores[other.id]<=-16){match.dead.push(other.id);match.newlyDead.push(other.id);}
+      }
+      match.complete=state.players.length-match.dead.length<2;
+    }
     addLog(state, `${player.name} busted at ${state.total}.`);
     return state;
   }
+
+  if(state.match)state.match.previous=player.id;
 
   if (card.rank === '7') {
     // Refill before target selection so every visible hand stays at two cards.
@@ -109,7 +130,7 @@ export function playCard(state: GameState, cardId: string): GameState {
 export function selectTarget(state: GameState, target: number): GameState {
   if (state.phase !== 'target') throw new Error('No target selection now');
   const chooser = state.pendingSevens.at(-1)!;
-  if (target === chooser || !state.players[target]) throw new Error('Choose another player');
+  if (target === chooser || !state.players[target] || state.match?.dead.includes(target)) throw new Error('Choose another living player');
   state.turn = (state.turn ?? 0) + 1;
   state.current = target;
   state.forced = true;

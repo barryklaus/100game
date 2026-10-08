@@ -15,6 +15,7 @@ export type RoomCommand =
   | { type: 'leave' };
 export interface Member { token: string; seat: number; profile: Profile; disconnectedAt: number | null; accountId?: string }
 export interface RoomData {
+  nextRules?:boolean;
   id: string;
   seats: PlayerConfig[];
   members: Member[];
@@ -187,8 +188,8 @@ export function applyCommand(room: RoomData, seat: number, command: RoomCommand,
   } else if (command.type === 'start') {
     if (seat !== room.hostSeat || room.seats.length < CONFIG.PLAYER_MIN) throw new RoomError('Only the host can start a table with at least two players.', 403);
     if (room.state && room.state.phase !== 'ended') throw new RoomError('Finish the current round first.', 409);
-    const nextRound = room.state ? room.state.round + 1 : 1;
-    room.state = createGame(room.seats, nextRound);
+    const nextRound = room.state&&!room.state.match?.complete ? room.state.round + 1 : 1;
+    room.state = createGame(room.seats, nextRound, Math.random, room.nextRules?(room.state?.match?.complete?true:room.state?.match??true):undefined);
   } else if (command.type === 'play') {
     if (!room.state || room.state.phase !== 'playing' || room.state.current !== seat || typeof command.cardId !== 'string') throw new RoomError('It is not your turn.', 409);
     if (command.turn !== undefined && command.turn !== (room.state.turn ?? 0)) throw new RoomError('That turn has already changed. Wait for the updated table.', 409);
