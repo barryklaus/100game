@@ -8,7 +8,7 @@
     "build": "tsc --noEmit && vite build",
     "build:cloudflare": "tsc --noEmit && tsc --noEmit -p tsconfig.worker.json && vite build --mode cloudflare",
     "build:next": "tsc --noEmit && tsc --noEmit -p tsconfig.worker.json && vite build --mode 100next && node scripts/build-next.mjs",
-    "test:next": "node scripts/test-next.mjs && node scripts/test-conditions.mjs && node scripts/test-condition-assets.mjs",
+    "test:next": "node scripts/test-next.mjs && node scripts/test-conditions.mjs && node scripts/test-condition-assets.mjs && node scripts/test-death-demo.mjs",
     "deploy:next": "node scripts/deploy-next.mjs",
     "publish:next": "node scripts/publish-next.mjs",
     "test": "node scripts/test-rules.mjs && node scripts/test-online.mjs && node scripts/test-hosted.mjs && node scripts/test-presentation.mjs && node scripts/test-gyro.mjs && node scripts/test-suspense.mjs && node scripts/test-player-ring.mjs && node scripts/test-traditional.mjs && node scripts/test-master-cast.mjs && node scripts/test-master-animation.mjs && node scripts/test-vera-animation.mjs && node scripts/test-expanded-cast.mjs && node scripts/test-boomerang.mjs && node scripts/test-audio-recovery.mjs && pnpm test:accounts",

@@ -1,0 +1,26 @@
+.death-demo-mode .ring-controls, .death-demo-mode .header-status { display: none; }
+.death-demo-note {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  border: 1px solid #ac8c50;
+  border-radius: 12px;
+  background: #10131ded;
+  color: #f8e9c5;
+  font-size: 14px;
+  width: max-content;
+  max-width: calc(100% - 24px);
+}
+.death-demo-note small { display: block; margin-top: 5px; color: #cabca1; font-size: 12px; }
+.death-demo-note .primary-button { padding: 10px 16px; min-height: 42px; white-space: nowrap; }
+@media (orientation: portrait) {
+  .death-demo-note { top: 100px; gap: 8px; padding: 10px; font-size: 12px; }
+  .death-demo-note small { font-size: 11px; max-width: 175px; }
+  .death-demo-note .primary-button { padding: 10px; font-size: 12px; }
+}

@@ -1,3 +1,5 @@
+import { createDeathDemo } from './game/DeathDemo';
+import './death-demo.css';
 import { conditionForScore } from './game/conditions';
 import { deathScene } from './ui/DeathScene';
 import './death.css';
@@ -44,6 +46,9 @@ import { masterFrameUrl, masterFrameStyle } from './ui/MasterAnimations';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const isNextVersion = import.meta.env.MODE === '100next';
+const deathDemo = isNextVersion && new URLSearchParams(location.search).get('demo') === 'last-card';
+const demoCharacter = new URLSearchParams(location.search).get('character') || 'finn';
+let demoRun = 0;
 const isHostedVersion = isNextVersion || import.meta.env.MODE === 'cloudflare';
 if (isNextVersion) document.title = '100next — We were friends before this.';
 const headlineMarkup = isNextVersion ? 'We were friends<br><em>before this.</em>' : 'Simple numbers.<br><em>Big reactions.</em>';
@@ -51,8 +56,8 @@ const brandMarkup = isNextVersion ? 'WE WERE FRIENDS<br>BEFORE THIS.' : 'SIMPLE 
 const gameTagline = isNextVersion ? 'Make it someone else’s problem.' : 'PLAY. BLUFF. SURVIVE.';
 const playerRing = new PlayerRing(app, () => observatory?.projectPlayerRing(), () => render());
 let settings: Settings = loadSettings();
-let trialCast=isNextVersion&&new URLSearchParams(location.search).get('characters')==='finn-june';
-let masterCast=isNextVersion&&!['observatory','finn-june'].includes(new URLSearchParams(location.search).get('characters')??'');
+let trialCast=!deathDemo&&isNextVersion&&new URLSearchParams(location.search).get('characters')==='finn-june';
+let masterCast=isNextVersion&&(deathDemo||!['observatory','finn-june'].includes(new URLSearchParams(location.search).get('characters')??''));
 if(trialCast){settings.playerCount=2;settings.seats[0]={...settings.seats[0],name:'Finn',avatar:0,kind:'human',mood:'Normal'};settings.seats[1]={...settings.seats[1],name:'June',avatar:1,kind:'cpu',mood:'Normal'};}
 function useMasterSeats(reset=false):void{settings.seats=settings.seats.map((seat,index)=>({...seat,name:reset||seat.name===defaultSeats[index].name?masterNames[index]:seat.name,avatar:reset?index:seat.avatar%masterNames.length}));}
 if(masterCast){useMasterSeats();if(new URLSearchParams(location.search).get('characters')==='midnight-eight'&&new URLSearchParams(location.search).get('play')==='1')settings.playerCount=8;}
@@ -65,10 +70,15 @@ if(masterCast&&new URLSearchParams(location.search).get('characters')==='new-eig
   settings.playerCount=8;
   settings.seats=settings.seats.map((seat,index)=>({...seat,name:masterNames[index+8],avatar:index+8,kind:index===0?'human':'cpu',mood:'Normal'}));
 }
+if (deathDemo) {
+  settings.playerCount = 4;
+  const sample = createDeathDemo(demoCharacter);
+  settings.seats.splice(0, 4, ...sample.players.map(({name, kind, mood, avatar}) => ({name, kind, mood, avatar})));
+}
 let stats: Stats = loadStats();
 let practiceRound:RoundAccounts|null=null;
 let dismissedDeathKey="";
-const account=isNextVersion?new AccountClient(()=>{if(account?.snapshot.user){settings.seats[0]={...settings.seats[0],name:account.snapshot.user.username,kind:'human'};save();}render();}):null;
+const account=isNextVersion&&!deathDemo?new AccountClient(()=>{if(account?.snapshot.user){settings.seats[0]={...settings.seats[0],name:account.snapshot.user.username,kind:'human'};save();}render();}):null;
 let state: GameState | null = null;
 let selectedCard: string | null = null;
 let locked = false;
@@ -82,7 +92,7 @@ let cpuTimer: number | undefined;
 let reaction: Record<number, string> = {};
 let toastTimer: number | undefined;
 let online: OnlineRoom | HostedRoom | null = null;
-let onlineMode: 'host' | 'join' | null = new URLSearchParams(location.search).has('room') ? 'join' : null;
+let onlineMode: 'host' | 'join' | null = !deathDemo && new URLSearchParams(location.search).has('room') ? 'join' : null;
 let joinCode = new URLSearchParams(location.search).get('room') || '';
 let roomCpuCount = 0;
 let hostedLobbyInitialized = false;
@@ -113,6 +123,7 @@ audio.configure(settings);
 bindAudioLifecycle(audio);
 document.documentElement.classList.add('observatory-mode');
 document.documentElement.classList.toggle('midnight-mode', isNextVersion);
+document.documentElement.classList.toggle('death-demo-mode', deathDemo);
 const presentedTotal = new TotalPresentation();
 let observatory: ObservatoryScene | undefined;
 try { observatory = new ObservatoryScene(isNextVersion ? 'midnight' : 'observatory'); observatory.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion}); } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
@@ -212,6 +223,7 @@ function roomChanged(): void {
   scheduleCpu();
 }
 function connectOnline(mode: 'host' | 'join'): void {
+  if (deathDemo) return;
   const name = (document.querySelector<HTMLInputElement>('#online-name')?.value || settings.seats[0].name).trim().slice(0,15) || 'Player';
   const avatar = settings.seats[0].avatar;
   settings.seats[0] = { ...settings.seats[0], name, avatar, kind: 'human' }; save();
@@ -233,7 +245,7 @@ function applyPreferences(): void {
   if (settings.reducedMotion) gyro.stop();
   document.documentElement.style.setProperty('--ui-scale',String(settings.uiScale));
 }
-function save(): void { saveSettings(settings); saveStats(stats); applyPreferences(); }
+function save(): void { if (!deathDemo) { saveSettings(settings); saveStats(stats); } applyPreferences(); }
 applyPreferences();
 function clearCpu(): void { if (cpuTimer) clearTimeout(cpuTimer); cpuTimer = undefined; }
 function flash(text: string, kind = ''): void {
@@ -325,12 +337,12 @@ function startGame(round = 1): void {
   practiceRound=account?.snapshot.user?newRoundAccounts({0:account.snapshot.user.id}):null;
   const seats = settings.seats.slice(0, settings.playerCount).map((seat, i) => ({ ...seat, name: seat.name.trim() || defaultSeats[i].name }));
   const previous=state?.match;
-  state = createGame(seats, round, Math.random, isNextVersion?(state&&round>state.round&&!previous?.complete?previous??true:true):undefined);
+  state = deathDemo ? createDeathDemo(demoCharacter, 20 + demoRun++) : createGame(seats, round, Math.random, isNextVersion?(state&&round>state.round&&!previous?.complete?previous??true:true):undefined);
   dismissedDeathKey="";
   save(); render(); scheduleCpu();
 }
 function finishRound(): void {
-  if (!state) return;
+  if (!state || deathDemo) return;
   const humans = (online ? [state.players[online.localSeat]] : [state.players[localSeat()]]).filter(player => player?.kind === 'human'&&(!state!.match?.dead.includes(player.id)||state!.match.newlyDead.includes(player.id)));
   if(account){if(online){void account.refresh();setTimeout(()=>void account.refresh(),2000);}else if(practiceRound&&!practiceRound.committed){practiceRound.committed=true;const owner=practiceRound.accounts[0];const delta=roundDelta(practiceRound,state,0);if(delta.rounds)void account.practice(owner,practiceRound.id,delta);}}
   if(humans.length)stats.rounds++;
@@ -365,12 +377,14 @@ function resolveCard(cardId: string): void {
   if(practiceRound&&beforePractice)recordPlayed(practiceRound,beforePractice,state);
   playerRing.played(actor, ['seven','reverse','zero','minus'].includes(state.event));
   const drawnForLocal = state.players[localSeat()].hand.find(item => !previousLocalHand.has(item.id));
-  stats.cards++;
-  if (card.rank === '7') stats.sevens++;
-  if (card.rank === '8') stats.eights++;
-  if (card.rank === '9') stats.nines++;
-  if (card.rank === '10') stats.tens++;
-  save();
+  if (!deathDemo) {
+    stats.cards++;
+    if (card.rank === '7') stats.sevens++;
+    if (card.rank === '8') stats.eights++;
+    if (card.rank === '9') stats.nines++;
+    if (card.rank === '10') stats.tens++;
+    save();
+  }
   selectedCard = null;
   const ev = state.event;
   if (ev === 'exact') { flash(`EXACT 100!  +${state.match?1:3}`, 'exact'); react([actor], state.match?'+1':'+3'); }
@@ -544,7 +558,8 @@ function gameView(): string {
   const hand = state.phase !== 'ended' && mine?.kind === 'human' ? mine.hand : [];
   const totalStyle = totalClass(presentedTotal.visible.total);
 
-  return `<main class="game-page" data-event="${state.event}" data-phase="${state.phase}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>${brandMarkup}</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>100 <span>OBSERVATORY</span></strong><small>${online?'Private online table':'Local table'} · Round ${state.round}</small></div></div>${outcomeCounters(account?.snapshot.user?totalAccountStats(account.snapshot):stats,import.meta.env.BASE_URL)}<div class="header-status"><span class="round-pill">Round ${state.round}</span><span class="turn-pill">${state.phase==='ended'?'Round scores':`${actor===localSeat()?'Your':escapeHtml(active.name)+'’s'} ${state.phase==='target'?'choice':'turn'}`}</span></div><div class="header-actions"><button data-action="history" aria-label="Game history">▤</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}
+  return `<main class="game-page" data-event="${state.event}" data-phase="${state.phase}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>${brandMarkup}</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>100 <span>OBSERVATORY</span></strong><small>${deathDemo?'Death demo · No statistics saved':`${online?'Private online table':'Local table'} · Round ${state.round}`}</small></div></div>${deathDemo?'':outcomeCounters(account?.snapshot.user?totalAccountStats(account.snapshot):stats,import.meta.env.BASE_URL)}<div class="header-status"><span class="round-pill">Round ${state.round}</span><span class="turn-pill">${state.phase==='ended'?'Round scores':`${actor===localSeat()?'Your':escapeHtml(active.name)+'’s'} ${state.phase==='target'?'choice':'turn'}`}</span></div><div class="header-actions"><button data-action="history" aria-label="Game history">▤</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}
+    ${deathDemo && state.phase==='playing'?`<div class="death-demo-note" role="region" aria-label="Last card demo"><span><strong>${escapeHtml(mine.name)}: −12 points</strong> · Total 99<small>Play one last card. Overflow −5 → Death at −17.</small></span><button class="primary-button" data-action="demo-play">Play final card →</button></div>`:''}
     <div class="game-layout"><section class="arena" aria-label="Game table"><div class="table-rim"><div class="table-felt"><div class="energy-system ${totalStyle}"><div class="total-wrap ${totalStyle}"><span class="total-caption">SHARED TOTAL</span><div class="total-number" role="status" aria-live="polite" aria-label="Shared total">${totalMarkup(presentedTotal.visible.total)}</div><div class="total-event">${presentedTotal.visible.caption}</div><div class="ring-direction" aria-label="${state.direction===1?'Clockwise':'Counterclockwise'} turn order">${state.direction===1?'› · › · ›':'‹ · ‹ · ‹'}</div></div></div><div class="table-cards"><div class="pile-wrap"><div class="draw-stack"><div class="playing-card card-back" role="img" aria-label="Draw pile"><img src="${backImage}" alt="Draw pile" draggable="false"></div></div></div><div class="pile-wrap"><div class="played-slot">${top?cardElement(top,false,'last-card'):'<span class="empty-slot">PLAY HERE</span>'}</div></div></div></div></div>
       <div class="seat-layer player-ring" aria-label="Players around the table" style="--player-count:${state.players.length}">${state.players.map((player,i)=>seatHtml(player,i,state!.players.length)).join('')}</div>
       <nav class="ring-controls" aria-label="Browse players"><button data-ring-step="-1" aria-label="Previous players" ${state.players.length<=4?'hidden':''}>‹</button><div class="ring-markers">${state.players.map((player,i)=>`<button data-ring-focus="${i}" class="ring-marker ${i===actor?'current':''} ${state!.phase==='target'&&canControlActor()&&i!==actor&&!state!.match?.dead.includes(i)?'eligible':''}" aria-label="Show ${escapeHtml(player.name)}${i===actor?', active player':''}" title="${escapeHtml(player.name)}">${i+1}</button>`).join('')}</div><button data-ring-step="1" aria-label="Next players" ${state.players.length<=4?'hidden':''}>›</button></nav>
@@ -563,7 +578,7 @@ function resultView(): string {
   if (!state) return '';
   const dead=state.match?.newlyDead[0];
   if(dead!==undefined&&dismissedDeathKey!==`${state.round}:${dead}`)return deathScene(state.players[dead],state.match!.scores[dead],state.round,escapeHtml);
-  return scoreTransition(state,!online||online.isHost,!!online,escapeHtml);
+  return scoreTransition(state,!online||online.isHost,!!online,escapeHtml,deathDemo);
 }
 function modalView(): string {
   if (!modal) return '';
@@ -641,14 +656,14 @@ function render(): void {
   if(roundKey!==presentedRound){
     presentedRound=roundKey;
     ++dealEpoch;openingDeal=false;
-    if(state&&state.phase!=='ended'&&!settings.reducedMotion&&(!online||online.status==='playing')){
+    if(!deathDemo&&state&&state.phase!=='ended'&&!settings.reducedMotion&&(!online||online.status==='playing')){
       const snapshot=state;requestAnimationFrame(()=>{if(state===snapshot)void dealOpeningHand(snapshot);});
     }
   }
   if (remoteSnapshots.length && !presentedTotal.pending && !remoteFlight) queueMicrotask(() => roomChanged());
 }
 render();
-if(masterCast&&!onlineMode&&new URLSearchParams(location.search).get('play')==='1')startGame();
+if(deathDemo || (masterCast&&!onlineMode&&new URLSearchParams(location.search).get('play')==='1'))startGame();
 if (isHostedVersion && onlineMode === 'join' && /^100-[a-z0-9]{12}$/.test(joinCode) && localStorage.getItem(`100game:room:${joinCode}`)) connectOnline('join');
 
 app.addEventListener('submit',event=>{
@@ -673,6 +688,11 @@ app.addEventListener('click', event => {
   if (action) {
     if (action === 'close-modal' && target.closest('.modal-panel') && !target.closest('.close-button')) return;
     audio.play('click');
+    if (action==='demo-play' && deathDemo && state?.phase==='playing') {
+      const card=state.players[0].hand[0];
+      const source=app.querySelector<HTMLElement>(`.local-hand [data-card="${card.id}"]`);
+      void audio.unlock(); void animatePlay(card.id, source??undefined);
+    }
     if(action==='dismiss-death'&&state){dismissedDeathKey=`${state.round}:${state.match?.newlyDead[0]}`;render();}
     if (action === 'start') startGame();
     if (action === 'online-setup') { onlineMode = 'host'; render(); }
@@ -685,7 +705,7 @@ app.addEventListener('click', event => {
     if (action === 'copy-invite' && online) void navigator.clipboard.writeText(`${location.origin}${castPath(online.roomId)}`).then(()=>flash('Invite link copied')).catch(()=>flash('Select and copy the invite link.'));
     if (action === 'again' && state) { modal = null; if (online) online.startRound(state.round + 1); else startGame(state.match?.complete?1:state.round + 1); }
     if (action === 'restart' && state) { modal = null; if (online) online.startRound(state.round); else startGame(state.round); }
-    if (action === 'new-game') { clearCpu(); state = null; selectedCard = null; render(); }
+    if (action === 'new-game') { if (deathDemo) { location.assign(import.meta.env.BASE_URL); return; } clearCpu(); state = null; selectedCard = null; render(); }
     if (action === 'rules' || action === 'settings' || action === 'stats' || action === 'history' || action === 'account') { modal = action; emotesOpen = false; render(); if(account&&(action==='account'||action==='stats'))void account.refresh(); }
     if (action === 'menu') { modal = 'menu'; render(); }
     if (action === 'emotes') { if(emoteHeld){emoteHeld=false;}else{emotesOpen = !emotesOpen; render();} }
