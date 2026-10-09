@@ -44,7 +44,7 @@ assert(blinkCounts.slice(4).every(n=>n===0),'Offscreen characters never request 
 assert.equal(new Set(nodes.slice(0,4).map(n=>n.history.find(h=>h.url.endsWith('/nervous-blink.webp')).time)).size,4,'Characters blink at separate times');
 await advance(300);assert(nodes.slice(0,4).every(n=>n.element.dataset.frame==='nervous'),'Blink keeps the nervous expression');
 const play=cast.prepareThrow(0);await flush();await advance(216);await play;cast.release(0);await flush();await advance(6000);
-assert(nodes[0].history.some(h=>h.url.endsWith('/release-blink.webp')),'The one-card pose can blink without adding a card');
+assert(nodes[0].history.some(h=>h.url.endsWith('/whole-throw-6-blink-closed.webp')),'The one-card pose can blink without adding a card');
 assert.equal(nodes[0].element.dataset.cards,'1');
 document.hidden=true;await advance(300);const beforeHidden=paints;await advance(12000);assert.equal(paints,beforeHidden,'Background tabs do not paint blink frames');document.hidden=false;
 await advance(6000);assert(paints>beforeHidden,'Blinking resumes on returning to the tab');
@@ -53,7 +53,7 @@ cast.reset();nodes.forEach(n=>{n.hidden=false;n.history.length=0;});Math.random=
 // A slow blink decode must yield to a real gesture and must not reappear later.
 cast.sync(state);await flush();waitDecode=true;await advance(5000);
 const duringBlink=cast.prepareThrow(0);await flush();cast.release(0);await flush();waitDecode=false;pending.splice(0).forEach(resolve=>resolve());await flush();await advance(600);await duringBlink;
-assert.equal(nodes[0].element.dataset.cards,'1');assert(['release','release-blink'].includes(nodes[0].element.dataset.frame),'Only a matching one-card drawing may follow cancellation; a fresh one-card blink is valid');cast.reset();assert.equal(timers.size,0);
+assert.equal(nodes[0].element.dataset.cards,'1');assert(['whole-throw-6','whole-throw-6-blink-half','whole-throw-6-blink-closed'].includes(nodes[0].element.dataset.frame),'Only a matching one-card drawing may follow cancellation; a fresh one-card blink is valid');cast.reset();assert.equal(timers.size,0);
 // Condition swaps retain one-card ownership and use condition-specific drawings.
 for(const stage of [1,2,3]){
  nodes[0].element.dataset.condition=String(stage);nodes[0].dataset.condition=String(stage);
@@ -79,6 +79,6 @@ for(const entry of mouthAudit)assert(existsSync(`public/assets/social-club/maste
 const blinkAudit=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/bianca-blink-checks.json'));
 assert.equal(blinkAudit.length,22);assert(blinkAudit.every(x=>x.glassesUnchanged&&x.mouthBodyAndCardBacksUnchanged&&x.nativePixelsIdentical&&x.alphaUnchanged));
 const actionAudit=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/whole-action-checks.json'));assert.equal(actionAudit.length,96);assert(actionAudit.every(x=>x.nativePixelsIdentical));
-const data=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/manifest.json'));assert.equal(data.nativeCanvas,2048);assert.equal(data.resampled,false);
+const data=JSON.parse(readFileSync('public/assets/social-club/master-animation-v2/manifest.json'));assert.equal(data.nativeCanvas,2048);assert.equal(data.resampled,true);assert(data.resamplingScope.includes('24 complete tumble drawings'));
 for(const [id,set] of Object.entries(data.characters))for(const [frame,[x,y,w,h]] of Object.entries(set.bounds)){assert(x>=0&&y>=0&&x+w<=2048&&y+h<=2048);assert(existsSync(`public/assets/social-club/master-animation-v2/${id}/${frame}.webp`));}
 console.log('Master animation checks passed: all eight cast actions, held release/catch poses through delayed flights, synchronous card removal/arrival, faster gestures, staggered blinks, expression/card preservation, pauses, reactions, floor landing, cancellation, reduced motion and native assets.');

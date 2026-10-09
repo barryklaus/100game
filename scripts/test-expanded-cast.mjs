@@ -24,7 +24,7 @@ for(let i=0;i<names.length;i++){
  cast.sync({...state,total:95});await flush();await advance(4000);assert.equal(nodes[i].element.dataset.frame,'grip','Blink or turn changes cannot paint an early replacement card');
  const catchCard=cast.received(i);assert.equal(nodes[i].element.dataset.frame,'caught');assert.equal(nodes[i].element.dataset.cards,'2');await flush();await advance(500);await catchCard;
  await advance(6000);assert(nodes[i].history.some(h=>h.url.endsWith('/shocked-blink.webp')),names[i]+' keeps blinking during tension');
- const fall=cast.tumble(i);await flush();await advance(1000);await fall;assert.equal(nodes[i].element.dataset.frame,'floor');
+ const fall=cast.tumble(i);await flush();await advance(1600);await fall;assert.equal(nodes[i].element.dataset.frame,'floor');
  cast.sync({...state,overflow:true});await flush();assert.equal(nodes[i].element.dataset.frame,'floor','Scores keep the landed pose');
  cast.reset();assert.equal(timers.size,0);cast.sync(state);await flush();
 }

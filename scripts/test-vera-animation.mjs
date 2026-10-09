@@ -23,7 +23,7 @@ const drawing=cast.prepareDraw(0);await flush();await advance(161);await drawing
 cast.sync({...state,total:95});await flush();await advance(4000);assert.equal(nodes[0].element.dataset.frame,'grip','No blink/reaction redraw can add a card before arrival');
 const caught=cast.received(0);assert.equal(nodes[0].element.dataset.frame,'caught');assert.equal(nodes[0].element.dataset.cards,'2');await flush();await advance(500);await caught;
 await advance(6000);assert(nodes[0].history.some(h=>h.url.includes('shocked-blink')),'Vera blinks in a danger expression');
-const fall=cast.tumble(0);await flush();await advance(1000);await fall;assert.equal(nodes[0].element.dataset.frame,'floor');cast.sync({...state,overflow:true});await flush();assert.equal(nodes[0].element.dataset.frame,'floor');cast.reset();assert.equal(timers.size,0);
+const fall=cast.tumble(0);await flush();await advance(1600);await fall;assert.equal(nodes[0].element.dataset.frame,'floor');cast.sync({...state,overflow:true});await flush();assert.equal(nodes[0].element.dataset.frame,'floor');cast.reset();assert.equal(timers.size,0);
 const data=JSON.parse(readFileSync('public/vera-animation/assets/manifest.json'));assert.equal(data.nativeCanvas,2048);assert(data.checks.every(x=>x.nativePixelsIdentical&&x.clearance>=300));
 assert(data.cards.every(x=>x.placeholderPixelsRemaining===0),'No magenta registration pixels remain');
 for(const check of data.checks){assert(existsSync('public/vera-animation/assets/'+check.frame+'.webp'));assert(existsSync('public/assets/social-club/master-animation-v2/vera/'+check.frame+'.webp'));}

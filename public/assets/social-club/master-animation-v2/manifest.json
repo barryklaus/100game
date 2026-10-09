@@ -1,7 +1,7 @@
 {
   "nativeCanvas": 2048,
   "lossless": true,
-  "resampled": false,
+  "resampled": true,
   "characters": {
     "vince": {
       "clips": {
@@ -245,9 +245,9 @@
             "rest"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -259,9 +259,9 @@
             "down"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -273,9 +273,9 @@
             "nervous"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -287,9 +287,9 @@
             "panicked"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -301,9 +301,9 @@
             "amused"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -315,9 +315,9 @@
             "smug"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -329,9 +329,9 @@
             "frustrated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -343,9 +343,9 @@
             "defeated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -357,9 +357,9 @@
             "release"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -373,6 +373,92 @@
             80,
             70,
             10
+          ]
+        },
+        "blink-whole-throw-6": {
+          "frames": [
+            "whole-throw-6-blink-half",
+            "whole-throw-6-blink-closed",
+            "whole-throw-6-blink-half",
+            "whole-throw-6"
+          ],
+          "durations": [
+            40,
+            75,
+            40,
+            50
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-left",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-right",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -412,16 +498,16 @@
           1040
         ],
         "blink": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "blink-half": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "bounce": [
           545,
@@ -478,16 +564,16 @@
           675
         ],
         "left": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "left-mid": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "midfall": [
           542,
@@ -556,16 +642,16 @@
           1040
         ],
         "right": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "right-mid": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "settle": [
           766,
@@ -598,100 +684,100 @@
           1040
         ],
         "down-blink-half": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "down-blink": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "nervous-blink-half": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "nervous-blink": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "panicked-blink-half": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "panicked-blink": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "amused-blink-half": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "amused-blink": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "smug-blink-half": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "smug-blink": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "frustrated-blink-half": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "frustrated-blink": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "defeated-blink-half": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "defeated-blink": [
-          766,
-          504,
-          515,
-          1040
+          774,
+          512,
+          499,
+          1024
         ],
         "release-blink-half": [
-          766,
-          504,
-          508,
-          1040
+          774,
+          512,
+          492,
+          1024
         ],
         "release-blink": [
-          766,
-          504,
-          508,
-          1040
+          774,
+          512,
+          492,
+          1024
         ],
         "empty-grip": [
           766,
@@ -776,6 +862,54 @@
           514,
           573,
           1025
+        ],
+        "whole-throw-6-blink-half": [
+          732,
+          513,
+          550,
+          1026
+        ],
+        "whole-throw-6-blink-closed": [
+          732,
+          513,
+          550,
+          1026
+        ],
+        "nervous-gaze-left": [
+          774,
+          512,
+          499,
+          1024
+        ],
+        "nervous-gaze-right": [
+          774,
+          512,
+          499,
+          1024
+        ],
+        "down-gaze-left": [
+          774,
+          512,
+          499,
+          1024
+        ],
+        "down-gaze-right": [
+          774,
+          512,
+          499,
+          1024
+        ],
+        "panicked-gaze-left": [
+          774,
+          512,
+          499,
+          1024
+        ],
+        "panicked-gaze-right": [
+          774,
+          512,
+          499,
+          1024
         ]
       },
       "handoff": {
@@ -1038,9 +1172,9 @@
             "rest"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1052,9 +1186,9 @@
             "down"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1066,9 +1200,9 @@
             "nervous"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1080,9 +1214,9 @@
             "panicked"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1094,9 +1228,9 @@
             "amused"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1108,9 +1242,9 @@
             "smug"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1122,9 +1256,9 @@
             "frustrated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1136,9 +1270,9 @@
             "defeated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1150,9 +1284,9 @@
             "release"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1166,6 +1300,92 @@
             80,
             70,
             10
+          ]
+        },
+        "blink-whole-throw-6": {
+          "frames": [
+            "whole-throw-6-blink-half",
+            "whole-throw-6-blink-closed",
+            "whole-throw-6-blink-half",
+            "whole-throw-6"
+          ],
+          "durations": [
+            40,
+            75,
+            40,
+            50
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-left",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-right",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -1205,16 +1425,16 @@
           1040
         ],
         "blink": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "blink-half": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "bounce": [
           570,
@@ -1271,16 +1491,16 @@
           782
         ],
         "left": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "left-mid": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "midfall": [
           628,
@@ -1349,16 +1569,16 @@
           1040
         ],
         "right": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "right-mid": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "settle": [
           796,
@@ -1391,100 +1611,100 @@
           1040
         ],
         "down-blink-half": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "down-blink": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "nervous-blink-half": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "nervous-blink": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "panicked-blink-half": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "panicked-blink": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "amused-blink-half": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "amused-blink": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "smug-blink-half": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "smug-blink": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "frustrated-blink-half": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "frustrated-blink": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "defeated-blink-half": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "defeated-blink": [
-          796,
-          504,
-          455,
-          1040
+          804,
+          512,
+          439,
+          1024
         ],
         "release-blink-half": [
-          796,
-          504,
-          513,
-          1040
+          804,
+          512,
+          497,
+          1024
         ],
         "release-blink": [
-          796,
-          504,
-          513,
-          1040
+          804,
+          512,
+          497,
+          1024
         ],
         "empty-grip": [
           796,
@@ -1569,6 +1789,54 @@
           509,
           486,
           1027
+        ],
+        "whole-throw-6-blink-half": [
+          762,
+          511,
+          522,
+          1025
+        ],
+        "whole-throw-6-blink-closed": [
+          762,
+          511,
+          522,
+          1025
+        ],
+        "nervous-gaze-left": [
+          804,
+          512,
+          439,
+          1024
+        ],
+        "nervous-gaze-right": [
+          804,
+          512,
+          439,
+          1024
+        ],
+        "down-gaze-left": [
+          804,
+          512,
+          439,
+          1024
+        ],
+        "down-gaze-right": [
+          804,
+          512,
+          439,
+          1024
+        ],
+        "panicked-gaze-left": [
+          804,
+          512,
+          439,
+          1024
+        ],
+        "panicked-gaze-right": [
+          804,
+          512,
+          439,
+          1024
         ]
       },
       "handoff": {
@@ -1831,9 +2099,9 @@
             "rest"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1845,9 +2113,9 @@
             "down"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1859,9 +2127,9 @@
             "nervous"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1873,9 +2141,9 @@
             "panicked"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1887,9 +2155,9 @@
             "amused"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1901,9 +2169,9 @@
             "smug"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1915,9 +2183,9 @@
             "frustrated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1929,9 +2197,9 @@
             "defeated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1943,9 +2211,9 @@
             "release"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -1959,6 +2227,92 @@
             80,
             70,
             10
+          ]
+        },
+        "blink-whole-throw-6": {
+          "frames": [
+            "whole-throw-6-blink-half",
+            "whole-throw-6-blink-closed",
+            "whole-throw-6-blink-half",
+            "whole-throw-6"
+          ],
+          "durations": [
+            40,
+            75,
+            40,
+            50
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-left",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-right",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -1998,16 +2352,16 @@
           1040
         ],
         "blink": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "blink-half": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "bounce": [
           574,
@@ -2064,16 +2418,16 @@
           755
         ],
         "left": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "left-mid": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "midfall": [
           603,
@@ -2142,16 +2496,16 @@
           1040
         ],
         "right": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "right-mid": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "settle": [
           797,
@@ -2184,100 +2538,100 @@
           1040
         ],
         "down-blink-half": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "down-blink": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "nervous-blink-half": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "nervous-blink": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "panicked-blink-half": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "panicked-blink": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "amused-blink-half": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "amused-blink": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "smug-blink-half": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "smug-blink": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "frustrated-blink-half": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "frustrated-blink": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "defeated-blink-half": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "defeated-blink": [
-          797,
-          504,
-          453,
-          1040
+          805,
+          512,
+          437,
+          1024
         ],
         "release-blink-half": [
-          797,
-          504,
-          427,
-          1040
+          805,
+          512,
+          411,
+          1024
         ],
         "release-blink": [
-          797,
-          504,
-          427,
-          1040
+          805,
+          512,
+          411,
+          1024
         ],
         "empty-grip": [
           797,
@@ -2362,6 +2716,54 @@
           513,
           466,
           1025
+        ],
+        "whole-throw-6-blink-half": [
+          789,
+          510,
+          474,
+          1029
+        ],
+        "whole-throw-6-blink-closed": [
+          789,
+          510,
+          474,
+          1029
+        ],
+        "nervous-gaze-left": [
+          805,
+          512,
+          437,
+          1024
+        ],
+        "nervous-gaze-right": [
+          805,
+          512,
+          437,
+          1024
+        ],
+        "down-gaze-left": [
+          805,
+          512,
+          437,
+          1024
+        ],
+        "down-gaze-right": [
+          805,
+          512,
+          437,
+          1024
+        ],
+        "panicked-gaze-left": [
+          805,
+          512,
+          437,
+          1024
+        ],
+        "panicked-gaze-right": [
+          805,
+          512,
+          437,
+          1024
         ]
       },
       "handoff": {
@@ -2624,9 +3026,9 @@
             "rest"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -2638,9 +3040,9 @@
             "down"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -2652,9 +3054,9 @@
             "nervous"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -2666,9 +3068,9 @@
             "panicked"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -2680,9 +3082,9 @@
             "amused"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -2694,9 +3096,9 @@
             "smug"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -2708,9 +3110,9 @@
             "frustrated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -2722,9 +3124,9 @@
             "defeated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -2736,9 +3138,9 @@
             "release"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -2752,6 +3154,92 @@
             80,
             70,
             10
+          ]
+        },
+        "blink-whole-throw-6": {
+          "frames": [
+            "whole-throw-6-blink-half",
+            "whole-throw-6-blink-closed",
+            "whole-throw-6-blink-half",
+            "whole-throw-6"
+          ],
+          "durations": [
+            40,
+            75,
+            40,
+            50
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-left",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-right",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -2791,16 +3279,16 @@
           1040
         ],
         "blink": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "blink-half": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "bounce": [
           516,
@@ -2857,16 +3345,16 @@
           708
         ],
         "left": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "left-mid": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "midfall": [
           601,
@@ -2935,16 +3423,16 @@
           1040
         ],
         "right": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "right-mid": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "settle": [
           773,
@@ -2977,100 +3465,100 @@
           1040
         ],
         "down-blink-half": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "down-blink": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "nervous-blink-half": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "nervous-blink": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "panicked-blink-half": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "panicked-blink": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "amused-blink-half": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "amused-blink": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "smug-blink-half": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "smug-blink": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "frustrated-blink-half": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "frustrated-blink": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "defeated-blink-half": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "defeated-blink": [
-          773,
-          504,
-          501,
-          1040
+          781,
+          512,
+          485,
+          1024
         ],
         "release-blink-half": [
-          773,
-          504,
-          509,
-          1040
+          781,
+          512,
+          493,
+          1024
         ],
         "release-blink": [
-          773,
-          504,
-          509,
-          1040
+          781,
+          512,
+          493,
+          1024
         ],
         "empty-grip": [
           773,
@@ -3155,6 +3643,54 @@
           513,
           516,
           1026
+        ],
+        "whole-throw-6-blink-half": [
+          774,
+          513,
+          511,
+          1025
+        ],
+        "whole-throw-6-blink-closed": [
+          774,
+          513,
+          511,
+          1025
+        ],
+        "nervous-gaze-left": [
+          781,
+          512,
+          485,
+          1024
+        ],
+        "nervous-gaze-right": [
+          781,
+          512,
+          485,
+          1024
+        ],
+        "down-gaze-left": [
+          781,
+          512,
+          485,
+          1024
+        ],
+        "down-gaze-right": [
+          781,
+          512,
+          485,
+          1024
+        ],
+        "panicked-gaze-left": [
+          781,
+          512,
+          485,
+          1024
+        ],
+        "panicked-gaze-right": [
+          781,
+          512,
+          485,
+          1024
         ]
       },
       "handoff": {
@@ -3417,9 +3953,9 @@
             "rest"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -3431,9 +3967,9 @@
             "down"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -3445,9 +3981,9 @@
             "nervous"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -3459,9 +3995,9 @@
             "panicked"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -3473,9 +4009,9 @@
             "amused"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -3487,9 +4023,9 @@
             "smug"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -3501,9 +4037,9 @@
             "frustrated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -3515,9 +4051,9 @@
             "defeated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -3529,9 +4065,9 @@
             "release"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -3545,6 +4081,92 @@
             80,
             70,
             10
+          ]
+        },
+        "blink-whole-throw-6": {
+          "frames": [
+            "whole-throw-6-blink-half",
+            "whole-throw-6-blink-closed",
+            "whole-throw-6-blink-half",
+            "whole-throw-6"
+          ],
+          "durations": [
+            40,
+            75,
+            40,
+            50
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-left",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-right",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -3584,16 +4206,16 @@
           1040
         ],
         "blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "bounce": [
           594,
@@ -3650,16 +4272,16 @@
           737
         ],
         "left": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "left-mid": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "midfall": [
           612,
@@ -3728,16 +4350,16 @@
           1040
         ],
         "right": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "right-mid": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "settle": [
           781,
@@ -3770,100 +4392,100 @@
           1040
         ],
         "down-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "down-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "nervous-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "nervous-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "panicked-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "panicked-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "amused-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "amused-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "smug-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "smug-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "frustrated-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "frustrated-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "defeated-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "defeated-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "release-blink-half": [
-          781,
-          504,
-          486,
-          1040
+          789,
+          512,
+          470,
+          1024
         ],
         "release-blink": [
-          781,
-          504,
-          486,
-          1040
+          789,
+          512,
+          470,
+          1024
         ],
         "empty-grip": [
           781,
@@ -3948,6 +4570,54 @@
           511,
           483,
           1028
+        ],
+        "whole-throw-6-blink-half": [
+          765,
+          513,
+          487,
+          1026
+        ],
+        "whole-throw-6-blink-closed": [
+          765,
+          513,
+          487,
+          1026
+        ],
+        "nervous-gaze-left": [
+          789,
+          512,
+          469,
+          1024
+        ],
+        "nervous-gaze-right": [
+          789,
+          512,
+          469,
+          1024
+        ],
+        "down-gaze-left": [
+          789,
+          512,
+          469,
+          1024
+        ],
+        "down-gaze-right": [
+          789,
+          512,
+          469,
+          1024
+        ],
+        "panicked-gaze-left": [
+          789,
+          512,
+          469,
+          1024
+        ],
+        "panicked-gaze-right": [
+          789,
+          512,
+          469,
+          1024
         ]
       },
       "handoff": {
@@ -4210,9 +4880,9 @@
             "rest"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -4224,9 +4894,9 @@
             "down"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -4238,9 +4908,9 @@
             "nervous"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -4252,9 +4922,9 @@
             "panicked"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -4266,9 +4936,9 @@
             "amused"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -4280,9 +4950,9 @@
             "smug"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -4294,9 +4964,9 @@
             "frustrated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -4308,9 +4978,9 @@
             "defeated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -4322,9 +4992,9 @@
             "release"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -4338,6 +5008,92 @@
             80,
             70,
             10
+          ]
+        },
+        "blink-whole-throw-6": {
+          "frames": [
+            "whole-throw-6-blink-half",
+            "whole-throw-6-blink-closed",
+            "whole-throw-6-blink-half",
+            "whole-throw-6"
+          ],
+          "durations": [
+            40,
+            75,
+            40,
+            50
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-left",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-right",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -4377,16 +5133,16 @@
           1040
         ],
         "blink": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "blink-half": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "bounce": [
           435,
@@ -4443,16 +5199,16 @@
           842
         ],
         "left": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "left-mid": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "midfall": [
           542,
@@ -4521,16 +5277,16 @@
           1040
         ],
         "right": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "right-mid": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "settle": [
           706,
@@ -4563,100 +5319,100 @@
           1040
         ],
         "down-blink-half": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "down-blink": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "nervous-blink-half": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "nervous-blink": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "panicked-blink-half": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "panicked-blink": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "amused-blink-half": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "amused-blink": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "smug-blink-half": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "smug-blink": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "frustrated-blink-half": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "frustrated-blink": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "defeated-blink-half": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "defeated-blink": [
-          706,
-          504,
-          636,
-          1040
+          714,
+          512,
+          620,
+          1024
         ],
         "release-blink-half": [
-          706,
-          504,
-          625,
-          1040
+          714,
+          512,
+          609,
+          1024
         ],
         "release-blink": [
-          706,
-          504,
-          625,
-          1040
+          714,
+          512,
+          609,
+          1024
         ],
         "empty-grip": [
           706,
@@ -4741,6 +5497,54 @@
           514,
           643,
           1025
+        ],
+        "whole-throw-6-blink-half": [
+          707,
+          511,
+          628,
+          1027
+        ],
+        "whole-throw-6-blink-closed": [
+          707,
+          511,
+          628,
+          1027
+        ],
+        "nervous-gaze-left": [
+          714,
+          512,
+          620,
+          1024
+        ],
+        "nervous-gaze-right": [
+          714,
+          512,
+          620,
+          1024
+        ],
+        "down-gaze-left": [
+          714,
+          512,
+          620,
+          1024
+        ],
+        "down-gaze-right": [
+          714,
+          512,
+          620,
+          1024
+        ],
+        "panicked-gaze-left": [
+          714,
+          512,
+          620,
+          1024
+        ],
+        "panicked-gaze-right": [
+          714,
+          512,
+          620,
+          1024
         ]
       },
       "handoff": {
@@ -5003,9 +5807,9 @@
             "rest"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5017,9 +5821,9 @@
             "down"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5031,9 +5835,9 @@
             "nervous"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5045,9 +5849,9 @@
             "panicked"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5059,9 +5863,9 @@
             "amused"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5073,9 +5877,9 @@
             "smug"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5087,9 +5891,9 @@
             "frustrated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5101,9 +5905,9 @@
             "defeated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5115,9 +5919,9 @@
             "release"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5131,6 +5935,92 @@
             80,
             70,
             10
+          ]
+        },
+        "blink-whole-throw-6": {
+          "frames": [
+            "whole-throw-6-blink-half",
+            "whole-throw-6-blink-closed",
+            "whole-throw-6-blink-half",
+            "whole-throw-6"
+          ],
+          "durations": [
+            40,
+            75,
+            40,
+            50
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-left",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-right",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -5170,16 +6060,16 @@
           1040
         ],
         "blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "bounce": [
           477,
@@ -5236,16 +6126,16 @@
           832
         ],
         "left": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "left-mid": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "midfall": [
           632,
@@ -5314,16 +6204,16 @@
           1040
         ],
         "right": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "right-mid": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "settle": [
           781,
@@ -5356,100 +6246,100 @@
           1040
         ],
         "down-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "down-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "nervous-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "nervous-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "panicked-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "panicked-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "amused-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "amused-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "smug-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "smug-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "frustrated-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "frustrated-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "defeated-blink-half": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "defeated-blink": [
-          781,
-          504,
-          485,
-          1040
+          789,
+          512,
+          469,
+          1024
         ],
         "release-blink-half": [
-          781,
-          504,
-          486,
-          1040
+          789,
+          512,
+          470,
+          1024
         ],
         "release-blink": [
-          781,
-          504,
-          486,
-          1040
+          789,
+          512,
+          470,
+          1024
         ],
         "empty-grip": [
           781,
@@ -5534,6 +6424,54 @@
           513,
           475,
           1025
+        ],
+        "whole-throw-6-blink-half": [
+          779,
+          513,
+          468,
+          1025
+        ],
+        "whole-throw-6-blink-closed": [
+          779,
+          513,
+          468,
+          1025
+        ],
+        "nervous-gaze-left": [
+          789,
+          512,
+          469,
+          1024
+        ],
+        "nervous-gaze-right": [
+          789,
+          512,
+          469,
+          1024
+        ],
+        "down-gaze-left": [
+          789,
+          512,
+          469,
+          1024
+        ],
+        "down-gaze-right": [
+          789,
+          512,
+          469,
+          1024
+        ],
+        "panicked-gaze-left": [
+          789,
+          512,
+          469,
+          1024
+        ],
+        "panicked-gaze-right": [
+          789,
+          512,
+          469,
+          1024
         ]
       },
       "handoff": {
@@ -5796,9 +6734,9 @@
             "rest"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5810,9 +6748,9 @@
             "down"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5824,9 +6762,9 @@
             "nervous"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5838,9 +6776,9 @@
             "panicked"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5852,9 +6790,9 @@
             "amused"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5866,9 +6804,9 @@
             "smug"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5880,9 +6818,9 @@
             "frustrated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5894,9 +6832,9 @@
             "defeated"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5908,9 +6846,9 @@
             "release"
           ],
           "durations": [
-            45,
-            110,
-            45,
+            40,
+            75,
+            40,
             50
           ]
         },
@@ -5924,6 +6862,92 @@
             80,
             70,
             10
+          ]
+        },
+        "blink-whole-throw-6": {
+          "frames": [
+            "whole-throw-6-blink-half",
+            "whole-throw-6-blink-closed",
+            "whole-throw-6-blink-half",
+            "whole-throw-6"
+          ],
+          "durations": [
+            40,
+            75,
+            40,
+            50
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-left",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@panicked": {
+          "frames": [
+            "panicked",
+            "panicked-gaze-right",
+            "panicked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -5963,10 +6987,10 @@
           1040
         ],
         "blink": [
-          786,
-          504,
-          476,
-          1040
+          794,
+          512,
+          460,
+          1024
         ],
         "blink-half": [
           786,
@@ -6029,16 +7053,16 @@
           627
         ],
         "left": [
-          786,
-          504,
-          476,
-          1040
+          794,
+          512,
+          460,
+          1024
         ],
         "left-mid": [
-          786,
-          504,
-          476,
-          1040
+          794,
+          512,
+          460,
+          1024
         ],
         "midfall": [
           618,
@@ -6107,16 +7131,16 @@
           1040
         ],
         "right": [
-          786,
-          504,
-          476,
-          1040
+          794,
+          512,
+          460,
+          1024
         ],
         "right-mid": [
-          786,
-          504,
-          476,
-          1040
+          794,
+          512,
+          460,
+          1024
         ],
         "settle": [
           786,
@@ -6155,10 +7179,10 @@
           1040
         ],
         "down-blink": [
-          786,
-          504,
-          476,
-          1040
+          794,
+          512,
+          460,
+          1024
         ],
         "nervous-blink-half": [
           786,
@@ -6167,10 +7191,10 @@
           1040
         ],
         "nervous-blink": [
-          786,
-          504,
-          476,
-          1040
+          794,
+          512,
+          460,
+          1024
         ],
         "panicked-blink-half": [
           786,
@@ -6179,10 +7203,10 @@
           1040
         ],
         "panicked-blink": [
-          786,
-          504,
-          476,
-          1040
+          794,
+          512,
+          460,
+          1024
         ],
         "amused-blink-half": [
           786,
@@ -6191,10 +7215,10 @@
           1040
         ],
         "amused-blink": [
-          786,
-          504,
-          476,
-          1040
+          794,
+          512,
+          460,
+          1024
         ],
         "smug-blink-half": [
           786,
@@ -6203,10 +7227,10 @@
           1040
         ],
         "smug-blink": [
-          786,
-          504,
-          476,
-          1040
+          794,
+          512,
+          460,
+          1024
         ],
         "frustrated-blink-half": [
           786,
@@ -6215,10 +7239,10 @@
           1040
         ],
         "frustrated-blink": [
-          786,
-          504,
-          476,
-          1040
+          794,
+          512,
+          460,
+          1024
         ],
         "defeated-blink-half": [
           786,
@@ -6227,10 +7251,10 @@
           1040
         ],
         "defeated-blink": [
-          786,
-          504,
-          476,
-          1040
+          794,
+          512,
+          460,
+          1024
         ],
         "release-blink-half": [
           786,
@@ -6239,10 +7263,10 @@
           1040
         ],
         "release-blink": [
-          786,
-          504,
-          476,
-          1040
+          794,
+          512,
+          460,
+          1024
         ],
         "empty-grip": [
           786,
@@ -6327,6 +7351,54 @@
           514,
           464,
           1025
+        ],
+        "whole-throw-6-blink-half": [
+          772,
+          515,
+          467,
+          1024
+        ],
+        "whole-throw-6-blink-closed": [
+          772,
+          515,
+          467,
+          1024
+        ],
+        "nervous-gaze-left": [
+          794,
+          512,
+          460,
+          1024
+        ],
+        "nervous-gaze-right": [
+          794,
+          512,
+          460,
+          1024
+        ],
+        "down-gaze-left": [
+          794,
+          512,
+          460,
+          1024
+        ],
+        "down-gaze-right": [
+          794,
+          512,
+          460,
+          1024
+        ],
+        "panicked-gaze-left": [
+          794,
+          512,
+          460,
+          1024
+        ],
+        "panicked-gaze-right": [
+          794,
+          512,
+          460,
+          1024
         ]
       },
       "handoff": {
@@ -6492,15 +7564,27 @@
         "tumble": {
           "frames": [
             "release",
+            "recoil",
             "fall-start",
             "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
             "floor"
           ],
           "durations": [
+            100,
+            80,
             70,
-            110,
-            140,
-            260
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
           ]
         },
         "return": {
@@ -6565,7 +7649,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -6577,7 +7661,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -6589,7 +7673,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -6601,7 +7685,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -6613,7 +7697,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -6625,7 +7709,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -6637,7 +7721,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -6649,7 +7733,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -6661,20 +7745,92 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
         "blink-release": {
           "frames": [
             "release",
-            "follow-blink",
+            "release-blink",
             "release"
           ],
           "durations": [
             40,
-            100,
+            75,
             60
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-left",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-right",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -6753,22 +7909,22 @@
           1178
         ],
         "fall-start": [
-          494,
-          454,
-          1113,
-          1162
+          504,
+          457,
+          1091,
+          1140
         ],
         "midfall": [
-          494,
-          415,
-          1095,
-          1161
+          487,
+          406,
+          1120,
+          1188
         ],
         "floor": [
-          492,
-          465,
-          1119,
-          1151
+          495,
+          472,
+          1107,
+          1139
         ],
         "blink": [
           488,
@@ -6871,6 +8027,78 @@
           460,
           935,
           1114
+        ],
+        "release-blink": [
+          512,
+          461,
+          841,
+          1107
+        ],
+        "nervous-gaze-left": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "nervous-gaze-right": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "shocked-gaze-left": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "shocked-gaze-right": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "down-gaze-left": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "down-gaze-right": [
+          488,
+          405,
+          1107,
+          1178
+        ],
+        "recoil": [
+          534,
+          456,
+          826,
+          1099
+        ],
+        "airfall": [
+          457,
+          423,
+          1151,
+          1208
+        ],
+        "airfall-low": [
+          429,
+          456,
+          1178,
+          1239
+        ],
+        "impact": [
+          495,
+          476,
+          1107,
+          1139
+        ],
+        "bounce": [
+          504,
+          444,
+          1093,
+          1165
         ]
       },
       "handoff": {
@@ -7036,15 +8264,27 @@
         "tumble": {
           "frames": [
             "release",
+            "recoil",
             "fall-start",
             "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
             "floor"
           ],
           "durations": [
+            100,
+            80,
             70,
-            110,
-            140,
-            360
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
           ]
         },
         "return": {
@@ -7109,7 +8349,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7121,7 +8361,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7133,7 +8373,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7145,7 +8385,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7157,7 +8397,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7169,7 +8409,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7181,7 +8421,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7193,7 +8433,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7205,20 +8445,92 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
         "blink-release": {
           "frames": [
             "release",
-            "grip-blink",
+            "release-blink",
             "release"
           ],
           "durations": [
             40,
-            100,
+            75,
             60
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-left",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-right",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -7297,22 +8609,22 @@
           1010
         ],
         "fall-start": [
-          444,
-          446,
-          1145,
-          1130
+          525,
+          470,
+          1001,
+          988
         ],
         "midfall": [
-          414,
-          383,
-          1215,
-          1193
+          599,
+          463,
+          921,
+          906
         ],
         "floor": [
-          397,
-          383,
-          1206,
-          1233
+          549,
+          545,
+          958,
+          979
         ],
         "left": [
           488,
@@ -7409,6 +8721,78 @@
           490,
           874,
           990
+        ],
+        "release-blink": [
+          536,
+          491,
+          971,
+          992
+        ],
+        "nervous-gaze-left": [
+          488,
+          383,
+          1127,
+          1233
+        ],
+        "nervous-gaze-right": [
+          488,
+          383,
+          1127,
+          1233
+        ],
+        "shocked-gaze-left": [
+          488,
+          383,
+          1127,
+          1233
+        ],
+        "shocked-gaze-right": [
+          488,
+          383,
+          1127,
+          1233
+        ],
+        "down-gaze-left": [
+          488,
+          383,
+          1127,
+          1233
+        ],
+        "down-gaze-right": [
+          488,
+          383,
+          1127,
+          1233
+        ],
+        "recoil": [
+          537,
+          486,
+          967,
+          997
+        ],
+        "airfall": [
+          585,
+          451,
+          900,
+          948
+        ],
+        "airfall-low": [
+          572,
+          455,
+          891,
+          996
+        ],
+        "impact": [
+          549,
+          549,
+          958,
+          979
+        ],
+        "bounce": [
+          554,
+          549,
+          960,
+          966
         ]
       },
       "handoff": {
@@ -7574,15 +8958,27 @@
         "tumble": {
           "frames": [
             "release",
+            "recoil",
             "fall-start",
             "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
             "floor"
           ],
           "durations": [
+            100,
+            80,
             70,
-            110,
-            140,
-            360
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
           ]
         },
         "return": {
@@ -7647,7 +9043,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7659,7 +9055,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7671,7 +9067,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7683,7 +9079,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7695,7 +9091,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7707,7 +9103,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7719,7 +9115,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7731,7 +9127,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -7743,20 +9139,92 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
         "blink-release": {
           "frames": [
             "release",
-            "grip-blink",
+            "release-blink",
             "release"
           ],
           "durations": [
             40,
-            100,
+            75,
             60
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-left",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-right",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -7835,22 +9303,22 @@
           989
         ],
         "fall-start": [
-          494,
-          383,
-          1081,
-          1191
+          556,
+          458,
+          956,
+          1008
         ],
         "midfall": [
-          430,
-          414,
-          1201,
-          1160
+          497,
+          468,
+          1016,
+          980
         ],
         "floor": [
-          397,
-          371,
-          1222,
-          1245
+          530,
+          532,
+          926,
+          946
         ],
         "left": [
           508,
@@ -7947,6 +9415,78 @@
           475,
           775,
           990
+        ],
+        "release-blink": [
+          614,
+          475,
+          775,
+          990
+        ],
+        "nervous-gaze-left": [
+          508,
+          415,
+          1099,
+          1201
+        ],
+        "nervous-gaze-right": [
+          508,
+          415,
+          1099,
+          1201
+        ],
+        "shocked-gaze-left": [
+          508,
+          415,
+          1099,
+          1201
+        ],
+        "shocked-gaze-right": [
+          508,
+          415,
+          1099,
+          1201
+        ],
+        "down-gaze-left": [
+          508,
+          415,
+          1099,
+          1201
+        ],
+        "down-gaze-right": [
+          508,
+          415,
+          1099,
+          1201
+        ],
+        "recoil": [
+          610,
+          470,
+          803,
+          996
+        ],
+        "airfall": [
+          470,
+          489,
+          1013,
+          996
+        ],
+        "airfall-low": [
+          448,
+          524,
+          1002,
+          1024
+        ],
+        "impact": [
+          530,
+          536,
+          926,
+          946
+        ],
+        "bounce": [
+          536,
+          531,
+          923,
+          928
         ]
       },
       "handoff": {
@@ -8112,15 +9652,27 @@
         "tumble": {
           "frames": [
             "release",
+            "recoil",
             "fall-start",
             "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
             "floor"
           ],
           "durations": [
+            100,
+            80,
             70,
-            110,
-            140,
-            360
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
           ]
         },
         "return": {
@@ -8185,7 +9737,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8197,7 +9749,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8209,7 +9761,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8221,7 +9773,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8233,7 +9785,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8245,7 +9797,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8257,7 +9809,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8269,7 +9821,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8281,20 +9833,92 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
         "blink-release": {
           "frames": [
             "release",
-            "grip-blink",
+            "release-blink",
             "release"
           ],
           "durations": [
             40,
-            100,
+            75,
             60
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-left",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-right",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -8373,22 +9997,22 @@
           1029
         ],
         "fall-start": [
-          436,
-          383,
-          1153,
-          1207
+          517,
+          419,
+          984,
+          1019
         ],
         "midfall": [
-          422,
-          402,
-          1187,
-          1174
+          521,
+          472,
+          919,
+          909
         ],
         "floor": [
-          438,
-          410,
-          1179,
-          1182
+          561,
+          526,
+          896,
+          898
         ],
         "left": [
           494,
@@ -8485,6 +10109,78 @@
           483,
           951,
           1043
+        ],
+        "release-blink": [
+          504,
+          451,
+          1046,
+          1096
+        ],
+        "nervous-gaze-left": [
+          494,
+          383,
+          1113,
+          1167
+        ],
+        "nervous-gaze-right": [
+          494,
+          383,
+          1113,
+          1167
+        ],
+        "shocked-gaze-left": [
+          494,
+          383,
+          1113,
+          1167
+        ],
+        "shocked-gaze-right": [
+          494,
+          383,
+          1113,
+          1167
+        ],
+        "down-gaze-left": [
+          494,
+          383,
+          1113,
+          1167
+        ],
+        "down-gaze-right": [
+          494,
+          383,
+          1113,
+          1167
+        ],
+        "recoil": [
+          499,
+          460,
+          1042,
+          1100
+        ],
+        "airfall": [
+          468,
+          476,
+          968,
+          947
+        ],
+        "airfall-low": [
+          419,
+          495,
+          1011,
+          991
+        ],
+        "impact": [
+          561,
+          530,
+          896,
+          898
+        ],
+        "bounce": [
+          571,
+          517,
+          898,
+          880
         ]
       },
       "handoff": {
@@ -8650,15 +10346,27 @@
         "tumble": {
           "frames": [
             "release",
+            "recoil",
             "fall-start",
             "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
             "floor"
           ],
           "durations": [
+            100,
+            80,
             70,
-            110,
-            140,
-            360
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
           ]
         },
         "return": {
@@ -8723,7 +10431,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8735,7 +10443,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8747,7 +10455,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8759,7 +10467,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8771,7 +10479,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8783,7 +10491,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8795,7 +10503,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8807,7 +10515,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -8819,20 +10527,92 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
         "blink-release": {
           "frames": [
             "release",
-            "grip-blink",
+            "release-blink",
             "release"
           ],
           "durations": [
             40,
-            100,
+            75,
             60
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-left",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-right",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -8911,22 +10691,22 @@
           956
         ],
         "fall-start": [
-          494,
-          433,
-          966,
-          1183
+          597,
+          471,
+          751,
+          941
         ],
         "midfall": [
-          453,
-          465,
-          1162,
-          1111
+          550,
+          528,
+          891,
+          852
         ],
         "floor": [
-          412,
-          383,
-          1196,
-          1233
+          534,
+          518,
+          896,
+          887
         ],
         "left": [
           438,
@@ -9023,6 +10803,78 @@
           503,
           900,
           936
+        ],
+        "release-blink": [
+          639,
+          506,
+          739,
+          939
+        ],
+        "nervous-gaze-left": [
+          438,
+          382,
+          1173,
+          1234
+        ],
+        "nervous-gaze-right": [
+          438,
+          382,
+          1173,
+          1234
+        ],
+        "shocked-gaze-left": [
+          438,
+          382,
+          1173,
+          1234
+        ],
+        "shocked-gaze-right": [
+          438,
+          382,
+          1173,
+          1234
+        ],
+        "down-gaze-left": [
+          438,
+          382,
+          1173,
+          1234
+        ],
+        "down-gaze-right": [
+          438,
+          382,
+          1173,
+          1234
+        ],
+        "recoil": [
+          637,
+          502,
+          738,
+          943
+        ],
+        "airfall": [
+          521,
+          587,
+          910,
+          829
+        ],
+        "airfall-low": [
+          460,
+          660,
+          965,
+          801
+        ],
+        "impact": [
+          534,
+          522,
+          896,
+          887
+        ],
+        "bounce": [
+          537,
+          519,
+          906,
+          880
         ]
       },
       "handoff": {
@@ -9188,15 +11040,27 @@
         "tumble": {
           "frames": [
             "release",
+            "recoil",
             "fall-start",
             "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
             "floor"
           ],
           "durations": [
+            100,
+            80,
             70,
-            110,
-            140,
-            360
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
           ]
         },
         "return": {
@@ -9261,7 +11125,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9273,7 +11137,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9285,7 +11149,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9297,7 +11161,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9309,7 +11173,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9321,7 +11185,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9333,7 +11197,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9345,7 +11209,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9357,20 +11221,92 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
         "blink-release": {
           "frames": [
             "release",
-            "grip-blink",
+            "release-blink",
             "release"
           ],
           "durations": [
             40,
-            100,
+            75,
             60
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-left",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-right",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -9449,22 +11385,22 @@
           1036
         ],
         "fall-start": [
-          494,
-          413,
-          1113,
-          1161
+          571,
+          446,
+          957,
+          997
         ],
         "midfall": [
-          488,
-          419,
-          1133,
-          1157
+          563,
+          456,
+          1000,
+          1022
         ],
         "floor": [
-          397,
-          383,
-          1216,
-          1233
+          619,
+          625,
+          844,
+          840
         ],
         "left": [
           543,
@@ -9561,6 +11497,78 @@
           439,
           959,
           1052
+        ],
+        "release-blink": [
+          495,
+          433,
+          1043,
+          1054
+        ],
+        "nervous-gaze-left": [
+          543,
+          447,
+          1064,
+          1083
+        ],
+        "nervous-gaze-right": [
+          543,
+          447,
+          1064,
+          1083
+        ],
+        "shocked-gaze-left": [
+          543,
+          447,
+          1064,
+          1083
+        ],
+        "shocked-gaze-right": [
+          543,
+          447,
+          1064,
+          1083
+        ],
+        "down-gaze-left": [
+          543,
+          447,
+          1064,
+          1083
+        ],
+        "down-gaze-right": [
+          543,
+          447,
+          1064,
+          1083
+        ],
+        "recoil": [
+          492,
+          433,
+          1066,
+          1055
+        ],
+        "airfall": [
+          564,
+          437,
+          990,
+          1075
+        ],
+        "airfall-low": [
+          528,
+          434,
+          1026,
+          1137
+        ],
+        "impact": [
+          619,
+          629,
+          844,
+          840
+        ],
+        "bounce": [
+          625,
+          615,
+          854,
+          841
         ]
       },
       "handoff": {
@@ -9726,15 +11734,27 @@
         "tumble": {
           "frames": [
             "release",
+            "recoil",
             "fall-start",
             "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
             "floor"
           ],
           "durations": [
+            100,
+            80,
             70,
-            110,
-            140,
-            360
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
           ]
         },
         "return": {
@@ -9799,7 +11819,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9811,7 +11831,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9823,7 +11843,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9835,7 +11855,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9847,7 +11867,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9859,7 +11879,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9871,7 +11891,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9883,7 +11903,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -9895,20 +11915,92 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
         "blink-release": {
           "frames": [
             "release",
-            "grip-blink",
+            "release-blink",
             "release"
           ],
           "durations": [
             40,
-            100,
+            75,
             60
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-left",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-right",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -9987,22 +12079,22 @@
           1090
         ],
         "fall-start": [
-          397,
-          383,
-          1210,
-          1193
+          459,
+          412,
+          1090,
+          1075
         ],
         "midfall": [
-          397,
-          383,
-          1224,
-          1193
+          521,
+          467,
+          988,
+          964
         ],
         "floor": [
-          422,
-          410,
-          1177,
-          1206
+          576,
+          529,
+          938,
+          1015
         ],
         "left": [
           421,
@@ -10099,6 +12191,78 @@
           426,
           1076,
           1112
+        ],
+        "release-blink": [
+          461,
+          409,
+          1095,
+          1115
+        ],
+        "nervous-gaze-left": [
+          421,
+          383,
+          1210,
+          1193
+        ],
+        "nervous-gaze-right": [
+          421,
+          383,
+          1210,
+          1193
+        ],
+        "shocked-gaze-left": [
+          421,
+          383,
+          1210,
+          1193
+        ],
+        "shocked-gaze-right": [
+          421,
+          383,
+          1210,
+          1193
+        ],
+        "down-gaze-left": [
+          421,
+          383,
+          1210,
+          1193
+        ],
+        "down-gaze-right": [
+          421,
+          383,
+          1210,
+          1193
+        ],
+        "recoil": [
+          481,
+          419,
+          1079,
+          1106
+        ],
+        "airfall": [
+          466,
+          456,
+          1031,
+          1013
+        ],
+        "airfall-low": [
+          416,
+          460,
+          1077,
+          1069
+        ],
+        "impact": [
+          576,
+          533,
+          938,
+          1015
+        ],
+        "bounce": [
+          573,
+          521,
+          951,
+          1018
         ]
       },
       "handoff": {
@@ -10264,15 +12428,27 @@
         "tumble": {
           "frames": [
             "release",
+            "recoil",
             "fall-start",
             "midfall",
+            "airfall",
+            "airfall-low",
+            "floor",
+            "impact",
+            "bounce",
             "floor"
           ],
           "durations": [
+            100,
+            80,
             70,
-            110,
-            140,
-            360
+            70,
+            65,
+            65,
+            80,
+            60,
+            90,
+            700
           ]
         },
         "return": {
@@ -10337,7 +12513,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -10349,7 +12525,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -10361,7 +12537,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -10373,7 +12549,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -10385,7 +12561,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -10397,7 +12573,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -10409,7 +12585,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -10421,7 +12597,7 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
@@ -10433,20 +12609,92 @@
           ],
           "durations": [
             40,
-            100,
+            75,
             60
           ]
         },
         "blink-release": {
           "frames": [
             "release",
-            "grip-blink",
+            "release-blink",
             "release"
           ],
           "durations": [
             40,
-            100,
+            75,
             60
+          ]
+        },
+        "look-left@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-left",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@nervous": {
+          "frames": [
+            "nervous",
+            "nervous-gaze-right",
+            "nervous"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-left",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@shocked": {
+          "frames": [
+            "shocked",
+            "shocked-gaze-right",
+            "shocked"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-left@down": {
+          "frames": [
+            "down",
+            "down-gaze-left",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
+          ]
+        },
+        "look-right@down": {
+          "frames": [
+            "down",
+            "down-gaze-right",
+            "down"
+          ],
+          "durations": [
+            60,
+            260,
+            80
           ]
         }
       },
@@ -10525,22 +12773,22 @@
           1040
         ],
         "fall-start": [
-          436,
-          383,
-          1177,
-          1163
+          526,
+          417,
+          980,
+          986
         ],
         "midfall": [
-          397,
-          383,
-          1234,
-          1233
+          551,
+          475,
+          930,
+          928
         ],
         "floor": [
-          397,
-          414,
-          1228,
-          1168
+          505,
+          521,
+          1027,
+          977
         ],
         "left": [
           488,
@@ -10637,6 +12885,78 @@
           473,
           963,
           997
+        ],
+        "release-blink": [
+          558,
+          453,
+          962,
+          1033
+        ],
+        "nervous-gaze-left": [
+          488,
+          415,
+          1119,
+          1129
+        ],
+        "nervous-gaze-right": [
+          488,
+          415,
+          1119,
+          1129
+        ],
+        "shocked-gaze-left": [
+          488,
+          415,
+          1119,
+          1129
+        ],
+        "shocked-gaze-right": [
+          488,
+          415,
+          1119,
+          1129
+        ],
+        "down-gaze-left": [
+          488,
+          415,
+          1119,
+          1129
+        ],
+        "down-gaze-right": [
+          488,
+          415,
+          1119,
+          1129
+        ],
+        "recoil": [
+          556,
+          433,
+          966,
+          1061
+        ],
+        "airfall": [
+          532,
+          531,
+          941,
+          880
+        ],
+        "airfall-low": [
+          487,
+          594,
+          979,
+          870
+        ],
+        "impact": [
+          505,
+          525,
+          1027,
+          977
+        ],
+        "bounce": [
+          527,
+          513,
+          1024,
+          984
         ]
       },
       "handoff": {
@@ -10659,5 +12979,7 @@
     }
   },
   "wholeActionRevision": "approved-eight-v1",
-  "cardBackRevision": "actual-rounded-back-v1"
+  "cardBackRevision": "actual-rounded-back-v1",
+  "qualityRevision": "pose-continuity-v1",
+  "resamplingScope": "24 complete tumble drawings uniformly registered; eye edits retain native pixels and alpha"
 }
