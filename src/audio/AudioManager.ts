@@ -1,5 +1,6 @@
 import {SuspenseTrack, anxietyLevel, makeSeamlessLoop} from './SuspenseTrack';
 import {AudioRecovery} from './AudioRecovery';
+import {PlaybackAudioSession} from './PlaybackAudioSession';
 
 export type AudioCue = 'card-hover'|'card-select'|'card-flick'|'card-impact'|'card-draw'|'draw-pile'|'shuffle'|'center-energy'|'total-increase'|'reverse'|'zero'|'minus-ten'|'win'|'loss'|'avatar-reaction'|'emote'|'button'|'tavern-ambience'|'fire-ambience'|'city-ambience';
 type LegacyCue = 'pickup'|'slap'|'draw'|'target'|'minus'|'bust'|'click';
@@ -34,6 +35,7 @@ export class AudioManager extends EventTarget {
   private backgrounded=false;
   private disposed=false;
   private recovery?:AudioRecovery;
+  private playbackSession=new PlaybackAudioSession();
   private rebuiltForReturn=false;
   private recordings=new Map<string,AudioBuffer>();
   private voices=new Set<AudioScheduledSourceNode>();
@@ -45,7 +47,7 @@ export class AudioManager extends EventTarget {
   configure(settings:SoundSettings):void{this.settings={...settings};this.applyGains();}
   private createContext(rebuilding=false):boolean{
     let context:AudioContext;
-    try{context=new AudioContext();}catch{return false;}
+    try{context=new AudioContext();}catch{if(!this.context)this.playbackSession.setActive(false);return false;}
     const old=this.context;
     this.recovery?.dispose();this.suspense?.dispose();this.anxiety?.dispose();this.stopVoices();
     this.context=context;this.master=this.context.createGain();this.master.connect(this.context.destination);
@@ -69,6 +71,9 @@ export class AudioManager extends EventTarget {
   }
   unlock(gesture=false):void{
     if(this.disposed)return;
+    // Select the media channel before constructing/resuming Web Audio, within
+    // the trusted gesture when available. Reassert it after app interruptions.
+    this.playbackSession.setActive(!this.backgrounded&&!this.settings.muted&&this.volume>0);
     if(!this.context&&!this.createContext())return;
     this.recovery?.recover(gesture);
     // Preload on the first interaction, well before the table normally reaches 70.
@@ -104,6 +109,7 @@ export class AudioManager extends EventTarget {
     this.anxiety?.setTotal(this.suspenseTotal,audible);
   }
   private applyGains():void{
+    this.playbackSession.setActive(!!this.context&&!this.disposed&&!this.backgrounded&&!this.settings.muted&&this.volume>0);
     if(this.settings.muted||!this.settings.volume)this.pendingCue=undefined;
     if(!this.context||!this.master)return;
     const now=this.context.currentTime;
@@ -180,5 +186,5 @@ export class AudioManager extends EventTarget {
     else if(cue==='total-increase'||cue==='center-energy')this.tone(170,.2,'sine',.035,1.3,options);
     // Ambience and music are independent loop buses, silent until a real clip is registered.
   }
-  dispose():void{this.disposed=true;this.pendingCue=undefined;this.recovery?.dispose();this.suspense?.dispose();this.anxiety?.dispose();this.stopVoices();void this.context?.close().catch(()=>undefined);}
+  dispose():void{this.disposed=true;this.playbackSession.setActive(false);this.pendingCue=undefined;this.recovery?.dispose();this.suspense?.dispose();this.anxiety?.dispose();this.stopVoices();void this.context?.close().catch(()=>undefined);}
 }

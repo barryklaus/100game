@@ -7,6 +7,17 @@ const load=async path=>{
 const {AudioManager}=await load('src/audio/AudioManager.ts');
 const {RemoteCardAudio}=await load('src/audio/RemoteCardAudio.ts');
 const {bindAudioLifecycle}=await load('src/audio/AudioLifecycle.ts');
+const {PlaybackAudioSession}=await load('src/audio/PlaybackAudioSession.ts');
+
+const navigatorDescriptor=Object.getOwnPropertyDescriptor(globalThis,'navigator');
+const session={type:'auto'};
+Object.defineProperty(globalThis,'navigator',{configurable:true,value:{audioSession:session}});
+const routing=new PlaybackAudioSession();
+routing.setActive(true);assert.equal(session.type,'playback');
+session.type='transient';routing.setActive(false);
+assert.equal(session.type,'transient','Releasing our override does not overwrite an external session change');
+routing.setActive(true);routing.setActive(false);assert.equal(session.type,'transient','The prior session type is restored');
+session.type='auto';
 
 const original={setTimeout,clearTimeout,performance,fetch,AudioContext:globalThis.AudioContext};
 let wall=0,nextTimer=1;const timers=new Map();
@@ -26,7 +37,7 @@ class Node{connect(n){return n;}disconnect(){this.disconnected=true;}}
 class Context extends EventTarget{
  static instances=[];static defaultResume='normal';
  _state='suspended';fixed=0;started=wall;frozen=false;resumeCalls=0;resumeMode=Context.defaultResume;destination=new Node();sources=[];gains=[];
- constructor(){super();Context.instances.push(this);}
+ constructor(){super();this.sessionAtCreation=globalThis.navigator.audioSession?.type;Context.instances.push(this);}
  get state(){return this._state;}
  get currentTime(){return this.fixed+(this._state==='running'&&!this.frozen?(wall-this.started)/1000:0);}
  transition(state){this.fixed=this.currentTime;this.started=wall;this._state=state;this.dispatchEvent(new Event('statechange'));}
@@ -46,6 +57,8 @@ const settings={volume:.55,sfxVolume:.8,musicVolume:.45,ambienceVolume:.3,muted:
 const audio=new AudioManager();audio.configure(settings);audio.unlock(true);await flush();await tick(800);
 let context=Context.instances.at(-1);
 assert.equal(context.state,'running');
+assert.equal(context.sessionAtCreation,'playback','Silent-mode media routing is selected before creating Web Audio');
+assert.equal(session.type,'playback');
 await audio.registerClip('card-impact','/impact.wav');await audio.registerClip('card-flick','/flick.wav');
 const host=new RemoteCardAudio(cue=>audio.play(cue));
 const start=context.sources.length;
@@ -59,11 +72,13 @@ assert(context.resumeCalls>=2);await tick(800);
 host.throw('human-2');host.land('human-2');assert.equal(context.sources.at(-1).buffer,cached);
 
 const calls=context.resumeCalls;audio.setBackgrounded(true);context.transition('interrupted');
+assert.equal(session.type,'auto','Backgrounding releases the exclusive playback session');
 assert.equal(context.resumeCalls,calls,'Audio never tries to resume while another app is foreground');
 assert.equal(context.gains[0].gain.value,0);assert(impact.disconnected,'Backgrounding drops active effects instead of letting them freeze and replay later');
 const hiddenCount=context.sources.length;host.throw('hidden-card');host.land('hidden-card');audio.setPresentedTotal(105);
 assert.equal(context.sources.length,hiddenCount,'Hidden network events and explosions do not build a playback backlog');
 audio.setBackgrounded(false);await flush();
+assert.equal(session.type,'playback','Returning from another app reselects the media channel');
 assert.equal(context.state,'running');assert.equal(context.sources.length,hiddenCount,'Return does not replay missed cards');
 host.land('hidden-card');assert.equal(context.sources.length,hiddenCount);
 host.throw('human-3');host.land('human-3');assert.equal(context.sources.length,hiddenCount+2,'Human turns are audible again after returning');
@@ -84,7 +99,12 @@ audio.setBackgrounded(true);assert(anxiety.stopped!==undefined);replacement.tran
 assert.equal(replacement.sources.at(-1).loop,true,'Anxiety resumes at the currently presented 100');
 audio.configure({...settings,muted:true});const mutedCount=replacement.sources.length;audio.play('card-impact');audio.setBackgrounded(true);audio.setBackgrounded(false);await flush();
 assert.equal(replacement.sources.length,mutedCount,'Recovery preserves mute and channel preferences');
-audio.dispose();host.throw('after-dispose');assert.equal(replacement.sources.length,mutedCount);await tick(800);
+assert.equal(session.type,'auto','In-game mute stays silent and releases playback routing');
+audio.configure({...settings,volume:0});assert.equal(session.type,'auto');
+audio.configure(settings);assert.equal(session.type,'playback','Unmuting restores media routing');
+const unmutedCount=replacement.sources.length;
+audio.dispose();host.throw('after-dispose');assert.equal(replacement.sources.length,unmutedCount);await tick(800);
+assert.equal(session.type,'auto','Disposal restores the original session type');
 
 // A gesture must retry synchronously even if an earlier resume promise hangs.
 const gestureAudio=new AudioManager();gestureAudio.unlock(true);await flush();await tick(800);
@@ -120,5 +140,14 @@ for(const type of ['pointerdown','pointerup','touchend','click','keydown']){doc.
 const signalCount=signals.length;doc.emit('click',{isTrusted:false});assert.equal(signals.length,signalCount,'Synthetic clicks do not claim user activation');
 cleanup();assert.equal(doc.handlers.size,0);assert.equal(page.handlers.size,0);assert.equal(timers.size,0,'All recovery timers are removed on disposal');
 host.reset();const cues=[];const guest=new RemoteCardAudio(cue=>cues.push(cue));guest.land('fallback');guest.land('fallback');guest.reset();guest.land('fallback');assert.deepEqual(cues,['card-impact','card-impact'],'Fallback sound deduplicates snapshots and resets with the room');
+// Browsers with no API or restricted getters/setters still start ordinary audio.
+for(const navigatorValue of [{},{get audioSession(){throw new Error('unavailable');}},{audioSession:{get type(){return 'auto';},set type(value){throw new Error('restricted');}}}]){
+ Object.defineProperty(globalThis,'navigator',{configurable:true,value:navigatorValue});
+ const safe=new PlaybackAudioSession();assert.doesNotThrow(()=>{safe.setActive(true);safe.setActive(false);});
+}
+Object.defineProperty(globalThis,'navigator',{configurable:true,value:{}});
+const unsupported=new AudioManager();unsupported.unlock(true);await flush();
+assert.equal(Context.instances.at(-1).state,'running','Unsupported browsers retain functional Web Audio');unsupported.dispose();await tick(800);
+if(navigatorDescriptor)Object.defineProperty(globalThis,'navigator',navigatorDescriptor);else delete globalThis.navigator;
 Object.assign(globalThis,original);
-console.log('Mobile audio checks passed: human-host throw/impact, interrupted/suspended states, app return, frozen clocks, cached clips, bounded rebuilding, hung/rejected resumes, activation fallback, hidden-event suppression, current Anxiety loop, mute, lifecycle bindings and disposal.');
+console.log('Mobile audio checks passed: Silent Mode playback routing before activation, app return, mute/volume/session release, unsupported APIs, human-host throw/impact, interrupted/suspended states, frozen clocks, cached clips, bounded rebuilding, hung/rejected resumes, activation fallback, hidden-event suppression, current Anxiety loop, lifecycle bindings and disposal.');
