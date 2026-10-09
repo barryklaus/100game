@@ -1,0 +1,44 @@
+/* Keep the main actions readable and easy to tap on every setup screen. */
+.midnight-mode .setup-panel .panel-top {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 26px;
+}
+.midnight-mode .setup-panel .top-links {
+  order: -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.midnight-mode .setup-panel .top-links button {
+  min-height: 50px;
+  padding: 13px 16px;
+  border: 1px solid #b99b60;
+  border-radius: 12px;
+  background: #171e2b;
+  color: #fff2d2;
+  font-size: 1rem;
+  font-weight: 800;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  transition: background .15s, border-color .15s;
+}
+.midnight-mode .setup-panel .top-links button[data-action="account"] {
+  background: #e5be76;
+  border-color: #f5d99d;
+  color: #20180d;
+}
+.midnight-mode .setup-panel .top-links button:hover {
+  background: #293348;
+  border-color: #ffe0a0;
+}
+.midnight-mode .setup-panel .top-links button[data-action="account"]:hover { background: #f6d594; }
+.midnight-mode .setup-panel .top-links button:focus-visible {
+  outline: 3px solid #ffe0a0;
+  outline-offset: 3px;
+}
+.midnight-mode .setup-controls { grid-template-columns: 1fr; }
+@media (max-width: 720px) {
+  .midnight-mode .setup-panel .panel-top { gap: 20px; }
+  .midnight-mode .setup-panel .top-links button { min-height: 48px; font-size: .95rem; }
+}

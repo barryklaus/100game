@@ -3,6 +3,7 @@ import { createDeathDemo } from './game/DeathDemo';
 import { createFreedomDemo } from './game/FreedomDemo';
 import './death-demo.css';
 import './character-picker.css';
+import './setup-menu.css';
 import { conditionForScore, isOut, tableSeats } from './game/conditions';
 import { freedomScene } from './ui/FreedomScene';
 import './freedom.css';
@@ -63,6 +64,8 @@ const brandMarkup = isNextVersion ? 'WE WERE FRIENDS<br>BEFORE THIS.' : 'SIMPLE 
 const gameTagline = isNextVersion ? 'Make it someone else’s problem.' : 'PLAY. BLUFF. SURVIVE.';
 const playerRing = new PlayerRing(app, () => observatory?.projectPlayerRing(), () => render());
 let settings: Settings = loadSettings();
+// 100next always uses the strongest public-information CPU strategy.
+if (isNextVersion) settings.difficulty = 'normal';
 let trialCast=!outcomeDemo&&isNextVersion&&new URLSearchParams(location.search).get('characters')==='finn-june';
 let masterCast=isNextVersion&&(outcomeDemo||!['observatory','finn-june'].includes(new URLSearchParams(location.search).get('characters')??''));
 if(trialCast){settings.playerCount=2;settings.seats[0]={...settings.seats[0],name:'Finn',avatar:0,kind:'human',mood:'Normal'};settings.seats[1]={...settings.seats[1],name:'June',avatar:1,kind:'cpu',mood:'Normal'};}
@@ -544,9 +547,9 @@ function cardElement(card: Card, selected = false, extra = ''): string {
 function setupView(): string {
   return `<main class="setup-page">
     <div class="setup-hero"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">THE CARD GAME</div><h1>${headlineMarkup}</h1><p>Look at your two cards. Make your move. Don't be the one who goes over 100.</p><div class="hero-cards">${cardElement({id:'fire-7',suit:'fire',rank:'7'},false,'hero-card one')}${cardElement({id:'water-8',suit:'water',rank:'8'},false,'hero-card two')}${cardElement({id:'sun-10',suit:'sun',rank:'10'},false,'hero-card three')}</div><div class="hero-footer">${gameTagline}</div></div>
-    <section class="setup-panel"><div class="panel-top"><span class="eyebrow">GATHER ROUND</span><div class="top-links">${account?`<button data-action="account">${escapeHtml(account.snapshot.user?.username??'Sign in')}</button>`:''}<button data-action="rules">How to play</button><button data-action="stats">Stats</button><button data-action="settings">⚙ Settings</button></div></div><h2>Set the table</h2><p class="muted">Choose 2–8 players. Any seat can be Human or CPU.</p>
-      ${isNextVersion ? `<label class="cast-choice">CHARACTERS<select id="character-cast"><option value="observatory" ${!trialCast&&!masterCast?'selected':''}>Observatory</option><option value="finn-june" ${trialCast?'selected':''}>Finn &amp; June</option><option value="midnight-eight" ${masterCast?'selected':''}>Midnight Social Club · 16 characters</option></select></label>` : ''}
-      <div class="setup-controls"><label>PLAYERS<select id="player-count">${Array.from({length:7},(_,i)=>`<option value="${i+2}" ${settings.playerCount===i+2?'selected':''}>${i+2} players${i+2===4?' · recommended':''}</option>`).join('')}</select></label><label>CPU DIFFICULTY<select id="difficulty"><option value="easy" ${settings.difficulty==='easy'?'selected':''}>Easy</option><option value="normal" ${settings.difficulty==='normal'?'selected':''}>Normal</option></select></label></div>
+    <section class="setup-panel"><div class="panel-top"><span class="eyebrow">GATHER ROUND</span><nav class="top-links" aria-label="Game options">${account?`<button data-action="account">${escapeHtml(account.snapshot.user?.username??'Sign in')}</button>`:''}<button data-action="rules">How to play</button><button data-action="stats">Stats</button><button data-action="settings">Settings</button></nav></div><h2>Set the table</h2><p class="muted">Choose 2–8 players. Any seat can be Human or CPU.</p>
+
+      <div class="setup-controls"><label>PLAYERS<select id="player-count">${Array.from({length:7},(_,i)=>`<option value="${i+2}" ${settings.playerCount===i+2?'selected':''}>${i+2} players${i+2===4?' · recommended':''}</option>`).join('')}</select></label>${isNextVersion?'':`<label>CPU DIFFICULTY<select id="difficulty"><option value="easy" ${settings.difficulty==='easy'?'selected':''}>Easy</option><option value="normal" ${settings.difficulty==='normal'?'selected':''}>Normal</option></select></label>`}</div>
       <div class="seat-editor">${settings.seats.slice(0,settings.playerCount).map((seat,i)=>`<div class="seat-row"><div class="seat-number">${String(i+1).padStart(2,'0')}</div>${isNextVersion?`<button type="button" class="avatar-tiny character-picker-trigger" data-character-seat="${i}" aria-label="Player ${i+1} character: ${escapeHtml(avatarNames[seat.avatar % avatarNames.length])}. Choose character" aria-haspopup="dialog" title="Choose character"><img src="${avatarImage(seat.avatar)}" alt=""></button>`:`<div class="avatar-tiny"><img src="${avatarImage(seat.avatar)}" alt=""></div>`}<input aria-label="Player ${i+1} name" data-seat-name="${i}" ${i===0&&account?.snapshot.user?'readonly':''} maxlength="15" value="${escapeHtml(seat.name)}"><select aria-label="Player ${i+1} type" data-seat-kind="${i}"><option value="human" ${seat.kind==='human'?'selected':''}>Human</option><option value="cpu" ${seat.kind==='cpu'?'selected':''}>CPU</option></select>${isNextVersion?'':`<select aria-label="Player ${i+1} avatar" data-seat-avatar="${i}">${avatarNames.map((name,v)=>`<option value="${v}" ${seat.avatar===v?'selected':''}>${escapeHtml(name)}</option>`).join('')}</select>`}<select aria-label="Player ${i+1} mood" data-seat-mood="${i}">${MOODS.map(m=>`<option ${seat.mood===m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}</div>
       <button class="primary-button start-button" data-action="start">START LOCAL GAME <span>➜</span></button><button class="secondary-button online-entry" data-action="online-setup">PLAY ONLINE WITH FRIENDS</button><p class="setup-note">Local: pass one device · Online: share a room link, one Human per device</p>
     </section></main>`;
@@ -796,14 +799,8 @@ app.addEventListener('click', event => {
 });
 app.addEventListener('change', event => {
   const el = event.target as HTMLInputElement | HTMLSelectElement;
-  if(el.id==='character-cast'&&isNextVersion){
-    trialCast=el.value==='finn-june';masterCast=el.value==='midnight-eight';avatarNames=masterCast?masterNames:trialCast?['Finn','June']:observatoryAvatarNames;
-    if(masterCast)useMasterSeats(true);
-    if(trialCast){settings.playerCount=2;settings.seats[0]={...settings.seats[0],name:'Finn',avatar:0,kind:'human',mood:'Normal'};settings.seats[1]={...settings.seats[1],name:'June',avatar:1,kind:'cpu',mood:'Normal'};}
-    history.replaceState(null,'',castPath());save();render();return;
-  }
   if (el.id === 'player-count') { settings.playerCount = Number(el.value); save(); render(); }
-  if (el.id === 'difficulty') { settings.difficulty = el.value as Settings['difficulty']; save(); }
+  if (el.id === 'difficulty' && !isNextVersion) { settings.difficulty = el.value as Settings['difficulty']; save(); }
   if (el.id === 'room-cpus') { roomCpuCount = Number(el.value); online?.setCpuCount(roomCpuCount); }
   if (el.id === 'room-code') joinCode = el.value;
   if (el.id === 'online-name') { settings.seats[0].name = el.value.trim().slice(0,15); save(); }
