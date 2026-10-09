@@ -4,7 +4,11 @@ import { masterHandRect } from './MasterCharacters';
 interface CastState { active:number; total:number; overflow:boolean; overflowSeat?:number; target:boolean; reducedMotion:boolean }
 interface Seat { element:HTMLElement; image:HTMLImageElement; id:string; condition:number; data:MasterAnimationSet; epoch:number; held:1|2; frame:string; mood:string; fallen:boolean; timer:number; blinkTimer:number; phase:'rest'|'prepare'|'release'|'receive'; warmed:boolean; animation?:{frames:string[];resolve:()=>void} }
 export function masterFrameUrl(id:string,frame='rest',condition=0):string { return `${import.meta.env.BASE_URL}assets/social-club/${condition&&conditionAnimations[id]?.[condition]?'condition-animation-v1/'+id+'/'+condition:'master-animation-v2/'+id}/${frame}.webp`; }
-export function masterFrameStyle(id:string,frame='rest',condition=0):string {const [x,y,w,h]=(conditionAnimations[id]?.[condition]??masterAnimations[id]).bounds[frame];return `left:${x/2048*100}%;top:${y/2048*100}%;width:${w/2048*100}%;height:${h/2048*100}%`;}
+export function masterFrameBounds(id:string,frame='rest',condition=0):number[] {
+ const data=conditionAnimations[id]?.[condition]??masterAnimations[id], [x,y,w,h]=data.bounds[frame], [scale,dx,dy]=data.registration??[1,0,0], [poseScale,poseX,poseY]=data.poseRegistration?.[frame]??[1,0,0];
+ return [(x*poseScale+poseX)*scale+dx,(y*poseScale+poseY)*scale+dy,w*poseScale*scale,h*poseScale*scale];
+}
+export function masterFrameStyle(id:string,frame='rest',condition=0):string {const [x,y,w,h]=masterFrameBounds(id,frame,condition);return `left:${x/2048*100}%;top:${y/2048*100}%;width:${w/2048*100}%;height:${h/2048*100}%`;}
 /** One complete drawing per pose. Only empty pixels are omitted from downloaded files. */
 export class MasterAnimations {
  private seats=new Map<number,Seat>();

@@ -19,7 +19,9 @@ export function masterHandRect(root: HTMLElement, index: number, catching = fals
 export function masterAnchors(index: number,condition=0): string {
   const character = masterCharacter(index);
   return (['release', 'catch'] as const).map(kind => {
-    const [x, y, w, h] = (conditionAnimations[character.id]?.[condition]??masterAnimations[character.id])?.handoff?.[kind] ?? character[kind];
-    return `<span class="master-hand-${kind}" aria-hidden="true" style="left:${(x-w/2)/512*100}%;top:${(y-h/2)/512*100}%;width:${w/512*100}%;height:${h/512*100}%"></span>`;
+    const data=conditionAnimations[character.id]?.[condition]??masterAnimations[character.id];
+    const [x, y, w, h] = data?.handoff?.[kind] ?? character[kind];
+    const [scale,dx,dy]=data?.registration??[1,0,0];
+    return `<span class="master-hand-${kind}" aria-hidden="true" style="left:${((x-w/2)*scale+dx/4)/512*100}%;top:${((y-h/2)*scale+dy/4)/512*100}%;width:${w*scale/512*100}%;height:${h*scale/512*100}%"></span>`;
   }).join('');
 }

@@ -56,17 +56,13 @@
         "idle": {
           "frames": [
             "rest",
-            "blink-half",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
-            750,
             40,
-            90,
-            40,
-            550
+            80,
+            60
           ]
         },
         "choose-left": {
@@ -157,7 +153,7 @@
         },
         "throw": {
           "frames": [
-            "whole-throw-1",
+            "rest",
             "whole-throw-2",
             "whole-throw-3",
             "whole-throw-4",
@@ -177,7 +173,7 @@
           "frames": [
             "whole-receive-4",
             "whole-receive-5",
-            "whole-receive-6"
+            "rest"
           ],
           "durations": [
             55,
@@ -187,7 +183,7 @@
         },
         "tumble": {
           "frames": [
-            "tumble-start",
+            "whole-throw-6",
             "recoil",
             "fall-start",
             "midfall",
@@ -220,8 +216,7 @@
             "midfall",
             "fall-start",
             "recoil",
-            "tumble-start",
-            "release",
+            "whole-throw-6",
             "rest"
           ],
           "durations": [
@@ -232,140 +227,121 @@
             70,
             70,
             80,
-            90,
-            100,
+            190,
             180
           ]
         },
         "blink-rest": {
           "frames": [
-            "blink-half",
+            "rest",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-down": {
           "frames": [
-            "down-blink-half",
+            "down",
             "down-blink",
-            "down-blink-half",
             "down"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-nervous": {
           "frames": [
-            "nervous-blink-half",
+            "nervous",
             "nervous-blink",
-            "nervous-blink-half",
             "nervous"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-panicked": {
           "frames": [
-            "panicked-blink-half",
+            "panicked",
             "panicked-blink",
-            "panicked-blink-half",
             "panicked"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-amused": {
           "frames": [
-            "amused-blink-half",
+            "amused",
             "amused-blink",
-            "amused-blink-half",
             "amused"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-smug": {
           "frames": [
-            "smug-blink-half",
+            "smug",
             "smug-blink",
-            "smug-blink-half",
             "smug"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-frustrated": {
           "frames": [
-            "frustrated-blink-half",
+            "frustrated",
             "frustrated-blink",
-            "frustrated-blink-half",
             "frustrated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-defeated": {
           "frames": [
-            "defeated-blink-half",
+            "defeated",
             "defeated-blink",
-            "defeated-blink-half",
             "defeated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-release": {
           "frames": [
-            "release-blink-half",
+            "release",
             "release-blink",
-            "release-blink-half",
             "release"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "receive-ready": {
           "frames": [
-            "whole-receive-1",
+            "whole-throw-6",
             "whole-receive-2",
             "whole-receive-3"
           ],
@@ -377,16 +353,14 @@
         },
         "blink-whole-throw-6": {
           "frames": [
-            "whole-throw-6-blink-half",
+            "whole-throw-6",
             "whole-throw-6-blink-closed",
-            "whole-throw-6-blink-half",
             "whole-throw-6"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "look-left@nervous": {
@@ -459,6 +433,18 @@
             60,
             260,
             80
+          ]
+        },
+        "blink": {
+          "frames": [
+            "rest",
+            "blink",
+            "rest"
+          ],
+          "durations": [
+            40,
+            80,
+            60
           ]
         }
       },
@@ -540,10 +526,10 @@
           1040
         ],
         "fall-start": [
-          730,
-          599,
-          627,
-          1069
+          729,
+          602,
+          607,
+          1020
         ],
         "floor": [
           545,
@@ -618,10 +604,10 @@
           1040
         ],
         "recoil": [
-          755,
-          520,
-          534,
-          1063
+          737,
+          528,
+          545,
+          1005
         ],
         "release": [
           766,
@@ -792,88 +778,88 @@
           1040
         ],
         "whole-throw-1": [
-          742,
+          764,
+          525,
           514,
-          553,
-          1025
+          951
         ],
         "whole-throw-2": [
-          731,
-          513,
-          692,
-          1026
+          748,
+          523,
+          654,
+          967
         ],
         "whole-throw-3": [
-          731,
-          513,
-          609,
-          1025
+          762,
+          529,
+          547,
+          922
         ],
         "whole-throw-4": [
-          731,
-          513,
-          707,
-          1025
+          763,
+          530,
+          632,
+          917
         ],
         "whole-throw-5": [
-          732,
-          515,
-          763,
-          1024
+          751,
+          526,
+          714,
+          956
         ],
         "whole-throw-6": [
-          732,
-          513,
-          550,
-          1026
+          744,
+          519,
+          529,
+          985
         ],
         "whole-receive-1": [
-          742,
+          758,
+          521,
           513,
-          541,
-          1026
+          973
         ],
         "whole-receive-2": [
-          749,
-          514,
-          595,
-          1024
+          759,
+          519,
+          575,
+          989
         ],
         "whole-receive-3": [
-          744,
-          514,
-          611,
-          1025
+          763,
+          524,
+          573,
+          960
         ],
         "whole-receive-4": [
-          745,
-          514,
-          593,
-          1025
+          770,
+          527,
+          544,
+          942
         ],
         "whole-receive-5": [
-          735,
-          514,
-          588,
-          1025
+          765,
+          529,
+          533,
+          928
         ],
         "whole-receive-6": [
-          742,
-          514,
-          573,
-          1025
+          765,
+          526,
+          531,
+          949
         ],
         "whole-throw-6-blink-half": [
-          732,
-          513,
-          550,
-          1026
+          744,
+          519,
+          529,
+          985
         ],
         "whole-throw-6-blink-closed": [
-          732,
-          513,
-          550,
-          1026
+          744,
+          519,
+          529,
+          985
         ],
         "nervous-gaze-left": [
           774,
@@ -917,16 +903,48 @@
         "released": "whole-throw-4",
         "caught": "whole-receive-4",
         "release": [
-          318.7373213304013,
-          216.66295010995051,
-          18.75,
-          26.25
+          312.61916331610786,
+          211.87526330117794,
+          16.847468475039893,
+          23.586455865055854
         ],
         "catch": [
-          323.5959919977925,
-          252.6394177704194,
-          18.75,
-          26.25
+          323.87101460646045,
+          252.99877385354048,
+          18.832042156496534,
+          26.36485901909515
+        ]
+      },
+      "poseRegistration": {
+        "whole-throw-6": [
+          0.9615173391892616,
+          39.74235286690955,
+          25.954343996289932
+        ],
+        "whole-throw-6-blink-half": [
+          0.9615173391892616,
+          39.74235286690955,
+          25.954343996289932
+        ],
+        "whole-throw-6-blink-closed": [
+          0.9615173391892616,
+          39.74235286690955,
+          25.954343996289932
+        ],
+        "recoil": [
+          0.9615173391892616,
+          39.74235286690955,
+          25.954343996289932
+        ],
+        "fall-start": [
+          0.9615173391892616,
+          39.74235286690955,
+          25.954343996289932
+        ],
+        "whole-receive-4": [
+          1.0931394400293577,
+          -97.1414697265139,
+          -63.5254956951693
         ]
       }
     },
@@ -983,17 +1001,13 @@
         "idle": {
           "frames": [
             "rest",
-            "blink-half",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
-            750,
             40,
-            90,
-            40,
-            550
+            80,
+            60
           ]
         },
         "choose-left": {
@@ -1084,7 +1098,7 @@
         },
         "throw": {
           "frames": [
-            "whole-throw-1",
+            "rest",
             "whole-throw-2",
             "whole-throw-3",
             "whole-throw-4",
@@ -1104,7 +1118,7 @@
           "frames": [
             "whole-receive-4",
             "whole-receive-5",
-            "whole-receive-6"
+            "rest"
           ],
           "durations": [
             55,
@@ -1114,7 +1128,7 @@
         },
         "tumble": {
           "frames": [
-            "tumble-start",
+            "whole-throw-6",
             "recoil",
             "fall-start",
             "midfall",
@@ -1147,8 +1161,7 @@
             "midfall",
             "fall-start",
             "recoil",
-            "tumble-start",
-            "release",
+            "whole-throw-6",
             "rest"
           ],
           "durations": [
@@ -1159,140 +1172,121 @@
             70,
             70,
             80,
-            90,
-            100,
+            190,
             180
           ]
         },
         "blink-rest": {
           "frames": [
-            "blink-half",
+            "rest",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-down": {
           "frames": [
-            "down-blink-half",
+            "down",
             "down-blink",
-            "down-blink-half",
             "down"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-nervous": {
           "frames": [
-            "nervous-blink-half",
+            "nervous",
             "nervous-blink",
-            "nervous-blink-half",
             "nervous"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-panicked": {
           "frames": [
-            "panicked-blink-half",
+            "panicked",
             "panicked-blink",
-            "panicked-blink-half",
             "panicked"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-amused": {
           "frames": [
-            "amused-blink-half",
+            "amused",
             "amused-blink",
-            "amused-blink-half",
             "amused"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-smug": {
           "frames": [
-            "smug-blink-half",
+            "smug",
             "smug-blink",
-            "smug-blink-half",
             "smug"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-frustrated": {
           "frames": [
-            "frustrated-blink-half",
+            "frustrated",
             "frustrated-blink",
-            "frustrated-blink-half",
             "frustrated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-defeated": {
           "frames": [
-            "defeated-blink-half",
+            "defeated",
             "defeated-blink",
-            "defeated-blink-half",
             "defeated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-release": {
           "frames": [
-            "release-blink-half",
+            "release",
             "release-blink",
-            "release-blink-half",
             "release"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "receive-ready": {
           "frames": [
-            "whole-receive-1",
+            "whole-throw-6",
             "whole-receive-2",
             "whole-receive-3"
           ],
@@ -1304,16 +1298,14 @@
         },
         "blink-whole-throw-6": {
           "frames": [
-            "whole-throw-6-blink-half",
+            "whole-throw-6",
             "whole-throw-6-blink-closed",
-            "whole-throw-6-blink-half",
             "whole-throw-6"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "look-left@nervous": {
@@ -1386,6 +1378,18 @@
             60,
             260,
             80
+          ]
+        },
+        "blink": {
+          "frames": [
+            "rest",
+            "blink",
+            "rest"
+          ],
+          "durations": [
+            40,
+            80,
+            60
           ]
         }
       },
@@ -1467,10 +1471,10 @@
           1040
         ],
         "fall-start": [
-          737,
-          620,
-          621,
-          1048
+          771,
+          624,
+          539,
+          923
         ],
         "floor": [
           570,
@@ -1545,10 +1549,10 @@
           1040
         ],
         "recoil": [
-          782,
-          531,
-          507,
-          1052
+          784,
+          547,
+          483,
+          911
         ],
         "release": [
           796,
@@ -1719,88 +1723,88 @@
           1040
         ],
         "whole-throw-1": [
-          775,
-          506,
-          495,
-          1030
+          799,
+          522,
+          448,
+          931
         ],
         "whole-throw-2": [
-          777,
-          515,
-          604,
-          1020
+          824,
+          547,
+          492,
+          831
         ],
         "whole-throw-3": [
-          763,
-          509,
-          547,
-          1027
+          794,
+          528,
+          485,
+          912
         ],
         "whole-throw-4": [
-          766,
-          513,
-          567,
-          1023
+          798,
+          534,
+          500,
+          899
         ],
         "whole-throw-5": [
-          753,
-          511,
-          734,
-          1025
+          790,
+          534,
+          634,
+          885
         ],
         "whole-throw-6": [
-          762,
-          511,
-          522,
-          1025
+          795,
+          531,
+          458,
+          900
         ],
         "whole-receive-1": [
-          778,
-          505,
-          479,
-          1029
+          797,
+          518,
+          440,
+          945
         ],
         "whole-receive-2": [
-          778,
-          514,
-          544,
-          1021
+          796,
+          524,
+          508,
+          954
         ],
         "whole-receive-3": [
-          770,
-          508,
-          567,
-          1026
+          797,
+          524,
+          511,
+          924
         ],
         "whole-receive-4": [
-          771,
-          512,
-          544,
-          1022
+          790,
+          523,
+          506,
+          953
         ],
         "whole-receive-5": [
-          774,
-          513,
-          490,
-          1023
+          805,
+          533,
+          433,
+          905
         ],
         "whole-receive-6": [
-          774,
-          509,
-          486,
-          1027
+          789,
+          519,
+          456,
+          963
         ],
         "whole-throw-6-blink-half": [
-          762,
-          511,
-          522,
-          1025
+          795,
+          531,
+          458,
+          900
         ],
         "whole-throw-6-blink-closed": [
-          762,
-          511,
-          522,
-          1025
+          795,
+          531,
+          458,
+          900
         ],
         "nervous-gaze-left": [
           804,
@@ -1844,16 +1848,33 @@
         "released": "whole-throw-4",
         "caught": "whole-receive-4",
         "release": [
-          310.14400356974465,
-          217.74053572051378,
-          18.75,
-          26.25
+          304.30476451658495,
+          212.37445762770443,
+          16.632802275295997,
+          23.285923185414397
         ],
         "catch": [
-          316.3211176594831,
-          252.71153498630727,
-          18.75,
-          26.25
+          310.86164009704646,
+          244.44902244326272,
+          16.865637598803477,
+          23.61189263832487
+        ]
+      },
+      "poseRegistration": {
+        "whole-receive-4": [
+          0.9656129024312583,
+          36.037347397386924,
+          23.45157828900577
+        ],
+        "whole-throw-2": [
+          1.0825890738079806,
+          -84.57121157937218,
+          -57.81235166558645
+        ],
+        "whole-throw-5": [
+          0.9508924527918381,
+          50.28612834115779,
+          34.37528304571333
         ]
       }
     },
@@ -1910,17 +1931,13 @@
         "idle": {
           "frames": [
             "rest",
-            "blink-half",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
-            750,
             40,
-            90,
-            40,
-            550
+            80,
+            60
           ]
         },
         "choose-left": {
@@ -2011,7 +2028,7 @@
         },
         "throw": {
           "frames": [
-            "whole-throw-1",
+            "rest",
             "whole-throw-2",
             "whole-throw-3",
             "whole-throw-4",
@@ -2031,7 +2048,7 @@
           "frames": [
             "whole-receive-4",
             "whole-receive-5",
-            "whole-receive-6"
+            "rest"
           ],
           "durations": [
             55,
@@ -2041,7 +2058,7 @@
         },
         "tumble": {
           "frames": [
-            "tumble-start",
+            "whole-throw-6",
             "recoil",
             "fall-start",
             "midfall",
@@ -2074,8 +2091,7 @@
             "midfall",
             "fall-start",
             "recoil",
-            "tumble-start",
-            "release",
+            "whole-throw-6",
             "rest"
           ],
           "durations": [
@@ -2086,140 +2102,121 @@
             70,
             70,
             80,
-            90,
-            100,
+            190,
             180
           ]
         },
         "blink-rest": {
           "frames": [
-            "blink-half",
+            "rest",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-down": {
           "frames": [
-            "down-blink-half",
+            "down",
             "down-blink",
-            "down-blink-half",
             "down"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-nervous": {
           "frames": [
-            "nervous-blink-half",
+            "nervous",
             "nervous-blink",
-            "nervous-blink-half",
             "nervous"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-panicked": {
           "frames": [
-            "panicked-blink-half",
+            "panicked",
             "panicked-blink",
-            "panicked-blink-half",
             "panicked"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-amused": {
           "frames": [
-            "amused-blink-half",
+            "amused",
             "amused-blink",
-            "amused-blink-half",
             "amused"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-smug": {
           "frames": [
-            "smug-blink-half",
+            "smug",
             "smug-blink",
-            "smug-blink-half",
             "smug"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-frustrated": {
           "frames": [
-            "frustrated-blink-half",
+            "frustrated",
             "frustrated-blink",
-            "frustrated-blink-half",
             "frustrated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-defeated": {
           "frames": [
-            "defeated-blink-half",
+            "defeated",
             "defeated-blink",
-            "defeated-blink-half",
             "defeated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-release": {
           "frames": [
-            "release-blink-half",
+            "release",
             "release-blink",
-            "release-blink-half",
             "release"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "receive-ready": {
           "frames": [
-            "whole-receive-1",
+            "whole-throw-6",
             "whole-receive-2",
             "whole-receive-3"
           ],
@@ -2231,16 +2228,14 @@
         },
         "blink-whole-throw-6": {
           "frames": [
-            "whole-throw-6-blink-half",
+            "whole-throw-6",
             "whole-throw-6-blink-closed",
-            "whole-throw-6-blink-half",
             "whole-throw-6"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "look-left@nervous": {
@@ -2313,6 +2308,18 @@
             60,
             260,
             80
+          ]
+        },
+        "blink": {
+          "frames": [
+            "rest",
+            "blink",
+            "rest"
+          ],
+          "durations": [
+            40,
+            80,
+            60
           ]
         }
       },
@@ -2394,10 +2401,10 @@
           1040
         ],
         "fall-start": [
-          698,
-          611,
-          616,
-          1040
+          737,
+          600,
+          556,
+          1039
         ],
         "floor": [
           574,
@@ -2472,10 +2479,10 @@
           1040
         ],
         "recoil": [
-          777,
+          778,
           522,
-          480,
-          1054
+          478,
+          1038
         ],
         "release": [
           797,
@@ -2646,22 +2653,22 @@
           1040
         ],
         "whole-throw-1": [
-          791,
-          515,
-          460,
-          1024
+          802,
+          523,
+          440,
+          975
         ],
         "whole-throw-2": [
-          786,
-          512,
-          586,
-          1027
+          796,
+          519,
+          562,
+          983
         ],
         "whole-throw-3": [
-          788,
-          515,
-          556,
-          1023
+          800,
+          523,
+          529,
+          972
         ],
         "whole-throw-4": [
           786,
@@ -2670,10 +2677,10 @@
           1028
         ],
         "whole-throw-5": [
-          789,
-          516,
-          721,
-          1022
+          802,
+          525,
+          681,
+          965
         ],
         "whole-throw-6": [
           789,
@@ -2688,22 +2695,22 @@
           1028
         ],
         "whole-receive-2": [
-          789,
-          514,
-          528,
-          1024
+          804,
+          525,
+          495,
+          960
         ],
         "whole-receive-3": [
-          783,
-          514,
-          547,
-          1025
+          797,
+          523,
+          517,
+          969
         ],
         "whole-receive-4": [
-          785,
-          514,
-          533,
-          1025
+          801,
+          526,
+          499,
+          959
         ],
         "whole-receive-5": [
           780,
@@ -2771,16 +2778,16 @@
         "released": "whole-throw-4",
         "caught": "whole-receive-4",
         "release": [
-          317.297517351842,
-          214.17975840896958,
-          18.75,
-          26.25
+          314.41282252728456,
+          212.0745651768699,
+          17.816007318164715,
+          24.9424102454306
         ],
         "catch": [
-          317.5478390957447,
-          241.24910239361702,
-          18.75,
-          26.25
+          313.8701125438121,
+          236.89046564890964,
+          17.562186947108337,
+          24.58706172595167
         ]
       }
     },
@@ -2837,17 +2844,13 @@
         "idle": {
           "frames": [
             "rest",
-            "blink-half",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
-            750,
             40,
-            90,
-            40,
-            550
+            80,
+            60
           ]
         },
         "choose-left": {
@@ -2938,7 +2941,7 @@
         },
         "throw": {
           "frames": [
-            "whole-throw-1",
+            "rest",
             "whole-throw-2",
             "whole-throw-3",
             "whole-throw-4",
@@ -2958,7 +2961,7 @@
           "frames": [
             "whole-receive-4",
             "whole-receive-5",
-            "whole-receive-6"
+            "rest"
           ],
           "durations": [
             55,
@@ -2968,7 +2971,7 @@
         },
         "tumble": {
           "frames": [
-            "tumble-start",
+            "whole-throw-6",
             "recoil",
             "fall-start",
             "midfall",
@@ -3001,8 +3004,7 @@
             "midfall",
             "fall-start",
             "recoil",
-            "tumble-start",
-            "release",
+            "whole-throw-6",
             "rest"
           ],
           "durations": [
@@ -3013,140 +3015,121 @@
             70,
             70,
             80,
-            90,
-            100,
+            190,
             180
           ]
         },
         "blink-rest": {
           "frames": [
-            "blink-half",
+            "rest",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-down": {
           "frames": [
-            "down-blink-half",
+            "down",
             "down-blink",
-            "down-blink-half",
             "down"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-nervous": {
           "frames": [
-            "nervous-blink-half",
+            "nervous",
             "nervous-blink",
-            "nervous-blink-half",
             "nervous"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-panicked": {
           "frames": [
-            "panicked-blink-half",
+            "panicked",
             "panicked-blink",
-            "panicked-blink-half",
             "panicked"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-amused": {
           "frames": [
-            "amused-blink-half",
+            "amused",
             "amused-blink",
-            "amused-blink-half",
             "amused"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-smug": {
           "frames": [
-            "smug-blink-half",
+            "smug",
             "smug-blink",
-            "smug-blink-half",
             "smug"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-frustrated": {
           "frames": [
-            "frustrated-blink-half",
+            "frustrated",
             "frustrated-blink",
-            "frustrated-blink-half",
             "frustrated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-defeated": {
           "frames": [
-            "defeated-blink-half",
+            "defeated",
             "defeated-blink",
-            "defeated-blink-half",
             "defeated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-release": {
           "frames": [
-            "release-blink-half",
+            "release",
             "release-blink",
-            "release-blink-half",
             "release"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "receive-ready": {
           "frames": [
-            "whole-receive-1",
+            "whole-throw-6",
             "whole-receive-2",
             "whole-receive-3"
           ],
@@ -3158,16 +3141,14 @@
         },
         "blink-whole-throw-6": {
           "frames": [
-            "whole-throw-6-blink-half",
+            "whole-throw-6",
             "whole-throw-6-blink-closed",
-            "whole-throw-6-blink-half",
             "whole-throw-6"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "look-left@nervous": {
@@ -3240,6 +3221,18 @@
             60,
             260,
             80
+          ]
+        },
+        "blink": {
+          "frames": [
+            "rest",
+            "blink",
+            "rest"
+          ],
+          "durations": [
+            40,
+            80,
+            60
           ]
         }
       },
@@ -3321,10 +3314,10 @@
           1040
         ],
         "fall-start": [
-          687,
-          614,
-          676,
-          1064
+          739,
+          605,
+          618,
+          1052
         ],
         "floor": [
           516,
@@ -3399,10 +3392,10 @@
           1040
         ],
         "recoil": [
-          765,
-          523,
-          529,
-          1064
+          769,
+          525,
+          530,
+          1041
         ],
         "release": [
           773,
@@ -3579,16 +3572,16 @@
           1024
         ],
         "whole-throw-2": [
-          778,
-          511,
-          618,
-          1027
+          769,
+          505,
+          643,
+          1068
         ],
         "whole-throw-3": [
-          758,
-          512,
-          586,
-          1026
+          741,
+          501,
+          625,
+          1095
         ],
         "whole-throw-4": [
           767,
@@ -3621,10 +3614,10 @@
           1026
         ],
         "whole-receive-3": [
-          778,
-          513,
-          553,
-          1025
+          769,
+          506,
+          573,
+          1065
         ],
         "whole-receive-4": [
           784,
@@ -3698,16 +3691,28 @@
         "released": "whole-throw-4",
         "caught": "whole-receive-4",
         "release": [
-          319.38766891891896,
-          220.12909876788555,
-          18.75,
-          26.25
+          319.54127979817457,
+          220.24648929334467,
+          18.792302400104973,
+          26.309223360146966
         ],
         "catch": [
           319.3283342260311,
           251.35680779659884,
           18.75,
           26.25
+        ]
+      },
+      "poseRegistration": {
+        "whole-throw-3": [
+          0.9402178769404559,
+          60.09337351305467,
+          40.19684042931048
+        ],
+        "whole-throw-2": [
+          0.9443884954726435,
+          56.94618063601308,
+          38.92805316914957
         ]
       }
     },
@@ -3764,17 +3769,13 @@
         "idle": {
           "frames": [
             "rest",
-            "blink-half",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
-            750,
             40,
-            90,
-            40,
-            550
+            80,
+            60
           ]
         },
         "choose-left": {
@@ -3865,7 +3866,7 @@
         },
         "throw": {
           "frames": [
-            "whole-throw-1",
+            "rest",
             "whole-throw-2",
             "whole-throw-3",
             "whole-throw-4",
@@ -3885,7 +3886,7 @@
           "frames": [
             "whole-receive-4",
             "whole-receive-5",
-            "whole-receive-6"
+            "rest"
           ],
           "durations": [
             55,
@@ -3895,7 +3896,7 @@
         },
         "tumble": {
           "frames": [
-            "tumble-start",
+            "whole-throw-6",
             "recoil",
             "fall-start",
             "midfall",
@@ -3928,8 +3929,7 @@
             "midfall",
             "fall-start",
             "recoil",
-            "tumble-start",
-            "release",
+            "whole-throw-6",
             "rest"
           ],
           "durations": [
@@ -3940,140 +3940,121 @@
             70,
             70,
             80,
-            90,
-            100,
+            190,
             180
           ]
         },
         "blink-rest": {
           "frames": [
-            "blink-half",
+            "rest",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-down": {
           "frames": [
-            "down-blink-half",
+            "down",
             "down-blink",
-            "down-blink-half",
             "down"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-nervous": {
           "frames": [
-            "nervous-blink-half",
+            "nervous",
             "nervous-blink",
-            "nervous-blink-half",
             "nervous"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-panicked": {
           "frames": [
-            "panicked-blink-half",
+            "panicked",
             "panicked-blink",
-            "panicked-blink-half",
             "panicked"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-amused": {
           "frames": [
-            "amused-blink-half",
+            "amused",
             "amused-blink",
-            "amused-blink-half",
             "amused"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-smug": {
           "frames": [
-            "smug-blink-half",
+            "smug",
             "smug-blink",
-            "smug-blink-half",
             "smug"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-frustrated": {
           "frames": [
-            "frustrated-blink-half",
+            "frustrated",
             "frustrated-blink",
-            "frustrated-blink-half",
             "frustrated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-defeated": {
           "frames": [
-            "defeated-blink-half",
+            "defeated",
             "defeated-blink",
-            "defeated-blink-half",
             "defeated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-release": {
           "frames": [
-            "release-blink-half",
+            "release",
             "release-blink",
-            "release-blink-half",
             "release"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "receive-ready": {
           "frames": [
-            "whole-receive-1",
+            "whole-throw-6",
             "whole-receive-2",
             "whole-receive-3"
           ],
@@ -4085,16 +4066,14 @@
         },
         "blink-whole-throw-6": {
           "frames": [
-            "whole-throw-6-blink-half",
+            "whole-throw-6",
             "whole-throw-6-blink-closed",
-            "whole-throw-6-blink-half",
             "whole-throw-6"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "look-left@nervous": {
@@ -4167,6 +4146,18 @@
             60,
             260,
             80
+          ]
+        },
+        "blink": {
+          "frames": [
+            "rest",
+            "blink",
+            "rest"
+          ],
+          "durations": [
+            40,
+            80,
+            60
           ]
         }
       },
@@ -4248,10 +4239,10 @@
           1040
         ],
         "fall-start": [
-          726,
-          601,
-          651,
-          1060
+          741,
+          599,
+          592,
+          1051
         ],
         "floor": [
           594,
@@ -4326,10 +4317,10 @@
           1040
         ],
         "recoil": [
-          765,
-          521,
-          545,
-          1058
+          755,
+          525,
+          520,
+          1038
         ],
         "release": [
           781,
@@ -4512,10 +4503,10 @@
           1025
         ],
         "whole-throw-3": [
-          745,
-          514,
-          559,
-          1025
+          734,
+          506,
+          582,
+          1068
         ],
         "whole-throw-4": [
           745,
@@ -4536,10 +4527,10 @@
           1026
         ],
         "whole-receive-1": [
-          756,
-          512,
-          495,
-          1026
+          766,
+          519,
+          477,
+          985
         ],
         "whole-receive-2": [
           766,
@@ -4625,16 +4616,23 @@
         "released": "whole-throw-4",
         "caught": "whole-receive-4",
         "release": [
-          307.9450020139635,
-          211.97667998120303,
-          18.75,
-          26.25
+          306.52785648883736,
+          210.92328718356472,
+          18.26466732004034,
+          25.57053424805647
         ],
         "catch": [
           316.72293882978727,
           247.77751828457448,
           18.75,
           26.25
+        ]
+      },
+      "poseRegistration": {
+        "whole-throw-3": [
+          0.9357990777333566,
+          65.02166753230162,
+          43.98550190671965
         ]
       }
     },
@@ -4691,17 +4689,13 @@
         "idle": {
           "frames": [
             "rest",
-            "blink-half",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
-            750,
             40,
-            90,
-            40,
-            550
+            80,
+            60
           ]
         },
         "choose-left": {
@@ -4792,7 +4786,7 @@
         },
         "throw": {
           "frames": [
-            "whole-throw-1",
+            "rest",
             "whole-throw-2",
             "whole-throw-3",
             "whole-throw-4",
@@ -4812,7 +4806,7 @@
           "frames": [
             "whole-receive-4",
             "whole-receive-5",
-            "whole-receive-6"
+            "rest"
           ],
           "durations": [
             55,
@@ -4822,7 +4816,7 @@
         },
         "tumble": {
           "frames": [
-            "tumble-start",
+            "whole-throw-6",
             "recoil",
             "fall-start",
             "midfall",
@@ -4855,8 +4849,7 @@
             "midfall",
             "fall-start",
             "recoil",
-            "tumble-start",
-            "release",
+            "whole-throw-6",
             "rest"
           ],
           "durations": [
@@ -4867,140 +4860,121 @@
             70,
             70,
             80,
-            90,
-            100,
+            190,
             180
           ]
         },
         "blink-rest": {
           "frames": [
-            "blink-half",
+            "rest",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-down": {
           "frames": [
-            "down-blink-half",
+            "down",
             "down-blink",
-            "down-blink-half",
             "down"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-nervous": {
           "frames": [
-            "nervous-blink-half",
+            "nervous",
             "nervous-blink",
-            "nervous-blink-half",
             "nervous"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-panicked": {
           "frames": [
-            "panicked-blink-half",
+            "panicked",
             "panicked-blink",
-            "panicked-blink-half",
             "panicked"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-amused": {
           "frames": [
-            "amused-blink-half",
+            "amused",
             "amused-blink",
-            "amused-blink-half",
             "amused"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-smug": {
           "frames": [
-            "smug-blink-half",
+            "smug",
             "smug-blink",
-            "smug-blink-half",
             "smug"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-frustrated": {
           "frames": [
-            "frustrated-blink-half",
+            "frustrated",
             "frustrated-blink",
-            "frustrated-blink-half",
             "frustrated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-defeated": {
           "frames": [
-            "defeated-blink-half",
+            "defeated",
             "defeated-blink",
-            "defeated-blink-half",
             "defeated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-release": {
           "frames": [
-            "release-blink-half",
+            "release",
             "release-blink",
-            "release-blink-half",
             "release"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "receive-ready": {
           "frames": [
-            "whole-receive-1",
+            "whole-throw-6",
             "whole-receive-2",
             "whole-receive-3"
           ],
@@ -5012,16 +4986,14 @@
         },
         "blink-whole-throw-6": {
           "frames": [
-            "whole-throw-6-blink-half",
+            "whole-throw-6",
             "whole-throw-6-blink-closed",
-            "whole-throw-6-blink-half",
             "whole-throw-6"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "look-left@nervous": {
@@ -5094,6 +5066,18 @@
             60,
             260,
             80
+          ]
+        },
+        "blink": {
+          "frames": [
+            "rest",
+            "blink",
+            "rest"
+          ],
+          "durations": [
+            40,
+            80,
+            60
           ]
         }
       },
@@ -5175,10 +5159,10 @@
           1040
         ],
         "fall-start": [
-          677,
-          620,
-          702,
-          1057
+          695,
+          610,
+          657,
+          1012
         ],
         "floor": [
           435,
@@ -5253,10 +5237,10 @@
           1040
         ],
         "recoil": [
-          691,
-          526,
-          620,
-          1060
+          710,
+          530,
+          602,
+          1000
         ],
         "release": [
           706,
@@ -5427,10 +5411,10 @@
           1040
         ],
         "whole-throw-1": [
-          698,
-          513,
-          643,
-          1025
+          714,
+          519,
+          612,
+          975
         ],
         "whole-throw-2": [
           698,
@@ -5451,34 +5435,34 @@
           1025
         ],
         "whole-throw-5": [
-          699,
-          513,
-          885,
-          1025
+          709,
+          517,
+          859,
+          995
         ],
         "whole-throw-6": [
-          707,
-          511,
-          628,
-          1027
+          719,
+          516,
+          604,
+          989
         ],
         "whole-receive-1": [
-          697,
-          510,
-          639,
-          1030
+          712,
+          516,
+          608,
+          979
         ],
         "whole-receive-2": [
-          705,
-          517,
-          646,
-          1021
+          715,
+          521,
+          626,
+          990
         ],
         "whole-receive-3": [
-          698,
-          513,
-          692,
-          1025
+          718,
+          521,
+          651,
+          964
         ],
         "whole-receive-4": [
           700,
@@ -5499,16 +5483,16 @@
           1025
         ],
         "whole-throw-6-blink-half": [
-          707,
-          511,
-          628,
-          1027
+          719,
+          516,
+          604,
+          989
         ],
         "whole-throw-6-blink-closed": [
-          707,
-          511,
-          628,
-          1027
+          719,
+          516,
+          604,
+          989
         ],
         "nervous-gaze-left": [
           714,
@@ -5562,6 +5546,13 @@
           244.51777419578477,
           18.75,
           26.25
+        ]
+      },
+      "poseRegistration": {
+        "whole-receive-3": [
+          1.0400212320020088,
+          -41.14121188529117,
+          -25.89768199937761
         ]
       }
     },
@@ -5618,17 +5609,13 @@
         "idle": {
           "frames": [
             "rest",
-            "blink-half",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
-            750,
             40,
-            90,
-            40,
-            550
+            80,
+            60
           ]
         },
         "choose-left": {
@@ -5719,7 +5706,7 @@
         },
         "throw": {
           "frames": [
-            "whole-throw-1",
+            "rest",
             "whole-throw-2",
             "whole-throw-3",
             "whole-throw-4",
@@ -5739,7 +5726,7 @@
           "frames": [
             "whole-receive-4",
             "whole-receive-5",
-            "whole-receive-6"
+            "rest"
           ],
           "durations": [
             55,
@@ -5749,7 +5736,7 @@
         },
         "tumble": {
           "frames": [
-            "tumble-start",
+            "whole-throw-6",
             "recoil",
             "fall-start",
             "midfall",
@@ -5782,8 +5769,7 @@
             "midfall",
             "fall-start",
             "recoil",
-            "tumble-start",
-            "release",
+            "whole-throw-6",
             "rest"
           ],
           "durations": [
@@ -5794,140 +5780,121 @@
             70,
             70,
             80,
-            90,
-            100,
+            190,
             180
           ]
         },
         "blink-rest": {
           "frames": [
-            "blink-half",
+            "rest",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-down": {
           "frames": [
-            "down-blink-half",
+            "down",
             "down-blink",
-            "down-blink-half",
             "down"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-nervous": {
           "frames": [
-            "nervous-blink-half",
+            "nervous",
             "nervous-blink",
-            "nervous-blink-half",
             "nervous"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-panicked": {
           "frames": [
-            "panicked-blink-half",
+            "panicked",
             "panicked-blink",
-            "panicked-blink-half",
             "panicked"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-amused": {
           "frames": [
-            "amused-blink-half",
+            "amused",
             "amused-blink",
-            "amused-blink-half",
             "amused"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-smug": {
           "frames": [
-            "smug-blink-half",
+            "smug",
             "smug-blink",
-            "smug-blink-half",
             "smug"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-frustrated": {
           "frames": [
-            "frustrated-blink-half",
+            "frustrated",
             "frustrated-blink",
-            "frustrated-blink-half",
             "frustrated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-defeated": {
           "frames": [
-            "defeated-blink-half",
+            "defeated",
             "defeated-blink",
-            "defeated-blink-half",
             "defeated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-release": {
           "frames": [
-            "release-blink-half",
+            "release",
             "release-blink",
-            "release-blink-half",
             "release"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "receive-ready": {
           "frames": [
-            "whole-receive-1",
+            "whole-throw-6",
             "whole-receive-2",
             "whole-receive-3"
           ],
@@ -5939,16 +5906,14 @@
         },
         "blink-whole-throw-6": {
           "frames": [
-            "whole-throw-6-blink-half",
+            "whole-throw-6",
             "whole-throw-6-blink-closed",
-            "whole-throw-6-blink-half",
             "whole-throw-6"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "look-left@nervous": {
@@ -6021,6 +5986,18 @@
             60,
             260,
             80
+          ]
+        },
+        "blink": {
+          "frames": [
+            "rest",
+            "blink",
+            "rest"
+          ],
+          "durations": [
+            40,
+            80,
+            60
           ]
         }
       },
@@ -6102,10 +6079,10 @@
           1040
         ],
         "fall-start": [
-          739,
-          621,
-          529,
-          1012
+          755,
+          612,
+          478,
+          1007
         ],
         "floor": [
           477,
@@ -6180,10 +6157,10 @@
           1040
         ],
         "recoil": [
-          768,
-          529,
-          481,
-          1039
+          770,
+          527,
+          467,
+          1026
         ],
         "release": [
           781,
@@ -6396,10 +6373,10 @@
           1026
         ],
         "whole-receive-2": [
-          790,
-          514,
-          515,
-          1024
+          797,
+          519,
+          499,
+          992
         ],
         "whole-receive-3": [
           783,
@@ -6545,17 +6522,13 @@
         "idle": {
           "frames": [
             "rest",
-            "blink-half",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
-            750,
             40,
-            90,
-            40,
-            550
+            80,
+            60
           ]
         },
         "choose-left": {
@@ -6646,7 +6619,7 @@
         },
         "throw": {
           "frames": [
-            "whole-throw-1",
+            "rest",
             "whole-throw-2",
             "whole-throw-3",
             "whole-throw-4",
@@ -6666,7 +6639,7 @@
           "frames": [
             "whole-receive-4",
             "whole-receive-5",
-            "whole-receive-6"
+            "rest"
           ],
           "durations": [
             55,
@@ -6676,7 +6649,7 @@
         },
         "tumble": {
           "frames": [
-            "tumble-start",
+            "whole-throw-6",
             "recoil",
             "fall-start",
             "midfall",
@@ -6709,8 +6682,7 @@
             "midfall",
             "fall-start",
             "recoil",
-            "tumble-start",
-            "release",
+            "whole-throw-6",
             "rest"
           ],
           "durations": [
@@ -6721,140 +6693,121 @@
             70,
             70,
             80,
-            90,
-            100,
+            190,
             180
           ]
         },
         "blink-rest": {
           "frames": [
-            "blink-half",
+            "rest",
             "blink",
-            "blink-half",
             "rest"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-down": {
           "frames": [
-            "down-blink-half",
+            "down",
             "down-blink",
-            "down-blink-half",
             "down"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-nervous": {
           "frames": [
-            "nervous-blink-half",
+            "nervous",
             "nervous-blink",
-            "nervous-blink-half",
             "nervous"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-panicked": {
           "frames": [
-            "panicked-blink-half",
+            "panicked",
             "panicked-blink",
-            "panicked-blink-half",
             "panicked"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-amused": {
           "frames": [
-            "amused-blink-half",
+            "amused",
             "amused-blink",
-            "amused-blink-half",
             "amused"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-smug": {
           "frames": [
-            "smug-blink-half",
+            "smug",
             "smug-blink",
-            "smug-blink-half",
             "smug"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-frustrated": {
           "frames": [
-            "frustrated-blink-half",
+            "frustrated",
             "frustrated-blink",
-            "frustrated-blink-half",
             "frustrated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-defeated": {
           "frames": [
-            "defeated-blink-half",
+            "defeated",
             "defeated-blink",
-            "defeated-blink-half",
             "defeated"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "blink-release": {
           "frames": [
-            "release-blink-half",
+            "release",
             "release-blink",
-            "release-blink-half",
             "release"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "receive-ready": {
           "frames": [
-            "whole-receive-1",
+            "whole-throw-6",
             "whole-receive-2",
             "whole-receive-3"
           ],
@@ -6866,16 +6819,14 @@
         },
         "blink-whole-throw-6": {
           "frames": [
-            "whole-throw-6-blink-half",
+            "whole-throw-6",
             "whole-throw-6-blink-closed",
-            "whole-throw-6-blink-half",
             "whole-throw-6"
           ],
           "durations": [
             40,
-            75,
-            40,
-            50
+            80,
+            60
           ]
         },
         "look-left@nervous": {
@@ -6948,6 +6899,18 @@
             60,
             260,
             80
+          ]
+        },
+        "blink": {
+          "frames": [
+            "rest",
+            "blink",
+            "rest"
+          ],
+          "durations": [
+            40,
+            80,
+            60
           ]
         }
       },
@@ -7029,10 +6992,10 @@
           1040
         ],
         "fall-start": [
-          714,
-          622,
-          670,
-          1035
+          745,
+          610,
+          584,
+          1039
         ],
         "floor": [
           564,
@@ -7107,10 +7070,10 @@
           1040
         ],
         "recoil": [
-          771,
-          527,
-          546,
-          1052
+          764,
+          529,
+          507,
+          1035
         ],
         "release": [
           786,
@@ -7293,10 +7256,10 @@
           1026
         ],
         "whole-throw-3": [
-          753,
-          513,
-          583,
-          1025
+          768,
+          523,
+          550,
+          963
         ],
         "whole-throw-4": [
           756,
@@ -7317,10 +7280,10 @@
           1024
         ],
         "whole-receive-1": [
-          758,
-          515,
-          472,
-          1024
+          769,
+          521,
+          452,
+          979
         ],
         "whole-receive-2": [
           763,
@@ -7335,10 +7298,10 @@
           1025
         ],
         "whole-receive-4": [
-          767,
-          513,
-          550,
-          1025
+          758,
+          508,
+          569,
+          1058
         ],
         "whole-receive-5": [
           761,
@@ -7406,16 +7369,16 @@
         "released": "whole-throw-4",
         "caught": "whole-receive-4",
         "release": [
-          311.7570764186296,
-          201.81556142933616,
-          18.75,
-          26.25
+          308.3702300510098,
+          199.75293178098093,
+          17.633450629825557,
+          24.686830881755778
         ],
         "catch": [
-          319.0616626473741,
-          241.30224243033229,
-          18.75,
-          26.25
+          321.09383666622676,
+          243.71617375220697,
+          19.346026564562944,
+          27.084437190388122
         ]
       }
     },
@@ -7424,12 +7387,12 @@
         "blink": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -7600,12 +7563,12 @@
         "idle": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -7649,7 +7612,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -7661,7 +7624,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -7673,7 +7636,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -7685,7 +7648,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -7697,7 +7660,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -7709,7 +7672,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -7721,7 +7684,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -7733,7 +7696,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -7745,7 +7708,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -7757,7 +7720,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -8124,12 +8087,12 @@
         "blink": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -8300,12 +8263,12 @@
         "idle": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -8349,7 +8312,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -8361,7 +8324,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -8373,7 +8336,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -8385,7 +8348,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -8397,7 +8360,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -8409,7 +8372,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -8421,7 +8384,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -8433,7 +8396,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -8445,7 +8408,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -8457,7 +8420,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -8818,12 +8781,12 @@
         "blink": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -8994,12 +8957,12 @@
         "idle": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -9043,7 +9006,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9055,7 +9018,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9067,7 +9030,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9079,7 +9042,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9091,7 +9054,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9103,7 +9066,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9115,7 +9078,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9127,7 +9090,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9139,7 +9102,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9151,7 +9114,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9512,12 +9475,12 @@
         "blink": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -9688,12 +9651,12 @@
         "idle": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -9737,7 +9700,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9749,7 +9712,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9761,7 +9724,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9773,7 +9736,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9785,7 +9748,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9797,7 +9760,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9809,7 +9772,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9821,7 +9784,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9833,7 +9796,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -9845,7 +9808,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -10003,10 +9966,10 @@
           1019
         ],
         "midfall": [
-          521,
-          472,
-          919,
-          909
+          531,
+          478,
+          892,
+          883
         ],
         "floor": [
           561,
@@ -10159,16 +10122,16 @@
           1100
         ],
         "airfall": [
-          468,
-          476,
-          968,
-          947
+          479,
+          482,
+          940,
+          920
         ],
         "airfall-low": [
-          419,
-          495,
-          1011,
-          991
+          432,
+          500,
+          981,
+          963
         ],
         "impact": [
           561,
@@ -10206,12 +10169,12 @@
         "blink": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -10382,12 +10345,12 @@
         "idle": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -10431,7 +10394,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -10443,7 +10406,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -10455,7 +10418,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -10467,7 +10430,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -10479,7 +10442,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -10491,7 +10454,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -10503,7 +10466,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -10515,7 +10478,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -10527,7 +10490,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -10539,7 +10502,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -10900,12 +10863,12 @@
         "blink": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -11076,12 +11039,12 @@
         "idle": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -11125,7 +11088,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11137,7 +11100,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11149,7 +11112,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11161,7 +11124,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11173,7 +11136,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11185,7 +11148,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11197,7 +11160,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11209,7 +11172,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11221,7 +11184,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11233,7 +11196,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11594,12 +11557,12 @@
         "blink": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -11770,12 +11733,12 @@
         "idle": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -11819,7 +11782,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11831,7 +11794,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11843,7 +11806,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11855,7 +11818,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11867,7 +11830,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11879,7 +11842,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11891,7 +11854,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11903,7 +11866,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11915,7 +11878,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -11927,7 +11890,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -12288,12 +12251,12 @@
         "blink": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -12464,12 +12427,12 @@
         "idle": {
           "frames": [
             "rest",
-            "blink",
+            "rest-blink",
             "rest"
           ],
           "durations": [
             40,
-            100,
+            80,
             60
           ]
         },
@@ -12513,7 +12476,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -12525,7 +12488,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -12537,7 +12500,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -12549,7 +12512,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -12561,7 +12524,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -12573,7 +12536,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -12585,7 +12548,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -12597,7 +12560,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -12609,7 +12572,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -12621,7 +12584,7 @@
           ],
           "durations": [
             40,
-            75,
+            80,
             60
           ]
         },
@@ -12980,6 +12943,6 @@
   },
   "wholeActionRevision": "approved-eight-v1",
   "cardBackRevision": "actual-rounded-back-v1",
-  "qualityRevision": "pose-continuity-v1",
-  "resamplingScope": "24 complete tumble drawings uniformly registered; eye edits retain native pixels and alpha"
+  "qualityRevision": "visual-audit-v2",
+  "resamplingScope": "Uniform whole-pose scale registration and native eye-only blink repairs; no separate head or limb transforms."
 }

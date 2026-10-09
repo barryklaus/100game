@@ -42,10 +42,10 @@
             519
           ],
           "floor": [
-            747,
-            1033,
-            554,
-            517
+            732,
+            1005,
+            584,
+            545
           ],
           "prepare-soft": [
             805,
@@ -102,16 +102,16 @@
             554
           ],
           "impact": [
-            747,
-            1040,
-            554,
-            517
+            731,
+            1013,
+            585,
+            545
           ],
           "bounce": [
-            747,
-            1023,
-            554,
-            517
+            732,
+            995,
+            584,
+            545
           ],
           "rest-blink-half": [
             818,
@@ -201,30 +201,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -423,16 +419,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -522,7 +516,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.0543215236899648,
+          -57.99898405995418,
+          -33.818077454747254
+        ]
       },
       "2": {
         "bounds": {
@@ -551,16 +550,16 @@
             713
           ],
           "receive-caught": [
-            824,
-            518,
-            418,
-            722
+            829,
+            522,
+            407,
+            700
           ],
           "midfall": [
-            703,
-            970,
-            642,
-            580
+            697,
+            965,
+            663,
+            599
           ],
           "floor": [
             744,
@@ -593,10 +592,10 @@
             713
           ],
           "caught-soft": [
-            824,
-            520,
-            418,
-            722
+            829,
+            524,
+            407,
+            700
           ],
           "recoil": [
             763,
@@ -611,16 +610,16 @@
             704
           ],
           "airfall": [
-            721,
-            996,
-            627,
-            581
+            715,
+            992,
+            649,
+            600
           ],
           "airfall-low": [
-            732,
-            1028,
-            625,
-            577
+            726,
+            1025,
+            647,
+            596
           ],
           "impact": [
             744,
@@ -722,30 +721,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -944,16 +939,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -1004,10 +997,10 @@
             20.311226815113827
           ],
           "catch": [
-            249.09628710431724,
-            202.65252328007819,
-            12.284261419865459,
-            13.057786230945737
+            249.3435014700357,
+            201.4527104427394,
+            11.890143868609776,
+            12.638851582922197
           ]
         },
         "frameCards": {
@@ -1043,7 +1036,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.0753446478969315,
+          -75.56365300276366,
+          -48.21999326795867
+        ]
       },
       "3": {
         "bounds": {
@@ -1243,30 +1241,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -1465,16 +1459,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -1601,10 +1593,10 @@
             797
           ],
           "midfall": [
-            706,
-            944,
-            636,
-            606
+            698,
+            937,
+            668,
+            636
           ],
           "floor": [
             697,
@@ -1655,16 +1647,16 @@
             791
           ],
           "airfall": [
-            710,
-            985,
-            637,
-            592
+            702,
+            980,
+            669,
+            622
           ],
           "airfall-low": [
-            711,
-            1010,
-            639,
-            595
+            703,
+            1006,
+            672,
+            625
           ],
           "impact": [
             697,
@@ -1766,30 +1758,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -1988,16 +1976,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -2087,7 +2073,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.0436398063540755,
+          -43.34160123006586,
+          -29.033565558576356
+        ]
       },
       "2": {
         "bounds": {
@@ -2287,30 +2278,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -2509,16 +2496,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -2608,7 +2593,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.0500764313944049,
+          -49.60170974254879,
+          -33.07707913800641
+        ]
       },
       "3": {
         "bounds": {
@@ -2643,10 +2633,10 @@
             865
           ],
           "midfall": [
-            647,
-            894,
-            754,
-            656
+            634,
+            886,
+            789,
+            687
           ],
           "floor": [
             648,
@@ -2697,16 +2687,16 @@
             877
           ],
           "airfall": [
-            661,
-            919,
-            749,
-            651
+            649,
+            913,
+            784,
+            681
           ],
           "airfall-low": [
-            676,
-            950,
-            742,
-            642
+            664,
+            945,
+            777,
+            672
           ],
           "impact": [
             648,
@@ -2808,30 +2798,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -3030,16 +3016,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -3129,7 +3113,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.0313760315172051,
+          -32.72357496646691,
+          -21.03599021468267
+        ]
       }
     },
     "june": {
@@ -3331,30 +3320,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -3553,16 +3538,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -3687,10 +3670,10 @@
             860
           ],
           "midfall": [
-            663,
-            930,
-            722,
-            620
+            671,
+            937,
+            692,
+            594
           ],
           "floor": [
             716,
@@ -3741,16 +3724,16 @@
             837
           ],
           "airfall": [
-            665,
-            980,
-            728,
-            598
+            673,
+            985,
+            698,
+            573
           ],
           "airfall-low": [
-            669,
-            1023,
-            730,
-            584
+            677,
+            1026,
+            699,
+            560
           ],
           "impact": [
             716,
@@ -3852,30 +3835,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -4074,16 +4053,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -4373,30 +4350,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -4595,16 +4568,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -4731,10 +4702,10 @@
             905
           ],
           "midfall": [
-            679,
-            898,
-            690,
-            652
+            698,
+            915,
+            622,
+            587
           ],
           "floor": [
             673,
@@ -4785,16 +4756,16 @@
             896
           ],
           "airfall": [
-            676,
-            947,
-            695,
-            631
+            696,
+            959,
+            625,
+            568
           ],
           "airfall-low": [
-            675,
-            1003,
-            696,
-            629
+            695,
+            1009,
+            626,
+            567
           ],
           "impact": [
             673,
@@ -4896,30 +4867,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -5118,16 +5085,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -5217,6 +5182,23 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
+        },
+        "poseRegistration": {
+          "midfall": [
+            1.152984862009731,
+            -133.7244143499264,
+            -163.0900350492491
+          ],
+          "airfall": [
+            1.152984862009731,
+            -133.7244143499264,
+            -163.0900350492491
+          ],
+          "airfall-low": [
+            1.152984862009731,
+            -133.7244143499264,
+            -163.0900350492491
+          ]
         }
       },
       "2": {
@@ -5240,16 +5222,16 @@
             858
           ],
           "receive-empty": [
-            792,
-            516,
-            526,
-            884
+            784,
+            511,
+            544,
+            913
           ],
           "receive-caught": [
-            783,
-            516,
-            454,
-            875
+            775,
+            511,
+            469,
+            903
           ],
           "midfall": [
             704,
@@ -5282,16 +5264,16 @@
             858
           ],
           "receive-hold": [
-            792,
-            516,
-            526,
-            884
+            784,
+            511,
+            544,
+            913
           ],
           "caught-soft": [
-            783,
-            518,
-            454,
-            875
+            775,
+            513,
+            469,
+            903
           ],
           "recoil": [
             747,
@@ -5417,30 +5399,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -5639,16 +5617,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -5699,10 +5675,10 @@
             20.85469719765618
           ],
           "catch": [
-            244.01515884206856,
-            215.27248626734755,
-            16.116135512430276,
-            15.841292265092875
+            244.07268777462716,
+            215.0405238220216,
+            16.038451749066333,
+            15.76493331422954
           ]
         },
         "frameCards": {
@@ -5738,6 +5714,18 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
+        },
+        "poseRegistration": {
+          "receive-caught": [
+            0.9651634270381912,
+            35.66568464801568,
+            23.29172843644443
+          ],
+          "caught-soft": [
+            0.9651634270381912,
+            35.66568464801568,
+            23.29172843644443
+          ]
         }
       },
       "3": {
@@ -5755,16 +5743,16 @@
             858
           ],
           "release": [
-            790,
-            507,
-            605,
-            880
+            779,
+            500,
+            632,
+            917
           ],
           "receive-empty": [
-            755,
-            509,
-            621,
-            876
+            765,
+            515,
+            597,
+            842
           ],
           "receive-caught": [
             772,
@@ -5773,10 +5761,10 @@
             873
           ],
           "midfall": [
-            630,
-            847,
-            788,
-            703
+            648,
+            861,
+            723,
+            645
           ],
           "floor": [
             652,
@@ -5791,22 +5779,22 @@
             858
           ],
           "throw-edge": [
-            787,
-            505,
-            607,
-            879
+            777,
+            497,
+            633,
+            917
           ],
           "settle": [
-            790,
-            510,
-            605,
-            880
+            779,
+            503,
+            632,
+            917
           ],
           "receive-hold": [
-            755,
-            509,
-            621,
-            876
+            765,
+            515,
+            597,
+            842
           ],
           "caught-soft": [
             772,
@@ -5815,28 +5803,28 @@
             873
           ],
           "recoil": [
-            771,
-            526,
-            576,
-            890
+            760,
+            519,
+            601,
+            928
           ],
           "fall-start": [
-            690,
-            617,
-            675,
-            877
+            676,
+            614,
+            704,
+            915
           ],
           "airfall": [
-            630,
-            897,
-            801,
-            676
+            648,
+            907,
+            734,
+            620
           ],
           "airfall-low": [
-            624,
-            955,
-            818,
-            645
+            643,
+            960,
+            749,
+            592
           ],
           "impact": [
             652,
@@ -5899,16 +5887,16 @@
             1002
           ],
           "release-blink-half": [
-            790,
-            507,
-            605,
-            880
+            779,
+            500,
+            632,
+            917
           ],
           "release-blink": [
-            790,
-            507,
-            605,
-            880
+            779,
+            500,
+            632,
+            917
           ],
           "down-blink-half": [
             751,
@@ -5938,30 +5926,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -6160,16 +6144,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -6259,6 +6241,43 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
+        },
+        "poseRegistration": {
+          "release": [
+            0.9491181778887412,
+            51.968485130365174,
+            34.25676063777112
+          ],
+          "throw-edge": [
+            0.9491181778887412,
+            51.968485130365174,
+            34.25676063777112
+          ],
+          "settle": [
+            0.9491181778887412,
+            51.968485130365174,
+            34.25676063777112
+          ],
+          "recoil": [
+            0.9491181778887412,
+            51.968485130365174,
+            34.25676063777112
+          ],
+          "fall-start": [
+            0.9491181778887412,
+            51.968485130365174,
+            34.25676063777112
+          ],
+          "release-blink-half": [
+            0.9491181778887412,
+            51.968485130365174,
+            34.25676063777112
+          ],
+          "release-blink": [
+            0.9491181778887412,
+            51.968485130365174,
+            34.25676063777112
+          ]
         }
       }
     },
@@ -6461,30 +6480,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -6683,16 +6698,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -6782,7 +6795,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.0400976233716188,
+          -40.75756217156231,
+          -28.137089222381974
+        ]
       },
       "2": {
         "bounds": {
@@ -6805,10 +6823,10 @@
             867
           ],
           "receive-empty": [
-            807,
-            509,
-            503,
-            873
+            799,
+            504,
+            520,
+            901
           ],
           "receive-caught": [
             817,
@@ -6847,10 +6865,10 @@
             867
           ],
           "receive-hold": [
-            807,
-            509,
-            503,
-            873
+            799,
+            504,
+            520,
+            901
           ],
           "caught-soft": [
             817,
@@ -6982,30 +7000,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -7204,16 +7218,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -7303,6 +7315,28 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
+        },
+        "registration": [
+          1.0446434750226052,
+          -46.636295196165065,
+          -31.254435903181047
+        ],
+        "poseRegistration": {
+          "midfall": [
+            0.8459117245980253,
+            139.95358013000993,
+            158.6552904534478
+          ],
+          "airfall": [
+            0.8459117245980253,
+            139.95358013000993,
+            158.6552904534478
+          ],
+          "airfall-low": [
+            0.8459117245980253,
+            139.95358013000993,
+            158.6552904534478
+          ]
         }
       },
       "3": {
@@ -7338,10 +7372,10 @@
             811
           ],
           "midfall": [
-            683,
-            854,
-            682,
-            696
+            701,
+            862,
+            642,
+            655
           ],
           "floor": [
             672,
@@ -7392,16 +7426,16 @@
             835
           ],
           "airfall": [
-            674,
-            889,
-            687,
-            689
+            693,
+            896,
+            646,
+            647
           ],
           "airfall-low": [
-            667,
-            931,
-            691,
-            677
+            686,
+            935,
+            650,
+            636
           ],
           "impact": [
             672,
@@ -7503,30 +7537,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -7725,16 +7755,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -7824,7 +7852,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.0803476112605235,
+          -83.10308062974514,
+          -52.99933199678878
+        ]
       }
     },
     "otis": {
@@ -7861,16 +7894,16 @@
             836
           ],
           "midfall": [
-            670,
-            971,
-            708,
-            579
+            662,
+            964,
+            745,
+            609
           ],
           "floor": [
-            667,
-            1075,
-            714,
-            475
+            603,
+            990,
+            842,
+            560
           ],
           "prepare-soft": [
             767,
@@ -7915,28 +7948,28 @@
             834
           ],
           "airfall": [
-            685,
-            1005,
-            705,
-            562
+            678,
+            999,
+            741,
+            592
           ],
           "airfall-low": [
-            691,
-            1046,
-            709,
-            570
+            684,
+            1042,
+            746,
+            600
           ],
           "impact": [
-            667,
-            1082,
-            714,
-            475
+            603,
+            998,
+            842,
+            561
           ],
           "bounce": [
-            667,
-            1065,
-            714,
-            475
+            603,
+            978,
+            842,
+            561
           ],
           "rest-blink-half": [
             695,
@@ -8026,30 +8059,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -8248,16 +8277,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -8347,6 +8374,38 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
+        },
+        "poseRegistration": {
+          "midfall": [
+            1.0673782632595443,
+            -55.19462862214239,
+            -74.5451121500701
+          ],
+          "airfall": [
+            1.0673782632595443,
+            -55.19462862214239,
+            -74.5451121500701
+          ],
+          "airfall-low": [
+            1.0673782632595443,
+            -55.19462862214239,
+            -74.5451121500701
+          ],
+          "floor": [
+            1.0575731469327405,
+            -58.95490245912629,
+            -89.2383777457478
+          ],
+          "impact": [
+            1.0575731469327405,
+            -58.95490245912629,
+            -89.2383777457478
+          ],
+          "bounce": [
+            1.0575731469327405,
+            -58.95490245912629,
+            -89.2383777457478
+          ]
         }
       },
       "3": {
@@ -8547,30 +8606,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -8769,16 +8824,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -9068,30 +9121,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -9290,16 +9339,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -9591,30 +9638,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -9813,16 +9856,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -10112,30 +10153,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -10334,16 +10371,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -10433,7 +10468,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.0577738197232296,
+          -56.70475950220043,
+          -40.89332498796762
+        ]
       },
       "1": {
         "bounds": {
@@ -10474,10 +10514,10 @@
             657
           ],
           "floor": [
-            702,
-            902,
-            644,
-            648
+            677,
+            852,
+            694,
+            698
           ],
           "prepare-soft": [
             811,
@@ -10534,16 +10574,16 @@
             652
           ],
           "impact": [
-            702,
-            909,
-            644,
-            648
+            677,
+            859,
+            694,
+            699
           ],
           "bounce": [
-            702,
-            892,
-            644,
-            648
+            677,
+            841,
+            694,
+            699
           ],
           "rest-blink-half": [
             805,
@@ -10633,30 +10673,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -10855,16 +10891,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -11156,30 +11190,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -11378,16 +11408,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -11477,7 +11505,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.2051935714112196,
+          -217.59945694999828,
+          -136.16516645846434
+        ]
       },
       "3": {
         "bounds": {
@@ -11518,10 +11551,10 @@
             517
           ],
           "floor": [
-            745,
-            1035,
-            558,
-            515
+            701,
+            954,
+            646,
+            596
           ],
           "prepare-soft": [
             862,
@@ -11578,16 +11611,16 @@
             509
           ],
           "impact": [
-            745,
-            1042,
-            558,
-            515
+            701,
+            962,
+            646,
+            597
           ],
           "bounce": [
-            745,
-            1025,
-            558,
-            515
+            701,
+            942,
+            646,
+            597
           ],
           "rest-blink-half": [
             830,
@@ -11677,30 +11710,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -11899,16 +11928,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -11998,6 +12025,28 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
+        },
+        "registration": [
+          1.2553076599722242,
+          -268.1690496155047,
+          -169.38298908969944
+        ],
+        "poseRegistration": {
+          "floor": [
+            1.1961902688084352,
+            -200.8988352598376,
+            -304.0949166530745
+          ],
+          "impact": [
+            1.1961902688084352,
+            -200.8988352598376,
+            -304.0949166530745
+          ],
+          "bounce": [
+            1.1961902688084352,
+            -200.8988352598376,
+            -304.0949166530745
+          ]
         }
       },
       "1": {
@@ -12198,30 +12247,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -12420,16 +12465,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -12519,6 +12562,28 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
+        },
+        "registration": [
+          1.2294588837980913,
+          -241.28354273155242,
+          -152.40349785601097
+        ],
+        "poseRegistration": {
+          "midfall": [
+            0.8471880419472668,
+            137.23671522005478,
+            166.13562794166526
+          ],
+          "airfall": [
+            0.8471880419472668,
+            137.23671522005478,
+            166.13562794166526
+          ],
+          "airfall-low": [
+            0.8471880419472668,
+            137.23671522005478,
+            166.13562794166526
+          ]
         }
       }
     },
@@ -12721,30 +12786,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -12943,16 +13004,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -13077,10 +13136,10 @@
             958
           ],
           "midfall": [
-            660,
-            896,
-            728,
-            654
+            638,
+            873,
+            821,
+            737
           ],
           "floor": [
             671,
@@ -13131,16 +13190,16 @@
             946
           ],
           "airfall": [
-            654,
-            952,
-            736,
-            615
+            631,
+            936,
+            830,
+            694
           ],
           "airfall-low": [
-            651,
-            1016,
-            741,
-            570
+            628,
+            1008,
+            835,
+            643
           ],
           "impact": [
             671,
@@ -13242,30 +13301,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -13464,16 +13519,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -13763,30 +13816,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -13985,16 +14034,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -14127,10 +14174,10 @@
             698
           ],
           "floor": [
-            670,
-            1013,
-            708,
-            537
+            681,
+            1029,
+            686,
+            521
           ],
           "prepare-soft": [
             839,
@@ -14187,16 +14234,16 @@
             710
           ],
           "impact": [
-            670,
-            1020,
-            708,
-            537
+            681,
+            1036,
+            686,
+            521
           ],
           "bounce": [
-            670,
-            1003,
-            708,
-            537
+            681,
+            1020,
+            686,
+            521
           ],
           "rest-blink-half": [
             801,
@@ -14286,30 +14333,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -14508,16 +14551,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -14607,7 +14648,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          0.9664399390044205,
+          30.62644652734741,
+          20.805137087272556
+        ]
       },
       "2": {
         "bounds": {
@@ -14807,30 +14853,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -15029,16 +15071,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -15128,7 +15168,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          0.9421458952211549,
+          55.005937258247286,
+          37.080731733226685
+        ]
       },
       "3": {
         "bounds": {
@@ -15163,10 +15208,10 @@
             784
           ],
           "midfall": [
-            669,
-            889,
-            710,
-            661
+            680,
+            892,
+            690,
+            643
           ],
           "floor": [
             695,
@@ -15217,16 +15262,16 @@
             779
           ],
           "airfall": [
-            676,
-            918,
-            713,
-            666
+            687,
+            921,
+            693,
+            647
           ],
           "airfall-low": [
-            685,
-            951,
-            714,
-            669
+            696,
+            953,
+            694,
+            650
           ],
           "impact": [
             695,
@@ -15328,30 +15373,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -15550,16 +15591,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -15649,7 +15688,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.0416537569942075,
+          -39.60935381312743,
+          -24.61291711348815
+        ]
       }
     },
     "nadia": {
@@ -15686,10 +15730,10 @@
             821
           ],
           "midfall": [
-            721,
-            981,
-            606,
-            569
+            711,
+            975,
+            637,
+            597
           ],
           "floor": [
             719,
@@ -15740,16 +15784,16 @@
             832
           ],
           "airfall": [
-            724,
-            1021,
-            617,
-            555
+            715,
+            1017,
+            648,
+            583
           ],
           "airfall-low": [
-            730,
-            1052,
-            623,
-            552
+            721,
+            1049,
+            654,
+            580
           ],
           "impact": [
             719,
@@ -15851,30 +15895,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -16073,16 +16113,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -16372,30 +16410,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -16594,16 +16628,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -16693,7 +16725,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.0450594399745547,
+          -46.41580300683586,
+          -26.584130942435422
+        ]
       },
       "3": {
         "bounds": {
@@ -16734,10 +16771,10 @@
             550
           ],
           "floor": [
-            712,
-            1129,
-            624,
-            421
+            689,
+            1100,
+            669,
+            450
           ],
           "prepare-soft": [
             822,
@@ -16794,16 +16831,16 @@
             532
           ],
           "impact": [
-            712,
-            1136,
-            624,
-            421
+            690,
+            1106,
+            668,
+            452
           ],
           "bounce": [
-            712,
-            1119,
-            624,
-            421
+            689,
+            1088,
+            669,
+            452
           ],
           "rest-blink-half": [
             816,
@@ -16893,30 +16930,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -17115,16 +17148,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -17251,10 +17282,10 @@
             845
           ],
           "midfall": [
-            661,
-            991,
-            725,
-            559
+            640,
+            980,
+            777,
+            599
           ],
           "floor": [
             682,
@@ -17305,16 +17336,16 @@
             809
           ],
           "airfall": [
-            659,
-            1046,
-            749,
-            539
+            638,
+            1039,
+            802,
+            577
           ],
           "airfall-low": [
-            658,
-            1090,
-            771,
-            549
+            637,
+            1086,
+            826,
+            588
           ],
           "impact": [
             682,
@@ -17416,30 +17447,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -17638,16 +17665,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -17937,30 +17962,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -18159,16 +18180,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -18299,10 +18318,10 @@
             649
           ],
           "floor": [
-            658,
-            1015,
-            732,
-            535
+            677,
+            1043,
+            694,
+            507
           ],
           "prepare-soft": [
             730,
@@ -18359,16 +18378,16 @@
             688
           ],
           "impact": [
-            658,
-            1022,
-            732,
-            535
+            677,
+            1049,
+            694,
+            508
           ],
           "bounce": [
-            658,
-            1005,
-            732,
-            535
+            677,
+            1033,
+            694,
+            508
           ],
           "rest-blink-half": [
             703,
@@ -18458,30 +18477,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -18680,16 +18695,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -18981,30 +18994,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -19203,16 +19212,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -19302,7 +19309,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          0.9536007836729827,
+          52.689348109478715,
+          29.91847408577064
+        ]
       },
       "3": {
         "bounds": {
@@ -19502,30 +19514,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -19724,16 +19732,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -19834,34 +19840,34 @@
             1099
           ],
           "prepare": [
-            744,
-            441,
-            485,
-            864
+            729,
+            430,
+            511,
+            909
           ],
           "release": [
-            679,
-            449,
-            515,
-            865
+            652,
+            433,
+            555,
+            932
           ],
           "receive-empty": [
-            764,
-            440,
-            498,
-            878
+            746,
+            426,
+            532,
+            937
           ],
           "receive-caught": [
-            743,
-            449,
-            516,
-            941
+            726,
+            437,
+            547,
+            997
           ],
           "midfall": [
-            686,
-            900,
-            676,
-            650
+            629,
+            875,
+            785,
+            755
           ],
           "floor": [
             657,
@@ -19870,58 +19876,58 @@
             586
           ],
           "prepare-soft": [
-            744,
-            445,
-            485,
-            864
+            729,
+            435,
+            511,
+            909
           ],
           "throw-edge": [
-            678,
-            447,
-            515,
-            865
+            651,
+            432,
+            554,
+            931
           ],
           "settle": [
-            679,
-            452,
-            515,
-            865
+            652,
+            437,
+            555,
+            931
           ],
           "receive-hold": [
-            764,
-            440,
-            498,
-            878
+            746,
+            426,
+            532,
+            937
           ],
           "caught-soft": [
-            743,
-            451,
-            516,
-            941
+            726,
+            439,
+            547,
+            997
           ],
           "recoil": [
-            651,
-            469,
-            522,
-            854
+            622,
+            455,
+            562,
+            920
           ],
           "fall-start": [
-            623,
-            561,
-            559,
-            865
+            592,
+            554,
+            602,
+            931
           ],
           "airfall": [
-            675,
-            938,
-            694,
-            634
+            616,
+            919,
+            806,
+            736
           ],
           "airfall-low": [
-            665,
-            981,
-            710,
-            615
+            605,
+            969,
+            824,
+            714
           ],
           "impact": [
             657,
@@ -19984,16 +19990,16 @@
             1099
           ],
           "release-blink-half": [
-            679,
-            449,
-            515,
-            865
+            652,
+            433,
+            555,
+            932
           ],
           "release-blink": [
-            679,
-            449,
-            515,
-            865
+            652,
+            433,
+            555,
+            932
           ],
           "down-blink-half": [
             727,
@@ -20023,30 +20029,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -20245,16 +20247,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -20299,16 +20299,16 @@
           "released": "release",
           "caught": "receive-caught",
           "release": [
-            222.88435063565794,
-            233.57909041997345,
-            23.96514897563702,
-            21.659378488291793
+            221.1627540418181,
+            237.333464140671,
+            25.187980334787728,
+            22.764556981533076
           ],
           "catch": [
-            242.86215443124314,
-            211.65005453303064,
-            17.53207753840556,
-            19.156100419980817
+            242.0425259709828,
+            214.63228441521127,
+            18.548536132843648,
+            20.266715112686505
           ]
         },
         "frameCards": {
@@ -20381,10 +20381,10 @@
             846
           ],
           "midfall": [
-            695,
-            954,
-            658,
-            596
+            689,
+            948,
+            682,
+            617
           ],
           "floor": [
             676,
@@ -20435,16 +20435,16 @@
             807
           ],
           "airfall": [
-            711,
-            992,
-            646,
-            579
+            706,
+            987,
+            669,
+            600
           ],
           "airfall-low": [
-            715,
-            1035,
-            650,
-            582
+            710,
+            1032,
+            673,
+            602
           ],
           "impact": [
             676,
@@ -20546,30 +20546,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -20768,16 +20764,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -20867,7 +20861,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.0381821148763346,
+          -38.10943973922372,
+          -21.07716734136409
+        ]
       },
       "2": {
         "bounds": {
@@ -21067,30 +21066,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -21289,16 +21284,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -21388,7 +21381,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.0334654977389937,
+          -33.547401496828115,
+          -18.057425133799484
+        ]
       },
       "3": {
         "bounds": {
@@ -21423,10 +21421,10 @@
             849
           ],
           "midfall": [
-            634,
-            985,
-            780,
-            565
+            624,
+            980,
+            807,
+            585
           ],
           "floor": [
             653,
@@ -21477,16 +21475,16 @@
             815
           ],
           "airfall": [
-            658,
-            1029,
-            772,
-            555
+            649,
+            1026,
+            798,
+            574
           ],
           "airfall-low": [
-            681,
-            1079,
-            762,
-            543
+            672,
+            1077,
+            789,
+            562
           ],
           "impact": [
             653,
@@ -21588,30 +21586,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -21810,16 +21804,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -21909,7 +21901,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          1.077025748958526,
+          -77.34303555826523,
+          -43.14149341942027
+        ]
       }
     },
     "jasper": {
@@ -22111,30 +22108,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -22333,16 +22326,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -22632,30 +22623,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -22854,16 +22841,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -22970,10 +22955,10 @@
             730
           ],
           "release": [
-            775,
-            467,
-            541,
-            786
+            786,
+            473,
+            517,
+            750
           ],
           "receive-empty": [
             790,
@@ -22988,10 +22973,10 @@
             760
           ],
           "midfall": [
-            686,
-            979,
             676,
-            571
+            974,
+            701,
+            592
           ],
           "floor": [
             678,
@@ -23006,16 +22991,16 @@
             730
           ],
           "throw-edge": [
-            774,
-            465,
-            540,
-            786
+            785,
+            471,
+            516,
+            750
           ],
           "settle": [
-            775,
-            470,
-            541,
-            786
+            786,
+            476,
+            517,
+            750
           ],
           "receive-hold": [
             790,
@@ -23030,28 +23015,28 @@
             760
           ],
           "recoil": [
-            738,
-            488,
-            565,
-            795
+            751,
+            493,
+            540,
+            758
           ],
           "fall-start": [
-            696,
-            582,
-            615,
-            782
+            711,
+            583,
+            587,
+            746
           ],
           "airfall": [
-            705,
-            1019,
-            663,
-            561
+            696,
+            1015,
+            687,
+            583
           ],
           "airfall-low": [
-            726,
-            1065,
-            650,
-            564
+            717,
+            1063,
+            675,
+            585
           ],
           "impact": [
             678,
@@ -23114,16 +23099,16 @@
             922
           ],
           "release-blink-half": [
-            775,
-            467,
-            541,
-            786
+            786,
+            473,
+            517,
+            750
           ],
           "release-blink": [
-            775,
-            467,
-            541,
-            786
+            786,
+            473,
+            517,
+            750
           ],
           "down-blink-half": [
             775,
@@ -23153,30 +23138,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -23375,16 +23356,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -23474,6 +23453,23 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
+        },
+        "poseRegistration": {
+          "midfall": [
+            1.0455639350128727,
+            -43.341326355956795,
+            -50.2936721860277
+          ],
+          "airfall": [
+            1.0455639350128727,
+            -43.341326355956795,
+            -50.2936721860277
+          ],
+          "airfall-low": [
+            1.0455639350128727,
+            -43.341326355956795,
+            -50.2936721860277
+          ]
         }
       }
     },
@@ -23517,10 +23513,10 @@
             697
           ],
           "floor": [
-            605,
-            875,
-            838,
-            675
+            536,
+            765,
+            976,
+            785
           ],
           "prepare-soft": [
             752,
@@ -23577,16 +23573,16 @@
             684
           ],
           "impact": [
-            605,
-            882,
-            838,
-            675
+            536,
+            773,
+            976,
+            786
           ],
           "bounce": [
-            605,
-            865,
-            838,
-            675
+            536,
+            753,
+            976,
+            786
           ],
           "rest-blink-half": [
             695,
@@ -23676,30 +23672,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -23898,16 +23890,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -23997,7 +23987,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          0.8109403549840454,
+          196.4766382180037,
+          114.89761163325932
+        ]
       },
       "2": {
         "bounds": {
@@ -24197,30 +24192,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -24419,16 +24410,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -24518,7 +24507,12 @@
           "down-blink": 2,
           "down-gaze-left": 2,
           "down-gaze-right": 2
-        }
+        },
+        "registration": [
+          0.8162789458711518,
+          191.633577505448,
+          111.77985289950675
+        ]
       },
       "3": {
         "bounds": {
@@ -24553,10 +24547,10 @@
             1016
           ],
           "midfall": [
-            607,
-            891,
-            834,
-            659
+            571,
+            880,
+            903,
+            714
           ],
           "floor": [
             607,
@@ -24607,16 +24601,16 @@
             994
           ],
           "airfall": [
-            611,
-            938,
-            832,
-            661
+            575,
+            931,
+            901,
+            716
           ],
           "airfall-low": [
-            618,
-            990,
-            825,
-            660
+            582,
+            987,
+            894,
+            716
           ],
           "impact": [
             607,
@@ -24718,30 +24712,26 @@
         "clips": {
           "blink-rest": {
             "frames": [
-              "rest-blink-half",
+              "rest",
               "rest-blink",
-              "rest-blink-half",
               "rest"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "blink-release": {
             "frames": [
-              "release-blink-half",
+              "release",
               "release-blink",
-              "release-blink-half",
               "release"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left": {
@@ -24940,16 +24930,14 @@
           },
           "blink-down": {
             "frames": [
-              "down-blink-half",
+              "down",
               "down-blink",
-              "down-blink-half",
               "down"
             ],
             "durations": [
               40,
-              75,
-              40,
-              50
+              80,
+              60
             ]
           },
           "look-left@down": {
@@ -33015,5 +33003,5 @@
       "changedPixels": 1157
     }
   ],
-  "qualityRevision": "pose-continuity-v1"
+  "qualityRevision": "visual-audit-v2"
 }
