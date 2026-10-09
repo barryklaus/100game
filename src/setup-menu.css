@@ -42,3 +42,5 @@
   .midnight-mode .setup-panel .panel-top { gap: 20px; }
   .midnight-mode .setup-panel .top-links button { min-height: 48px; font-size: .95rem; }
 }
+
+.midnight-mode .setup-secondary { display: block; width: 100%; margin-top: 11px; padding: 15px 20px; }
