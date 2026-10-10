@@ -1,6 +1,7 @@
 import { conditionAnimations } from './ConditionAnimationData';
 import { masterAnimations, type MasterAnimationSet } from './MasterAnimationData';
 import { masterHandRect } from './MasterCharacters';
+import { DecodeQueue } from './DecodeQueue';
 interface CastState { active:number; total:number; overflow:boolean; overflowSeat?:number; target:boolean; reducedMotion:boolean }
 interface Seat { element:HTMLElement; image:HTMLImageElement; id:string; condition:number; data:MasterAnimationSet; epoch:number; held:1|2; frame:string; mood:string; fallen:boolean; timer:number; blinkTimer:number; phase:'rest'|'prepare'|'release'|'receive'; warmed:boolean; animation?:{frames:string[];resolve:()=>void} }
 export function masterFrameUrl(id:string,frame='rest',condition=0):string { return `${import.meta.env.BASE_URL}assets/social-club/${condition&&conditionAnimations[id]?.[condition]?'condition-animation-v1/'+id+'/'+condition:'master-animation-v2/'+id}/${frame}.webp`; }
@@ -13,6 +14,8 @@ export function masterFrameStyle(id:string,frame='rest',condition=0):string {con
 export class MasterAnimations {
  private seats=new Map<number,Seat>();
  private assets=new Map<string,Promise<HTMLImageElement>>();
+ private assetBytes=new Map<string,number>();
+ private decodes=new DecodeQueue();
  private state:CastState={active:0,total:0,overflow:false,target:false,reducedMotion:false};
  private visible=new Set<number>();
  constructor(private root:HTMLElement){}
@@ -29,16 +32,23 @@ export class MasterAnimations {
  private load(seat:Seat,frame:string):Promise<HTMLImageElement>{
   const url=masterFrameUrl(seat.id,frame,seat.condition);let promise=this.assets.get(url);
   if(promise){this.assets.delete(url);this.assets.set(url,promise);return promise;}
-  const image=new Image();image.src=url;promise=image.decode().then(()=>image).catch(error=>{this.assets.delete(url);throw error;});this.assets.set(url,promise);return promise;
+  const bounds=seat.data.bounds[frame];
+  promise=this.decodes.run(async()=>{
+   // A reset or eviction can supersede queued work before it allocates a bitmap.
+   if(this.assets.get(url)!==promise)throw new Error('Sprite load superseded');
+   const image=new Image();image.src=url;await image.decode();return image;
+  }).then(image=>{if(this.assets.get(url)===promise)this.assetBytes.set(url,(bounds?.[2]??1024)*(bounds?.[3]??1024)*4);this.trim();return image;}).catch(error=>{if(this.assets.get(url)===promise){this.assets.delete(url);this.assetBytes.delete(url);}throw error;});
+  this.assets.set(url,promise);return promise;
  }
  private trim():void{
-  const protectedUrls=new Set<string>();this.seats.forEach(seat=>{protectedUrls.add(masterFrameUrl(seat.id,seat.frame,seat.condition));seat.animation?.frames.forEach(frame=>protectedUrls.add(masterFrameUrl(seat.id,frame,seat.condition)));if(seat.phase!=='rest')for(const clip of ['throw','receive-ready','pickup'])seat.data.clips[clip]?.frames.forEach(frame=>protectedUrls.add(masterFrameUrl(seat.id,frame,seat.condition)));});
-  for(const key of this.assets.keys()){if(this.assets.size<=24)break;if(!protectedUrls.has(key))this.assets.delete(key);}
+  const protectedUrls=new Set<string>();this.seats.forEach((seat,index)=>{if(!this.visible.has(index)&&!seat.animation)return;protectedUrls.add(masterFrameUrl(seat.id,seat.frame,seat.condition));seat.animation?.frames.forEach(frame=>protectedUrls.add(masterFrameUrl(seat.id,frame,seat.condition)));});
+  let bytes=[...this.assetBytes.values()].reduce((sum,value)=>sum+value,0);
+  for(const key of this.assets.keys()){if(this.assetBytes.size<=24&&bytes<=24*1024*1024)break;if(this.assetBytes.has(key)&&!protectedUrls.has(key)){bytes-=this.assetBytes.get(key)!;this.assets.delete(key);this.assetBytes.delete(key);}}
  }
  private paint(seat:Seat,frame:string):void{seat.frame=frame;seat.image.src=masterFrameUrl(seat.id,frame,seat.condition);seat.image.style.cssText=masterFrameStyle(seat.id,frame,seat.condition);seat.element.dataset.frame=frame;seat.element.dataset.cards=String(seat.held);}
  private stop(seat:Seat):void{seat.epoch++;clearTimeout(seat.timer);seat.timer=0;seat.animation?.resolve();seat.animation=undefined;delete seat.element.dataset.animation;}
- reset():void{this.visible.clear();this.seats.forEach(seat=>{clearTimeout(seat.blinkTimer);this.stop(seat);});this.seats.clear();this.assets.clear();}
- async warm(index:number,clip?:string):Promise<void>{const seat=this.seat(index);if(!seat)return;const frames=clip?(clip==='throw'?['throw','receive-ready','pickup']:[clip]).flatMap(key=>seat.data.clips[key]?.frames??[]):['rest'];await Promise.all([...new Set(frames)].map(frame=>this.load(seat,frame))).then(()=>undefined).catch(()=>undefined);this.trim();}
+ reset():void{this.visible.clear();this.seats.forEach(seat=>{clearTimeout(seat.blinkTimer);this.stop(seat);});this.seats.clear();this.assets.clear();this.assetBytes.clear();}
+ async warm(index:number,clip?:string):Promise<void>{const seat=this.seat(index);if(!seat)return;const frames=clip?seat.data.clips[clip]?.frames??[]:['rest'];await Promise.all([...new Set(frames)].map(frame=>this.load(seat,frame).then(()=>undefined,()=>undefined)));this.trim();}
  private idleFrame(index:number,seat:Seat):string{
   if(seat.held===1)return seat.data.clips.throw.frames.at(-1)!;
   const emotion=this.state.overflow?'shocked':this.state.total>=90?'panicked':this.state.total>=70?'nervous':index===this.state.active?'focused':({Happy:'amused',Smug:'smug',Angry:'frustrated',Sad:'defeated',Confident:'confident',Scared:'nervous'}[seat.mood]??'calm');

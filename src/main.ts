@@ -1,4 +1,5 @@
 import { REACTIONS, reactionPhrase, specialPhrase } from './data/reactions';
+import { LocalSession } from './game/LocalSession';
 import { gamePoints, localPointsKey, LocalOutcomes, resetsPoints } from './game/points';
 import { createDeathDemo } from './game/DeathDemo';
 import { createFreedomDemo } from './game/FreedomDemo';
@@ -90,6 +91,7 @@ if (outcomeDemo) {
 }
 let stats: Stats = loadStats();
 const outcomeHistory = new LocalOutcomes({getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)});
+const localSession=new LocalSession({getItem:key=>sessionStorage.getItem(key),setItem:(key,value)=>sessionStorage.setItem(key,value),removeItem:key=>sessionStorage.removeItem(key)});
 const pointsCast = (): string => masterCast?'midnight':trialCast?'finn-june':'observatory';
 function savedOutcomes(player:PlayerConfig,owner=false):{freedoms:number;deaths:number}{
   const saved=outcomeHistory.get(localPointsKey(player,pointsCast()));
@@ -688,6 +690,7 @@ function syncPlayerRing(): void {
   playerRing.sync({ roundKey: active ? `${state!.round}:${state!.players.map(player=>player.name).join(':')}` : '', count: active ? visibleTableSeats().length : 0, seats:visibleTableSeats(), active: state?.phase === 'target' ? state.pendingSevens.at(-1)! : state?.current ?? 0, total: presentedTotal.visible.total, overflow: active && presentedTotal.visible.total > 100, overflowSeat: state?.bust ?? undefined, reducedMotion: settings.reducedMotion, target: state?.phase === 'target' });
 }
 function render(): void {
+  if(isNextVersion&&!outcomeDemo)localSession.save(state&&!online&&!onlineMode?{state,cast:pointsCast(),practice:practiceRound,dismissed:[...dismissedOutcomeKeys]}:null);
   const accountFields=modal==='account'&&!account?.snapshot.user?Array.from(document.querySelectorAll<HTMLInputElement>('#account-form input')).map(input=>[input.name,input.value] as const):[];
   const discard = state?.played.at(-1);
   const playKey = state&&discard?`${state.round}:${discard.id}:${state.played.length}`:'';
@@ -743,8 +746,16 @@ function render(): void {
   }
   if (remoteSnapshots.length && !presentedTotal.pending && !remoteFlight) queueMicrotask(() => roomChanged());
 }
+const restored=isNextVersion&&!outcomeDemo&&!onlineMode?localSession.restore(pointsCast()):null;
+if(restored){
+  state=restored.state;practiceRound=restored.practice;
+  restored.dismissed.forEach(key=>dismissedOutcomeKeys.add(key));
+  settings.playerCount=state.players.length;
+  state.players.forEach((player,index)=>{settings.seats[index]={name:player.name,kind:player.kind,mood:player.mood,avatar:player.avatar};});
+}
 render();
-if(outcomeDemo || (masterCast&&!onlineMode&&new URLSearchParams(location.search).get('play')==='1'))startGame();
+if(restored){scheduleCpu();flash('Local table restored.');}
+else if(outcomeDemo || (masterCast&&!onlineMode&&new URLSearchParams(location.search).get('play')==='1'))startGame();
 if (isHostedVersion && onlineMode === 'join' && /^100-[a-z0-9]{12}$/.test(joinCode) && localStorage.getItem(`100game:room:${joinCode}`)) connectOnline('join');
 
 app.addEventListener('submit',event=>{

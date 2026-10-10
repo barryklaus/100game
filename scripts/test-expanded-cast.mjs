@@ -10,7 +10,7 @@ globalThis.setTimeout=(fn,ms)=>{timers.set(++key,{fn,at:time+ms});return key;};g
 globalThis.Image=class{decode(){return waiting?new Promise(resolve=>pending.push(resolve)):Promise.resolve();}};
 const nodes=names.map((id,index)=>{const history=[];const image={isConnected:true,style:{cssText:''},set src(url){history.push({url,time});}};const element={dataset:{character:id},querySelector:()=>image};return {dataset:{seat:String(index),mood:'Normal'},hidden:false,history,element,image,getBoundingClientRect:()=>({left:index*200,top:100,width:100,height:100})};});
 const root={querySelector(selector){const n=nodes[Number(selector.match(/data-seat="(\d+)"/)?.[1])];return selector.includes('master-hand')?{getBoundingClientRect:n.getBoundingClientRect}:selector.includes('master-sprite')?n.element:n;},querySelectorAll(){return nodes.filter(n=>!n.hidden);}};
-const flush=async()=>{for(let i=0;i<20;i++)await Promise.resolve();};
+const flush=async()=>{for(let i=0;i<200;i++)await Promise.resolve();};
 const advance=async ms=>{const end=time+ms;while(true){const next=[...timers.entries()].filter(([,v])=>v.at<=end).sort((a,b)=>a[1].at-b[1].at)[0];if(!next)break;time=next[1].at;timers.delete(next[0]);next[1].fn();await flush();}time=end;await flush();};
 const cast=new MasterAnimations(root),state={active:0,total:0,overflow:false,target:false,reducedMotion:false};
 cast.sync(state);await flush();
