@@ -215,6 +215,7 @@ export class ObservatoryScene {
     this.localSeat = next.localSeat;
     this.seatProjectionDirty = true;
     this.ring.setDirection(next.direction);
+    this.table.setDirection(next.direction);
     this.ring.setTotal(next.total);
     this.table.setTotal(next.total);
     this.playKey = next.active?(next.playKey??''):'';

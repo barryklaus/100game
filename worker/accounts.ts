@@ -40,6 +40,7 @@ export class AccountStore {
     this.sql.exec('CREATE TABLE IF NOT EXISTS events (event_id TEXT NOT NULL, user_id TEXT NOT NULL, kind TEXT NOT NULL, PRIMARY KEY(event_id,user_id,kind))');
     this.sql.exec('CREATE TABLE IF NOT EXISTS limits (key TEXT PRIMARY KEY, count INTEGER NOT NULL, expires INTEGER NOT NULL)');
     this.sql.exec('CREATE TABLE IF NOT EXISTS character_points (avatar INTEGER PRIMARY KEY, points INTEGER NOT NULL)');
+    this.sql.exec('CREATE TABLE IF NOT EXISTS character_outcomes (avatar INTEGER PRIMARY KEY, freedoms INTEGER NOT NULL, deaths INTEGER NOT NULL)');
     this.sql.exec('CREATE TABLE IF NOT EXISTS account_points (user_id TEXT PRIMARY KEY, points INTEGER NOT NULL)');
     this.sql.exec('CREATE TABLE IF NOT EXISTS administrators (user_id TEXT PRIMARY KEY)');
     if(!this.sql.exec<{name:string}>('PRAGMA table_info(users)').toArray().some(column=>column.name==='country'))this.sql.exec("ALTER TABLE users ADD COLUMN country TEXT NOT NULL DEFAULT ''");
@@ -165,7 +166,10 @@ export class AccountStore {
     if(path==='/internal/points') {
       const ids=Array.isArray(body.accounts)?body.accounts.filter(id=>typeof id==='string').slice(0,8) as string[]:[];
       const avatars=Array.isArray(body.cpus)?body.cpus.filter(avatar=>Number.isInteger(avatar)&&avatar>=0&&avatar<16).slice(0,8) as number[]:[];
-      return json({accounts:Object.fromEntries(ids.map(id=>{const user=this.one<UserRow>('SELECT * FROM users WHERE id=?',id);return [id,user?this.publicUser(user).lifetimePoints:0];})),cpus:Object.fromEntries(avatars.map(avatar=>[avatar,this.one<{points:number}>('SELECT points FROM character_points WHERE avatar=?',avatar)?.points??0]))});
+      return json({accounts:Object.fromEntries(ids.map(id=>{const user=this.one<UserRow>('SELECT * FROM users WHERE id=?',id);return [id,user?this.publicUser(user).lifetimePoints:0];})),cpus:Object.fromEntries(avatars.map(avatar=>[avatar,this.one<{points:number}>('SELECT points FROM character_points WHERE avatar=?',avatar)?.points??0])),outcomes:{
+        accounts:Object.fromEntries(ids.map(id=>{const user=this.one<UserRow>('SELECT * FROM users WHERE id=?',id);const online=user?JSON.parse(user.online):{},practice=user?JSON.parse(user.practice):{};return [id,{freedoms:(online.freedoms??0)+(practice.freedoms??0),deaths:(online.deaths??0)+(practice.deaths??0)}];})),
+        cpus:Object.fromEntries(avatars.map(avatar=>[avatar,this.one<{freedoms:number;deaths:number}>('SELECT freedoms,deaths FROM character_outcomes WHERE avatar=?',avatar)??{freedoms:0,deaths:0}]))
+      }});
     }
     if(path==='/internal/cpu-record') {
       const avatar=Number(body.avatar),delta=Number(body.delta),eventId=String(body.eventId??''),key=`cpu:${avatar}`;
@@ -174,6 +178,8 @@ export class AccountStore {
         this.ctx.storage.transactionSync(()=>{
           if(body.reset===true)this.sql.exec('INSERT INTO character_points(avatar,points) VALUES(?,0) ON CONFLICT(avatar) DO UPDATE SET points=0',avatar);
           else this.sql.exec('INSERT INTO character_points(avatar,points) VALUES(?,?) ON CONFLICT(avatar) DO UPDATE SET points=MAX(-1000000000,MIN(1000000000,points+excluded.points))',avatar,delta);
+          const count=(value:unknown)=>Number.isSafeInteger(value)?Math.max(0,Math.min(8,Number(value))):0;
+          this.sql.exec('INSERT INTO character_outcomes(avatar,freedoms,deaths) VALUES(?,?,?) ON CONFLICT(avatar) DO UPDATE SET freedoms=MIN(1000000000,freedoms+excluded.freedoms),deaths=MIN(1000000000,deaths+excluded.deaths)',avatar,count(body.freedoms),count(body.deaths));
           this.sql.exec('INSERT INTO events(event_id,user_id,kind) VALUES(?,?,?)',eventId,key,'cpu');
         });
       }

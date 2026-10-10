@@ -109,7 +109,7 @@ function engraving(cartoon=false):THREE.CanvasTexture {
     }
     c.restore();c.strokeStyle=fine;c.lineWidth=.8;c.beginPath();c.arc(x,y,12,0,Math.PI*2);c.stroke();
   });
-  const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=8;return texture;
+  const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=16;return texture;
 }
 
 /** Baked walnut grain keeps the physical rim inexpensive at every quality tier. */
@@ -132,7 +132,17 @@ export class ObservatoryTable {
   private danger={value:0};
   private flow={value:1};
   private flowStrength={value:0};
+  private direction=0;
+  private arrows:THREE.InstancedMesh;
+  private arrowInk=new THREE.MeshBasicMaterial({color:0xa27a3e,side:THREE.DoubleSide});
   constructor(cartoon=false){
+    // One draw call for a ring of chevrons, physically laid on the tabletop.
+    const chevron=new THREE.Shape();
+    chevron.moveTo(-.09,-.07);chevron.lineTo(.02,0);chevron.lineTo(-.09,.07);
+    chevron.lineTo(-.025,.07);chevron.lineTo(.09,0);chevron.lineTo(-.025,-.07);chevron.closePath();
+    const arrowGeometry=new THREE.ShapeGeometry(chevron);arrowGeometry.rotateX(-Math.PI/2);
+    this.arrows=new THREE.InstancedMesh(arrowGeometry,this.arrowInk,32);
+    this.arrows.name='turn-order-edge-arrows';this.group.add(this.arrows);this.setDirection(1);
     const metal=this.metal;
     if(cartoon){metal.color.set(0xc39645);metal.metalness=.18;metal.roughness=.75;}
     const wood=cartoon?new THREE.MeshBasicMaterial({map:walnut(true),color:0xffffff}):new THREE.MeshStandardMaterial({map:walnut(),color:0xf4bd83,metalness:.08,roughness:.3});
@@ -180,8 +190,18 @@ export class ObservatoryTable {
     }
     for(const [r,w,y] of [[4.76,.012,.352],[5.015,.014,.335],[5.01,.011,.005]])this.group.add(ring(r,w,metal,y));
   }
+  setDirection(direction:number):void {
+    const sign=direction<0?-1:1;if(sign===this.direction)return;this.direction=sign;
+    for(let index=0;index<32;index++){
+      const angle=index*Math.PI*2/32;
+      this.arrows.setMatrixAt(index,new THREE.Matrix4().compose(
+        new THREE.Vector3(Math.sin(angle)*4.46,.3485,Math.cos(angle)*4.46),
+        new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),angle+(sign>0?Math.PI:0)),new THREE.Vector3(1,1,1)));
+    }
+    this.arrows.instanceMatrix.needsUpdate=true;this.arrows.computeBoundingSphere();
+  }
   setTotal(total:number):void{
-    const danger=totalDanger(total);this.danger.value=danger;
+    const danger=totalDanger(total);this.danger.value=danger;this.arrowInk.color.set(0xa27a3e).lerp(HEAT_RED,danger);
     this.metal.color.set(0x9b7844).lerp(HEAT_RED,danger);
     this.metal.emissive.set(0xff2310);this.metal.emissiveIntensity=danger*.32;
   }

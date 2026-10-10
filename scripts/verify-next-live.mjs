@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 
 const origin = 'https://100next.pages.dev';
 const room = `100-${randomBytes(6).toString('hex')}`;
-const profile = name => ({ name, avatar: 0, mood: 'Normal' });
+const profile = name => ({ name, avatar: 0, mood: 'Normal', lifetimePoints:999999 });
 async function post(action, body) {
   const response = await fetch(`${origin}/api/rooms/${room}/${action}`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: AbortSignal.timeout(15000),
@@ -64,6 +64,13 @@ try {
   assert.equal(g.state.players[guestSeat.seat].hand.length, 2);
   const hostCard = h.state.players[hostSeat.seat].hand[0].id;
   assert(!JSON.stringify(g).includes(hostCard), 'Other hands must stay private');
+  assert(h.state.match.scores.every(points=>points===0),'New live tables must ignore historical points');
+  assert(h.state.players.every(player=>Number.isSafeInteger(player.freedoms)&&Number.isSafeInteger(player.deaths)),'Every seat exposes outcome counts');
+  host.send({type:'reaction',phrase:'yawa'});
+  const reaction=await guest.wait(m=>m.type==='snapshot'&&m.reaction?.phrase==='yawa'&&m.reaction.seat===hostSeat.seat);
+  assert(!JSON.stringify(reaction).includes(hostCard),'Shared reactions must preserve private hands');
+  guest.send({type:'reaction',phrase:'rip'});
+  await host.wait(m=>m.type==='snapshot'&&m.reaction?.phrase==='rip'&&m.reaction.seat===guestSeat.seat);
   const resumed = await post('join', { profile: profile('Release check host'), token: hostSeat.token });
   assert.equal(resumed.seat, hostSeat.seat);
   assert.equal(resumed.token, hostSeat.token);
@@ -71,7 +78,7 @@ try {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ profile: profile('Isolation check') }), signal: AbortSignal.timeout(15000),
   });
   assert.equal(isolated.status, 404, 'The stable game must not contain the 100next room');
-  console.log(`Verified live 100next (${release.commit.slice(0, 7)}): two human WebSockets, CPU seat, private hands, seat recovery, and separate stable storage.`);
+  console.log(`Verified live 100next (${release.commit.slice(0, 7)}): two human WebSockets, CPU seat, private hands, shared reactions, zero starting points, outcome counts, seat recovery, and separate stable storage.`);
 } finally {
   host.socket.close(); guest.socket.close();
 }

@@ -273,6 +273,8 @@ export function createCardMesh(front: THREE.Texture, back: THREE.Texture, specia
   const faceInfo = front.userData?.cardFace as { special?: boolean; suit?: Suit; theme?: string } | undefined;
   const isSpecial = Boolean(faceInfo?.special ?? special);
   const midnight = faceInfo?.theme === 'midnight';
+  // A back-only deck card uses its printed back without an extra foil frame.
+  if(front!==back||faceInfo){
   const foil = new THREE.Mesh(midnight ? createCardArtworkFoilGeometry(front, isSpecial, height) : createCardFoilGeometry(front, height), cardFoilMaterial(isSpecial, faceInfo?.suit ?? 'sun', midnight));
   foil.name = midnight ? 'card-artwork-foil' : 'card-border-foil';
   foil.position.z = thickness / 2 + .00035;
@@ -297,6 +299,7 @@ export function createCardMesh(front: THREE.Texture, back: THREE.Texture, specia
   };
   foil.userData.cardFoil = true;
   root.add(foil);
+  }
   root.children.forEach(surface => {
     surface.userData.cleanCard = true;
     surface.layers.enable(CLEAN_CARD_LAYER);

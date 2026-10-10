@@ -1,0 +1,32 @@
+/* Reactions stay above the art, with persistent outcome counts under names. */
+.observatory-mode .seat-layer .sprite-seat .reaction-bubble {
+  top:auto;bottom:80%;left:50%;z-index:15;max-width:min(230px,29vw);
+  white-space:normal;width:max-content;padding:7px 11px;border:1px solid #e9bd6e;
+  border-radius:12px;background:#131821;color:#fff0c9;
+  font:700 clamp(10px,1vw,14px)/1.25 system-ui;text-align:center;
+  box-shadow:0 4px 12px #0008;pointer-events:none;
+}
+.observatory-mode .seat-layer .sprite-seat .reaction-bubble:after {
+  content:'';position:absolute;left:50%;bottom:-5px;width:8px;height:8px;
+  background:#131821;border-right:1px solid #e9bd6e;border-bottom:1px solid #e9bd6e;transform:rotate(45deg);
+}
+.observatory-mode .seat-layer .seat-meta {display:block!important;overflow:visible;font-size:clamp(8px,.8vw,11px);line-height:1.6;}
+.seat-outcome {display:inline-block;margin-right:5px;}
+.freedom-stat {color:#f4d28e;}.death-stat {color:#c9bbec;}
+.emote-menu .emote-wheel.phrase-wheel {
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;
+  left:0;bottom:calc(100% + 12px);width:min(330px,calc(100vw - 40px));height:auto;
+  padding:12px;border:1px solid #b99758!important;border-radius:16px;
+  background:#101721f7!important;box-shadow:0 8px 25px #0009!important;
+}
+.emote-menu .emote-wheel.phrase-wheel button {
+  position:static;transform:none;width:auto;height:auto;min-height:40px;
+  border:1px solid #b9975860;border-radius:9px;padding:8px 10px;
+  background:#202938;color:#fff0ce;font:650 12px/1.25 system-ui;box-shadow:none;
+}
+.emote-menu .emote-wheel.phrase-wheel button:hover {background:#3c3540;border-color:#e9bd6e;}
+@media(max-width:500px){
+  .observatory-mode .seat-layer .sprite-seat .reaction-bubble {font-size:10px;padding:5px 7px;max-width:23vw;}
+  .observatory-mode .seat-layer .seat-meta {font-size:8px;}
+  .seat-outcome {margin-right:3px;}
+}

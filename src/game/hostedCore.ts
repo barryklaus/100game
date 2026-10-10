@@ -1,3 +1,4 @@
+import { reactionPhrase, type RoomReaction } from '../data/reactions';
 import { cpuActionDelay } from './cpuTiming';
 import { isOut } from './conditions';
 import { CONFIG, MOODS } from '../data/config';
@@ -6,16 +7,18 @@ import { projectForSeat } from './projection';
 import { createGame, playCard, selectTarget } from './rules';
 import type { GameState, PlayerConfig } from './types';
 
-export type Profile = Pick<PlayerConfig, 'name' | 'avatar' | 'mood' | 'lifetimePoints'>;
+export type Profile = Pick<PlayerConfig, 'name' | 'avatar' | 'mood' | 'lifetimePoints' | 'freedoms' | 'deaths'>;
 export type RoomCommand =
   | { type: 'cpu-count'; count: number }
   | { type: 'start'; round?: number }
   | { type: 'play'; cardId: string; turn?: number }
   | { type: 'target'; seat: number; turn?: number }
   | { type: 'mood'; mood: PlayerConfig['mood'] }
+  | { type: 'reaction'; phrase:string }
   | { type: 'leave' };
-export interface Member { token: string; seat: number; profile: Profile; disconnectedAt: number | null; accountId?: string; left?:boolean }
+export interface Member { token: string; seat: number; profile: Profile; disconnectedAt: number | null; accountId?: string; left?:boolean; reactionAt?:number }
 export interface RoomData {
+  reaction?:RoomReaction;
   lifetimeSettledRound?: string;
   nextRules?:boolean;
   id: string;
@@ -45,6 +48,8 @@ export function cleanProfile(input: unknown): Profile {
   return {
     name: String(profile.name || 'Player').trim().slice(0, 15) || 'Player',
     avatar: Number.isInteger(profile.avatar) ? Math.max(0, Math.min(15, profile.avatar!)) : 0,
+    freedoms:Number.isSafeInteger(profile.freedoms)?Math.max(0,Math.min(1e9,profile.freedoms!)):0,
+    deaths:Number.isSafeInteger(profile.deaths)?Math.max(0,Math.min(1e9,profile.deaths!)):0,
     mood: profile.mood && MOODS.includes(profile.mood) ? profile.mood : 'Normal',
     ...(Number.isSafeInteger(profile.lifetimePoints) ? {lifetimePoints:Math.max(-1e9,Math.min(1e9,profile.lifetimePoints!))} : {}),
   };
@@ -92,7 +97,8 @@ export function joinRoom(room: RoomData, profile: unknown, token: string | null,
       room.state.players[existing.seat].name = existing.profile.name;
       room.state.players[existing.seat].mood = existing.profile.mood;
       room.state.players[existing.seat].avatar = existing.profile.avatar;
-      room.state.players[existing.seat].lifetimePoints = existing.profile.lifetimePoints;
+      room.state.players[existing.seat].freedoms = existing.profile.freedoms;
+      room.state.players[existing.seat].deaths = existing.profile.deaths;
     }
     if (room.hostSeat < 0) room.hostSeat = existing.seat;
     touch(room, now);
@@ -200,7 +206,11 @@ export function applyCommand(room: RoomData, seat: number, command: RoomCommand,
     else { removeLobbyMember(room, seat); touch(room, now); }
     return;
   }
-  if (command.type === 'mood') {
+  if(command.type==='reaction'){
+    if(!room.state||isOut(room.state,seat)||!reactionPhrase(command.phrase))throw new RoomError('Choose a reaction at the table.');
+    if(member.reactionAt!==undefined&&now-member.reactionAt<800)throw new RoomError('Give that reaction a moment.',429);
+    member.reactionAt=now;room.reaction={serial:room.revision+1,seat,phrase:command.phrase,expiresAt:now+2600};
+  } else if (command.type === 'mood') {
     if (!MOODS.includes(command.mood)) throw new RoomError('Choose a valid mood.');
     member.profile.mood = command.mood;
     room.seats[seat].mood = command.mood;
@@ -215,6 +225,7 @@ export function applyCommand(room: RoomData, seat: number, command: RoomCommand,
     if (room.state && room.state.phase !== 'ended') throw new RoomError('Finish the current round first.', 409);
     if(room.state?.match?.complete)throw new RoomError('This table is finished. Create a new room.',409);
     const nextRound = room.state&&!room.state.match?.complete ? room.state.round + 1 : 1;
+    room.reaction=undefined;
     room.state = createGame(room.seats, nextRound, Math.random, room.nextRules?(room.state?.match?.complete?true:room.state?.match??true):undefined);
   } else if (command.type === 'play') {
     if (!room.state || room.state.phase !== 'playing' || room.state.current !== seat || typeof command.cardId !== 'string') throw new RoomError('It is not your turn.', 409);
@@ -231,7 +242,7 @@ export function applyCommand(room: RoomData, seat: number, command: RoomCommand,
 export function snapshotForSeat(room: RoomData, seat: number) {
   return {
     type: 'snapshot' as const, roomId: room.id, seat, hostSeat: room.hostSeat,
-    seats: room.seats, cpuCount: room.cpuCount, revision: room.revision,
+    reaction:room.reaction, seats: room.seats, cpuCount: room.cpuCount, revision: room.revision,
     state: room.state ? projectForSeat(room.state, seat) : null,
   };
 }

@@ -1,5 +1,5 @@
+import { gamePoints, resetsPoints, type OutcomeCounts } from '../src/game/points';
 import { accountForRequest } from './accounts';
-import { resetsPoints } from '../src/game/points';
 import { newRoundAccounts, recordPlayed, roundDelta, type RoundAccounts } from './roundAccounts';
 import {
   advanceCpu, applyCommand, createRoom, joinRoom, ROOM_EXPIRY_MS, roomAlarmAt, scheduleCpuAction,
@@ -53,14 +53,21 @@ export class GameRoom {
       }
       if(this.room!.lifetimeSettledRound!==record.id) {
         for(const member of roomParticipants(this.room!)) if(!member.accountId) {
-          member.profile.lifetimePoints=resetsPoints(state,member.seat)?0:(member.profile.lifetimePoints??0)+state.players[member.seat].ratingDelta;
+          member.profile.freedoms=(member.profile.freedoms??0)+Number(state.match?.newlyFreed?.includes(member.seat)??false);
+          member.profile.deaths=(member.profile.deaths??0)+Number(state.match?.newlyDead.includes(member.seat)??false);
         }
         this.room!.lifetimeSettledRound=record.id;
         await this.ctx.storage.put('room',this.room);
       }
-      for(const player of state.players) if(!roomParticipants(this.room!).some(member=>member.seat===player.id)) {
-        const response=await store.fetch(new Request('https://accounts.internal/internal/cpu-record',{method:'POST',body:JSON.stringify({eventId:record.id,avatar:player.avatar,delta:player.ratingDelta,reset:resetsPoints(state,player.id)})}));
-        if(!response.ok)throw new Error('Character points pending.');
+      // Seats sharing a CPU character contribute one idempotent aggregate per round.
+      const cpuResults=new Map<number,{delta:number;freedoms:number;deaths:number;reset:boolean}>();
+      for(const player of state.players)if(!roomParticipants(this.room!).some(member=>member.seat===player.id)){
+        const result=cpuResults.get(player.avatar)??{delta:0,freedoms:0,deaths:0,reset:false};
+        result.delta+=player.ratingDelta;result.freedoms+=Number(state.match?.newlyFreed?.includes(player.id)??false);result.deaths+=Number(state.match?.newlyDead.includes(player.id)??false);result.reset ||= resetsPoints(state,player.id);cpuResults.set(player.avatar,result);
+      }
+      for(const [avatar,result] of cpuResults){
+        const response=await store.fetch(new Request('https://accounts.internal/internal/cpu-record',{method:'POST',body:JSON.stringify({eventId:record.id,avatar,...result})}));
+        if(!response.ok)throw new Error('Character statistics pending.');
       }
       await this.refreshPoints();
       await this.ctx.storage.put('room',this.room);
@@ -74,11 +81,13 @@ export class GameRoom {
     const participants=roomParticipants(room);
     const response=await this.env.ACCOUNTS.getByName('accounts-v1').fetch(new Request('https://accounts.internal/internal/points',{method:'POST',body:JSON.stringify({accounts:participants.flatMap(member=>member.accountId?[member.accountId]:[]),cpus:room.seats.filter((_,seat)=>!participants.some(member=>member.seat===seat)).map(player=>player.avatar)})}));
     if(!response.ok)throw new Error('Lifetime points unavailable.');
-    const points=await response.json() as {accounts:Record<string,number>;cpus:Record<number,number>};
+    const points=await response.json() as {outcomes?:{accounts:Record<string,OutcomeCounts>;cpus:Record<number,OutcomeCounts>}};
     room.seats.forEach((player,seat)=>{
       const member=participants.find(member=>member.seat===seat);
-      player.lifetimePoints=member?.accountId?points.accounts[member.accountId]??0:member?member.profile.lifetimePoints??0:points.cpus[player.avatar]??0;
-      if(room.state)room.state.players[seat].lifetimePoints=player.lifetimePoints;
+      const counts=member?.accountId?points.outcomes?.accounts[member.accountId]:member?member.profile:points.outcomes?.cpus[player.avatar];
+      player.freedoms=counts?.freedoms??0;player.deaths=counts?.deaths??0;
+      player.lifetimePoints=room.state?gamePoints(room.state,seat):0;
+      if(room.state)Object.assign(room.state.players[seat],{freedoms:player.freedoms,deaths:player.deaths,lifetimePoints:player.lifetimePoints});
     });
   }
   private broadcast(): void {
@@ -116,7 +125,7 @@ export class GameRoom {
       try {
         const id = new URL(request.url).pathname.split('/')[3];
         const account=await accountForRequest(request,this.env.ACCOUNTS);
-        if(account) input.profile={...(input.profile&&typeof input.profile==='object'?input.profile:{}),name:account.username,lifetimePoints:account.lifetimePoints??0};
+        if(account) input.profile={...(input.profile&&typeof input.profile==='object'?input.profile:{}),name:account.username};
         if (action === 'create') {
           if (this.room) throw new RoomError('This room code is already in use. Create a new room.', 409);
           const token = crypto.randomUUID();
@@ -133,7 +142,7 @@ export class GameRoom {
           if(previous?.accountId&&previous.accountId!==account?.id)throw new RoomError('Sign in to the account that joined this seat.',403);
           if(account&&this.room.members.some(member=>member.accountId===account.id&&member!==previous))throw new RoomError('This account already has a seat. Rejoin from your original browser.',409);
           if(this.room.state&&previous&&!previous.accountId&&account)throw new RoomError('Finish this guest round before joining with your account.',409);
-          if(previous&&!account&&this.room.nextRules)input.profile={...(input.profile&&typeof input.profile==='object'?input.profile:{}),lifetimePoints:previous.profile.lifetimePoints??0};
+          if(previous&&!account&&this.room.nextRules)input.profile={...(input.profile&&typeof input.profile==='object'?input.profile:{}),freedoms:previous.profile.freedoms??0,deaths:previous.profile.deaths??0};
           const result = joinRoom(this.room, input.profile, typeof input.token === 'string' ? input.token : null, crypto.randomUUID());
           if(account)this.room.members.find(member=>member.seat===result.seat)!.accountId=account.id;
           await this.refreshPoints();

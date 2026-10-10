@@ -55,3 +55,32 @@ export class LocalPoints {
     }
   }
 }
+
+export interface OutcomeCounts { freedoms:number; deaths:number }
+export function outcomeCounts(value: Partial<OutcomeCounts> = {}): OutcomeCounts {
+  const count=(n:unknown)=>Number.isSafeInteger(n)&&Number(n)>=0?Math.min(1e9,Number(n)):0;
+  return {freedoms:count(value.freedoms),deaths:count(value.deaths)};
+}
+/** Only outcome counts survive a local table. Points always belong to its match. */
+export class LocalOutcomes {
+  private counts:Record<string,OutcomeCounts>={};
+  private settled=new WeakSet<GameState>();
+  constructor(private storage:{getItem(key:string):string|null;setItem(key:string,value:string):void}) {
+    try {const saved=JSON.parse(storage.getItem('100next.outcomes.v1')??'{}');
+      if(saved&&typeof saved==='object'&&!Array.isArray(saved))for(const [key,value] of Object.entries(saved))if(value&&typeof value==='object')this.counts[key]=outcomeCounts(value);
+    }catch {/* Guest play works without storage. */}
+  }
+  get(key:string):OutcomeCounts{return {...this.counts[key]??{freedoms:0,deaths:0}};}
+  set(key:string,value:OutcomeCounts):void {this.counts[key]=outcomeCounts(value);try{this.storage.setItem('100next.outcomes.v1',JSON.stringify(this.counts));}catch {/* In-memory fallback. */}}
+  settle(state:GameState,cast:string):void {
+    if(state.phase!=='ended'||this.settled.has(state))return;
+    this.settled.add(state);
+    for(const player of state.players){
+      const counts=this.get(localPointsKey(player,cast));
+      counts.freedoms+=Number(state.match?.newlyFreed?.includes(player.id)??false);
+      counts.deaths+=Number(state.match?.newlyDead.includes(player.id)??false);
+      this.set(localPointsKey(player,cast),counts);
+    }
+    for(const player of state.players)Object.assign(player,this.get(localPointsKey(player,cast)));
+  }
+}

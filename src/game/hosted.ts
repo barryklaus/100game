@@ -1,8 +1,9 @@
+import type { RoomReaction } from '../data/reactions';
 import type { RoomCommand, Profile } from './hostedCore';
 import { isOut } from './conditions';
 import type { GameState, PlayerConfig } from './types';
 
-type Snapshot = { type: 'snapshot'; roomId: string; seat: number; hostSeat: number; seats: PlayerConfig[]; cpuCount: number; revision: number; state: GameState | null };
+type Snapshot = { reaction?:RoomReaction; type: 'snapshot'; roomId: string; seat: number; hostSeat: number; seats: PlayerConfig[]; cpuCount: number; revision: number; state: GameState | null };
 type ServerMessage = Snapshot | { type: 'error'; message: string };
 
 /** One hosted room per Cloudflare Durable Object. No player needs to keep a host tab open. */
@@ -15,6 +16,8 @@ export class HostedRoom {
   state: GameState | null = null;
   cpuCount = 0;
   status: 'connecting' | 'lobby' | 'playing' | 'disconnected' = 'connecting';
+  reaction?:RoomReaction;
+  reactionOnly=false;
   error = '';
   private socket: WebSocket | null = null;
   private token = '';
@@ -93,6 +96,8 @@ export class HostedRoom {
       this.seats = message.seats;
       this.cpuCount = message.cpuCount;
       this.state = message.state;
+      this.reaction = message.reaction;
+      this.reactionOnly = message.reaction?.serial===message.revision;
       this.status = message.state ? 'playing' : 'lobby';
       this.error = '';
       this.notify();
@@ -136,6 +141,7 @@ export class HostedRoom {
   startRound(round?: number): void { if (this.isHost) this.send({ type: 'start', round }); }
   play(cardId: string): void { if (this.state?.phase === 'playing' && this.state.current === this.localSeat) this.send({ type: 'play', cardId, turn: this.state.turn ?? 0 }); }
   target(seat: number): void { if (this.state?.phase === 'target' && this.state.pendingSevens.at(-1) === this.localSeat) this.send({ type: 'target', seat, turn: this.state.turn ?? 0 }); }
+  sendReaction(phrase:string):void {this.send({type:'reaction',phrase});}
   setMood(seat: number, mood: PlayerConfig['mood']): void { if (seat === this.localSeat) this.send({ type: 'mood', mood }); }
   retry(): void {
     if (this.closed || this.status !== 'disconnected') return;

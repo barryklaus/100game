@@ -61,7 +61,7 @@ async function load(entry) {
     playCard(game,'fire-7');
     selectTarget(game,2);
     playCard(game,'fire-3');
-    assert.equal(game.current,1,'A distant target must not skip the other seats in normal order');
+    assert.equal(game.current,3,'The next turn continues from the chosen player');
   }
   {
     const game=createGame(players(2),1,()=>0);

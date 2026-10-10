@@ -19,8 +19,8 @@ next.phase='target';next.pendingSevens=[0];assert.throws(()=>selectTarget(next,1
 const last=createGame(seats,3,()=>0,true);last.match.dead=[1,2];last.match.scores=[-15,-20,-20,8];last.players[1].hand=[];last.players[2].hand=[];last.current=0;last.rootTurn=0;last.total=100;last.players[0].hand=[card('A','last')];last.match.previous=3;playCard(last,'last');
 assert.equal(last.match.complete,true);assert.deepEqual(last.match.scores,[-20,-20,-20,10]);assert.deepEqual(last.match.newlyDead,[0]);assert.throws(()=>createGame(seats,4,()=>0,last.match));
 const fresh=createGame(seats,1,()=>0,true);assert.deepEqual(fresh.match.scores,[0,0,0,0]);assert.deepEqual(fresh.match.dead,[]);assert(fresh.players.every(p=>p.hand.length===2));
-// Either balance can qualify at 30. Current-game points remain independent.
-for(const [overall,score,expected] of [[28,0,false],[29,0,true],[-20,29,true],[29,29,true]]){
+// Only current-table points qualify. Historical balances never enter a new table.
+for(const [overall,score,expected] of [[28,0,false],[29,0,false],[-20,29,true],[29,29,true]]){
  const freed=createGame(seats.map((seat,id)=>({...seat,lifetimePoints:id===0?overall:0})),1,()=>0,true);
  freed.match.scores[0]=score;freed.current=1;freed.rootTurn=1;freed.total=100;freed.players[1].hand=[card('A','free')];playCard(freed,'free');
  assert.equal(freed.match.newlyFreed.includes(0),expected,`Overall ${overall}, game ${score}`);

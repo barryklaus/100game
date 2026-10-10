@@ -64,7 +64,7 @@ const {CardPile,CARD_TABLE_HEIGHT}=await load('src/render/CardPile.ts');
 const {CARD_THICKNESS,CLEAN_CARD_LAYER,createCardMesh,disposeCardMesh}=await load('src/render/CardMesh.ts');
 const texture={image:{width:511,height:711},isTexture:true};
 for(const special of [false,true]) {
-  const card=createCardMesh(texture,texture,special);
+  const card=createCardMesh(texture,{...texture},special);
   assert.deepEqual(card.children.map(surface=>surface.name),['card-paper-edge','card-front','card-back','card-border-foil']);
   for(const surface of card.children.slice(0,3)) {
     const material=surface.material;

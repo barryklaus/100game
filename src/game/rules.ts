@@ -57,10 +57,9 @@ function finishPlay(state: GameState, actor: number): void {
     drawReplacement(state, chooser);
   }
   state.forced = false;
-  // Resume the ordinary order after a chosen player's forced card. If that
-  // player would be next anyway, skip their immediate repeat play.
-  const next = nextSeat(state, state.rootTurn);
-  state.current = next === actor ? nextSeat(state, actor) : next;
+  // Continue from whoever actually played, in the current direction.
+  // CHOOSE relocates the turn; REVERSE changes the direction from that seat.
+  state.current = nextSeat(state, actor);
   state.rootTurn = state.current;
   state.phase = 'playing';
 }
@@ -102,8 +101,7 @@ export function playCard(state: GameState, cardId: string): GameState {
         match.scores[other.id]+=other.ratingDelta;
         if(match.scores[other.id]<=DEATH_POINTS){match.dead.push(other.id);match.newlyDead.push(other.id);match.outcomePoints[other.id]=match.scores[other.id];}
         else {
-          const overall=other.lifetimePoints===undefined?match.scores[other.id]:other.lifetimePoints+other.ratingDelta;
-          if(overall>=FREEDOM_POINTS||match.scores[other.id]>=FREEDOM_POINTS){match.freed.push(other.id);match.newlyFreed.push(other.id);match.outcomePoints[other.id]=Math.max(overall,match.scores[other.id]);addLog(state,`${other.name} earned Freedom. Overall ${overall} · Game ${match.scores[other.id]}.`);}
+          if(match.scores[other.id]>=FREEDOM_POINTS){match.freed.push(other.id);match.newlyFreed.push(other.id);match.outcomePoints[other.id]=match.scores[other.id];addLog(state,`${other.name} earned Freedom with ${match.scores[other.id]} table points.`);}
         }
       }
       for(const other of state.players)if(isOut(state,other.id)&&other.hand.length){state.drawPile.push(...other.hand);other.hand=[];}
