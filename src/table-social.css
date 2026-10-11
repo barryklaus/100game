@@ -43,3 +43,6 @@
 .autopilot-toggle:disabled {opacity:.5;cursor:wait;}
 .autopilot-toggle:focus-visible {outline:2px solid #fff;outline-offset:3px;}
 @media(max-width:600px){.autopilot-toggle {width:43px;height:43px;}}
+
+.auto-round-notice {display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-top:14px;color:#f4d28e;font:600 12px/1.4 system-ui;}
+.auto-round-notice .text-button {padding:7px 0;min-height:36px;color:#f4d28e;}
