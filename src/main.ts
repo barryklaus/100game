@@ -672,10 +672,14 @@ function syncAutoRound():void {
   autoRoundAdvance.sync(nextAutoRoundStep(),step=>{
     if(nextAutoRoundStep()?.key!==step.key){syncAutoRound();return;}
     if(step.outcome){dismissedOutcomeKeys.add(step.key);render();return;}
-    if(!state)return;
-    if(online){awaitingNetwork=true;pendingLog=state.log[0];online.startRound(state.round+1);render();}
-    else startGame(state.round+1);
+    beginNextRound();
   });
+}
+function beginNextRound():void {
+  if(!state||state.phase!=='ended'||awaitingNetwork)return;
+  modal=null;
+  if(online){awaitingNetwork=true;pendingLog=state.log[0];online.startRound(state.round+1);render();}
+  else startGame(state.match?.complete?1:state.round+1);
 }
 function modalView(): string {
   if (!modal) return '';
@@ -842,7 +846,7 @@ app.addEventListener('click', event => {
     if (action === 'start-online') online?.startRound();
     if (action === 'leave-room') { modal = null; closeOnline(); }
     if (action === 'copy-invite' && online) void navigator.clipboard.writeText(`${location.origin}${castPath(online.roomId)}`).then(()=>flash('Invite link copied')).catch(()=>flash('Select and copy the invite link.'));
-    if (action === 'again' && state) { modal = null; if (online) online.startRound(state.round + 1); else startGame(state.match?.complete?1:state.round + 1); }
+    if (action === 'again') beginNextRound();
     if (action === 'restart' && state) { modal = null; if (online) online.startRound(state.round); else startGame(state.round); }
     if (action === 'new-game') { if (outcomeDemo) { location.assign(import.meta.env.BASE_URL); return; } clearCpu(); state = null; selectedCard = null; modal=null; render(); }
     if (action === 'rules' || action === 'settings' || action === 'stats' || action === 'history' || action === 'account') { modal = action; emotesOpen = false; render(); if(account&&(action==='account'||action==='stats'))void account.refresh(); }
