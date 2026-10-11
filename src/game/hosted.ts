@@ -141,6 +141,7 @@ export class HostedRoom {
   startRound(round?: number): void { if (this.isHost) this.send({ type: 'start', round }); }
   play(cardId: string): void { if (this.state?.phase === 'playing' && this.state.current === this.localSeat) this.send({ type: 'play', cardId, turn: this.state.turn ?? 0 }); }
   target(seat: number): void { if (this.state?.phase === 'target' && this.state.pendingSevens.at(-1) === this.localSeat) this.send({ type: 'target', seat, turn: this.state.turn ?? 0 }); }
+  setAutopilot(enabled:boolean):void {this.send({type:'autopilot',enabled});}
   sendReaction(phrase:string):void {this.send({type:'reaction',phrase});}
   setMood(seat: number, mood: PlayerConfig['mood']): void { if (seat === this.localSeat) this.send({ type: 'mood', mood }); }
   retry(): void {

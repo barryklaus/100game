@@ -30,3 +30,16 @@
   .observatory-mode .seat-layer .seat-meta {font-size:8px;}
   .seat-outcome {margin-right:3px;}
 }
+
+/* The adjacent toggle shares Emote's fixed anchor on every screen size. */
+.emote-menu {display:flex;align-items:center;gap:9px;}
+.autopilot-toggle {
+  width:48px;height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0;border:1px solid #d0b37b99;border-radius:50%;background:#07111fec;color:#e2d7c3;
+  box-shadow:0 4px 16px #0004;font:700 19px system-ui;pointer-events:auto;
+}
+.autopilot-toggle small {font:600 7px system-ui;letter-spacing:.08em;}
+.autopilot-toggle.enabled {background:#eac777;color:#15161c;border-color:#ffe7aa;box-shadow:0 0 13px #edc66b88;}
+.autopilot-toggle:disabled {opacity:.5;cursor:wait;}
+.autopilot-toggle:focus-visible {outline:2px solid #fff;outline-offset:3px;}
+@media(max-width:600px){.autopilot-toggle {width:43px;height:43px;}}

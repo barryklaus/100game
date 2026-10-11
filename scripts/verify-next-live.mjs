@@ -71,6 +71,14 @@ try {
   assert(!JSON.stringify(reaction).includes(hostCard),'Shared reactions must preserve private hands');
   guest.send({type:'reaction',phrase:'rip'});
   await host.wait(m=>m.type==='snapshot'&&m.reaction?.phrase==='rip'&&m.reaction.seat===guestSeat.seat);
+  const humanCards=[...h.state.players[hostSeat.seat].hand,...g.state.players[guestSeat.seat].hand].map(card=>card.id);
+  host.send({type:'autopilot',enabled:true});guest.send({type:'autopilot',enabled:true});
+  const enabled=await guest.wait(m=>m.type==='snapshot'&&m.state?.players[hostSeat.seat].autopilot&&m.state.players[guestSeat.seat].autopilot);
+  assert.equal(enabled.state.players[hostSeat.seat].kind,'human','Autopilot must keep the account seat human');
+  assert(enabled.state.players[hostSeat.seat].hand.every(card=>card.id.startsWith('hidden-')),'Autopilot does not expose private hands');
+  await guest.wait(m=>m.type==='snapshot'&&m.state?.played.some(card=>humanCards.includes(card.id)));
+  host.send({type:'autopilot',enabled:false});guest.send({type:'autopilot',enabled:false});
+  await host.wait(m=>m.type==='snapshot'&&m.revision>enabled.revision&&m.state?.players[hostSeat.seat].autopilot===false&&m.state.players[guestSeat.seat].autopilot===false);
   const resumed = await post('join', { profile: profile('Release check host'), token: hostSeat.token });
   assert.equal(resumed.seat, hostSeat.seat);
   assert.equal(resumed.token, hostSeat.token);
@@ -78,7 +86,7 @@ try {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ profile: profile('Isolation check') }), signal: AbortSignal.timeout(15000),
   });
   assert.equal(isolated.status, 404, 'The stable game must not contain the 100next room');
-  console.log(`Verified live 100next (${release.commit.slice(0, 7)}): two human WebSockets, CPU seat, private hands, shared reactions, zero starting points, outcome counts, seat recovery, and separate stable storage.`);
+  console.log(`Verified live 100next (${release.commit.slice(0, 7)}): two human WebSockets, CPU seat, human Autopilot ON/play/OFF, private hands, shared reactions, zero starting points, outcome counts, seat recovery, and separate stable storage.`);
 } finally {
   host.socket.close(); guest.socket.close();
 }

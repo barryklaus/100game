@@ -15,6 +15,7 @@ export type RoomCommand =
   | { type: 'target'; seat: number; turn?: number }
   | { type: 'mood'; mood: PlayerConfig['mood'] }
   | { type: 'reaction'; phrase:string }
+  | { type: 'autopilot'; enabled:boolean }
   | { type: 'leave' };
 export interface Member { token: string; seat: number; profile: Profile; disconnectedAt: number | null; accountId?: string; left?:boolean; reactionAt?:number }
 export interface RoomData {
@@ -91,7 +92,8 @@ export function joinRoom(room: RoomData, profile: unknown, token: string | null,
   if (existing) {
     existing.disconnectedAt = null;
     existing.profile = cleanProfile(profile);
-    room.seats[existing.seat] = human(existing.profile);
+    const autopilot=room.state?.players[existing.seat]?.autopilot===true;
+    room.seats[existing.seat] = {...human(existing.profile),...(autopilot?{autopilot:true}:{})};
     if (room.state) {
       room.state.players[existing.seat].kind = 'human';
       room.state.players[existing.seat].name = existing.profile.name;
@@ -141,7 +143,7 @@ function cpuTurnKey(room: RoomData): string | null {
   const state = room.state;
   if (!state || state.phase === 'ended' || !state.players.some(player => player.kind === 'human'&&!isOut(state,player.id))) return null;
   const actor = state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current;
-  return state.players[actor]?.kind === 'cpu' ? `${state.round}:${state.turn ?? 0}:${state.phase}:${actor}` : null;
+  return state.players[actor]?.kind === 'cpu' || state.players[actor]?.autopilot === true ? `${state.round}:${state.turn ?? 0}:${state.phase}:${actor}` : null;
 }
 
 /** Repeated snapshots, moods and reconnects must not restart a CPU's thinking time. */
@@ -206,7 +208,11 @@ export function applyCommand(room: RoomData, seat: number, command: RoomCommand,
     else { removeLobbyMember(room, seat); touch(room, now); }
     return;
   }
-  if(command.type==='reaction'){
+  if(command.type==='autopilot'){
+    if(!room.nextRules||!room.state||isOut(room.state,seat)||typeof command.enabled!=='boolean')throw new RoomError('Autopilot is available for your active seat at a 100next table.');
+    room.seats[seat].autopilot=command.enabled;
+    room.state.players[seat].autopilot=command.enabled;
+  } else if(command.type==='reaction'){
     if(!room.state||isOut(room.state,seat)||!reactionPhrase(command.phrase))throw new RoomError('Choose a reaction at the table.');
     if(member.reactionAt!==undefined&&now-member.reactionAt<800)throw new RoomError('Give that reaction a moment.',429);
     member.reactionAt=now;room.reaction={serial:room.revision+1,seat,phrase:command.phrase,expiresAt:now+2600};
@@ -228,10 +234,12 @@ export function applyCommand(room: RoomData, seat: number, command: RoomCommand,
     room.reaction=undefined;
     room.state = createGame(room.seats, nextRound, Math.random, room.nextRules?(room.state?.match?.complete?true:room.state?.match??true):undefined);
   } else if (command.type === 'play') {
+    if(room.state?.players[seat]?.autopilot)throw new RoomError('Turn Autopilot off before playing.',409);
     if (!room.state || room.state.phase !== 'playing' || room.state.current !== seat || typeof command.cardId !== 'string') throw new RoomError('It is not your turn.', 409);
     if (command.turn !== undefined && command.turn !== (room.state.turn ?? 0)) throw new RoomError('That turn has already changed. Wait for the updated table.', 409);
     playCard(room.state, command.cardId);
   } else if (command.type === 'target') {
+    if(room.state?.players[seat]?.autopilot)throw new RoomError('Turn Autopilot off before choosing.',409);
     if (!room.state || room.state.phase !== 'target' || room.state.pendingSevens.at(-1) !== seat || !Number.isInteger(command.seat)) throw new RoomError('You cannot choose a target now.', 409);
     if (command.turn !== undefined && command.turn !== (room.state.turn ?? 0)) throw new RoomError('That turn has already changed. Wait for the updated table.', 409);
     selectTarget(room.state, command.seat);

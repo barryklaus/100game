@@ -31,6 +31,7 @@ export function validLocalState(value:unknown):value is GameState {
   });
   for(const [id,player] of value.players.entries()){
     if(!object(player)||player.id!==id||typeof player.name!=='string'||player.name.length>120||!['human','cpu'].includes(player.kind)||!MOODS.includes(player.mood)||!integer(player.avatar)||player.avatar<0||player.avatar>15||!integer(player.ratingDelta)||!integer(player.exacts)||player.exacts<0||!Array.isArray(player.hand)||player.hand.length>2||!pile(player.hand))return false;
+    if(player.autopilot!==undefined&&typeof player.autopilot!=='boolean')return false;
     for(const field of ['freedoms','deaths','lifetimePoints'])if(player[field]!==undefined&&!integer(player[field]))return false;
   }
   if(!pile(value.drawPile)||!pile(value.played)||seen.size!==cards.length)return false;
