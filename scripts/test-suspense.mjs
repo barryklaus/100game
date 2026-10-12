@@ -14,6 +14,7 @@ class Param {
   setValueAtTime(value,time){this.value=value;this.calls.push({value,time,kind:'set'});}
   setTargetAtTime(value,time,constant){this.value=value;this.calls.push({value,time,constant,kind:'target'});}
   cancelAndHoldAtTime(time){this.calls.push({time,kind:'hold'});}
+  cancelScheduledValues(time){this.calls.push({time,kind:'cancel'});}
   linearRampToValueAtTime(value,time){this.value=value;this.calls.push({value,time,kind:'ramp'});}
 }
 class Node {
@@ -22,9 +23,11 @@ class Node {
 }
 class Context {
   static instances=[];
+  static supportsHold=true;
+  static recordings=new Map();
   currentTime=10;state='running';destination=new Node();sources=[];gains=[];
   constructor(){Context.instances.push(this);}
-  createGain(){const node=new Node();node.gain=new Param();this.gains.push(node);return node;}
+  createGain(){const node=new Node();node.gain=new Param();if(!Context.supportsHold)node.gain.cancelAndHoldAtTime=undefined;this.gains.push(node);return node;}
   createBufferSource(){
     const node=new Node();node.playbackRate=new Param();
     node.start=time=>{node.startTime=time??this.currentTime;};node.stop=time=>{node.stopTime=time;};
@@ -34,11 +37,13 @@ class Context {
     const channels=Array.from({length:numberOfChannels},()=>new Float32Array(length));
     return {numberOfChannels,length,sampleRate,duration:length/sampleRate,getChannelData:i=>channels[i]};
   }
-  decodeAudioData(file){return this.decoding??Promise.resolve(recordings.get(file)??recording);}
+  decodeAudioData(file){return this.decoding??Promise.resolve(Context.recordings.get(file)??Context.recordings.values().next().value);}
   resume(){this.state='running';return Promise.resolve();}
   close(){this.state='closed';return Promise.resolve();}
 }
 // Exercise the real supplied recording, not only an idealized tone.
+for(const supportsHold of [true,false]){
+Context.supportsHold=supportsHold;
 const ctx=new Context();
 async function readRecording(file){
   const wav=await readFile('public/assets/sfx/'+file);
@@ -57,6 +62,7 @@ async function readRecording(file){
   return buffer;
 }
 const recordings=new Map(await Promise.all(['Cartoon-Suspense-X.wav','Anxiety-Repeat.wav','Explosion.wav'].map(async file=>[file,await readRecording(file)])));
+Context.recordings=recordings;
 const recording=recordings.get('Cartoon-Suspense-X.wav'),anxietyRecording=recordings.get('Anxiety-Repeat.wav'),explosionRecording=recordings.get('Explosion.wav');
 for(const total of [null,0,69,100,101,Infinity,NaN])assert.equal(suspenseLevel(total),null);
 assert.equal(suspenseLevel(70).rate,.72);assert.equal(suspenseLevel(99).rate,1.45);
@@ -92,6 +98,12 @@ assert.equal(high.playbackRate.value,suspenseLevel(95).rate);
 assert.equal(high.startTime,ctx.currentTime);
 assert.equal(highEnvelope.gain.calls.at(-1).time,ctx.currentTime,'Pitch, gain and number commit share the same instant');
 assert.equal(source.stopTime,ctx.currentTime+.025,'New shot fades the previous tail instead of stacking recordings');
+if(supportsHold)assert.equal(envelope.gain.calls.at(-2).kind,'hold');
+else assert.deepEqual(envelope.gain.calls.slice(-3),[
+  {time:ctx.currentTime,kind:'cancel'},
+  {value:suspenseLevel(75).gain,time:ctx.currentTime,kind:'set'},
+  {value:0,time:ctx.currentTime+.025,kind:'ramp'},
+],'Firefox cancels automation, holds the existing gain, and fades on the score commit clock');
 assert.equal(ctx.sources.length,2,'Every increase plays one fresh shot');
 source.onended();assert(source.disconnected&&envelope.disconnected);
 render('card-3',85);assert.equal(ctx.sources.length,2,'Decreases also wait for the wave');
@@ -211,3 +223,5 @@ endgame.setPresentedTotal(110);assert.equal(explosions,3,'Hidden overflow does n
 endgame.setBackgrounded(false);assert.equal(explosions,3,'Returning to a tab cannot replay its old Explosion');
 endgame.dispose();
 console.log('End-game audio checks passed: real Anxiety seam, exact-100 switch, continuous Zero, minus-ten relief, synchronized one-shot Explosion, fallback, no duplicate/late explosions, music/mute/visibility and cleanup.');
+console.log(`Audio compatibility passed: ${supportsHold?'native hold':'Firefox cancellation fallback'}.`);
+}

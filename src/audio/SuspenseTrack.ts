@@ -99,8 +99,16 @@ export class SuspenseTrack {
   private stop(fade: number): void {
     if (!this.source || !this.envelope) return;
     const now = this.context.currentTime;
-    this.envelope.gain.cancelAndHoldAtTime(now);
-    this.envelope.gain.linearRampToValueAtTime(0, now + fade);
+    const gain = this.envelope.gain;
+    if (typeof gain.cancelAndHoldAtTime === 'function') gain.cancelAndHoldAtTime(now);
+    else {
+      // Firefox lacks cancelAndHoldAtTime. Capture the current gain before
+      // cancelling automation, then anchor the same short anti-click fade.
+      const held = gain.value;
+      gain.cancelScheduledValues(now);
+      gain.setValueAtTime(held, now);
+    }
+    gain.linearRampToValueAtTime(0, now + fade);
     this.source.stop(now + fade);
     this.source = undefined;
     this.envelope = undefined;
