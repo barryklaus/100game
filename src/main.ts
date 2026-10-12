@@ -1,5 +1,6 @@
 import { REACTIONS, reactionPhrase, specialPhrase } from './data/reactions';
 import { AutoRoundAdvance, autoRoundStep } from './game/AutoRoundAdvance';
+import { cardKeyboardAction } from './ui/CardKeyboard';
 import { LocalSession } from './game/LocalSession';
 import { gamePoints, localPointsKey, LocalOutcomes, resetsPoints } from './game/points';
 import { createDeathDemo } from './game/DeathDemo';
@@ -589,7 +590,7 @@ function cardElement(card: Card, selected = false, extra = ''): string {
   const hand = extra.includes('hand-card');
   const handSources = hand ? ` data-standard-src="${cardImage(card)}" data-full-src="${cardImageLossless(card)}"` : '';
   const image = hand && prefersLosslessHand() ? cardImageLossless(card) : cardImage(card);
-  return `<div class="playing-card suit-${face.suit} ${special ? 'special' : 'standard'} ${selected ? 'selected' : ''} ${extra}" data-card="${card.id}" role="${interactive?'button':'img'}" ${interactive?'tabindex="0"':''} aria-label="${rank} of ${card.suit}${special ? ', special card' : ''}"><img src="${image}"${handSources} alt="${rank} of ${card.suit}" draggable="false"><span class="card-print" aria-hidden="true"><span class="card-frame" style="background-image:url(&quot;${cardFrameUrl(face.suit)}&quot;)"></span><span class="card-index top ${face.index.length>3?'word-index':''}" data-index="${face.index}">${face.index}</span>${special ? `<span class="card-action"><strong>${face.title}</strong><small>${face.detail}</small></span>` : ''}<span class="card-index bottom ${face.index.length>3?'word-index':''}" data-index="${face.index}">${face.index}</span></span></div>`;
+  return `<div class="playing-card suit-${face.suit} ${special ? 'special' : 'standard'} ${selected ? 'selected' : ''} ${extra}" data-card="${card.id}" role="${interactive?'button':'img'}" ${interactive?`tabindex="0" aria-pressed="${selected}" aria-keyshortcuts="ArrowLeft ArrowRight Space Enter"`:''} aria-label="${rank} of ${card.suit}${special ? ', special card' : ''}"><img src="${image}"${handSources} alt="${rank} of ${card.suit}" draggable="false"><span class="card-print" aria-hidden="true"><span class="card-frame" style="background-image:url(&quot;${cardFrameUrl(face.suit)}&quot;)"></span><span class="card-index top ${face.index.length>3?'word-index':''}" data-index="${face.index}">${face.index}</span>${special ? `<span class="card-action"><strong>${face.title}</strong><small>${face.detail}</small></span>` : ''}<span class="card-index bottom ${face.index.length>3?'word-index':''}" data-index="${face.index}">${face.index}</span></span></div>`;
 }
 function setupView(): string {
   return `<main class="setup-page">
@@ -683,7 +684,7 @@ function beginNextRound():void {
 }
 function modalView(): string {
   if (!modal) return '';
-  const body = modal==='characters'?`<h2 id="character-picker-title">Choose a character</h2><p>Player ${characterSeat+1} · ${escapeHtml(settings.seats[characterSeat].name)}</p>${avatarPicker(characterSeat)}`:modal==='account'&&account?accountView(account)+(online?'<p>Sign in before joining a room to record its online statistics.</p>':''):modal==='stats'&&account?.snapshot.user?accountStatistics(account):modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. Turn order continues from them.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>${isNextVersion?"Survive +1. Hit exactly 100 +1, once per player per round. Set up the next player’s Overflow +1. Overflow −5. Match scores persist: −1 to −5 bruised, −6 to −10 battered, −11 to −15 bandaged, −16 or below Death. Freedom at +30 table points, after a settled round. Every new table starts at 0; leaving clears table points. All-time Freedom and Death statistics remain. Freed and dead players leave the room. A table with fewer than two active players ends; start a new match to play again.":"Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5."} Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Flick the right edge left or the left edge right to flip it. Flick upward from the top edge or double-tap the top edge for a somersault. Corners tumble diagonally; slow sideways drags stay in your hand.${isNextVersion?' Use AUTO beside Emote to let the challenging CPU play your cards, choose targets, and continue to the next round automatically. Online, the host’s Auto controls the next round. Tap it again to take control; a throw already underway finishes first. Hold a card and swing it back and forth twice (or three times), then release for a spinning boomerang throw. Look for the release cue. Keyboard: focus a card and press Shift + Enter.':''}</p>`
+  const body = modal==='characters'?`<h2 id="character-picker-title">Choose a character</h2><p>Player ${characterSeat+1} · ${escapeHtml(settings.seats[characterSeat].name)}</p>${avatarPicker(characterSeat)}`:modal==='account'&&account?accountView(account)+(online?'<p>Sign in before joining a room to record its online statistics.</p>':''):modal==='stats'&&account?.snapshot.user?accountStatistics(account):modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. Turn order continues from them.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>${isNextVersion?"Survive +1. Hit exactly 100 +1, once per player per round. Set up the next player’s Overflow +1. Overflow −5. Match scores persist: −1 to −5 bruised, −6 to −10 battered, −11 to −15 bandaged, −16 or below Death. Freedom at +30 table points, after a settled round. Every new table starts at 0; leaving clears table points. All-time Freedom and Death statistics remain. Freed and dead players leave the room. A table with fewer than two active players ends; start a new match to play again.":"Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5."} Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Keyboard: use ← / → (or ↑ / ↓) to highlight a card, then press Space or Enter to throw it. Your replacement card draws automatically. Flick the right edge left or the left edge right to flip it. Flick upward from the top edge or double-tap the top edge for a somersault. Corners tumble diagonally; slow sideways drags stay in your hand.${isNextVersion?' Use AUTO beside Emote to let the challenging CPU play your cards, choose targets, and continue to the next round automatically. Online, the host’s Auto controls the next round. Tap it again to take control; a throw already underway finishes first. Hold a card and swing it back and forth twice (or three times), then release for a spinning boomerang throw. Look for the release cue. Hold Shift with Space or Enter for a boomerang throw.':''}</p>`
   : modal==='settings' ? `<h2>Table settings</h2><div class="modal-setting"><label for="graphics">Visual quality</label><select id="graphics">${(['ultra','high','medium','mobile'] as const).map(tier=>`<option value="${tier}" ${settings.graphics===tier?'selected':''}>${tier==='mobile'?'Lite / Mobile':tier.charAt(0).toUpperCase()+tier.slice(1)}</option>`).join('')}</select><small>Ultra adds richer shadows and reflections. Every preset keeps the table and cards sharp; Mobile uses a lighter render budget.</small></div>${[['volume','Master volume',settings.volume],['sfxVolume','Sound effects',settings.sfxVolume],['musicVolume','Music',settings.musicVolume],['ambienceVolume','Ambience',settings.ambienceVolume]].map(([id,label,value])=>`<div class="modal-setting"><label for="${id}">${label}<output for="${id}">${Math.round(Number(value)*100)}%</output></label><input id="${id}" type="range" min="0" max="1" step=".01" value="${value}"></div>`).join('')}<label class="setting-toggle"><input id="muted" type="checkbox" ${settings.muted?'checked':''}>Mute all sounds</label><label class="setting-toggle"><input id="reducedMotion" type="checkbox" ${settings.reducedMotion?'checked':''}>Reduced motion</label><div class="modal-setting gyro-setting"><label>Phone tilt</label><button class="secondary-button" data-action="gyro-enable" ${!gyro.available || settings.reducedMotion ? 'disabled' : ''}>${gyro.status === 'on' ? 'Recenter phone tilt' : gyro.status === 'waiting' ? 'Waiting for motion…' : 'Enable phone tilt'}</button><small id="gyro-status">${settings.reducedMotion ? 'Turn off Reduced motion to use phone tilt.' : gyro.status === 'on' ? 'Move your phone gently to tilt the cards. Dragging a card takes control.' : gyro.status === 'denied' ? 'Motion access was denied. You can still drag cards to tilt them.' : gyro.available ? 'Available on supported phones.' : 'Motion sensors are unavailable in this browser.'}</small></div><div class="modal-setting"><label for="uiScale">Interface size <output for="uiScale">${Math.round(settings.uiScale*100)}%</output></label><input id="uiScale" type="range" min=".85" max="1.2" step=".05" value="${settings.uiScale}"></div><p>Settings save on this device.</p>`
   : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Freedom',stats.freedoms],['Death',stats.deaths],['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Overflows',stats.busts],['Cards played',stats.cards],['Choose Player',stats.sevens],['Reverse',stats.eights],['Zero',stats.nines],['Minus Ten',stats.tens]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Your statistics are saved on this device.</p>`
   : modal==='history' ? `<h2>Game history</h2><p>Recent moves at this table.</p><ul class="history-list">${state?.log.length ? state.log.map(gameLogLine).join('') : '<li>No cards have been played yet.</li>'}</ul>`
@@ -911,11 +912,6 @@ app.addEventListener('input', event => {
 });
 app.addEventListener('keydown', event => {
   const target = event.target as HTMLElement;
-  if ((event.key === 'Enter'||event.key===' ') && target.matches('.hand-card:not(.waiting-hand)') && canControlActor()) {
-    event.preventDefault();
-    const spin=isNextVersion&&event.shiftKey?{x:.12,y:.08,z:Math.sqrt(1-.12**2-.08**2),turns:2,kind:'boomerang' as const}:undefined;
-    void animatePlay(target.dataset.card!, target,spin);
-  }
   if (event.key === 'Escape' && modal) closeModal();
   if (event.key === 'Tab' && modal === 'characters') {
     const buttons=Array.from(app.querySelectorAll<HTMLButtonElement>('.character-selector button'));
@@ -927,6 +923,39 @@ app.addEventListener('keydown', event => {
 
 type CardDrag = {element:HTMLElement;id:string;x:number;y:number;time:number;lastX:number;lastY:number;lastTime:number;vx:number;vy:number;moved:boolean;inspecting:boolean;grip:CardGrip;pointerId:number;holdTimer:number;baseTransform:string;swing?:CardSwing};
 let drag:CardDrag|null=null;
+function keyboardHandReady():boolean {
+  return !!state&&state.phase==='playing'&&canControlActor()&&!locked&&!openingDeal&&!drag&&!modal&&!emotesOpen&&!app.querySelector('.death-scene,.freedom-scene');
+}
+function highlightCard(card:HTMLElement):void {
+  selectedCard=card.dataset.card!;
+  app.querySelectorAll<HTMLElement>('.hand-card').forEach(element=>{
+    const selected=element===card;
+    element.classList.toggle('selected',selected);
+    if(element.getAttribute('role')==='button')element.setAttribute('aria-pressed',String(selected));
+  });
+}
+app.addEventListener('focusin',event=>{
+  const card=(event.target as HTMLElement).closest<HTMLElement>('.hand-card[role="button"]');
+  if(card&&keyboardHandReady())highlightCard(card);
+});
+document.addEventListener('keydown',event=>{
+  const target=event.target instanceof HTMLElement?event.target:null;
+  if(!target||!keyboardHandReady()||event.isComposing)return;
+  const focused=target.closest<HTMLElement>('.hand-card[role="button"]');
+  if(target.closest('input,textarea,select,[contenteditable]:not([contenteditable="false"]),[role="textbox"],[role="slider"]')||(!focused&&target.closest('button,a,[role="button"]')))return;
+  const cards=Array.from(app.querySelectorAll<HTMLElement>('.hand-card[role="button"]:not(.waiting-hand):not(.receiving-card):not(.card-departing)'));
+  const action=cardKeyboardAction(event,cards.map(card=>card.dataset.card!),selectedCard,focused?.dataset.card);
+  if(!action)return;
+  event.preventDefault();
+  if(action.type==='consume')return;
+  const card=cards.find(card=>card.dataset.card===action.id)!;
+  if(action.type==='select'){
+    highlightCard(card);card.focus({preventScroll:true});audio.play('card-hover');
+  }else{
+    const spin=isNextVersion&&event.shiftKey?{x:.12,y:.08,z:Math.sqrt(1-.12**2-.08**2),turns:2,kind:'boomerang' as const}:undefined;
+    void animatePlay(action.id,card,spin);
+  }
+});
 let lastCardTap:CardTap|null=null;
 let lastHover='';
 const swingCue=document.createElement('div');

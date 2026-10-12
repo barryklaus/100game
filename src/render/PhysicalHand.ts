@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import { createCardMesh, disposeCardMesh } from './CardMesh';
+import { createCardMesh, disposeCardMesh, roundedCardShape } from './CardMesh';
 import { separatedHandDepths } from './HandDepth';
 import { prefersLosslessHand } from '../game/deck';
 
-type HandObject = { id: string; element: HTMLElement; mesh?: THREE.Group; loading: boolean; rotation: THREE.Euler; };
+type HandObject = { id: string; element: HTMLElement; mesh?: THREE.Group; highlight?:THREE.Mesh; loading: boolean; rotation: THREE.Euler; };
 
 /** DOM targets keep native accessibility; their actual visible cards share the room's lights. */
 export class PhysicalHand {
@@ -62,6 +62,13 @@ export class PhysicalHand {
       void Promise.all([this.loadTexture(front),this.loadTexture(back)]).then(([face,reverse]) => {
         if(this.disposed || this.cards.get(id)!==item) return;
         item.mesh=createCardMesh(face,reverse,element.classList.contains('special'));
+        const {cardWidth:width,cardHeight:height,cardThickness:thickness}=item.mesh.userData;
+        const shape=roundedCardShape(width+.028,height+.028,width*.055+.014);
+        shape.holes.push(roundedCardShape(width+.006,height+.006,width*.055+.003));
+        item.highlight=new THREE.Mesh(new THREE.ShapeGeometry(shape,16),new THREE.MeshBasicMaterial({color:0xffe18d,toneMapped:false,side:THREE.DoubleSide}));
+        item.highlight.position.z=thickness/2+.001;
+        item.highlight.visible=false;
+        item.mesh.add(item.highlight);
         // The hand floats in front of the camera; its moving shadow cannot land
         // naturally on the table and would force a full shadow-map redraw.
         item.mesh.traverse(object => { if (object instanceof THREE.Mesh) object.castShadow = false; });
@@ -91,6 +98,8 @@ export class PhysicalHand {
       const rect=element.getBoundingClientRect();
       const dragging=element.classList.contains('dragging');
       const inspecting=element.classList.contains('inspecting');
+      const selected=element.classList.contains('selected')&&!element.classList.contains('waiting-hand');
+      if(item.highlight)item.highlight.visible=selected;
       const hovering=element.matches(':hover') && !element.classList.contains('waiting-hand');
       const slot=Array.from(element.parentElement?.children??[]).indexOf(element);
       const fan=slot===0?7:-7;
@@ -107,7 +116,7 @@ export class PhysicalHand {
       const scalePerDistance=element.offsetHeight/innerHeight*2*Math.tan(THREE.MathUtils.degToRad(this.camera.fov*.5))/mesh.userData.cardHeight*(inspecting?1.22:dragging?1.055:hovering?1.015:1);
       const axes=new THREE.Matrix4().makeRotationFromQuaternion(localRotation).elements;
       const extentRatio=(Math.abs(axes[2])*mesh.userData.cardWidth/2+Math.abs(axes[6])*mesh.userData.cardHeight/2+Math.abs(axes[10])*mesh.userData.cardThickness/2)*scalePerDistance;
-      const priority=dragging?30:inspecting?20:hovering?10:slot;
+      const priority=dragging?30:inspecting?20:selected?15:hovering?10:slot;
       poses.push({item,mesh,rect,dragging,scalePerDistance,extentRatio,priority});
     }
     poses.sort((a,b)=>a.priority-b.priority);
