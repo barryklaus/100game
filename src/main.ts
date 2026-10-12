@@ -942,7 +942,8 @@ document.addEventListener('keydown',event=>{
   const target=event.target instanceof HTMLElement?event.target:null;
   if(!target||!keyboardHandReady()||event.isComposing)return;
   const focused=target.closest<HTMLElement>('.hand-card[role="button"]');
-  if(target.closest('input,textarea,select,[contenteditable]:not([contenteditable="false"]),[role="textbox"],[role="slider"]')||(!focused&&target.closest('button,a,[role="button"]')))return;
+  const directional=['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key);
+  if(target.closest('input,textarea,select,[contenteditable]:not([contenteditable="false"]),[role="textbox"],[role="slider"]')||(!focused&&!directional&&target.closest('button,a,[role="button"]')))return;
   const cards=Array.from(app.querySelectorAll<HTMLElement>('.hand-card[role="button"]:not(.waiting-hand):not(.receiving-card):not(.card-departing)'));
   const action=cardKeyboardAction(event,cards.map(card=>card.dataset.card!),selectedCard,focused?.dataset.card);
   if(!action)return;
