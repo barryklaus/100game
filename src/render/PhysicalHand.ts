@@ -3,7 +3,7 @@ import { createCardMesh, disposeCardMesh, roundedCardShape } from './CardMesh';
 import { separatedHandDepths } from './HandDepth';
 import { prefersLosslessHand } from '../game/deck';
 
-type HandObject = { id: string; element: HTMLElement; mesh?: THREE.Group; highlight?:THREE.Mesh; loading: boolean; rotation: THREE.Euler; };
+type HandObject = { id: string; element: HTMLElement; slot: number; mesh?: THREE.Group; highlight?:THREE.Mesh; loading: boolean; rotation: THREE.Euler; };
 
 /** DOM targets keep native accessibility; their actual visible cards share the room's lights. */
 export class PhysicalHand {
@@ -48,13 +48,13 @@ export class PhysicalHand {
       if (item.mesh) { this.scene.remove(item.mesh); disposeCardMesh(item.mesh); }
       this.cards.delete(id);
     }
-    for (const element of elements) {
+    for (const [slot, element] of elements.entries()) {
       const image = element.querySelector<HTMLImageElement>('img');
       if (image?.dataset.standardSrc && image.getAttribute('src') !== image.dataset.standardSrc) image.src = image.dataset.standardSrc;
       const id = element.dataset.card!;
       const existing = this.cards.get(id);
-      if (existing) { existing.element = element; if(existing.mesh) element.classList.add('mesh-ready'); continue; }
-      const item: HandObject = {id,element,loading:true,rotation:new THREE.Euler()};
+      if (existing) { existing.element = element; existing.slot = slot; if(existing.mesh) element.classList.add('mesh-ready'); continue; }
+      const item: HandObject = {id,element,slot,loading:true,rotation:new THREE.Euler()};
       this.cards.set(id,item);
       const front = element.querySelector<HTMLImageElement>('img')?.src;
       const back = document.querySelector<HTMLImageElement>('.draw-stack img')?.src;
@@ -101,7 +101,7 @@ export class PhysicalHand {
       const selected=element.classList.contains('selected')&&!element.classList.contains('waiting-hand');
       if(item.highlight)item.highlight.visible=selected;
       const hovering=element.matches(':hover') && !element.classList.contains('waiting-hand');
-      const slot=Array.from(element.parentElement?.children??[]).indexOf(element);
+      const slot=item.slot;
       const fan=slot===0?7:-7;
       const tx=Number(element.dataset.tiltX||0),ty=Number(element.dataset.tiltY||0),rz=Number(element.dataset.turn||0);
       const targetX=dragging ? -tx : inspecting ? 0 : hovering ? -.045 : -.025;

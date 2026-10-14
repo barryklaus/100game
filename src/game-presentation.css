@@ -759,11 +759,10 @@
   align-items: flex-end;
   perspective: 1000px;
 }
-.local-hand .hand-card { height: clamp(285px, 39vh, 430px); }
-.local-hand .hand-card:first-child { z-index: 1; transform: translate(9%, 9%) rotate(-7deg); }
-.local-hand .hand-card:nth-child(2) { z-index: 2; transform: translate(-9%, 1%) rotate(7deg); }
-.local-hand .hand-card:first-child:hover:not(.dragging) { transform: translate(9%, 4%) rotate(-7deg); }
-.local-hand .hand-card:nth-child(2):hover:not(.dragging) { transform: translate(-9%, -4%) rotate(7deg); }
+.local-hand .hand-card { height: clamp(285px, 39vh, 430px); z-index: 1; transform: translate(9%, 9%) rotate(-7deg); }
+.local-hand .hand-card ~ .hand-card { z-index: 2; transform: translate(-9%, 1%) rotate(7deg); }
+.local-hand .hand-card:hover:not(.dragging) { transform: translate(9%, 4%) rotate(-7deg); }
+.local-hand .hand-card ~ .hand-card:hover:not(.dragging) { transform: translate(-9%, -4%) rotate(7deg); }
 .local-hand .hand-card.selected { z-index: 4; }
 
 .dock-controls {
