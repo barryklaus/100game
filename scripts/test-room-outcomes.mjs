@@ -12,7 +12,7 @@ for(let count=2;count<=8;count++)for(const kind of ['death','freedom'])for(const
   applyCommand(room,0,{type:'cpu-count',count:count-2});applyCommand(room,0,{type:'start'});
   const record=newRoundAccounts(Object.fromEntries(room.members.map(member=>[member.seat,member.accountId])));
   const state=room.state,actor=kind==='death'?leaving:(leaving+1)%count;
-  state.current=state.rootTurn=actor;state.total=100;state.match.scores[leaving]=kind==='death'?-12:29;
+  state.current=state.rootTurn=actor;state.total=100;state.match.scores[leaving]=kind==='death'?-10:14;
   state.players[actor].hand=[{id:'overflow',rank:'A',suit:'fire'},{id:'spare',rank:'2',suit:'water'}];
   if(actor<2)applyCommand(room,actor,{type:'play',cardId:'overflow'});
   else {scheduleCpuAction(room,0);assert(advanceCpu(room,room.cpuAction.dueAt),'The real CPU scheduler settles and retires its actor');}

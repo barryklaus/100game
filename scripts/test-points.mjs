@@ -25,7 +25,7 @@ const signedState={...state,players:players.map(player=>({...player})),phase:'en
 history.settle(signedState,'midnight',0);
 assert.equal(history.get(humanKey),11,'Signed-in points must not be added to a guest history');
 assert.equal(signedState.players[0].lifetimePoints,12);
-const ending={...state,players:players.map(player=>({...player})),match:{scores:[30,-17],newlyDead:[1],newlyFreed:[0]}};
+const ending={...state,players:players.map(player=>({...player})),match:{scores:[15,-15],newlyDead:[1],newlyFreed:[0]}};
 history.settle(ending,'midnight');history.settle(ending,'midnight');
 assert.deepEqual(ending.players.map(player=>player.lifetimePoints),[0,0]);
 assert.equal(new LocalPoints(storage).get(humanKey),0,'Freedom reset survives reopening');

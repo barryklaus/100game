@@ -15,14 +15,14 @@ for (const character of masterCharacterData) {
     assert.equal(game.total,99);
     assert.equal(game.current,0);
     assert.equal(game.players.length,4);
-    assert.equal(game.match.scores[0],-12);
+    assert.equal(game.match.scores[0],-10);
     assert.deepEqual([...game.drawPile,...game.played,...game.players.flatMap(player => player.hand)].map(card => card.id).sort(),deckIds);
     playCard(game,game.players[0].hand[index].id);
     assert.equal(game.phase,'ended');
     assert.equal(game.event,'bust');
     assert(game.total > 100);
     assert.equal(game.players[0].ratingDelta,-5);
-    assert.equal(game.match.scores[0],-17);
+    assert.equal(game.match.scores[0],-15);
     assert.deepEqual(game.match.newlyDead,[0]);
     assert.equal(game.match.setup,3);
     assert.throws(() => playCard(game,game.players[0].hand[0].id));
@@ -37,7 +37,7 @@ for(const character of masterCharacterData){
   assert.deepEqual([...game.drawPile,...game.played,...game.players.flatMap(player=>player.hand)].map(card=>card.id).sort(),deckIds);
   playCard(game,game.players[0].hand[index].id);assert.equal(game.current,1);assert.equal(game.phase,'playing');
   playCard(game,game.players[1].hand[0].id);
-  assert.equal(game.phase,'ended');assert.deepEqual(game.match.newlyFreed,[0]);assert.equal(game.match.scores[0],30);assert.equal(game.match.outcomePoints[0],30);
+  assert.equal(game.phase,'ended');assert.deepEqual(game.match.newlyFreed,[0]);assert.equal(game.match.scores[0],15);assert.equal(game.match.outcomePoints[0],15);
  }
 }
 console.log('Last-card demo checks passed: all 16 characters, both final cards, unique deck conservation, ordinary Overflow and Death rules, duplicate-play rejection and fresh replay.');

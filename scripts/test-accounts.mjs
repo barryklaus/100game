@@ -118,7 +118,7 @@ assert.equal((await call('/api/account/me',undefined,{cookie:firstAuth})).data.o
 const projection=JSON.stringify(kv.get('room').state);assert(!projection.includes(userId),'Private account IDs never enter the game state');
 // Exercise a server-authored death and repeated snapshots on the same round.
 await room.webSocketMessage(hostSocket,JSON.stringify({type:'start'}));
-const deathRound=kv.get('room').state;deathRound.current=0;deathRound.rootTurn=0;deathRound.total=100;deathRound.match.scores[0]=-12;
+const deathRound=kv.get('room').state;deathRound.current=0;deathRound.rootTurn=0;deathRound.total=100;deathRound.match.scores[0]=-10;
 deathRound.players[0].hand[0]={id:'death-card',rank:'6',suit:'fire'};
 await room.webSocketMessage(hostSocket,JSON.stringify({type:'play',cardId:'death-card',turn:deathRound.turn}));
 assert.equal((await call('/api/account/me',undefined,{cookie:firstAuth})).data.online.deaths,1);
@@ -142,8 +142,8 @@ await freedomRoom.webSocketMessage(freedomHostSocket,JSON.stringify({type:'start
 assert.deepEqual(freedomKv.get('room').state.match.scores,[0,0]);assert.deepEqual(freedomKv.get('room').state.match.dead,[]);
 assert.equal(freedomKv.get('room').state.players[0].lifetimePoints,0,'A fresh room clears table points');
 assert.equal(freedomKv.get('room').state.players[0].deaths,2,'A fresh room retains all earlier Death statistics');
-db.prepare('UPDATE account_points SET points=29 WHERE user_id=?').run(userId);
-const freedomRound=freedomKv.get('room').state;freedomRound.match.scores[0]=29;freedomRound.current=1;freedomRound.rootTurn=1;freedomRound.total=100;freedomRound.players[1].hand[0]={id:'freedom-card',rank:'6',suit:'fire'};
+db.prepare('UPDATE account_points SET points=14 WHERE user_id=?').run(userId);
+const freedomRound=freedomKv.get('room').state;freedomRound.match.scores[0]=14;freedomRound.current=1;freedomRound.rootTurn=1;freedomRound.total=100;freedomRound.players[1].hand[0]={id:'freedom-card',rank:'6',suit:'fire'};
 await freedomRoom.webSocketMessage(freedomGuestSocket,JSON.stringify({type:'play',cardId:'freedom-card',turn:freedomRound.turn}));
 assert.deepEqual(freedomRound.match.newlyFreed,[0]);
 const freedomSaved=(await call('/api/account/me',undefined,{cookie:firstAuth})).data;

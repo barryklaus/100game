@@ -7,7 +7,11 @@ const {conditionForScore}=modules.find(m=>m.conditionForScore);
 const {chooseCpuTarget}=modules.find(m=>m.chooseCpuTarget);
 const seats=Array.from({length:4},(_,i)=>({name:`P${i}`,kind:'cpu',avatar:i,mood:'Normal'}));
 const card=(rank,id='test')=>({id,rank,suit:'fire'});
-for(const [score,stage] of [[1,0],[0,0],[-1,1],[-5,1],[-6,2],[-10,2],[-11,3],[-15,3],[-16,4],[-20,4]])assert.equal(conditionForScore(score),stage);
+for(const [score,stage] of [[1,0],[0,0],[-1,1],[-5,1],[-6,2],[-10,2],[-11,3],[-14,3],[-15,4],[-16,4],[-20,4]])assert.equal(conditionForScore(score),stage);
+for(const [before,dead] of [[-9,false],[-10,true],[-11,true]]){
+ const boundary=createGame(seats,1,()=>0,true);boundary.current=0;boundary.total=100;boundary.match.scores[0]=before;boundary.players[0].hand=[card('A','boundary')];
+ playCard(boundary,'boundary');assert.equal(boundary.match.newlyDead.includes(0),dead,`Death boundary after settling ${before-5} points`);
+}
 const game=createGame(seats,1,()=>0,true);game.current=0;game.rootTurn=0;game.total=99;game.players[0].hand=[card('A')];playCard(game,'test');assert.equal(game.players[0].ratingDelta,1);
 game.current=0;game.rootTurn=0;game.total=99;game.players[0].hand=[card('A','again')];playCard(game,'again');assert.equal(game.players[0].ratingDelta,1,'Exact 100 pays at most once per player per round');
 game.current=1;game.players[1].hand=[card('A','bust')];game.match.scores[1]=-12;playCard(game,'bust');
@@ -20,7 +24,7 @@ const last=createGame(seats,3,()=>0,true);last.match.dead=[1,2];last.match.score
 assert.equal(last.match.complete,true);assert.deepEqual(last.match.scores,[-20,-20,-20,10]);assert.deepEqual(last.match.newlyDead,[0]);assert.throws(()=>createGame(seats,4,()=>0,last.match));
 const fresh=createGame(seats,1,()=>0,true);assert.deepEqual(fresh.match.scores,[0,0,0,0]);assert.deepEqual(fresh.match.dead,[]);assert(fresh.players.every(p=>p.hand.length===2));
 // Only current-table points qualify. Historical balances never enter a new table.
-for(const [overall,score,expected] of [[28,0,false],[29,0,false],[-20,29,true],[29,29,true]]){
+for(const [overall,score,expected] of [[30,0,false],[15,13,false],[-20,14,true],[0,15,true]]){
  const freed=createGame(seats.map((seat,id)=>({...seat,lifetimePoints:id===0?overall:0})),1,()=>0,true);
  freed.match.scores[0]=score;freed.current=1;freed.rootTurn=1;freed.total=100;freed.players[1].hand=[card('A','free')];playCard(freed,'free');
  assert.equal(freed.match.newlyFreed.includes(0),expected,`Overall ${overall}, game ${score}`);
@@ -32,11 +36,11 @@ for(const [overall,score,expected] of [[28,0,false],[29,0,false],[-20,29,true],[
   resumed.phase='target';resumed.pendingSevens=[2];assert.throws(()=>selectTarget(resumed,0));assert.notEqual(chooseCpuTarget(resumed,'normal',()=>0),0);
  }
 }
-const together=createGame(seats.map((seat,id)=>({...seat,lifetimePoints:id===0?28:0})),1,()=>0,true);
-together.match.scores=[28,-12,0,0];together.match.previous=0;together.total=100;together.current=1;together.players[1].hand=[card('A','together')];playCard(together,'together');
-assert.deepEqual(together.match.newlyFreed,[0]);assert.deepEqual(together.match.newlyDead,[1]);assert.equal(together.match.outcomePoints[0],30);assert.equal(together.match.outcomePoints[1],-17);
+const together=createGame(seats.map((seat,id)=>({...seat,lifetimePoints:id===0?13:0})),1,()=>0,true);
+together.match.scores=[13,-10,0,0];together.match.previous=0;together.total=100;together.current=1;together.players[1].hand=[card('A','together')];playCard(together,'together');
+assert.deepEqual(together.match.newlyFreed,[0]);assert.deepEqual(together.match.newlyDead,[1]);assert.equal(together.match.outcomePoints[0],15);assert.equal(together.match.outcomePoints[1],-15);
 assert.equal(nextSeat(createGame(seats,2,()=>0,together.match),3),2,'Freed and dead seats are both skipped');
-const completed=createGame(seats,1,()=>0,true);completed.match.dead=[2,3];completed.match.scores=[29,0,-20,-20];completed.current=1;completed.total=100;completed.players[1].hand=[card('A','finish')];playCard(completed,'finish');
+const completed=createGame(seats,1,()=>0,true);completed.match.dead=[2,3];completed.match.scores=[14,0,-20,-20];completed.current=1;completed.total=100;completed.players[1].hand=[card('A','finish')];playCard(completed,'finish');
 assert.equal(completed.match.complete,true);assert.deepEqual(completed.match.newlyFreed,[0]);
 assert.deepEqual(createGame(seats,1,()=>0,true).match.freed,[],'A new game restores all seats');
 const legacy=createGame(seats,1,()=>0);legacy.total=99;legacy.players[0].hand=[card('A')];playCard(legacy,'test');assert.equal(legacy.players[0].ratingDelta,3,'Stable build retains its scoring');

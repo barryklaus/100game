@@ -1,6 +1,6 @@
 import type { GameState } from './types';
-export const FREEDOM_POINTS=30;
-export const DEATH_POINTS=-16;
+export const FREEDOM_POINTS=15;
+export const DEATH_POINTS=-15;
 export function isOut(state:GameState,seat:number):boolean {
   return !!(state.match?.dead.includes(seat)||state.match?.freed?.includes(seat));
 }

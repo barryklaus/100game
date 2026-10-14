@@ -1,4 +1,5 @@
 import { masterCharacterData } from '../ui/MasterSpriteData';
+import { DEATH_POINTS } from './conditions';
 import { createGame } from './rules';
 import type { Card, GameState, PlayerConfig } from './types';
 
@@ -25,8 +26,8 @@ export function createDeathDemo(character = 'finn', round = 20): GameState {
   state.drawPile = pool;
   state.total = 99;
   state.current = state.rootTurn = 0;
-  state.match!.scores = [-12, 6, 4, 8];
+  state.match!.scores = [DEATH_POINTS+5, 6, 4, 8];
   state.match!.previous = 3;
-  state.log = [`Death demo: ${seats[0].name} has −12 points. Either final card causes Overflow and Death.`, 'The shared total is 99.'];
+  state.log = [`Death demo: ${seats[0].name} has −${Math.abs(DEATH_POINTS+5)} points. Either final card causes Overflow and Death.`, 'The shared total is 99.'];
   return state;
 }

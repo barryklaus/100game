@@ -2,6 +2,7 @@ import {masterAnimations} from './MasterAnimationData';
 import {conditionAnimations} from './ConditionAnimationData';
 import {masterCharacterData} from './MasterSpriteData';
 import {masterFrameUrl,masterFrameStyle,masterFrameBounds} from './MasterAnimations';
+import {DEATH_POINTS} from '../game/conditions';
 import {deathScene} from './DeathScene';
 import '../death.css';
 const root=document.querySelector<HTMLElement>('#condition-preview')!;
@@ -15,7 +16,7 @@ root.querySelector('#emotion')!.insertAdjacentHTML('beforeend','<option value="h
 const escape=(s:string)=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 async function play(){clearTimeout(timer);const ticket=++epoch,id=character.value,stage=+condition.value,set=stage?conditionAnimations[id]?.[stage]:masterAnimations[id];root.querySelector('.death-scene')?.remove();if(!set)return;
  params.set('character',id);params.set('condition',String(stage));params.set('clip',clip.value);history.replaceState(null,'','?'+params);
- if(clip.value==='death'){const index=masterCharacterData.findIndex(c=>c.id===id);root.insertAdjacentHTML('beforeend',deathScene({name:masterCharacterData[index].name,avatar:index} as never,-16,20,escape));return;}
+ if(clip.value==='death'){const index=masterCharacterData.findIndex(c=>c.id===id);root.insertAdjacentHTML('beforeend',deathScene({name:masterCharacterData[index].name,avatar:index} as never,DEATH_POINTS,20,escape));return;}
  const emotion=root.querySelector<HTMLSelectElement>('#emotion')!.value,pose=emotion==='held'?set.clips.throw.frames.at(-1)!:set.emotions[emotion]??'rest';
  const key=clip.value==='blink'?`blink-${pose}`:set.clips[`${clip.value}@${pose}`]?`${clip.value}@${pose}`:clip.value;
  const ready=set.clips['receive-ready'];
