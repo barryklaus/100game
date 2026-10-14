@@ -23,6 +23,7 @@ import { CardFlightFit } from './CardFlightFit';
 import { flyingCardFlex } from './CardFlex';
 import { ForegroundCards } from './ForegroundCards';
 import { cardScreenScale } from './CardScreenFit';
+import { screenRect } from '../ui/ScreenShake';
 
 type SceneState = {
   roundEnded?: boolean;
@@ -565,7 +566,7 @@ export class ObservatoryScene {
     if (!this.active || !this.playerCount) return;
     const layer = document.querySelector<HTMLElement>('.seat-layer');
     if (!layer) return;
-    const bounds = layer.getBoundingClientRect();
+    const bounds = screenRect(layer);
     document.querySelectorAll<HTMLElement>('.table-cards .pile-wrap').forEach((pile,index)=>{
       const point=this.pilePoint(index===0?-1:1,.35);point.z+=.91;point.project(this.camera);
       pile.style.setProperty('--pile-label-x',`${(point.x*.5+.5)*innerWidth}px`);
@@ -611,7 +612,7 @@ export class ObservatoryScene {
       const x=parseFloat(seat.style.getPropertyValue('--ring-x'))/100*innerWidth;
       seat.style.setProperty('--table-seat-y',`${edgeAt(x)}px`);
     });
-    const bounds=seats.map(seat=>seat.getBoundingClientRect());
+    const bounds=seats.map(seat=>screenRect(seat));
     seats.forEach((seat,index)=>{
       const rect=bounds[index];
       if(rect.width<1)return;
@@ -670,7 +671,7 @@ export class ObservatoryScene {
   };
 
   private animate(time: number, delta: number): void {
-    // Events animate surface light and rings; the camera/table remain stationary.
+    // Surface effects stay in world space; screen danger moves the composite.
     this.fireworks.update(delta,this.reducedMotion);
     if(time-this.lastSeatUpdate>.04 && this.seatProjectionDirty){
       this.positionSeatOverlays();this.lastSeatUpdate=time;this.seatProjectionDirty=false;

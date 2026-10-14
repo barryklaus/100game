@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { createCardMesh, disposeCardMesh, roundedCardShape } from './CardMesh';
 import { separatedHandDepths } from './HandDepth';
 import { prefersLosslessHand } from '../game/deck';
+import { screenRect } from '../ui/ScreenShake';
 
 type HandObject = { id: string; element: HTMLElement; slot: number; mesh?: THREE.Group; highlight?:THREE.Mesh; loading: boolean; rotation: THREE.Euler; };
 
@@ -95,7 +96,7 @@ export class PhysicalHand {
       if(!mesh) continue;
       mesh.visible=element.isConnected && element.closest('[data-phase]')?.getAttribute('data-phase')!=='ended' && !element.classList.contains('card-departing') && !element.classList.contains('receiving-card');
       if(!element.isConnected||element.classList.contains('card-departing'))continue;
-      const rect=element.getBoundingClientRect();
+      const rect=screenRect(element);
       const dragging=element.classList.contains('dragging');
       const inspecting=element.classList.contains('inspecting');
       const selected=element.classList.contains('selected')&&!element.classList.contains('waiting-hand');

@@ -257,6 +257,33 @@ fireworks.trigger(true);assert.equal(fireworks.points.visible,false,'Reduced mot
 fireworks.points.geometry.dispose();fireworks.points.material.dispose();
 console.log('Total feedback checks passed: danger progression, overflow fragments, reduced motion, and finite fireworks.');
 
+const {setScreenDanger,unshakenRect,screenRect}=await load('src/ui/ScreenShake.ts');
+const originalScreenGlobals={document:globalThis.document,DOMRect:globalThis.DOMRect};
+const screenClasses=new Set();
+let screenOffset={left:0,top:0};
+globalThis.document={documentElement:{classList:{
+  toggle:(name,on)=>on?screenClasses.add(name):screenClasses.delete(name),
+  contains:name=>screenClasses.has(name),
+}},body:{getBoundingClientRect:()=>screenOffset}};
+globalThis.DOMRect=class{constructor(x,y,width,height){Object.assign(this,{x,y,left:x,top:y,width,height,right:x+width,bottom:y+height});}};
+try {
+  for(const total of [99,100,100,90,100,101,null]){
+    setScreenDanger(total);
+    assert.equal(screenClasses.has('total-danger100'),total===100,'Only the displayed 100 activates screen danger; relief, Overflow and leaving stop it');
+  }
+  setScreenDanger(100);
+  for(const [x,y] of [[-10,7],[9,-8],[11,6],[-11,3],[0,0]]){
+    screenOffset={left:x,top:y};
+    const target={getBoundingClientRect:()=>new DOMRect(80+x,200+y,140,195)};
+    const rect=screenRect(target);
+    assert.deepEqual([rect.left,rect.top,rect.width,rect.height],[80,200,140,195],'3D card fits and reflows must ignore shared screen shake');
+  }
+  setScreenDanger(null);
+  const normal=new DOMRect(80,200,140,195);
+  assert.equal(unshakenRect(normal),normal,'Normal frames keep native rectangles without extra measurements');
+} finally {Object.assign(globalThis,originalScreenGlobals);}
+console.log('Screen danger checks passed: exact displayed-100 activation, relief/Overflow/exit cleanup, stable card coordinates through every shake direction.');
+
 const {CardImpactFlow}=await load('src/render/CardImpactFlow.ts');
 const flow=new CardImpactFlow();
 assert.equal(flow.update(0,false).strength,0,'Table has no idle impact animation');

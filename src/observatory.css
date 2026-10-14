@@ -205,6 +205,16 @@
 /* At 100, pulse the warning light without moving or resizing the large number. */
 .observatory-mode .at100 .total-value{color:#ff5637;animation:total-critical 1.1s ease-in-out infinite;text-shadow:0 3px 0 #8a1e10,0 0 16px #ff3d1644;}
 @keyframes total-critical{0%,100%{text-shadow:0 3px 0 #8a1e10,0 0 16px #ff3d1644}50%{text-shadow:0 3px 0 #8a1e10,0 0 26px #ff3d1688}}
+/* One composite moves the room, table, characters, number and cards together. */
+.total-danger100 body:not(:has(.modal-overlay)){animation:screen-danger .24s linear infinite;will-change:translate;}
+.total-danger100 .observatory-backdrop{inset:-24px;}
+@keyframes screen-danger{
+  0%,100%{translate:0 0}10%{translate:-10px 7px}20%{translate:9px -8px}
+  30%{translate:-7px -5px}40%{translate:11px 6px}50%{translate:-9px 8px}
+  60%{translate:8px -7px}70%{translate:-11px 3px}80%{translate:7px 8px}90%{translate:-5px -8px}
+}
+.reduce-motion body{animation:none!important;translate:none!important;}
+@media(prefers-reduced-motion:reduce){.total-danger100 body{animation:none!important;translate:none!important;}}
 .observatory-mode .busted .total-value{animation:total-detonate 2.4s both;color:#ff653b;}
 .observatory-mode .busted .total-shard{color:#ffce70;animation:total-fragment 1.4s cubic-bezier(.12,.65,.3,1) both;}
 .shard-0{clip-path:polygon(0 0,50% 0,35% 50%,0 40%);--burst-x:-120px;--burst-y:-110px;--burst-r:-35deg;}

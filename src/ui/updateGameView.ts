@@ -1,3 +1,5 @@
+import { screenRect } from './ScreenShake';
+
 /** Stable component identities keep portraits connected while the game changes. */
 const components = [
   'game-page', 'game-header', 'online-alert', 'game-layout', 'arena', 'table-rim',
@@ -76,7 +78,7 @@ function children(current: HTMLElement, next: HTMLElement): void {
 }
 
 export function updateGameView(root: HTMLElement, markup: string): void {
-  const handPositions=new Map(Array.from(root.querySelectorAll<HTMLElement>('.local-hand .hand-card')).map(card=>[card.dataset.card!,card.getBoundingClientRect()]));
+  const handPositions=new Map(Array.from(root.querySelectorAll<HTMLElement>('.local-hand .hand-card')).map(card=>[card.dataset.card!,screenRect(card)]));
   const previousTotal=root.querySelector('.total-number')?.textContent;
   const template = document.createElement('template');
   template.innerHTML = markup;
@@ -93,7 +95,7 @@ export function updateGameView(root: HTMLElement, markup: string): void {
     if(document.documentElement.classList.contains('crisp-mobile-hand')){
       root.querySelectorAll<HTMLElement>('.local-hand .hand-card').forEach(card=>{
         const before=handPositions.get(card.dataset.card!);if(!before)return;
-        const after=card.getBoundingClientRect();const x=before.left-after.left,y=before.top-after.top;
+        const after=screenRect(card);const x=before.left-after.left,y=before.top-after.top;
         if(Math.abs(x)+Math.abs(y)>2)card.animate([{translate:`${x}px ${y}px`},{translate:'0 0'}],{duration:340,easing:'cubic-bezier(.2,.7,.3,1)'});
       });
     }

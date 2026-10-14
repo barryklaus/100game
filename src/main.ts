@@ -20,6 +20,7 @@ import { newRoundAccounts, recordPlayed, roundDelta, type RoundAccounts } from '
 import './account.css';
 import { TotalPresentation } from './ui/TotalPresentation';
 import { totalMarkup } from './ui/totalFeedback';
+import { screenRect, setScreenDanger, unshakenRect } from './ui/ScreenShake';
 import { PlayerRing } from './ui/PlayerRing';
 import { CHARACTER_SPRITE_VERSION } from './ui/CharacterSpriteLayout';
 import { scoreTransition } from './ui/ScoreTransition';
@@ -174,6 +175,7 @@ if (observatory) observatory.onCardArrival = key => {
   const caption = document.querySelector('.total-event');
   if (caption) caption.textContent = presentedTotal.visible.caption;
   audio.setPresentedTotal(presentedTotal.visible.total);
+  setScreenDanger(presentedTotal.visible.total);
   syncPlayerRing();
   if (state?.phase === 'ended') render();
   if (remoteSnapshots.length) queueMicrotask(() => roomChanged());
@@ -241,7 +243,7 @@ function roomChanged(): void {
     const seat=document.querySelector<HTMLElement>(`.seat[data-seat="${previous.current}"]`);
     if(seat){const room=online,actor=previous.current;
       const source=actor===online.localSeat?app.querySelector<HTMLElement>(`.local-hand [data-card="${incomingTop.id}"]`):null;
-      remoteFlight=true;remoteFlightKey=remoteKey;void observatory.playCardToDiscard(cardImage(incomingTop),(source??seat).getBoundingClientRect(),undefined,source?incomingTop.id:undefined,()=>{if(source){departingCardId=incomingTop.id;source.classList.add('card-departing');}playerRing.release(actor,incoming.lastSpecialThrow?.cardId===incomingTop.id);remoteCardAudio.throw(remoteKey);},source&&incoming.lastSpecialThrow?.cardId!==incomingTop.id?undefined:()=>playerRing.prepareThrow(actor,incoming.lastSpecialThrow?.cardId===incomingTop.id)).then(()=>{if(online===room)remoteCardAudio.land(remoteKey);}).catch(()=>playerRing.cancelThrow(actor)).finally(()=>{remoteFlight=false;if(online===room)roomChanged();});return;}
+      remoteFlight=true;remoteFlightKey=remoteKey;void observatory.playCardToDiscard(cardImage(incomingTop),screenRect(source??seat),undefined,source?incomingTop.id:undefined,()=>{if(source){departingCardId=incomingTop.id;source.classList.add('card-departing');}playerRing.release(actor,incoming.lastSpecialThrow?.cardId===incomingTop.id);remoteCardAudio.throw(remoteKey);},source&&incoming.lastSpecialThrow?.cardId!==incomingTop.id?undefined:()=>playerRing.prepareThrow(actor,incoming.lastSpecialThrow?.cardId===incomingTop.id).then(rect=>rect?unshakenRect(rect):undefined)).then(()=>{if(online===room)remoteCardAudio.land(remoteKey);}).catch(()=>playerRing.cancelThrow(actor)).finally(()=>{remoteFlight=false;if(online===room)roomChanged();});return;}
   }
   state = incoming;
   if(previous&&state&&previous.round===state.round&&previous.played.at(-1)?.id!==state.played.at(-1)?.id&&(previous.current!==online.localSeat||previous.players[previous.current].autopilot===true))remoteCardAudio.land(remoteKey);
@@ -343,7 +345,7 @@ async function animateOpponentDraw(seatIndex: number): Promise<void> {
   if (!target) { playerRing.received(seatIndex); return; }
   // Both sides use the back artwork: other players' replacement cards stay private.
   audio.play('draw-pile');
-  void observatory.drawCardToHand(backImage, target, undefined, () => playerRing.received(seatIndex)).catch(() => playerRing.received(seatIndex));
+  void observatory.drawCardToHand(backImage, unshakenRect(target), undefined, () => playerRing.received(seatIndex)).catch(() => playerRing.received(seatIndex));
 }
 
 async function animateDrawToHand(card: Card): Promise<void> {
@@ -351,8 +353,8 @@ async function animateDrawToHand(card: Card): Promise<void> {
   const pile = document.querySelector<HTMLElement>('.draw-stack .card-back');
   const target = document.querySelector<HTMLElement>(`.local-hand .hand-card[data-card="${card.id}"]`);
   if (!pile || !target || settings.reducedMotion) { playerRing.received(localSeat()); audio.play('card-draw'); return; }
-  const start = pile.getBoundingClientRect();
-  const end = target.getBoundingClientRect();
+  const start = screenRect(pile);
+  const end = screenRect(target);
   if (start.width < 2 || end.width < 2) { playerRing.received(localSeat()); audio.play('card-draw'); return; }
 
   receivingCardIds.add(card.id);
@@ -501,7 +503,7 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   const specialThrow=!!state.match&&!state.players[throwingSeat].specialThrowUsed&&(specialThrowArm?.key===specialThrowKey()||((state.players[throwingSeat].kind==='cpu'||autoEnabled(throwingSeat))&&chooseCpuSpecialThrow(state,card)));
   if(settings.reducedMotion){audio.play('slap');locked=false;resolveCard(cardId,specialThrow);return;}
   const origin = source || document.querySelector<HTMLElement>(`.seat[data-seat="${state.current}"]`) || document.querySelector<HTMLElement>('.draw-stack')!;
-  let start = origin.getBoundingClientRect();
+  let start = screenRect(origin);
   if (observatory?.canAnimate && !settings.reducedMotion) {
     try {
       await observatory.playCardToDiscard(cardImage(card), start, spin, source?cardId:undefined,()=>{
@@ -513,7 +515,7 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
       }, async () => {
         const hand = immediateRelease?undefined:await playerRing.prepareThrow(throwingSeat,specialThrow);
         if (state !== playState || state.turn !== playTurn) throw new Error('The turn changed before the card left.');
-        return source ? undefined : hand;
+        return source || !hand ? undefined : unshakenRect(hand);
       },releaseVelocity);
       if (state !== playState || state.turn !== playTurn) { playerRing.cancelThrow(throwingSeat); locked = false; return; }
       audio.play('slap');
@@ -531,7 +533,7 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   try {
     const hand = immediateRelease?undefined:await playerRing.prepareThrow(throwingSeat,specialThrow);
     if (state !== playState || state.turn !== playTurn) throw new Error('The turn changed before the card left.');
-    if (!source && hand) start = hand;
+    if (!source && hand) start = unshakenRect(hand);
   } catch { source?.classList.remove('dragging');playerRing.cancelThrow(throwingSeat); locked = false; return; }
   playerRing.release(throwingSeat,specialThrow);
   if (source) {
@@ -551,7 +553,7 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   flying.classList.add('flying-card');
   Object.assign(flying.style, { position:'fixed', left:`${start.left}px`, top:`${start.top}px`, width:`${start.width || 76}px`, height:`${start.height || 108}px`, margin:'0', transform:'none' });
   document.body.append(flying);
-  const target = document.querySelector<HTMLElement>('.played-slot')!.getBoundingClientRect();
+  const target = screenRect(document.querySelector<HTMLElement>('.played-slot')!);
   const dx = target.left + target.width / 2 - (start.left + start.width / 2);
   const dy = target.top + target.height / 2 - (start.top + start.height / 2);
   const landingScale = target.width / Math.max(1, start.width);
@@ -765,6 +767,7 @@ function render(): void {
   if(cemetery&&!cemetery.contains(document.activeElement))cemetery.querySelector<HTMLButtonElement>('button')?.focus({preventScroll:true});
   // Use the held score during the wave, and the immediate score in motion/HTML fallback.
   audio.setPresentedTotal(active?presentedTotal.visible.total:null);
+  setScreenDanger(active?presentedTotal.visible.total:null);
   if(!locked&&!awaitingNetwork&&!remoteFlight)departingCardId=null;
   for(const element of Array.from(document.querySelectorAll<HTMLElement>('.local-hand .hand-card'))){
     if(element.dataset.card===departingCardId)element.classList.add('card-departing');
