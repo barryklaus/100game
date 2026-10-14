@@ -138,6 +138,7 @@ export class HostedRoom {
   }
 
   setCpuCount(count: number): void { if (this.isHost && this.status === 'lobby') this.send({ type: 'cpu-count', count }); }
+  setCpuProfile(index:number,profile:Pick<PlayerConfig,'name'|'avatar'>):void {if(this.isHost&&this.status==='lobby')this.send({type:'cpu-profile',index,name:profile.name,avatar:profile.avatar});}
   startRound(round?: number): void { if (this.isHost) this.send({ type: 'start', round }); }
   play(cardId: string): void { if (this.state?.phase === 'playing' && this.state.current === this.localSeat) this.send({ type: 'play', cardId, turn: this.state.turn ?? 0 }); }
   target(seat: number): void { if (this.state?.phase === 'target' && this.state.pendingSevens.at(-1) === this.localSeat) this.send({ type: 'target', seat, turn: this.state.turn ?? 0 }); }

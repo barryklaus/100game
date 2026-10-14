@@ -64,6 +64,12 @@ try {
   hostPeer.emit('open');
   assert.equal(hostRoom.status, 'lobby');
   assert.equal(timers.size, 0, 'a ready room must clear its connection deadline');
+  hostRoom.setCpuCount(2);hostRoom.setCpuProfile(0,{name:'My CPU',avatar:15});
+  hostRoom.setCpuCount(3);assert.equal(hostRoom.seats[1].name,'My CPU');assert.equal(hostRoom.seats[1].avatar,15);
+  hostRoom.humanSeats.push({name:'Friend',avatar:3,kind:'human',mood:'Normal'});hostRoom.rebuildSeats();
+  assert.equal(hostRoom.seats[2].name,'My CPU','Direct room CPU choices survive human joins');
+  hostRoom.startRound();assert.equal(hostRoom.state.players[2].avatar,15);
+  hostRoom.setCpuProfile(0,{name:'Too late',avatar:0});assert.equal(hostRoom.seats[2].name,'My CPU','Playing rooms cannot edit CPU profiles');
   hostRoom.close();
 
   const rejectedRoom = new OnlineRoom('guest', '100-123456789abc', profile, () => updates++);

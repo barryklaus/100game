@@ -110,6 +110,10 @@ let departingCardId: string | null = null;
 const receivingCardIds = new Set<string>();
 let modal: 'rules' | 'settings' | 'stats' | 'history' | 'menu' | 'account' | 'characters' | null = null;
 let characterSeat = 0;
+let characterCpu:number|null=null;
+const roomCpuDrafts=new Map<number,string>();
+const roomCpu=(index:number):PlayerConfig|undefined=>online?.seats.filter(seat=>seat.kind==='cpu')[index];
+const canEditRoomCpus=():boolean=>isNextVersion&&!!online?.isHost&&online.status==='lobby';
 let emotesOpen = false;
 let emoteHoldTimer:number|undefined;
 let emoteHeld=false;
@@ -194,12 +198,15 @@ const canControlActor = (): boolean => !!state && !remoteFlight && !autoEnabled(
 function closeOnline(): void {
   dismissedOutcomeKeys.clear();
   clearReactions();lastRoomReaction=0;
+  roomCpuDrafts.clear();characterCpu=null;
   online?.close(); online = null; state = null; onlineMode = null; selectedCard = null; recordedRound = 0; awaitingNetwork = false; pendingLog = ''; observedOnlineHand.clear(); observedOnlineRound = 0; clearCpu();
   history.replaceState(null, '', castPath());
   render();
 }
 function roomChanged(): void {
   if (!online) return;
+  for(const [index,name] of roomCpuDrafts){const cpu=roomCpu(index);if(!cpu||cpu.name===name.trim().slice(0,15)||(name.trim()===''))roomCpuDrafts.delete(index);}
+  if(characterCpu!==null&&(!canEditRoomCpus()||!roomCpu(characterCpu))){characterCpu=null;modal=null;}
   if(online instanceof HostedRoom&&online.reaction&&online.reaction.serial>lastRoomReaction){
     const event=online.reaction;lastRoomReaction=event.serial;
     const text=reactionPhrase(event.phrase);
@@ -279,7 +286,7 @@ function connectOnline(mode: 'host' | 'join'): void {
   if (!/^100-[a-z0-9]{12}$/.test(code)) { flash('Enter a valid room code or invite link.', 'bust'); return; }
   dismissedOutcomeKeys.clear();
   online?.close(); online = null; state = null; awaitingNetwork = false; selectedCard = null; lastTurnKey = ''; observedOnlineHand.clear(); observedOnlineRound = 0;
-  hostedLobbyInitialized = false;clearReactions();lastRoomReaction=0;
+  hostedLobbyInitialized = false;roomCpuDrafts.clear();characterCpu=null;clearReactions();lastRoomReaction=0;
   const Room = isHostedVersion ? HostedRoom : OnlineRoom;
   online = new Room(mode === 'join' ? 'guest' : 'host', code, { name, avatar, mood: settings.seats[0].mood, ...(isNextVersion?savedOutcomes(settings.seats[0],true):{}) }, roomChanged);
   onlineMode = mode; recordedRound = 0;
@@ -602,16 +609,21 @@ function setupView(): string {
       ${isNextVersion?`<button class="primary-button start-button" data-action="online-setup">PLAY ONLINE WITH FRIENDS <span aria-hidden="true">➜</span></button><button class="secondary-button setup-secondary" data-action="start">START LOCAL GAME</button><p class="setup-note">Online: share a room link · Local: pass one device</p>`:`<button class="primary-button start-button" data-action="start">START LOCAL GAME <span>➜</span></button><button class="secondary-button online-entry" data-action="online-setup">PLAY ONLINE WITH FRIENDS</button><p class="setup-note">Local: pass one device · Online: share a room link, one Human per device</p>`}
     </section></main>`;
 }
-function avatarPicker(seatIndex = 0): string {
-  return `<div class="avatar-picker" role="group" aria-label="Choose a character">${avatarNames.map((name, index) => `<button class="avatar-choice ${settings.seats[seatIndex].avatar === index ? 'chosen' : ''}" data-avatar-choice="${index}" data-avatar-seat="${seatIndex}" aria-label="${escapeHtml(name)}" aria-pressed="${settings.seats[seatIndex].avatar === index}"><img src="${avatarImage(index)}" alt=""><span>${escapeHtml(name)}</span></button>`).join('')}</div>`;
+function avatarPicker(seatIndex = 0, selectedAvatar = settings.seats[seatIndex].avatar): string {
+  return `<div class="avatar-picker" role="group" aria-label="Choose a character">${avatarNames.map((name, index) => `<button class="avatar-choice ${selectedAvatar === index ? 'chosen' : ''}" data-avatar-choice="${index}" data-avatar-seat="${seatIndex}" aria-label="${escapeHtml(name)}" aria-pressed="${selectedAvatar === index}"><img src="${avatarImage(index)}" alt=""><span>${escapeHtml(name)}</span></button>`).join('')}</div>`;
 }
 function onlineView(): string {
   return `<main class="online-page"><section class="online-panel"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">PLAY TOGETHER</div><h1>Online table</h1><p>Each friend plays from their own browser. Share a room link to play together.</p><div class="online-tabs"><button class="${onlineMode === 'host' ? 'current' : ''}" data-action="host-tab">Create room</button><button class="${onlineMode === 'join' ? 'current' : ''}" data-action="join-tab">Join room</button></div>${account?`<button class="text-button" data-action="account">${escapeHtml(account.snapshot.user?.username??'Sign in to save your statistics')}</button>`:''}<label class="online-field">YOUR NAME<input ${account?.snapshot.user?'readonly':''} id="online-name" maxlength="15" value="${escapeHtml(settings.seats[0].name)}"></label><div class="online-avatar-heading">YOUR CHARACTER <span>${escapeHtml(avatarNames[settings.seats[0].avatar % avatarNames.length])}</span></div>${avatarPicker()}${onlineMode === 'join' ? `<label class="online-field">ROOM CODE OR INVITE LINK<input id="room-code" autocomplete="off" value="${escapeHtml(joinCode)}" placeholder="100-abc123…"></label>` : ''}<button class="primary-button start-button" data-action="${onlineMode === 'join' ? 'join-room' : 'create-room'}">${onlineMode === 'join' ? 'JOIN ROOM' : 'CREATE ROOM'} ➜</button><button class="text-button" data-action="back-setup">Back to local setup</button></section></main>`;
 }
+function lobbySeat(seat:PlayerConfig,index:number):string {
+  const cpuIndex=online!.seats.slice(0,index).filter(player=>player.kind==='cpu').length;
+  if(seat.kind==='cpu'&&canEditRoomCpus())return `<div class="editable-cpu"><button type="button" class="character-picker-trigger" data-cpu-character="${cpuIndex}" aria-label="CPU ${cpuIndex+1} character: ${escapeHtml(avatarNames[seat.avatar%avatarNames.length])}. Choose character" aria-haspopup="dialog" title="Choose character"><img src="${avatarImage(seat.avatar)}" alt=""></button><input data-room-cpu-name="${cpuIndex}" aria-label="CPU ${cpuIndex+1} name" maxlength="15" value="${escapeHtml(roomCpuDrafts.get(cpuIndex)??seat.name)}"><span>CPU</span></div>`;
+  return `<div><img src="${avatarImage(seat.avatar)}" alt=""><strong>${escapeHtml(seat.name)}${index===online!.localSeat?' · You':''}</strong><span>${seat.kind==='cpu'?'CPU':index===online!.hostSeat?'Host':'Online'}</span></div>`;
+}
 function lobbyView(): string {
   if (!online) return onlineView();
   const invite = `${location.origin}${castPath(online.roomId)}`;
-  return `<main class="online-page"><section class="online-panel"><div class="eyebrow">${online.isHost ? 'YOUR ROOM' : 'JOINING A ROOM'}</div><h1>${online.status === 'disconnected' ? 'Connection ended' : online.status === 'connecting' ? 'Connecting…' : 'Gather your players'}</h1><p role="status">${online.error ? escapeHtml(online.error) : online.isHost ? 'Share this link. Each friend joins from a separate browser.' : 'Waiting for the host to start the round.'}</p>${online.isHost && online.status === 'lobby' ? `<div class="invite-box"><input readonly aria-label="Invite link" value="${escapeHtml(invite)}"><button data-action="copy-invite">COPY LINK</button></div>` : ''}<div class="lobby-seats">${online.seats.map((seat,i)=>`<div><img src="${avatarImage(seat.avatar)}" alt=""><strong>${escapeHtml(seat.name)}${i === online!.localSeat ? ' · You' : ''}</strong><span>${seat.kind === 'cpu' ? 'CPU' : i === online!.hostSeat ? 'Host' : 'Online'}</span></div>`).join('')}</div>${online.isHost && online.status === 'lobby' ? `<label class="online-field">CPU PLAYERS <select id="room-cpus">${Array.from({length:Math.max(0,9-online.seats.filter(s=>s.kind==='human').length)},(_,i)=>`<option value="${i}" ${online!.cpuCount===i?'selected':''}>${i}</option>`).join('')}</select></label><button class="primary-button start-button" data-action="start-online" ${online.seats.length<2?'disabled':''}>START ONLINE ROUND ➜</button><p class="setup-note">${online.seats.length}/8 seats · At least two players needed</p>` : ''}${online.status === 'disconnected' ? `<button class="primary-button start-button" data-action="retry-room">${online instanceof HostedRoom ? 'RECONNECT TO ROOM' : online.isHost ? 'CREATE NEW ROOM' : 'TRY JOINING AGAIN'} ➜</button>` : ''}<button class="text-button" data-action="leave-room">Leave room</button></section></main>`;
+  return `<main class="online-page"><section class="online-panel"><div class="eyebrow">${online.isHost ? 'YOUR ROOM' : 'JOINING A ROOM'}</div><h1>${online.status === 'disconnected' ? 'Connection ended' : online.status === 'connecting' ? 'Connecting…' : 'Gather your players'}</h1><p role="status">${online.error ? escapeHtml(online.error) : online.isHost ? 'Share this link. Each friend joins from a separate browser.' : 'Waiting for the host to start the round.'}</p>${online.isHost && online.status === 'lobby' ? `<div class="invite-box"><input readonly aria-label="Invite link" value="${escapeHtml(invite)}"><button data-action="copy-invite">COPY LINK</button></div>` : ''}<div class="lobby-seats">${online.seats.map((seat,i)=>lobbySeat(seat,i)).join('')}</div>${online.isHost && online.status === 'lobby' ? `<label class="online-field">CPU PLAYERS <select id="room-cpus">${Array.from({length:Math.max(0,9-online.seats.filter(s=>s.kind==='human').length)},(_,i)=>`<option value="${i}" ${online!.cpuCount===i?'selected':''}>${i}</option>`).join('')}</select></label><button class="primary-button start-button" data-action="start-online" ${online.seats.length<2?'disabled':''}>START ONLINE ROUND ➜</button><p class="setup-note">${online.seats.length}/8 seats · At least two players needed${isNextVersion?'<br>Rename CPUs and click their avatars to choose characters.':''}</p>` : ''}${online.status === 'disconnected' ? `<button class="primary-button start-button" data-action="retry-room">${online instanceof HostedRoom ? 'RECONNECT TO ROOM' : online.isHost ? 'CREATE NEW ROOM' : 'TRY JOINING AGAIN'} ➜</button>` : ''}<button class="text-button" data-action="leave-room">Leave room</button></section></main>`;
 }
 function seatHtml(player: GameState['players'][number], index: number, count: number): string {
   if (!state) return '';
@@ -684,7 +696,8 @@ function beginNextRound():void {
 }
 function modalView(): string {
   if (!modal) return '';
-  const body = modal==='characters'?`<h2 id="character-picker-title">Choose a character</h2><p>Player ${characterSeat+1} · ${escapeHtml(settings.seats[characterSeat].name)}</p>${avatarPicker(characterSeat)}`:modal==='account'&&account?accountView(account)+(online?'<p>Sign in before joining a room to record its online statistics.</p>':''):modal==='stats'&&account?.snapshot.user?accountStatistics(account):modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. Turn order continues from them.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>${isNextVersion?"Survive +1. Hit exactly 100 +1, once per player per round. Set up the next player’s Overflow +1. Overflow −5. Match scores persist: −1 to −5 bruised, −6 to −10 battered, −11 to −14 bandaged, −15 or below Death. Freedom at +15 table points, after a settled round. Every new table starts at 0; leaving clears table points. All-time Freedom and Death statistics remain. Freed and dead players leave the room. A table with fewer than two active players ends; start a new match to play again.":"Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5."} Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Keyboard: use ← / → (or ↑ / ↓) to highlight a card, then press Space or Enter to throw it. Your replacement card draws automatically. Flick the right edge left or the left edge right to flip it. Flick upward from the top edge or double-tap the top edge for a somersault. Corners tumble diagonally; slow sideways drags stay in your hand.${isNextVersion?' Use AUTO beside Emote to let the challenging CPU play your cards, choose targets, and continue to the next round automatically. Online, the host’s Auto controls the next round. Tap it again to take control; a throw already underway finishes first. Hold a card and swing it back and forth twice (or three times), then release for a spinning boomerang throw. Look for the release cue. Hold Shift with Space or Enter for a boomerang throw.':''}</p>`
+  const cpuChoice=characterCpu===null?undefined:roomCpu(characterCpu);
+  const body = modal==='characters'?cpuChoice?`<h2 id="character-picker-title">Choose a character</h2><p>CPU ${characterCpu!+1} · ${escapeHtml(roomCpuDrafts.get(characterCpu!)??cpuChoice.name)}</p>${avatarPicker(0,cpuChoice.avatar)}`:`<h2 id="character-picker-title">Choose a character</h2><p>Player ${characterSeat+1} · ${escapeHtml(settings.seats[characterSeat].name)}</p>${avatarPicker(characterSeat)}`:modal==='account'&&account?accountView(account)+(online?'<p>Sign in before joining a room to record its online statistics.</p>':''):modal==='stats'&&account?.snapshot.user?accountStatistics(account):modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. Turn order continues from them.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>${isNextVersion?"Survive +1. Hit exactly 100 +1, once per player per round. Set up the next player’s Overflow +1. Overflow −5. Match scores persist: −1 to −5 bruised, −6 to −10 battered, −11 to −14 bandaged, −15 or below Death. Freedom at +15 table points, after a settled round. Every new table starts at 0; leaving clears table points. All-time Freedom and Death statistics remain. Freed and dead players leave the room. A table with fewer than two active players ends; start a new match to play again.":"Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5."} Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Keyboard: use ← / → (or ↑ / ↓) to highlight a card, then press Space or Enter to throw it. Your replacement card draws automatically. Flick the right edge left or the left edge right to flip it. Flick upward from the top edge or double-tap the top edge for a somersault. Corners tumble diagonally; slow sideways drags stay in your hand.${isNextVersion?' Use AUTO beside Emote to let the challenging CPU play your cards, choose targets, and continue to the next round automatically. Online, the host’s Auto controls the next round. Tap it again to take control; a throw already underway finishes first. Hold a card and swing it back and forth twice (or three times), then release for a spinning boomerang throw. Look for the release cue. Hold Shift with Space or Enter for a boomerang throw.':''}</p>`
   : modal==='settings' ? `<h2>Table settings</h2><div class="modal-setting"><label for="graphics">Visual quality</label><select id="graphics">${(['ultra','high','medium','mobile'] as const).map(tier=>`<option value="${tier}" ${settings.graphics===tier?'selected':''}>${tier==='mobile'?'Lite / Mobile':tier.charAt(0).toUpperCase()+tier.slice(1)}</option>`).join('')}</select><small>Ultra adds richer shadows and reflections. Every preset keeps the table and cards sharp; Mobile uses a lighter render budget.</small></div>${[['volume','Master volume',settings.volume],['sfxVolume','Sound effects',settings.sfxVolume],['musicVolume','Music',settings.musicVolume],['ambienceVolume','Ambience',settings.ambienceVolume]].map(([id,label,value])=>`<div class="modal-setting"><label for="${id}">${label}<output for="${id}">${Math.round(Number(value)*100)}%</output></label><input id="${id}" type="range" min="0" max="1" step=".01" value="${value}"></div>`).join('')}<label class="setting-toggle"><input id="muted" type="checkbox" ${settings.muted?'checked':''}>Mute all sounds</label><label class="setting-toggle"><input id="reducedMotion" type="checkbox" ${settings.reducedMotion?'checked':''}>Reduced motion</label><div class="modal-setting gyro-setting"><label>Phone tilt</label><button class="secondary-button" data-action="gyro-enable" ${!gyro.available || settings.reducedMotion ? 'disabled' : ''}>${gyro.status === 'on' ? 'Recenter phone tilt' : gyro.status === 'waiting' ? 'Waiting for motion…' : 'Enable phone tilt'}</button><small id="gyro-status">${settings.reducedMotion ? 'Turn off Reduced motion to use phone tilt.' : gyro.status === 'on' ? 'Move your phone gently to tilt the cards. Dragging a card takes control.' : gyro.status === 'denied' ? 'Motion access was denied. You can still drag cards to tilt them.' : gyro.available ? 'Available on supported phones.' : 'Motion sensors are unavailable in this browser.'}</small></div><div class="modal-setting"><label for="uiScale">Interface size <output for="uiScale">${Math.round(settings.uiScale*100)}%</output></label><input id="uiScale" type="range" min=".85" max="1.2" step=".05" value="${settings.uiScale}"></div><p>Settings save on this device.</p>`
   : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Freedom',stats.freedoms],['Death',stats.deaths],['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Overflows',stats.busts],['Cards played',stats.cards],['Choose Player',stats.sevens],['Reverse',stats.eights],['Zero',stats.nines],['Minus Ten',stats.tens]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Your statistics are saved on this device.</p>`
   : modal==='history' ? `<h2>Game history</h2><p>Recent moves at this table.</p><ul class="history-list">${state?.log.length ? state.log.map(gameLogLine).join('') : '<li>No cards have been played yet.</li>'}</ul>`
@@ -692,9 +705,9 @@ function modalView(): string {
   return `<div class="overlay modal-overlay" data-action="close-modal"><section class="modal-panel ${modal==='characters'?'character-selector':''}" role="dialog" aria-modal="true" ${modal==='characters'?'aria-labelledby="character-picker-title"':''}><button class="close-button" data-action="close-modal" aria-label="Close">×</button>${body}</section></div>`;
 }
 function closeModal(): void {
-  const wasCharacters = modal === 'characters';
-  modal = null; render();
-  if (wasCharacters) app.querySelector<HTMLButtonElement>(`[data-character-seat="${characterSeat}"]`)?.focus({preventScroll:true});
+  const wasCharacters = modal === 'characters',cpu=characterCpu;
+  characterCpu=null;modal = null; render();
+  if (wasCharacters) app.querySelector<HTMLButtonElement>(cpu===null?`[data-character-seat="${characterSeat}"]`:`[data-cpu-character="${cpu}"]`)?.focus({preventScroll:true});
 }
 let presentedRound='';
 let openingDeal=false;
@@ -806,15 +819,25 @@ app.addEventListener('click', event => {
   if (ringStep) { playerRing.browse(Number(ringStep.dataset.ringStep)); return; }
   const ringFocus = target.closest<HTMLElement>('[data-ring-focus]');
   if (ringFocus) { playerRing.show(Number(ringFocus.dataset.ringFocus)); return; }
+  const cpuCharacter=target.closest<HTMLElement>('[data-cpu-character]');
+  if(cpuCharacter&&canEditRoomCpus()){
+    const index=Number(cpuCharacter.dataset.cpuCharacter);if(!roomCpu(index))return;
+    characterCpu=index;modal='characters';audio.play('click');render();return;
+  }
   const character = target.closest<HTMLElement>('[data-character-seat]');
   if (character && isNextVersion && !state && !online) {
-    characterSeat = Number(character.dataset.characterSeat);
+    characterCpu=null;characterSeat = Number(character.dataset.characterSeat);
     modal = 'characters'; audio.play('click'); render(); return;
   }
   const avatar = target.closest<HTMLElement>('[data-avatar-choice]');
   if (avatar) {
     const index = Number(avatar.dataset.avatarSeat ?? 0), choice = Number(avatar.dataset.avatarChoice);
-    if (!settings.seats[index] || !Number.isInteger(choice) || choice < 0 || choice >= avatarNames.length) return;
+    if(!Number.isInteger(choice)||choice<0||choice>=avatarNames.length)return;
+    if(characterCpu!==null){
+      const cpu=roomCpu(characterCpu);if(!canEditRoomCpus()||!cpu)return;
+      online!.setCpuProfile(characterCpu,{name:roomCpuDrafts.get(characterCpu)??cpu.name,avatar:choice});audio.play('click');closeModal();return;
+    }
+    if(!settings.seats[index])return;
     const wasCharacters = modal === 'characters';
     if (wasCharacters) modal = null;
     setSeat(index, {avatar:choice}); audio.play('click');
@@ -893,6 +916,7 @@ app.addEventListener('change', event => {
   const el = event.target as HTMLInputElement | HTMLSelectElement;
   if (el.id === 'player-count') { settings.playerCount = Number(el.value); save(); render(); }
   if (el.id === 'difficulty' && !isNextVersion) { settings.difficulty = el.value as Settings['difficulty']; save(); }
+  if(el.dataset.roomCpuName!==undefined&&canEditRoomCpus()){const index=Number(el.dataset.roomCpuName),cpu=roomCpu(index);if(cpu)online!.setCpuProfile(index,{name:el.value,avatar:cpu.avatar});}
   if (el.id === 'room-cpus') { roomCpuCount = Number(el.value); online?.setCpuCount(roomCpuCount); }
   if (el.id === 'room-code') joinCode = el.value;
   if (el.id === 'online-name') { settings.seats[0].name = el.value.trim().slice(0,15); save(); }
@@ -907,6 +931,7 @@ app.addEventListener('change', event => {
 app.addEventListener('input', event => {
   const el = event.target as HTMLInputElement;
   if (el.id === 'room-code') joinCode = el.value;
+  if(el.dataset.roomCpuName!==undefined&&canEditRoomCpus())roomCpuDrafts.set(Number(el.dataset.roomCpuName),el.value);
   if(el.dataset.seatName!==undefined){settings.seats[Number(el.dataset.seatName)].name=el.value;save();}
   if (['volume','sfxVolume','musicVolume','ambienceVolume','uiScale'].includes(el.id)) { const key=el.id as 'volume'|'sfxVolume'|'musicVolume'|'ambienceVolume'|'uiScale';settings[key]=Number(el.value);save();const output=document.querySelector(`output[for="${el.id}"]`);if(output)output.textContent=`${Math.round(Number(el.value)*100)}%`; }
 });

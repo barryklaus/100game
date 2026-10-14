@@ -10,6 +10,7 @@ import type { GameState, PlayerConfig } from './types';
 export type Profile = Pick<PlayerConfig, 'name' | 'avatar' | 'mood' | 'lifetimePoints' | 'freedoms' | 'deaths'>;
 export type RoomCommand =
   | { type: 'cpu-count'; count: number }
+  | { type: 'cpu-profile'; index: number; name: string; avatar: number }
   | { type: 'start'; round?: number }
   | { type: 'play'; cardId: string; turn?: number }
   | { type: 'target'; seat: number; turn?: number }
@@ -28,6 +29,8 @@ export interface RoomData {
   /** Outcome delivery/account history only; these are no longer room members. */
   retiredMembers?:Member[];
   cpuCount: number;
+  /** CPU order stays stable when humans join or leave the lobby. */
+  cpuProfiles?: PlayerConfig[];
   hostSeat: number;
   state: GameState | null;
   revision: number;
@@ -60,7 +63,9 @@ const human = (profile: Profile): PlayerConfig => ({ ...profile, kind: 'human' }
 const cpu = (index: number): PlayerConfig => ({ name: CPU_NAMES[index % CPU_NAMES.length], avatar: (index + 1) % 16, mood: 'Normal', kind: 'cpu' });
 
 function rebuildLobby(room: RoomData): void {
-  room.seats = [...room.members.map(member => human(member.profile)), ...Array.from({ length: room.cpuCount }, (_, i) => cpu(i))];
+  const previous=room.cpuProfiles??room.seats.filter(seat=>seat.kind==='cpu');
+  room.cpuProfiles=Array.from({length:room.cpuCount},(_,i)=>previous[i]??cpu(i));
+  room.seats = [...room.members.map(member => human(member.profile)), ...room.cpuProfiles];
 }
 
 export function roomParticipants(room:RoomData):Member[]{return [...room.members,...room.retiredMembers??[]];}
@@ -226,6 +231,13 @@ export function applyCommand(room: RoomData, seat: number, command: RoomCommand,
     if (!Number.isInteger(command.count) || command.count < 0 || command.count > CONFIG.PLAYER_MAX - room.members.length) throw new RoomError('Choose a valid CPU count.');
     room.cpuCount = command.count;
     rebuildLobby(room);
+  } else if (command.type === 'cpu-profile') {
+    if(seat!==room.hostSeat||room.state)throw new RoomError('Only the host can edit CPU players before a round.',403);
+    if(!Number.isInteger(command.index)||command.index<0||command.index>=room.cpuCount||typeof command.name!=='string'||!Number.isInteger(command.avatar)||command.avatar<0||command.avatar>15)throw new RoomError('Choose a valid CPU player and character.');
+    rebuildLobby(room);
+    const player=room.cpuProfiles![command.index];
+    player.name=command.name.trim().slice(0,15)||player.name;
+    player.avatar=command.avatar;
   } else if (command.type === 'start') {
     if (seat !== room.hostSeat || room.seats.length < CONFIG.PLAYER_MIN) throw new RoomError('Only the host can start a table with at least two players.', 403);
     if (room.state && room.state.phase !== 'ended') throw new RoomError('Finish the current round first.', 409);

@@ -56,10 +56,15 @@ try {
   await guest.wait(m => m.type === 'snapshot' && m.seat === guestSeat.seat);
   host.send({ type: 'cpu-count', count: 1 });
   await host.wait(m => m.type === 'snapshot' && m.cpuCount === 1);
+  host.send({type:'cpu-profile',index:0,name:'QA CPU',avatar:15});
+  await guest.wait(m=>m.type==='snapshot'&&m.seats[2]?.name==='QA CPU'&&m.seats[2]?.avatar===15);
+  guest.send({type:'cpu-profile',index:0,name:'Not host',avatar:0});
+  await guest.wait(m=>m.type==='error'&&m.message.includes('Only the host'));
   host.send({ type: 'start' });
   const h = await host.wait(m => m.type === 'snapshot' && m.state);
   const g = await guest.wait(m => m.type === 'snapshot' && m.state);
   assert.equal(h.state.players.length, 3);
+  assert.equal(h.state.players[2].name,'QA CPU');assert.equal(h.state.players[2].avatar,15,'Custom CPU character carries into the live game');
   assert.equal(h.state.players[hostSeat.seat].hand.length, 2);
   assert.equal(g.state.players[guestSeat.seat].hand.length, 2);
   const hostCard = h.state.players[hostSeat.seat].hand[0].id;

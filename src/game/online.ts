@@ -36,6 +36,7 @@ export class OnlineRoom {
   private hostConnection: DataConnection | null = null;
   private guests = new Map<string, { connection: DataConnection; seat: number }>();
   private humanSeats: PlayerConfig[] = [];
+  private cpuProfiles: PlayerConfig[] = [];
   private onUpdate: () => void;
   private connectionTimer: ReturnType<typeof setTimeout> | null = null;
   private commandTimer: ReturnType<typeof setTimeout> | null = null;
@@ -103,7 +104,8 @@ export class OnlineRoom {
     this.peer.destroy();
   }
   private rebuildSeats(): void {
-    this.seats = [...this.humanSeats, ...Array.from({ length: this.cpuCount }, (_, i) => ({ ...defaultSeats[(i + this.humanSeats.length) % defaultSeats.length], avatar: (i + this.humanSeats.length) % 16, kind: 'cpu' as const }))];
+    this.cpuProfiles=Array.from({length:this.cpuCount},(_,i)=>this.cpuProfiles[i]??({...defaultSeats[(i+this.humanSeats.length)%defaultSeats.length],avatar:(i+this.humanSeats.length)%16,kind:'cpu' as const}));
+    this.seats = [...this.humanSeats, ...this.cpuProfiles];
   }
   private snapshot(seat: number): HostMessage {
     return { type: 'snapshot', seat, seats: this.seats, state: this.state ? projectForSeat(this.state, seat) : null, roomId: this.roomId, cpuCount: this.cpuCount };
@@ -190,6 +192,12 @@ export class OnlineRoom {
     if (!this.isHost || this.status !== 'lobby') return;
     this.cpuCount = Math.max(0, Math.min(CONFIG.PLAYER_MAX - this.humanSeats.length, Math.floor(count)));
     this.rebuildSeats(); this.broadcast();
+  }
+  setCpuProfile(index:number,profile:Pick<PlayerConfig,'name'|'avatar'>):void {
+    if(!this.isHost||this.status!=='lobby'||!Number.isInteger(index)||index<0||index>=this.cpuCount||!Number.isInteger(profile.avatar)||profile.avatar<0||profile.avatar>15)return;
+    this.rebuildSeats();const player=this.cpuProfiles[index];
+    player.name=profile.name.trim().slice(0,15)||player.name;player.avatar=profile.avatar;
+    this.broadcast();
   }
   startRound(round = 1): void {
     if (!this.isHost || (this.status !== 'lobby' && this.status !== 'playing') || this.seats.length < CONFIG.PLAYER_MIN) return;

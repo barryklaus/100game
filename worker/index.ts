@@ -185,7 +185,7 @@ export class GameRoom {
         if(input.type==='start'){await this.saveAccounts();if(this.accountRound&&!this.accountRound.committed&&this.room.state?.phase==='ended')throw new RoomError('Saving round statistics. Please retry in a moment.',503);await this.refreshPoints();}
         const before=this.room.state?structuredClone(this.room.state):null;
         applyCommand(this.room, attachment.seat, input as RoomCommand);
-        if(input.type==='cpu-count')await this.refreshPoints();
+        if(input.type==='cpu-count'||input.type==='cpu-profile')await this.refreshPoints();
         if(input.type==='start'&&this.env.ACCOUNTS)this.accountRound=newRoundAccounts(Object.fromEntries(this.room.members.filter(member=>member.accountId).map(member=>[member.seat,member.accountId!])));
         else if(before&&this.accountRound&&this.room.state)recordPlayed(this.accountRound,before,this.room.state);
         await this.save();

@@ -7,6 +7,26 @@ const { createRoom, joinRoom, setConnected, sweepDisconnected, applyCommand, sna
 
 const host = { name: 'Host', avatar: 0, mood: 'Normal' };
 const guest = { name: 'Guest', avatar: 1, mood: 'Happy' };
+{
+ const lobby=createRoom('100-cpu-custom',host,'host',0);
+ applyCommand(lobby,0,{type:'cpu-count',count:2});
+ applyCommand(lobby,0,{type:'cpu-profile',index:0,name:'  Custom CPU  ',avatar:15});
+ applyCommand(lobby,0,{type:'cpu-profile',index:1,name:'Buddy',avatar:7});
+ joinRoom(lobby,guest,null,'guest');
+ assert.deepEqual(lobby.seats.slice(2).map(({name,avatar})=>({name,avatar})),[{name:'Custom CPU',avatar:15},{name:'Buddy',avatar:7}],'Joining friends must not reset or shift CPU identities');
+ assert.equal(snapshotForSeat(lobby,1).seats[2].name,'Custom CPU','Guests see host edits');
+ assert.throws(()=>applyCommand(lobby,1,{type:'cpu-profile',index:0,name:'Hijack',avatar:0}),/Only the host/);
+ for(const bad of [{index:-1},{index:2},{index:NaN},{avatar:16},{avatar:1.5},{name:null}])assert.throws(()=>applyCommand(lobby,0,{type:'cpu-profile',index:0,name:'CPU',avatar:0,...bad}),/valid CPU/);
+ applyCommand(lobby,0,{type:'cpu-profile',index:0,name:'   ',avatar:15});assert.equal(lobby.seats[2].name,'Custom CPU','Blank input keeps the existing name');
+ applyCommand(lobby,0,{type:'cpu-count',count:1});applyCommand(lobby,0,{type:'cpu-count',count:2});
+ assert.equal(lobby.seats[2].name,'Custom CPU','Changing count preserves surviving CPU choices');
+ const resumed=structuredClone(lobby);applyCommand(resumed,1,{type:'leave'});
+ assert.equal(resumed.seats[1].name,'Custom CPU','Worker persistence and leaving friends preserve the CPU configuration');
+ applyCommand(resumed,0,{type:'start'});assert.equal(resumed.state.players[1].avatar,15);assert.equal(resumed.state.players[1].name,'Custom CPU');
+ assert.throws(()=>applyCommand(resumed,0,{type:'cpu-profile',index:0,name:'Late edit',avatar:0}),/before a round/);
+ const legacy=createRoom('100-old-lobby',host,'old');legacy.cpuCount=1;legacy.seats.push({name:'Legacy CPU',avatar:4,kind:'cpu',mood:'Normal'});
+ joinRoom(legacy,guest,null,'new');assert.equal(legacy.seats[2].name,'Legacy CPU','Older saved rooms migrate without resetting CPUs');
+}
 const room = createRoom('100-123456789abc', host, 'host-secret', 1000);
 assert.equal(room.hostSeat, 0);
 applyCommand(room, 0, { type: 'cpu-count', count: 2 }, 1100);
