@@ -32,13 +32,14 @@ import './characters.css';
 import './celestial.css';
 import './outcomes.css';
 import './table-social.css';
+import './special-throw.css';
 import { CONFIG, MOODS, moodSymbols, suitSymbols } from './data/config';
 import { defaultSeats, loadSettings, loadStats, saveSettings, saveStats, type Settings, type Stats } from './data/storage';
 import { backImage, cardDisplayRank, cardImage, cardImageLossless, prefersLosslessHand } from './game/deck';
 import { cardFace } from './game/cardFace';
 import { cardFrameUrl } from './render/CardFrame';
 import { cpuActionDelay } from './game/cpuTiming';
-import { chooseCpuCard, chooseCpuTarget } from './game/cpu';
+import { chooseCpuCard, chooseCpuTarget, chooseCpuSpecialThrow } from './game/cpu';
 import { createGame, playCard, selectTarget } from './game/rules';
 import type { Card, GameState, PlayerConfig } from './game/types';
 import { AudioManager } from './audio/AudioManager';
@@ -105,6 +106,7 @@ const dismissedOutcomeKeys=new Set<string>();
 const account=isNextVersion&&!outcomeDemo?new AccountClient(()=>{if(account?.snapshot.user){settings.seats[0]={...settings.seats[0],name:account.snapshot.user.username,kind:'human'};if(state&&!online){const totals=totalAccountStats(account.snapshot);state.players[0].freedoms=Math.max(state.players[0].freedoms??0,totals.freedoms);state.players[0].deaths=Math.max(state.players[0].deaths??0,totals.deaths);}save();}render();}):null;
 let state: GameState | null = null;
 let selectedCard: string | null = null;
+let specialThrowArm:{key:string;seat:number}|null=null;
 let locked = false;
 let departingCardId: string | null = null;
 const receivingCardIds = new Set<string>();
@@ -239,7 +241,7 @@ function roomChanged(): void {
     const seat=document.querySelector<HTMLElement>(`.seat[data-seat="${previous.current}"]`);
     if(seat){const room=online,actor=previous.current;
       const source=actor===online.localSeat?app.querySelector<HTMLElement>(`.local-hand [data-card="${incomingTop.id}"]`):null;
-      remoteFlight=true;remoteFlightKey=remoteKey;void observatory.playCardToDiscard(cardImage(incomingTop),(source??seat).getBoundingClientRect(),undefined,source?incomingTop.id:undefined,()=>{if(source){departingCardId=incomingTop.id;source.classList.add('card-departing');}playerRing.release(actor);remoteCardAudio.throw(remoteKey);},source?undefined:()=>playerRing.prepareThrow(actor)).then(()=>{if(online===room)remoteCardAudio.land(remoteKey);}).catch(()=>playerRing.cancelThrow(actor)).finally(()=>{remoteFlight=false;if(online===room)roomChanged();});return;}
+      remoteFlight=true;remoteFlightKey=remoteKey;void observatory.playCardToDiscard(cardImage(incomingTop),(source??seat).getBoundingClientRect(),undefined,source?incomingTop.id:undefined,()=>{if(source){departingCardId=incomingTop.id;source.classList.add('card-departing');}playerRing.release(actor,incoming.lastSpecialThrow?.cardId===incomingTop.id);remoteCardAudio.throw(remoteKey);},source&&incoming.lastSpecialThrow?.cardId!==incomingTop.id?undefined:()=>playerRing.prepareThrow(actor,incoming.lastSpecialThrow?.cardId===incomingTop.id)).then(()=>{if(online===room)remoteCardAudio.land(remoteKey);}).catch(()=>playerRing.cancelThrow(actor)).finally(()=>{remoteFlight=false;if(online===room)roomChanged();});return;}
   }
   state = incoming;
   if(previous&&state&&previous.round===state.round&&previous.played.at(-1)?.id!==state.played.at(-1)?.id&&(previous.current!==online.localSeat||previous.players[previous.current].autopilot===true))remoteCardAudio.land(remoteKey);
@@ -433,7 +435,14 @@ function finishRound(): void {
   stats.rating += humans.reduce((sum, player) => sum + player.ratingDelta, 0);
   save();
 }
-function resolveCard(cardId: string): void {
+function specialThrowKey():string{return state?.phase==='playing'?`${gameRoundKey()}:${state.turn}:${state.current}`:'';}
+function specialThrowToggle(seat:number):string {
+  if(!isNextVersion||!state?.match||state.phase==='ended')return '';
+  const used=state.players[seat]?.specialThrowUsed===true,armed=specialThrowArm?.key===specialThrowKey()&&specialThrowArm.seat===seat;
+  const disabled=used||locked||openingDeal||state.phase!=='playing'||state.current!==seat||!canControlActor();
+  return `<button type="button" class="special-throw-toggle" data-action="special-throw" data-special-seat="${seat}" aria-pressed="${armed}" title="Once per round. Next-player Overflow earns +2. A direct backfire costs −7 total." ${disabled?'disabled':''}><span aria-hidden="true">✦</span> Special Throw <small>${used?'USED THIS ROUND':armed?'ARMED · +2 setup':'1 / ROUND'}</small></button>`;
+}
+function resolveCard(cardId: string,specialThrow=false): void {
   if (!state || state.phase !== 'playing' || awaitingNetwork) return;
   const actor = state.current;
   const card = state.players[actor].hand.find(item => item.id === cardId);
@@ -449,11 +458,11 @@ function resolveCard(cardId: string): void {
     }
     selectedCard = null; awaitingNetwork = !online.isHost || online instanceof HostedRoom; pendingLog = state.log[0];
     if (awaitingNetwork) render();
-    online.play(cardId); return;
+    online.play(cardId,specialThrow); return;
   }
   const previousLocalHand = new Set(state.players[localSeat()].hand.map(item => item.id));
   const beforePractice=practiceRound?structuredClone(state):null;
-  playCard(state, cardId);
+  playCard(state, cardId,specialThrow);
   if(practiceRound&&beforePractice)recordPlayed(practiceRound,beforePractice,state);
   playerRing.played(actor, ['seven','reverse','zero','minus'].includes(state.event));
   const drawnForLocal = state.players[localSeat()].hand.find(item => !previousLocalHand.has(item.id));
@@ -468,7 +477,7 @@ function resolveCard(cardId: string): void {
   selectedCard = null;
   const ev = state.event;
   if (ev === 'exact') { flash(`EXACT 100!  +${state.match?1:3}`, 'exact'); react([actor], state.match?'+1':'+3'); }
-  else if (ev === 'bust') { flash(`${state.players[actor].name.toUpperCase()} caused Overflow`, 'bust'); react([actor], '−5'); }
+  else if (ev === 'bust') { flash(`${state.players[actor].name.toUpperCase()} caused Overflow`, 'bust'); react([actor],state.match?.backfire===actor?'−7':'−5'); }
   else if (ev === 'seven') { audio.play('target'); flash('CHOOSE A PLAYER', 'seven'); notifySpecial(actor,card.rank); }
   else if (ev === 'reverse') { audio.play('reverse'); flash('DIRECTION REVERSED', 'reverse'); notifySpecial(actor,card.rank); }
   else if (ev === 'zero') { audio.play('zero'); flash('+0  ·  ZERO', 'zero'); notifySpecial(actor,card.rank); }
@@ -487,9 +496,10 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   const playState = state, playTurn = state.turn;
   const card = state.players[state.current].hand.find(item => item.id === cardId);
   const throwingSeat = state.current;
-  const immediateRelease=!!source;
+  const immediateRelease=!!source&&state.players[throwingSeat].kind==='human'&&!autoEnabled(throwingSeat);
   if (!card) { locked = false; return; }
-  if(settings.reducedMotion){audio.play('slap');locked=false;resolveCard(cardId);return;}
+  const specialThrow=!!state.match&&!state.players[throwingSeat].specialThrowUsed&&(specialThrowArm?.key===specialThrowKey()||((state.players[throwingSeat].kind==='cpu'||autoEnabled(throwingSeat))&&chooseCpuSpecialThrow(state,card)));
+  if(settings.reducedMotion){audio.play('slap');locked=false;resolveCard(cardId,specialThrow);return;}
   const origin = source || document.querySelector<HTMLElement>(`.seat[data-seat="${state.current}"]`) || document.querySelector<HTMLElement>('.draw-stack')!;
   let start = origin.getBoundingClientRect();
   if (observatory?.canAnimate && !settings.reducedMotion) {
@@ -499,16 +509,16 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
         source?.classList.add('card-departing');
         if(source)app.querySelector<HTMLElement>(`.local-hand [data-card="${cardId}"]`)?.classList.add('card-departing');
         source?.classList.remove('dragging');
-        playerRing.release(throwingSeat);
+        playerRing.release(throwingSeat,specialThrow);
       }, async () => {
-        const hand = immediateRelease?undefined:await playerRing.prepareThrow(throwingSeat);
+        const hand = immediateRelease?undefined:await playerRing.prepareThrow(throwingSeat,specialThrow);
         if (state !== playState || state.turn !== playTurn) throw new Error('The turn changed before the card left.');
         return source ? undefined : hand;
       },releaseVelocity);
       if (state !== playState || state.turn !== playTurn) { playerRing.cancelThrow(throwingSeat); locked = false; return; }
       audio.play('slap');
       locked = false;
-      resolveCard(cardId);
+      resolveCard(cardId,specialThrow);
       return;
     } catch {
       departingCardId=null;
@@ -519,11 +529,11 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   }
   let flying: HTMLElement;
   try {
-    const hand = immediateRelease?undefined:await playerRing.prepareThrow(throwingSeat);
+    const hand = immediateRelease?undefined:await playerRing.prepareThrow(throwingSeat,specialThrow);
     if (state !== playState || state.turn !== playTurn) throw new Error('The turn changed before the card left.');
     if (!source && hand) start = hand;
   } catch { source?.classList.remove('dragging');playerRing.cancelThrow(throwingSeat); locked = false; return; }
-  playerRing.release(throwingSeat);
+  playerRing.release(throwingSeat,specialThrow);
   if (source) {
     flying = source.cloneNode(true) as HTMLElement;
     flying.classList.remove('selected', 'dragging', 'waiting-hand', 'card-departing');
@@ -559,7 +569,7 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   await flying.animate(frames, { duration, easing:momentum?'linear':'cubic-bezier(.2,.8,.2,1)', fill:'forwards' }).finished.catch(() => undefined);
   audio.play('slap');
   if (state !== playState || state.turn !== playTurn) { flying.remove();playerRing.cancelThrow(throwingSeat); locked = false; return; }
-  locked = false; resolveCard(cardId);
+  locked = false; resolveCard(cardId,specialThrow);
   if(online&&awaitingNetwork){
     const detach=()=>{if(!awaitingNetwork||state!==playState){flying.remove();return;}requestAnimationFrame(detach);};requestAnimationFrame(detach);
   }else requestAnimationFrame(()=>flying.remove());
@@ -658,8 +668,8 @@ function gameView(): string {
       <nav class="ring-controls" aria-label="Browse players"><button data-ring-step="-1" aria-label="Previous players" ${seats.length<=4?'hidden':''}>‹</button><div class="ring-markers">${seats.map((i,slot)=>{const player=state!.players[i];return `<button data-ring-focus="${i}" class="ring-marker ${i===actor?'current':''} ${state!.phase==='target'&&canControlActor()&&i!==actor&&!isOut(state!,i)?'eligible':''}" aria-label="Show ${escapeHtml(player.name)}${i===actor?', active player':''}" title="${escapeHtml(player.name)}">${slot+1}</button>`;}).join('')}</div><button data-ring-step="1" aria-label="Next players" ${seats.length<=4?'hidden':''}>›</button></nav>
       ${state.phase==='target'&&canControlActor()?'<div class="target-hint">Tap a highlighted player · Use the seat markers to browse</div>':''}
     </section><aside class="side-panel"><div class="side-card"><div class="eyebrow">AT THE TABLE</div><h3>${state.phase==='target'?'Choosing a target: ':state.forced?'Forced play: ':'Now playing: '}${escapeHtml(active.name)}</h3></div><div class="side-card log-card"><div class="card-heading"><h3>Game Log</h3><span>RECENT MOVES</span></div><ul>${state.log.slice(0,7).map(gameLogLine).join('')}</ul></div></aside></div>
-    ${otherLocalTurn ? `<div class="shared-turn" role="region" aria-label="${escapeHtml(active.name)}'s local turn"><strong>Pass the device to ${escapeHtml(active.name)}</strong><span>${state.phase === 'target' ? 'Tap a highlighted player at the table.' : 'Double-tap a card or flick it toward the table.'}</span><div class="shared-hand">${state.phase === 'playing' ? active.hand.map(card=>cardElement(card,selectedCard===card.id,'hand-card')).join('') : ''}</div></div>` : ''}
-    <footer class="hand-dock"><div class="dock-prompt ${myTurn?'my-turn':''}">${myTurn?'<span class="your-turn-bubble">YOUR TURN</span>':''}<img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${mine ? `${mine.ratingDelta>=0?'+':''}${mine.ratingDelta} · Round score` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):isOut(state,localSeat())?'<div class="waiting-cards">Out of the match</div>':`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Double-tap a card or flick it upward' : awaitingNetwork ? 'Confirming your move…' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><div class="emote-menu ${emotesOpen?'open':''}"><button class="emote-trigger" data-action="emotes" aria-label="Choose emote" aria-expanded="${emotesOpen}">☺<small>EMOTE</small></button>${isNextVersion&&autoPlayer?.kind==='human'&&!isOut(state,autoSeat)?`<button class="autopilot-toggle ${auto?'enabled':''}" data-action="autopilot" data-auto-seat="${autoSeat}" aria-label="Autopilot for ${escapeHtml(autoPlayer.name)}" aria-pressed="${auto}" title="${auto?'Take control':'Make questionable decisions for me'}" ${awaitingNetwork||(locked&&!auto)?'disabled':''}><span aria-hidden="true">${auto?'⏸':'▷'}</span><small>AUTO</small></button>`:''}<div class="emote-wheel ${isNextVersion?'phrase-wheel':''}" aria-label="Reactions" ${emotesOpen?'':'inert aria-hidden="true"'}>${isNextVersion?REACTIONS.map(item=>`<button data-reaction="${item.id}">${item.text}</button>`).join(''):(['Happy','Excited','Confused','Angry','Sad','Smug','Scared','Thinking'] as const).map(m=>`<button data-emote="${m}" title="${m}" aria-label="${m}">${moodSymbols[m]}</button>`).join('')}</div></div><button class="info-fab" data-action="rules" aria-label="Game information">i<small>INFO</small></button><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
+    ${otherLocalTurn ? `<div class="shared-turn" role="region" aria-label="${escapeHtml(active.name)}'s local turn"><strong>Pass the device to ${escapeHtml(active.name)}</strong><span>${state.phase === 'target' ? 'Tap a highlighted player at the table.' : 'Double-tap a card or flick it toward the table.'}</span><div class="shared-hand">${specialThrowToggle(actor)}${state.phase === 'playing' ? active.hand.map(card=>cardElement(card,selectedCard===card.id,'hand-card')).join('') : ''}</div></div>` : ''}
+    <footer class="hand-dock"><div class="dock-prompt ${myTurn?'my-turn':''}">${myTurn?'<span class="your-turn-bubble">YOUR TURN</span>':''}<img class="dock-avatar" src="${avatarImage(mine?.avatar ?? 0)}" alt=""><div class="dock-person"><span class="eyebrow">${mine?.kind==='human'?'YOUR SEAT':'SPECTATOR'}</span><strong>${escapeHtml(mine?.name || 'Player')}</strong><small>${mine ? `${mine.ratingDelta>=0?'+':''}${mine.ratingDelta} · Round score` : 'Watching'}</small></div></div><div class="local-hand">${hand.length?specialThrowToggle(localSeat()):''}${hand.length?hand.map(card=>cardElement(card,selectedCard===card.id,`hand-card ${myTurn ? '' : 'waiting-hand'}`)).join(''):isOut(state,localSeat())?'<div class="waiting-cards">Out of the match</div>':`<div class="waiting-cards"><img src="${backImage}" alt="face-down card"><img src="${backImage}" alt="face-down card"></div>`}</div><div class="dock-controls"><small class="dock-hint">${myTurn ? state.phase === 'target' ? 'Choose a highlighted player.' : 'Double-tap a card or flick it upward' : awaitingNetwork ? 'Confirming your move…' : `${escapeHtml(active.name)} is ${state.phase==='target'?'choosing a player':'playing'}…`}</small></div><div class="emote-menu ${emotesOpen?'open':''}"><button class="emote-trigger" data-action="emotes" aria-label="Choose emote" aria-expanded="${emotesOpen}">☺<small>EMOTE</small></button>${isNextVersion&&autoPlayer?.kind==='human'&&!isOut(state,autoSeat)?`<button class="autopilot-toggle ${auto?'enabled':''}" data-action="autopilot" data-auto-seat="${autoSeat}" aria-label="Autopilot for ${escapeHtml(autoPlayer.name)}" aria-pressed="${auto}" title="${auto?'Take control':'Make questionable decisions for me'}" ${awaitingNetwork||(locked&&!auto)?'disabled':''}><span aria-hidden="true">${auto?'⏸':'▷'}</span><small>AUTO</small></button>`:''}<div class="emote-wheel ${isNextVersion?'phrase-wheel':''}" aria-label="Reactions" ${emotesOpen?'':'inert aria-hidden="true"'}>${isNextVersion?REACTIONS.map(item=>`<button data-reaction="${item.id}">${item.text}</button>`).join(''):(['Happy','Excited','Confused','Angry','Sad','Smug','Scared','Thinking'] as const).map(m=>`<button data-emote="${m}" title="${m}" aria-label="${m}">${moodSymbols[m]}</button>`).join('')}</div></div><button class="info-fab" data-action="rules" aria-label="Game information">i<small>INFO</small></button><div class="dock-quote">GOOD PEOPLE.<br>RISKY DECISIONS.</div></footer>
     ${state.phase==='ended'&&!presentedTotal.pending&&playerRing.scoresReady(gameRoundKey())?resultView():''}</main>`;
 }
 function shownCondition(index:number):number {
@@ -697,7 +707,7 @@ function beginNextRound():void {
 function modalView(): string {
   if (!modal) return '';
   const cpuChoice=characterCpu===null?undefined:roomCpu(characterCpu);
-  const body = modal==='characters'?cpuChoice?`<h2 id="character-picker-title">Choose a character</h2><p>CPU ${characterCpu!+1} · ${escapeHtml(roomCpuDrafts.get(characterCpu!)??cpuChoice.name)}</p>${avatarPicker(0,cpuChoice.avatar)}`:`<h2 id="character-picker-title">Choose a character</h2><p>Player ${characterSeat+1} · ${escapeHtml(settings.seats[characterSeat].name)}</p>${avatarPicker(characterSeat)}`:modal==='account'&&account?accountView(account)+(online?'<p>Sign in before joining a room to record its online statistics.</p>':''):modal==='stats'&&account?.snapshot.user?accountStatistics(account):modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. Turn order continues from them.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>${isNextVersion?"Survive +1. Hit exactly 100 +1, once per player per round. Set up the next player’s Overflow +1. Overflow −5. Match scores persist: −1 to −5 bruised, −6 to −10 battered, −11 to −14 bandaged, −15 or below Death. Freedom at +15 table points, after a settled round. Every new table starts at 0; leaving clears table points. All-time Freedom and Death statistics remain. Freed and dead players leave the room. A table with fewer than two active players ends; start a new match to play again.":"Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5."} Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Keyboard: use ← / → (or ↑ / ↓) to highlight a card, then press Space or Enter to throw it. Your replacement card draws automatically. Flick the right edge left or the left edge right to flip it. Flick upward from the top edge or double-tap the top edge for a somersault. Corners tumble diagonally; slow sideways drags stay in your hand.${isNextVersion?' Use AUTO beside Emote to let the challenging CPU play your cards, choose targets, and continue to the next round automatically. Online, the host’s Auto controls the next round. Tap it again to take control; a throw already underway finishes first. Hold a card and swing it back and forth twice (or three times), then release for a spinning boomerang throw. Look for the release cue. Hold Shift with Space or Enter for a boomerang throw.':''}</p>`
+  const body = modal==='characters'?cpuChoice?`<h2 id="character-picker-title">Choose a character</h2><p>CPU ${characterCpu!+1} · ${escapeHtml(roomCpuDrafts.get(characterCpu!)??cpuChoice.name)}</p>${avatarPicker(0,cpuChoice.avatar)}`:`<h2 id="character-picker-title">Choose a character</h2><p>Player ${characterSeat+1} · ${escapeHtml(settings.seats[characterSeat].name)}</p>${avatarPicker(characterSeat)}`:modal==='account'&&account?accountView(account)+(online?'<p>Sign in before joining a room to record its online statistics.</p>':''):modal==='stats'&&account?.snapshot.user?accountStatistics(account):modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. Turn order continues from them.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>MINUS TEN</strong><span>Subtract 10.</span></div></div><p>${isNextVersion?"Survive +1. Hit exactly 100 +1, once per player per round. Set up the next player’s Overflow +1. Special Throw: toggle it above your hand before playing, once per player per round. If the next player overflows, your setup earns +2 instead of +1. If they survive, Special Throw earns no bonus. If their reply makes you overflow on the very next play, your penalty is −7: Overflow −5 plus a −2 backfire. It works with any card, including CHOOSE and REVERSE. Overflow −5. Match scores persist: −1 to −5 bruised, −6 to −10 battered, −11 to −14 bandaged, −15 or below Death. Freedom at +15 table points, after a settled round. Every new table starts at 0; leaving clears table points. All-time Freedom and Death statistics remain. Freed and dead players leave the room. A table with fewer than two active players ends; start a new match to play again.":"Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5."} Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Keyboard: use ← / → (or ↑ / ↓) to highlight a card, then press Space or Enter to throw it. Your replacement card draws automatically. Flick the right edge left or the left edge right to flip it. Flick upward from the top edge or double-tap the top edge for a somersault. Corners tumble diagonally; slow sideways drags stay in your hand.${isNextVersion?' Use AUTO beside Emote to let the challenging CPU play your cards, choose targets, and continue to the next round automatically. Online, the host’s Auto controls the next round. Tap it again to take control; a throw already underway finishes first. Hold a card and swing it back and forth twice (or three times), then release for a spinning boomerang throw. Look for the release cue. Hold Shift with Space or Enter for a boomerang throw.':''}</p>`
   : modal==='settings' ? `<h2>Table settings</h2><div class="modal-setting"><label for="graphics">Visual quality</label><select id="graphics">${(['ultra','high','medium','mobile'] as const).map(tier=>`<option value="${tier}" ${settings.graphics===tier?'selected':''}>${tier==='mobile'?'Lite / Mobile':tier.charAt(0).toUpperCase()+tier.slice(1)}</option>`).join('')}</select><small>Ultra adds richer shadows and reflections. Every preset keeps the table and cards sharp; Mobile uses a lighter render budget.</small></div>${[['volume','Master volume',settings.volume],['sfxVolume','Sound effects',settings.sfxVolume],['musicVolume','Music',settings.musicVolume],['ambienceVolume','Ambience',settings.ambienceVolume]].map(([id,label,value])=>`<div class="modal-setting"><label for="${id}">${label}<output for="${id}">${Math.round(Number(value)*100)}%</output></label><input id="${id}" type="range" min="0" max="1" step=".01" value="${value}"></div>`).join('')}<label class="setting-toggle"><input id="muted" type="checkbox" ${settings.muted?'checked':''}>Mute all sounds</label><label class="setting-toggle"><input id="reducedMotion" type="checkbox" ${settings.reducedMotion?'checked':''}>Reduced motion</label><div class="modal-setting gyro-setting"><label>Phone tilt</label><button class="secondary-button" data-action="gyro-enable" ${!gyro.available || settings.reducedMotion ? 'disabled' : ''}>${gyro.status === 'on' ? 'Recenter phone tilt' : gyro.status === 'waiting' ? 'Waiting for motion…' : 'Enable phone tilt'}</button><small id="gyro-status">${settings.reducedMotion ? 'Turn off Reduced motion to use phone tilt.' : gyro.status === 'on' ? 'Move your phone gently to tilt the cards. Dragging a card takes control.' : gyro.status === 'denied' ? 'Motion access was denied. You can still drag cards to tilt them.' : gyro.available ? 'Available on supported phones.' : 'Motion sensors are unavailable in this browser.'}</small></div><div class="modal-setting"><label for="uiScale">Interface size <output for="uiScale">${Math.round(settings.uiScale*100)}%</output></label><input id="uiScale" type="range" min=".85" max="1.2" step=".05" value="${settings.uiScale}"></div><p>Settings save on this device.</p>`
   : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Freedom',stats.freedoms],['Death',stats.deaths],['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Overflows',stats.busts],['Cards played',stats.cards],['Choose Player',stats.sevens],['Reverse',stats.eights],['Zero',stats.nines],['Minus Ten',stats.tens]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Your statistics are saved on this device.</p>`
   : modal==='history' ? `<h2>Game history</h2><p>Recent moves at this table.</p><ul class="history-list">${state?.log.length ? state.log.map(gameLogLine).join('') : '<li>No cards have been played yet.</li>'}</ul>`
@@ -732,6 +742,7 @@ function syncPlayerRing(): void {
   playerRing.sync({ roundKey: active ? `${state!.round}:${state!.players.map(player=>player.name).join(':')}` : '', count: active ? visibleTableSeats().length : 0, seats:visibleTableSeats(), active: state?.phase === 'target' ? state.pendingSevens.at(-1)! : state?.current ?? 0, total: presentedTotal.visible.total, overflow: active && presentedTotal.visible.total > 100, overflowSeat: state?.bust ?? undefined, reducedMotion: settings.reducedMotion, target: state?.phase === 'target' });
 }
 function render(): void {
+  if(specialThrowArm&&specialThrowArm.key!==specialThrowKey()){playerRing.cancelSpecialThrow(specialThrowArm.seat);specialThrowArm=null;}
   if(isNextVersion&&!outcomeDemo)localSession.save(state&&!online&&!onlineMode?{state,cast:pointsCast(),practice:practiceRound,dismissed:[...dismissedOutcomeKeys]}:null);
   const accountFields=modal==='account'&&!account?.snapshot.user?Array.from(document.querySelectorAll<HTMLInputElement>('#account-form input')).map(input=>[input.name,input.value] as const):[];
   const discard = state?.played.at(-1);
@@ -848,6 +859,13 @@ app.addEventListener('click', event => {
   if (action) {
     if (action === 'close-modal' && target.closest('.modal-panel') && !target.closest('.close-button')) return;
     audio.play('click');
+    if(action==='special-throw'){
+      if(!state?.match||state.phase!=='playing'||!canControlActor()||locked||openingDeal||state.players[state.current].specialThrowUsed)return;
+      if(specialThrowArm){playerRing.cancelSpecialThrow(specialThrowArm.seat);specialThrowArm=null;}
+      else {specialThrowArm={key:specialThrowKey(),seat:state.current};playerRing.armSpecialThrow(state.current);}
+      app.querySelectorAll<HTMLButtonElement>('[data-action="special-throw"]').forEach(button=>{button.setAttribute('aria-pressed',String(specialThrowArm?.seat===Number(button.dataset.specialSeat)));const small=button.querySelector('small');if(small)small.textContent=specialThrowArm?'ARMED · +2 setup':'1 / ROUND';});
+      return;
+    }
     if (action==='demo-play' && outcomeDemo && state?.phase==='playing' && state.current===0) {
       const card=state.players[0].hand[0];
       const source=app.querySelector<HTMLElement>(`.local-hand [data-card="${card.id}"]`);

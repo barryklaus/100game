@@ -2,7 +2,7 @@ import { reactionPhrase, type RoomReaction } from '../data/reactions';
 import { cpuActionDelay } from './cpuTiming';
 import { isOut } from './conditions';
 import { CONFIG, MOODS } from '../data/config';
-import { chooseCpuCard, chooseCpuTarget } from './cpu';
+import { chooseCpuCard, chooseCpuTarget, chooseCpuSpecialThrow } from './cpu';
 import { projectForSeat } from './projection';
 import { createGame, playCard, selectTarget } from './rules';
 import type { GameState, PlayerConfig } from './types';
@@ -12,7 +12,7 @@ export type RoomCommand =
   | { type: 'cpu-count'; count: number }
   | { type: 'cpu-profile'; index: number; name: string; avatar: number }
   | { type: 'start'; round?: number }
-  | { type: 'play'; cardId: string; turn?: number }
+  | { type: 'play'; cardId: string; turn?: number; specialThrow?: boolean }
   | { type: 'target'; seat: number; turn?: number }
   | { type: 'mood'; mood: PlayerConfig['mood'] }
   | { type: 'reaction'; phrase:string }
@@ -165,7 +165,7 @@ export function advanceCpu(room: RoomData, now = Date.now()): boolean {
   room.cpuAction = null;
   const state = room.state!;
   if (state.phase === 'target') selectTarget(state, chooseCpuTarget(state, 'normal'));
-  else playCard(state, chooseCpuCard(state, 'normal').id);
+  else {const card=chooseCpuCard(state,'normal');playCard(state,card.id,chooseCpuSpecialThrow(state,card));}
   touch(room, now);
   return true;
 }
@@ -249,7 +249,7 @@ export function applyCommand(room: RoomData, seat: number, command: RoomCommand,
     if(room.state?.players[seat]?.autopilot)throw new RoomError('Turn Autopilot off before playing.',409);
     if (!room.state || room.state.phase !== 'playing' || room.state.current !== seat || typeof command.cardId !== 'string') throw new RoomError('It is not your turn.', 409);
     if (command.turn !== undefined && command.turn !== (room.state.turn ?? 0)) throw new RoomError('That turn has already changed. Wait for the updated table.', 409);
-    playCard(room.state, command.cardId);
+    playCard(room.state, command.cardId, command.specialThrow??false);
   } else if (command.type === 'target') {
     if(room.state?.players[seat]?.autopilot)throw new RoomError('Turn Autopilot off before choosing.',409);
     if (!room.state || room.state.phase !== 'target' || room.state.pendingSevens.at(-1) !== seat || !Number.isInteger(command.seat)) throw new RoomError('You cannot choose a target now.', 409);

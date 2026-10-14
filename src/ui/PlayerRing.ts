@@ -227,7 +227,9 @@ export class PlayerRing {
     }
     return ready;
   }
-  async prepareThrow(index: number): Promise<DOMRect | undefined> {
+  armSpecialThrow(index:number):void{if(this.masters.has(index))this.masters.armSpecialThrow(index);}
+  cancelSpecialThrow(index:number):void{if(this.masters.has(index))this.masters.cancelSpecialThrow(index);}
+  async prepareThrow(index: number,special=false): Promise<DOMRect | undefined> {
     const epoch = this.epoch;
     this.preparing.add(index); this.paintFrames();
     try {
@@ -238,7 +240,7 @@ export class PlayerRing {
       await this.spriteReady(index);
       if (epoch !== this.epoch) throw new Error('The table changed before the throw.');
       clearTimeout(this.recoverTimers.get(index)); this.recoverTimers.delete(index);
-      if(this.masters.has(index))return await this.masters.prepareThrow(index);
+      if(this.masters.has(index))return await this.masters.prepareThrow(index,special);
       if(this.traditional.has(index))return await this.traditional.prepareThrow(index);
       if (!this.state.reducedMotion) {
         this.throws.set(index, 6); this.paintFrames();
@@ -251,9 +253,9 @@ export class PlayerRing {
       this.paintFrames();
     }
   }
-  release(index: number): void {
+  release(index: number,special=false): void {
     if (this.state.reducedMotion) return;
-    if(this.masters.has(index))this.masters.release(index);
+    if(this.masters.has(index))this.masters.release(index,special);
     if(this.traditional.has(index))this.traditional.release(index);
     this.throws.set(index, 7); this.paintFrames();
     this.drawWaiters.get(index)?.resolve();

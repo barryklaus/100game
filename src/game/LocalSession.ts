@@ -32,6 +32,7 @@ export function validLocalState(value:unknown):value is GameState {
   for(const [id,player] of value.players.entries()){
     if(!object(player)||player.id!==id||typeof player.name!=='string'||player.name.length>120||!['human','cpu'].includes(player.kind)||!MOODS.includes(player.mood)||!integer(player.avatar)||player.avatar<0||player.avatar>15||!integer(player.ratingDelta)||!integer(player.exacts)||player.exacts<0||!Array.isArray(player.hand)||player.hand.length>2||!pile(player.hand))return false;
     if(player.autopilot!==undefined&&typeof player.autopilot!=='boolean')return false;
+    if(player.specialThrowUsed!==undefined&&typeof player.specialThrowUsed!=='boolean')return false;
     for(const field of ['freedoms','deaths','lifetimePoints'])if(player[field]!==undefined&&!integer(player[field]))return false;
   }
   if(!pile(value.drawPile)||!pile(value.played)||seen.size!==cards.length)return false;
@@ -40,6 +41,11 @@ export function validLocalState(value:unknown):value is GameState {
   for(const field of ['dead','newlyDead','freed','newlyFreed'])if(!seats(match[field])||new Set(match[field]).size!==match[field].length)return false;
   if(match.dead.some((id:number)=>match.freed.includes(id))||match.newlyDead.some((id:number)=>!match.dead.includes(id))||match.newlyFreed.some((id:number)=>!match.freed.includes(id)))return false;
   for(const field of ['previous','setup'])if(match[field]!==null&&!seat(match[field]))return false;
+  if(match.previousSpecialThrow!==undefined&&typeof match.previousSpecialThrow!=='boolean')return false;
+  if(match.setupBonus!==undefined&&![0,1,2].includes(match.setupBonus))return false;
+  if(match.backfire!==undefined&&match.backfire!==null&&!seat(match.backfire))return false;
+  if(match.retaliation!==undefined&&(!object(match.retaliation)||!seat(match.retaliation.thrower)||!seat(match.retaliation.responder)||match.retaliation.thrower===match.retaliation.responder))return false;
+  if(value.lastSpecialThrow!==undefined&&(!object(value.lastSpecialThrow)||!seat(value.lastSpecialThrow.player)||typeof value.lastSpecialThrow.cardId!=='string'||!integer(value.lastSpecialThrow.turn)||value.lastSpecialThrow.turn>value.turn))return false;
   if(match.outcomePoints!==undefined&&(!object(match.outcomePoints)||!Object.entries(match.outcomePoints).every(([key,score])=>seat(Number(key))&&integer(score))))return false;
   const out=[...match.dead,...match.freed];
   if(value.phase!=='ended'&&(out.includes(value.current)||value.players.some((p:any)=>out.includes(p.id)?p.hand.length!==0:p.hand.length!==2)))return false;

@@ -1,4 +1,4 @@
-export const ACCOUNT_STAT_KEYS = ['freedoms','deaths','rounds','exacts','survives','busts','cards','sevens','eights','nines','tens','setups'] as const;
+export const ACCOUNT_STAT_KEYS = ['freedoms','deaths','rounds','exacts','survives','busts','cards','sevens','eights','nines','tens','setups','specialThrows','specialSetups','specialBackfires'] as const;
 export type AccountStats = Record<typeof ACCOUNT_STAT_KEYS[number], number>;
 export interface AccountUser { id: string; username: string; lifetimePoints?: number; admin?:boolean }
 export interface AccountSnapshot { user: AccountUser | null; online: AccountStats; practice: AccountStats }

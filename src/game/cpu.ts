@@ -29,3 +29,9 @@ export function chooseCpuTarget(state: GameState, difficulty: 'easy' | 'normal',
   // Uses only public seat/kind information; never examines hidden hands.
   return [...others].sort((a,b) => (b.kind === 'human' ? 1 : 0) - (a.kind === 'human' ? 1 : 0) || random() - .5)[0].id;
 }
+
+/** Spend the once-per-round throw when this card leaves a dangerous public total. */
+export function chooseCpuSpecialThrow(state:GameState,card:Card):boolean {
+  const total=state.total+cardValue(card);
+  return !!state.match&&!state.players[state.current].specialThrowUsed&&total>=90&&total<=100;
+}

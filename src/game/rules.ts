@@ -29,7 +29,8 @@ export function createGame(configs: PlayerConfig[], round = 1, random = Math.ran
   const drawPile = shuffle(makeDeck(), random);
   const match=nextMatch===true?{scores:configs.map(()=>0),dead:[],newlyDead:[],freed:[],newlyFreed:[],previous:null,setup:null,complete:false}:nextMatch?{...nextMatch,scores:[...nextMatch.scores],dead:[...nextMatch.dead],freed:[...nextMatch.freed??[]],newlyDead:[],newlyFreed:[],previous:null,setup:null}:undefined;
   if(match?.complete)throw new Error('Start a new match after the table is cleared.');
-  const players = configs.map((config, id) => ({ ...config, id, hand: match?.dead.includes(id)||match?.freed?.includes(id)?[]:drawPile.splice(0, CONFIG.HAND_SIZE), ratingDelta: 0, exacts: 0 }));
+  if(match){match.previousSpecialThrow=false;match.setupBonus=0;match.backfire=null;delete match.retaliation;}
+  const players = configs.map((config, id) => ({ ...config, id, hand: match?.dead.includes(id)||match?.freed?.includes(id)?[]:drawPile.splice(0, CONFIG.HAND_SIZE), ratingDelta: 0, exacts: 0, ...(match?{specialThrowUsed:false}:{}) }));
   const living=players.filter(player=>!match?.dead.includes(player.id)&&!match?.freed?.includes(player.id));
   if(living.length<2)throw new Error('A round needs at least two living players.');
   const start = living[Math.floor(random() * living.length)].id;
@@ -64,19 +65,26 @@ function finishPlay(state: GameState, actor: number): void {
   state.phase = 'playing';
 }
 
-export function playCard(state: GameState, cardId: string): GameState {
+export function playCard(state: GameState, cardId: string, specialThrow = false): GameState {
   if (state.phase !== 'playing') throw new Error('A card cannot be played now');
   const player = state.players[state.current];
   if(isOut(state,player.id))throw new Error('This player has left the table.');
   const index = player.hand.findIndex(card => card.id === cardId);
   if (index < 0) throw new Error('Card is not in the active hand');
+  if(typeof specialThrow!=='boolean')throw new Error('Invalid Special Throw.');
+  if(specialThrow&&(!state.match||player.specialThrowUsed))throw new Error('Special Throw is available once per player per round.');
   state.turn = (state.turn ?? 0) + 1;
+  if(specialThrow){player.specialThrowUsed=true;state.lastSpecialThrow={player:player.id,cardId,turn:state.turn};}
+  else delete state.lastSpecialThrow;
   const [card] = player.hand.splice(index, 1);
   state.played.push(card);
   const previousTotal = state.total;
   state.total += cardValue(card);
+  const backfire=!!state.match&&state.match.retaliation?.thrower===player.id&&state.match.retaliation.responder===state.match.previous;
+  if(state.match)delete state.match.retaliation;
   state.event = 'none';
   addLog(state, `${player.name} played ${cardDisplayRank(card)} ${card.suit.toUpperCase()} · Total ${state.total}`);
+  if(specialThrow)addLog(state,`${player.name} used Special Throw · next-player Overflow pays +2.`);
 
   if (previousTotal !== 100 && state.total === 100 && (!state.match || player.exacts===0)) {
     state.exactEvents.push({ player: player.id, total: 100 });
@@ -89,12 +97,17 @@ export function playCard(state: GameState, cardId: string): GameState {
     state.bust = player.id;
     state.phase = 'ended';
     state.event = 'bust';
-    player.ratingDelta += CONFIG.RATING_BUST;
+    player.ratingDelta += CONFIG.RATING_BUST-(backfire?2:0);
+    if(backfire){state.match!.backfire=player.id;addLog(state,`${player.name}'s Special Throw backfired · Overflow −5, retaliation −2.`);}
     state.players.forEach(other => { if (other.id !== player.id&&!isOut(state,other.id)) other.ratingDelta += CONFIG.RATING_SURVIVE; });
     if(state.match){
       const match=state.match;
       match.setup=match.previous!==player.id?match.previous:null;
-      if(match.setup!==null)state.players[match.setup].ratingDelta++;
+      match.setupBonus=match.setup===null?0:match.previousSpecialThrow?2:1;
+      if(match.setup!==null){
+        state.players[match.setup].ratingDelta+=match.setupBonus;
+        addLog(state,`${state.players[match.setup].name} set up the next player's Overflow · ${match.previousSpecialThrow?'Special Throw ':''}+${match.setupBonus}.`);
+      }
       match.freed??=[];match.newlyFreed??=[];match.outcomePoints??={};
       for(const other of state.players){
         if(isOut(state,other.id))continue;
@@ -111,7 +124,10 @@ export function playCard(state: GameState, cardId: string): GameState {
     return state;
   }
 
-  if(state.match)state.match.previous=player.id;
+  if(state.match){
+    if(state.match.previousSpecialThrow&&state.match.previous!==null&&state.match.previous!==player.id)state.match.retaliation={thrower:state.match.previous,responder:player.id};
+    state.match.previous=player.id;state.match.previousSpecialThrow=specialThrow;
+  }
 
   if (card.rank === '7') {
     // Refill before target selection so every visible hand stays at two cards.

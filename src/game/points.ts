@@ -3,7 +3,7 @@ import type { GameState, PlayerConfig } from './types';
 
 /** Lifetime points use the same awards and penalty as settled 100next rounds. */
 export function accountPoints(stats: Partial<AccountStats>): number {
-  return (stats.survives ?? 0) + (stats.exacts ?? 0) + (stats.setups ?? 0) - 5 * (stats.busts ?? 0);
+  return (stats.survives ?? 0) + (stats.exacts ?? 0) + (stats.setups ?? 0) + (stats.specialSetups ?? 0) - 5 * (stats.busts ?? 0) - 2 * (stats.specialBackfires ?? 0);
 }
 /** Older account snapshots fall back to their existing cumulative score. */
 export function overallAccountPoints(snapshot: {user:{lifetimePoints?:number}|null; online:Partial<AccountStats>; practice:Partial<AccountStats>}):number {
