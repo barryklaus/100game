@@ -81,3 +81,16 @@
 
 /* Native cropped drawings restore their original coordinates inside one fixed frame. */
 .master-frame{position:absolute;max-width:none;object-fit:fill;pointer-events:none;}
+
+/* A steady warm-white rim and broad gold halo mark the current turn. */
+.midnight-mode .seat-layer .sprite-seat.active:not(.targetable) .character {
+  filter:drop-shadow(0 0 3px #fff9de) drop-shadow(0 0 10px #ffd84d) drop-shadow(0 0 22px #ffad32b3)!important;
+}
+.midnight-mode .seat-layer .sprite-seat.active .seat-name {
+  color:#fff5cf;
+  text-shadow:0 0 7px #ffcf55,0 2px 4px #000;
+}
+.midnight-mode .seat-layer .sprite-seat.active .seat-name::before {
+  color:#fff9de;
+  text-shadow:0 0 5px #fff4b9,0 0 12px #ffbd20;
+}
