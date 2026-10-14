@@ -684,8 +684,9 @@ export class ObservatoryScene {
       }
       this.ring.receiveCard();
       const total=document.querySelector<HTMLElement>('.total-number');
-      if(total&&!total.closest('.busted')){
-        this.totalPulse?.cancel();
+      this.totalPulse?.cancel();
+      // Exactly 100 uses its stationary warning light instead of a size bounce.
+      if(total&&!this.reducedMotion&&!total.closest('.at100,.busted')){
         const color=this.flowColor();
         this.totalPulse=total.animate([
           {scale:'1',textShadow:`0 0 0 ${color}`},
