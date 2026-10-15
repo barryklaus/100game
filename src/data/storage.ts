@@ -10,6 +10,7 @@ export interface Settings {
   ambienceVolume: number;
   muted: boolean;
   reducedMotion: boolean;
+  parallaxEffect: boolean;
   uiScale: number;
   graphics: QualityPreset;
   difficulty: 'easy' | 'normal';
@@ -52,6 +53,7 @@ export function normalizeSettings(value: unknown): Settings {
     ambienceVolume: clamp(data.ambienceVolume, .3, 0, 1),
     muted: data.muted === true,
     reducedMotion: typeof data.reducedMotion === 'boolean' ? data.reducedMotion : typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches,
+    parallaxEffect: data.parallaxEffect === true,
     uiScale: clamp(data.uiScale, 1, .85, 1.2),
     graphics: normalizeQuality(data.graphics, defaultQuality()),
     difficulty: data.difficulty === 'easy' ? 'easy' : 'normal',

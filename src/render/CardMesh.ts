@@ -274,7 +274,7 @@ export function createCardMesh(front: THREE.Texture, back: THREE.Texture, specia
   const isSpecial = Boolean(faceInfo?.special ?? special);
   const midnight = faceInfo?.theme === 'midnight';
   // A back-only deck card uses its printed back without an extra foil frame.
-  if(front!==back||faceInfo){
+  if((front!==back||faceInfo)&&!front.userData?.parallaxFlat){
   const foil = new THREE.Mesh(midnight ? createCardArtworkFoilGeometry(front, isSpecial, height) : createCardFoilGeometry(front, height), cardFoilMaterial(isSpecial, faceInfo?.suit ?? 'sun', midnight));
   foil.name = midnight ? 'card-artwork-foil' : 'card-border-foil';
   foil.position.z = thickness / 2 + .00035;

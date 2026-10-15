@@ -1,15 +1,16 @@
 import type { Card } from './types';
 import { midnightCardPath } from './midnightDeck';
+import { parallaxEnabled, parallaxFlatPath } from '../ui/ParallaxHand';
 export { makeDeck, shuffle, cardDisplayRank } from './deckCore';
 
 export function cardImage(card: Card): string {
-  if (import.meta.env.MODE === '100next') return `${import.meta.env.BASE_URL}${midnightCardPath(card)}`;
+  if (import.meta.env.MODE === '100next') return `${import.meta.env.BASE_URL}${parallaxEnabled()?parallaxFlatPath(card):midnightCardPath(card)}`;
   return `${import.meta.env.BASE_URL}assets/cards/${card.suit}-${card.rank.toLowerCase()}.webp`;
 }
 
 /** Original lossless artwork is loaded only for the two visible mobile hand cards. */
 export function cardImageLossless(card: Card): string {
-  if (import.meta.env.MODE === '100next') return `${import.meta.env.BASE_URL}${midnightCardPath(card, true)}`;
+  if (import.meta.env.MODE === '100next') return `${import.meta.env.BASE_URL}${parallaxEnabled()?parallaxFlatPath(card):midnightCardPath(card, true)}`;
   return `${import.meta.env.BASE_URL}assets/cards/full/${card.suit}-${card.rank.toLowerCase()}.png`;
 }
 

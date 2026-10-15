@@ -1,0 +1,272 @@
+{
+  "version": "parallax-v1",
+  "width": 1064,
+  "height": 1486,
+  "encoding": "lossless WebP",
+  "cards": [
+    {
+      "key": "fire-10",
+      "background": "fire-10/background.webp",
+      "object": "fire-10/object.webp",
+      "flat": "flat/fire-10.webp"
+    },
+    {
+      "key": "fire-2",
+      "background": "fire-2/background.webp",
+      "object": "fire-2/object.webp",
+      "flat": "flat/fire-2.webp"
+    },
+    {
+      "key": "fire-3",
+      "background": "fire-3/background.webp",
+      "object": "fire-3/object.webp",
+      "flat": "flat/fire-3.webp"
+    },
+    {
+      "key": "fire-4",
+      "background": "fire-4/background.webp",
+      "object": "fire-4/object.webp",
+      "flat": "flat/fire-4.webp"
+    },
+    {
+      "key": "fire-5",
+      "background": "fire-5/background.webp",
+      "object": "fire-5/object.webp",
+      "flat": "flat/fire-5.webp"
+    },
+    {
+      "key": "fire-6",
+      "background": "fire-6/background.webp",
+      "object": "fire-6/object.webp",
+      "flat": "flat/fire-6.webp"
+    },
+    {
+      "key": "fire-7",
+      "background": "fire-7/background.webp",
+      "object": "fire-7/object.webp",
+      "flat": "flat/fire-7.webp"
+    },
+    {
+      "key": "fire-8",
+      "background": "fire-8/background.webp",
+      "object": "fire-8/object.webp",
+      "flat": "flat/fire-8.webp"
+    },
+    {
+      "key": "fire-9",
+      "background": "fire-9/background.webp",
+      "object": "fire-9/object.webp",
+      "flat": "flat/fire-9.webp"
+    },
+    {
+      "key": "fire-a",
+      "background": "fire-a/background.webp",
+      "object": "fire-a/object.webp",
+      "flat": "flat/fire-a.webp"
+    },
+    {
+      "key": "fire-k",
+      "background": "fire-k/background.webp",
+      "object": "fire-k/object.webp",
+      "flat": "flat/fire-k.webp"
+    },
+    {
+      "key": "leaf-10",
+      "background": "leaf-10/background.webp",
+      "object": "leaf-10/object.webp",
+      "flat": "flat/leaf-10.webp"
+    },
+    {
+      "key": "leaf-2",
+      "background": "leaf-2/background.webp",
+      "object": "leaf-2/object.webp",
+      "flat": "flat/leaf-2.webp"
+    },
+    {
+      "key": "leaf-3",
+      "background": "leaf-3/background.webp",
+      "object": "leaf-3/object.webp",
+      "flat": "flat/leaf-3.webp"
+    },
+    {
+      "key": "leaf-4",
+      "background": "leaf-4/background.webp",
+      "object": "leaf-4/object.webp",
+      "flat": "flat/leaf-4.webp"
+    },
+    {
+      "key": "leaf-5",
+      "background": "leaf-5/background.webp",
+      "object": "leaf-5/object.webp",
+      "flat": "flat/leaf-5.webp"
+    },
+    {
+      "key": "leaf-6",
+      "background": "leaf-6/background.webp",
+      "object": "leaf-6/object.webp",
+      "flat": "flat/leaf-6.webp"
+    },
+    {
+      "key": "leaf-7",
+      "background": "leaf-7/background.webp",
+      "object": "leaf-7/object.webp",
+      "flat": "flat/leaf-7.webp"
+    },
+    {
+      "key": "leaf-8",
+      "background": "leaf-8/background.webp",
+      "object": "leaf-8/object.webp",
+      "flat": "flat/leaf-8.webp"
+    },
+    {
+      "key": "leaf-9",
+      "background": "leaf-9/background.webp",
+      "object": "leaf-9/object.webp",
+      "flat": "flat/leaf-9.webp"
+    },
+    {
+      "key": "leaf-a",
+      "background": "leaf-a/background.webp",
+      "object": "leaf-a/object.webp",
+      "flat": "flat/leaf-a.webp"
+    },
+    {
+      "key": "leaf-k",
+      "background": "leaf-k/background.webp",
+      "object": "leaf-k/object.webp",
+      "flat": "flat/leaf-k.webp"
+    },
+    {
+      "key": "sun-10",
+      "background": "sun-10/background.webp",
+      "object": "sun-10/object.webp",
+      "flat": "flat/sun-10.webp"
+    },
+    {
+      "key": "sun-2",
+      "background": "sun-2/background.webp",
+      "object": "sun-2/object.webp",
+      "flat": "flat/sun-2.webp"
+    },
+    {
+      "key": "sun-3",
+      "background": "sun-3/background.webp",
+      "object": "sun-3/object.webp",
+      "flat": "flat/sun-3.webp"
+    },
+    {
+      "key": "sun-4",
+      "background": "sun-4/background.webp",
+      "object": "sun-4/object.webp",
+      "flat": "flat/sun-4.webp"
+    },
+    {
+      "key": "sun-5",
+      "background": "sun-5/background.webp",
+      "object": "sun-5/object.webp",
+      "flat": "flat/sun-5.webp"
+    },
+    {
+      "key": "sun-6",
+      "background": "sun-6/background.webp",
+      "object": "sun-6/object.webp",
+      "flat": "flat/sun-6.webp"
+    },
+    {
+      "key": "sun-7",
+      "background": "sun-7/background.webp",
+      "object": "sun-7/object.webp",
+      "flat": "flat/sun-7.webp"
+    },
+    {
+      "key": "sun-8",
+      "background": "sun-8/background.webp",
+      "object": "sun-8/object.webp",
+      "flat": "flat/sun-8.webp"
+    },
+    {
+      "key": "sun-9",
+      "background": "sun-9/background.webp",
+      "object": "sun-9/object.webp",
+      "flat": "flat/sun-9.webp"
+    },
+    {
+      "key": "sun-a",
+      "background": "sun-a/background.webp",
+      "object": "sun-a/object.webp",
+      "flat": "flat/sun-a.webp"
+    },
+    {
+      "key": "sun-k",
+      "background": "sun-k/background.webp",
+      "object": "sun-k/object.webp",
+      "flat": "flat/sun-k.webp"
+    },
+    {
+      "key": "water-10",
+      "background": "water-10/background.webp",
+      "object": "water-10/object.webp",
+      "flat": "flat/water-10.webp"
+    },
+    {
+      "key": "water-2",
+      "background": "water-2/background.webp",
+      "object": "water-2/object.webp",
+      "flat": "flat/water-2.webp"
+    },
+    {
+      "key": "water-3",
+      "background": "water-3/background.webp",
+      "object": "water-3/object.webp",
+      "flat": "flat/water-3.webp"
+    },
+    {
+      "key": "water-4",
+      "background": "water-4/background.webp",
+      "object": "water-4/object.webp",
+      "flat": "flat/water-4.webp"
+    },
+    {
+      "key": "water-5",
+      "background": "water-5/background.webp",
+      "object": "water-5/object.webp",
+      "flat": "flat/water-5.webp"
+    },
+    {
+      "key": "water-6",
+      "background": "water-6/background.webp",
+      "object": "water-6/object.webp",
+      "flat": "flat/water-6.webp"
+    },
+    {
+      "key": "water-7",
+      "background": "water-7/background.webp",
+      "object": "water-7/object.webp",
+      "flat": "flat/water-7.webp"
+    },
+    {
+      "key": "water-8",
+      "background": "water-8/background.webp",
+      "object": "water-8/object.webp",
+      "flat": "flat/water-8.webp"
+    },
+    {
+      "key": "water-9",
+      "background": "water-9/background.webp",
+      "object": "water-9/object.webp",
+      "flat": "flat/water-9.webp"
+    },
+    {
+      "key": "water-a",
+      "background": "water-a/background.webp",
+      "object": "water-a/object.webp",
+      "flat": "flat/water-a.webp"
+    },
+    {
+      "key": "water-k",
+      "background": "water-k/background.webp",
+      "object": "water-k/object.webp",
+      "flat": "flat/water-k.webp"
+    }
+  ]
+}

@@ -66,7 +66,7 @@ function lines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): s
 }
 
 /** Print fixed card information once. Moving artwork light is a separate mesh. */
-export async function cardFaceTexture(source: THREE.Texture, face: CardFace,maximum=Infinity): Promise<THREE.CanvasTexture> {
+export async function cardFaceTexture(source: THREE.Texture, face: CardFace,maximum=Infinity,printOnly=false): Promise<THREE.CanvasTexture> {
   const [, frame] = await Promise.all([loadFaceFont(), cardFrameImage(face.suit)]);
   const image = source.image as CanvasImageSource & { width: number; height: number };
   const {width,height}=cardTextureDimensions(image.width||1064,image.height||1478,maximum);
@@ -74,7 +74,7 @@ export async function cardFaceTexture(source: THREE.Texture, face: CardFace,maxi
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
-  const ctx = canvas.getContext('2d', { alpha: false })!;
+  const ctx = canvas.getContext('2d', { alpha: printOnly })!;
   const outerRadius = width * .055;
   rounded(ctx, 0, 0, width, height, outerRadius);
   ctx.clip();
@@ -91,7 +91,8 @@ export async function cardFaceTexture(source: THREE.Texture, face: CardFace,maxi
   ctx.save();
   rounded(ctx, edge, edge, width - edge * 2, height - edge * 2, outerRadius * .56);
   ctx.clip();
-  ctx.drawImage(image, edge, edge, width - edge * 2, height - edge * 2);
+  if(printOnly)ctx.clearRect(edge,edge,width-edge*2,height-edge*2);
+  else ctx.drawImage(image, edge, edge, width - edge * 2, height - edge * 2);
   ctx.restore();
 
   const titleBand = face.special ? height * .185 : 0;

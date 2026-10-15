@@ -4,7 +4,7 @@ import { separatedHandDepths } from './HandDepth';
 import { prefersLosslessHand } from '../game/deck';
 import { screenRect } from '../ui/ScreenShake';
 
-type HandObject = { id: string; element: HTMLElement; slot: number; mesh?: THREE.Group; highlight?:THREE.Mesh; loading: boolean; rotation: THREE.Euler; };
+type HandObject = { id: string; source:string; element: HTMLElement; slot: number; mesh?: THREE.Group; highlight?:THREE.Mesh; loading: boolean; rotation: THREE.Euler; };
 
 /** DOM targets keep native accessibility; their actual visible cards share the room's lights. */
 export class PhysicalHand {
@@ -21,9 +21,9 @@ export class PhysicalHand {
     addEventListener('resize', this.onResize, { passive: true });
     this.sync();
   }
-  configure(reducedMotion: boolean): void { this.reducedMotion = reducedMotion; }
+  configure(reducedMotion: boolean): void { this.reducedMotion = reducedMotion;this.onResize(); }
   private onResize = (): void => {
-    const crispMobile = prefersLosslessHand();
+    const crispMobile = prefersLosslessHand()||document.documentElement.classList.contains('parallax-effect-on');
     if (crispMobile === this.crispMobile) return;
     this.crispMobile = crispMobile;
     document.documentElement.classList.toggle('crisp-mobile-hand', crispMobile);
@@ -53,11 +53,13 @@ export class PhysicalHand {
       const image = element.querySelector<HTMLImageElement>('img');
       if (image?.dataset.standardSrc && image.getAttribute('src') !== image.dataset.standardSrc) image.src = image.dataset.standardSrc;
       const id = element.dataset.card!;
+      const front = image?.src;
       const existing = this.cards.get(id);
-      if (existing) { existing.element = element; existing.slot = slot; if(existing.mesh) element.classList.add('mesh-ready'); continue; }
-      const item: HandObject = {id,element,slot,loading:true,rotation:new THREE.Euler()};
+      if (existing&&existing.source===front) { existing.element = element; existing.slot = slot; if(existing.mesh) element.classList.add('mesh-ready'); continue; }
+      if(existing?.mesh){this.scene.remove(existing.mesh);disposeCardMesh(existing.mesh);}
+      element.classList.remove('mesh-ready');
+      const item: HandObject = {id,source:front??'',element,slot,loading:true,rotation:new THREE.Euler()};
       this.cards.set(id,item);
-      const front = element.querySelector<HTMLImageElement>('img')?.src;
       const back = document.querySelector<HTMLImageElement>('.draw-stack img')?.src;
       if (!front || !back) continue;
       void Promise.all([this.loadTexture(front),this.loadTexture(back)]).then(([face,reverse]) => {

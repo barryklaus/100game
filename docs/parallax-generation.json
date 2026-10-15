@@ -1,0 +1,528 @@
+{
+  "tool": "Built-in imagegen",
+  "source_artwork": "public/assets/cards/midnight-v1/full/<key>.png",
+  "records": [
+    {
+      "key": "fire-a",
+      "layer": "background",
+      "subject": "the single upright red hot-sauce bottle",
+      "prompt": "Use case: precise-object-edit. Asset type: clean background layer of the existing 100next fire-a playing card for parallax. Image 1 is the edit target. Remove ONLY the single upright red hot-sauce bottle, including any attached shadows and reflections of those removed objects. Reconstruct a continuous, naturally empty underlying tabletop/counter, lounge seating or ocean surface where the foreground stood. Preserve the original full-bleed portrait framing, camera, room or ocean scenery, palette, bold cartoon line art, lighting, and all unrelated background details. No replacement foreground subject, no extra objects, no text or card border. Output ONE opaque clean background, same portrait composition as Image 1."
+    },
+    {
+      "key": "fire-2",
+      "layer": "background",
+      "subject": "both hanging red oven mitts with their hanging loops",
+      "prompt": "Use case: precise-object-edit. Asset type: clean background layer of the existing 100next fire-2 playing card for parallax. Image 1 is the edit target. Remove ONLY both hanging red oven mitts with their hanging loops, including any attached shadows and reflections of those removed objects. Reconstruct a continuous, naturally empty underlying tabletop/counter, lounge seating or ocean surface where the foreground stood. Preserve the original full-bleed portrait framing, camera, room or ocean scenery, palette, bold cartoon line art, lighting, and all unrelated background details. No replacement foreground subject, no extra objects, no text or card border. Output ONE opaque clean background, same portrait composition as Image 1."
+    },
+    {
+      "key": "fire-2",
+      "layer": "object",
+      "subject": "both hanging red oven mitts with their hanging loops",
+      "prompt": "Use case: background-extraction. Asset type: foreground alpha layer of the existing 100next fire-2 card for parallax. Image 1 is the edit target. Isolate ONLY both hanging red oven mitts with their hanging loops. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep all original shapes, colors, ink outlines and details. Remove every unrelated room, table, ocean, chair, scenery, background object, cast shadow and reflected duplicate. Everything outside the specified foreground silhouette must be true alpha transparency; transparent top, bottom and side padding must match the original canvas. No background color, no baked checkerboard, no crop to subject bounds, no extra objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "fire-a",
+      "layer": "object",
+      "subject": "the single upright red hot-sauce bottle",
+      "prompt": "Use case: background-extraction. Asset type: foreground alpha layer of the existing 100next fire-a card for parallax. Image 1 is the edit target. Isolate ONLY the single upright red hot-sauce bottle. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep all original shapes, colors, ink outlines and details. Remove every unrelated room, table, ocean, chair, scenery, background object, cast shadow and reflected duplicate. Everything outside the specified foreground silhouette must be true alpha transparency; transparent top, bottom and side padding must match the original canvas. No background color, no baked checkerboard, no crop to subject bounds, no extra objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "fire-4",
+      "layer": "background",
+      "subject": "all four foreground red chili peppers with their green stems",
+      "prompt": "Use case: precise-object-edit. Asset type: clean background layer of the existing 100next fire-4 playing card for parallax. Image 1 is the edit target. Remove ONLY all four foreground red chili peppers with their green stems, including any attached shadows and reflections of those removed objects. Reconstruct a continuous, naturally empty underlying tabletop/counter, lounge seating or ocean surface where the foreground stood. Preserve the original full-bleed portrait framing, camera, room or ocean scenery, palette, bold cartoon line art, lighting, and all unrelated background details. No replacement foreground subject, no extra objects, no text or card border. Output ONE opaque clean background, same portrait composition as Image 1."
+    },
+    {
+      "key": "fire-3",
+      "layer": "background",
+      "subject": "all three red chili jars with their gold lids",
+      "prompt": "Use case: precise-object-edit. Asset type: clean background layer of the existing 100next fire-3 playing card for parallax. Image 1 is the edit target. Remove ONLY all three red chili jars with their gold lids, including any attached shadows and reflections of those removed objects. Reconstruct a continuous, naturally empty underlying tabletop/counter, lounge seating or ocean surface where the foreground stood. Preserve the original full-bleed portrait framing, camera, room or ocean scenery, palette, bold cartoon line art, lighting, and all unrelated background details. No replacement foreground subject, no extra objects, no text or card border. Output ONE opaque clean background, same portrait composition as Image 1."
+    },
+    {
+      "key": "fire-3",
+      "layer": "object",
+      "subject": "all three red chili jars with their gold lids",
+      "prompt": "Use case: background-extraction. Asset type: foreground alpha layer of the existing 100next fire-3 card for parallax. Image 1 is the edit target. Isolate ONLY all three red chili jars with their gold lids. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep all original shapes, colors, ink outlines and details. Remove every unrelated room, table, ocean, chair, scenery, background object, cast shadow and reflected duplicate. Everything outside the specified foreground silhouette must be true alpha transparency; transparent top, bottom and side padding must match the original canvas. No background color, no baked checkerboard, no crop to subject bounds, no extra objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "fire-4",
+      "layer": "object",
+      "subject": "all four foreground red chili peppers with their green stems",
+      "prompt": "Use case: background-extraction. Asset type: foreground alpha layer of the existing 100next fire-4 card for parallax. Image 1 is the edit target. Isolate ONLY all four foreground red chili peppers with their green stems. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep all original shapes, colors, ink outlines and details. Remove every unrelated room, table, ocean, chair, scenery, background object, cast shadow and reflected duplicate. Everything outside the specified foreground silhouette must be true alpha transparency; transparent top, bottom and side padding must match the original canvas. No background color, no baked checkerboard, no crop to subject bounds, no extra objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "fire-5",
+      "layer": "object",
+      "subject": "all five red candles, their flames and their gold candle bases",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next fire-5 card edit target. Create its parallax object layer: isolate ONLY all five red candles, their flames and their gold candle bases. Preserve EXACT counts, arrangement, scale and original positions within the SAME full portrait canvas. Keep original shapes, colors, outlines and details. Remove all unrelated room/table/ocean/scenery, shadows and reflections. Every pixel outside the specified foreground silhouette must be actual alpha transparency, with generous original top/bottom/side padding. No solid backdrop, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground."
+    },
+    {
+      "key": "fire-5",
+      "layer": "background",
+      "subject": "all five red candles, their flames and their gold candle bases",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next fire-5 card edit target. Create its parallax background layer: remove ONLY all five red candles, their flames and their gold candle bases, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop/counter, lounge seating or ocean surface continuously. Preserve the original full-bleed portrait framing, camera, cartoon ink outlines, scenery, lighting, palette and all unrelated objects. No replacement foreground subject, text, border or holo. Output ONE opaque clean background at the same portrait framing."
+    },
+    {
+      "key": "fire-6",
+      "layer": "background",
+      "subject": "all six red chili tins",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next fire-6 card edit target. Create its parallax background layer: remove ONLY all six red chili tins, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop/counter, lounge seating or ocean surface continuously. Preserve the original full-bleed portrait framing, camera, cartoon ink outlines, scenery, lighting, palette and all unrelated objects. No replacement foreground subject, text, border or holo. Output ONE opaque clean background at the same portrait framing."
+    },
+    {
+      "key": "fire-6",
+      "layer": "object",
+      "subject": "all six red chili tins",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next fire-6 card edit target. Create its parallax object layer: isolate ONLY all six red chili tins. Preserve EXACT counts, arrangement, scale and original positions within the SAME full portrait canvas. Keep original shapes, colors, outlines and details. Remove all unrelated room/table/ocean/scenery, shadows and reflections. Every pixel outside the specified foreground silhouette must be actual alpha transparency, with generous original top/bottom/side padding. No solid backdrop, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground."
+    },
+    {
+      "key": "fire-7",
+      "layer": "object",
+      "subject": "the complete large gold-and-red downward pointer, its light cone, all three colored pawn figures and their small gold pawn bases",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next fire-7 card edit target. Create its parallax object layer: isolate ONLY the complete large gold-and-red downward pointer, its light cone, all three colored pawn figures and their small gold pawn bases. Preserve EXACT counts, arrangement, scale and original positions within the SAME full portrait canvas. Keep original shapes, colors, outlines and details. Remove all unrelated room/table/ocean/scenery, shadows and reflections. Every pixel outside the specified foreground silhouette must be actual alpha transparency, with generous original top/bottom/side padding. No solid backdrop, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground."
+    },
+    {
+      "key": "fire-8",
+      "layer": "background",
+      "subject": "the entire red flaming reverse arrows and the central record player, turntable and gold supporting tray",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next fire-8 card edit target. Create its parallax background layer: remove ONLY the entire red flaming reverse arrows and the central record player, turntable and gold supporting tray, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop/counter, lounge seating or ocean surface continuously. Preserve the original full-bleed portrait framing, camera, cartoon ink outlines, scenery, lighting, palette and all unrelated objects. No replacement foreground subject, text, border or holo. Output ONE opaque clean background at the same portrait framing."
+    },
+    {
+      "key": "fire-7",
+      "layer": "background",
+      "subject": "the complete large gold-and-red downward pointer, its light cone, all three colored pawn figures and their small gold pawn bases",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next fire-7 card edit target. Create its parallax background layer: remove ONLY the complete large gold-and-red downward pointer, its light cone, all three colored pawn figures and their small gold pawn bases, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop/counter, lounge seating or ocean surface continuously. Preserve the original full-bleed portrait framing, camera, cartoon ink outlines, scenery, lighting, palette and all unrelated objects. No replacement foreground subject, text, border or holo. Output ONE opaque clean background at the same portrait framing."
+    },
+    {
+      "key": "fire-8",
+      "layer": "object",
+      "subject": "the entire red flaming reverse arrows and the central record player, turntable and gold supporting tray",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next fire-8 card edit target. Create its parallax object layer: isolate ONLY the entire red flaming reverse arrows and the central record player, turntable and gold supporting tray. Preserve EXACT counts, arrangement, scale and original positions within the SAME full portrait canvas. Keep original shapes, colors, outlines and details. Remove all unrelated room/table/ocean/scenery, shadows and reflections. Every pixel outside the specified foreground silhouette must be actual alpha transparency, with generous original top/bottom/side padding. No solid backdrop, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground."
+    },
+    {
+      "key": "fire-9",
+      "layer": "background",
+      "subject": "the entire large gold zero medallion, flame ornaments, red velvet cushion and gold pedestal",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next fire-9 card edit target. Make a clean parallax background: remove ONLY the entire large gold zero medallion, flame ornaments, red velvet cushion and gold pedestal, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "water-2",
+      "layer": "background",
+      "subject": "both blue soda bottles with their silver caps",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next water-2 card edit target. Make a clean parallax background: remove ONLY both blue soda bottles with their silver caps, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "water-2",
+      "layer": "object",
+      "subject": "both blue soda bottles with their silver caps",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next water-2 card edit target. Make its alpha parallax foreground: isolate ONLY both blue soda bottles with their silver caps. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "fire-9",
+      "layer": "object",
+      "subject": "the entire large gold zero medallion, flame ornaments, red velvet cushion and gold pedestal",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next fire-9 card edit target. Make its alpha parallax foreground: isolate ONLY the entire large gold zero medallion, flame ornaments, red velvet cushion and gold pedestal. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "fire-10",
+      "layer": "background",
+      "subject": "the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and decorative leaves or flames directly attached to the central object",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next fire-10 card edit target. Make a clean parallax background: remove ONLY the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and decorative leaves or flames directly attached to the central object, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "fire-10",
+      "layer": "object",
+      "subject": "the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and decorative leaves or flames directly attached to the central object",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next fire-10 card edit target. Make its alpha parallax foreground: isolate ONLY the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and decorative leaves or flames directly attached to the central object. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "water-3",
+      "layer": "object",
+      "subject": "all three ice penguins and their rectangular transparent ice display base",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next water-3 card edit target. Make its alpha parallax foreground: isolate ONLY all three ice penguins and their rectangular transparent ice display base. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "water-4",
+      "layer": "object",
+      "subject": "all four icebergs, with their waterline edges",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next water-4 card edit target. Make its alpha parallax foreground: isolate ONLY all four icebergs, with their waterline edges. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "fire-k",
+      "layer": "background",
+      "subject": "the complete gold tray containing exactly ten lit matchsticks, all matchsticks and flames",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next fire-k card edit target. Make a clean parallax background: remove ONLY the complete gold tray containing exactly ten lit matchsticks, all matchsticks and flames, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "water-3",
+      "layer": "background",
+      "subject": "all three ice penguins and their rectangular transparent ice display base",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next water-3 card edit target. Make a clean parallax background: remove ONLY all three ice penguins and their rectangular transparent ice display base, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "water-5",
+      "layer": "background",
+      "subject": "all five tall lime-and-mint drinks, glasses, ice, lime slices and mint garnish",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next water-5 card edit target. Make a clean parallax background: remove ONLY all five tall lime-and-mint drinks, glasses, ice, lime slices and mint garnish, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "water-4",
+      "layer": "background",
+      "subject": "all four icebergs, with their waterline edges",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next water-4 card edit target. Make a clean parallax background: remove ONLY all four icebergs, with their waterline edges, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "fire-k",
+      "layer": "object",
+      "subject": "the complete gold tray containing exactly ten lit matchsticks, all matchsticks and flames",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next fire-k card edit target. Make its alpha parallax foreground: isolate ONLY the complete gold tray containing exactly ten lit matchsticks, all matchsticks and flames. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "water-6",
+      "layer": "background",
+      "subject": "all six large blue ice cubes",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next water-6 card edit target. Make a clean parallax background: remove ONLY all six large blue ice cubes, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "water-7",
+      "layer": "background",
+      "subject": "the complete large gold-and-blue downward pointer, water decorations, light cone, all three colored pawn figures and their small gold pawn bases",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next water-7 card edit target. Make a clean parallax background: remove ONLY the complete large gold-and-blue downward pointer, water decorations, light cone, all three colored pawn figures and their small gold pawn bases, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "water-6",
+      "layer": "object",
+      "subject": "all six large blue ice cubes",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next water-6 card edit target. Make its alpha parallax foreground: isolate ONLY all six large blue ice cubes. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "water-8",
+      "layer": "background",
+      "subject": "the entire blue water reverse arrows and the central record player, turntable and gold supporting tray",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next water-8 card edit target. Make a clean parallax background: remove ONLY the entire blue water reverse arrows and the central record player, turntable and gold supporting tray, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "water-5",
+      "layer": "object",
+      "subject": "all five tall lime-and-mint drinks, glasses, ice, lime slices and mint garnish",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next water-5 card edit target. Make its alpha parallax foreground: isolate ONLY all five tall lime-and-mint drinks, glasses, ice, lime slices and mint garnish. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "water-a",
+      "layer": "background",
+      "subject": "the single central iceberg only, with its waterline edge",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next water-a card edit target. Make a clean parallax background: remove ONLY the single central iceberg only, with its waterline edge, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "water-7",
+      "layer": "object",
+      "subject": "the complete large gold-and-blue downward pointer, water decorations, light cone, all three colored pawn figures and their small gold pawn bases",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next water-7 card edit target. Make its alpha parallax foreground: isolate ONLY the complete large gold-and-blue downward pointer, water decorations, light cone, all three colored pawn figures and their small gold pawn bases. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "water-9",
+      "layer": "background",
+      "subject": "the entire large gold zero medallion, blue water ornaments, blue velvet cushion and gold pedestal",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next water-9 card edit target. Make a clean parallax background: remove ONLY the entire large gold zero medallion, blue water ornaments, blue velvet cushion and gold pedestal, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "water-a",
+      "layer": "object",
+      "subject": "the single central iceberg only, with its waterline edge",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next water-a card edit target. Make its alpha parallax foreground: isolate ONLY the single central iceberg only, with its waterline edge. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "water-8",
+      "layer": "object",
+      "subject": "the entire blue water reverse arrows and the central record player, turntable and gold supporting tray",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next water-8 card edit target. Make its alpha parallax foreground: isolate ONLY the entire blue water reverse arrows and the central record player, turntable and gold supporting tray. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "water-10",
+      "layer": "object",
+      "subject": "the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and water ornaments directly attached to the central object",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next water-10 card edit target. Make its alpha parallax foreground: isolate ONLY the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and water ornaments directly attached to the central object. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "leaf-2",
+      "layer": "object",
+      "subject": "both central pears, their stems and attached leaves",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next leaf-2 card edit target. Make its alpha parallax foreground: isolate ONLY both central pears, their stems and attached leaves. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "leaf-a",
+      "layer": "background",
+      "subject": "the central large monstera plant, every attached leaf and its teal pot",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next leaf-a card edit target. Make a clean parallax background: remove ONLY the central large monstera plant, every attached leaf and its teal pot, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "water-k",
+      "layer": "object",
+      "subject": "the complete gold tray containing exactly ten blue ice cubes and all ten cubes",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next water-k card edit target. Make its alpha parallax foreground: isolate ONLY the complete gold tray containing exactly ten blue ice cubes and all ten cubes. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "water-9",
+      "layer": "object",
+      "subject": "the entire large gold zero medallion, blue water ornaments, blue velvet cushion and gold pedestal",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next water-9 card edit target. Make its alpha parallax foreground: isolate ONLY the entire large gold zero medallion, blue water ornaments, blue velvet cushion and gold pedestal. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "water-k",
+      "layer": "background",
+      "subject": "the complete gold tray containing exactly ten blue ice cubes and all ten cubes",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next water-k card edit target. Make a clean parallax background: remove ONLY the complete gold tray containing exactly ten blue ice cubes and all ten cubes, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "water-10",
+      "layer": "background",
+      "subject": "the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and water ornaments directly attached to the central object",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next water-10 card edit target. Make a clean parallax background: remove ONLY the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and water ornaments directly attached to the central object, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "leaf-a",
+      "layer": "object",
+      "subject": "the central large monstera plant, every attached leaf and its teal pot",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next leaf-a card edit target. Make its alpha parallax foreground: isolate ONLY the central large monstera plant, every attached leaf and its teal pot. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "leaf-2",
+      "layer": "background",
+      "subject": "both central pears, their stems and attached leaves",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next leaf-2 card edit target. Make a clean parallax background: remove ONLY both central pears, their stems and attached leaves, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "leaf-3",
+      "layer": "background",
+      "subject": "all three foreground cacti with their flowers and terracotta pots",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next leaf-3 card edit target. Make a clean parallax background: remove ONLY all three foreground cacti with their flowers and terracotta pots, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "leaf-4",
+      "layer": "background",
+      "subject": "all four foreground potted plants, every leaf and each of the four pots",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next leaf-4 card edit target. Make a clean parallax background: remove ONLY all four foreground potted plants, every leaf and each of the four pots, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "leaf-7",
+      "layer": "object",
+      "subject": "the complete large gold-and-green downward pointer, attached leaf decorations, light cone, all three colored pawn figures and their small gold pawn bases",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next leaf-7 card edit target. Make its alpha parallax foreground: isolate ONLY the complete large gold-and-green downward pointer, attached leaf decorations, light cone, all three colored pawn figures and their small gold pawn bases. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "leaf-8",
+      "layer": "background",
+      "subject": "the entire green leaf reverse arrows and the central record player, turntable and gold supporting tray",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next leaf-8 card edit target. Make a clean parallax background: remove ONLY the entire green leaf reverse arrows and the central record player, turntable and gold supporting tray, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "leaf-4",
+      "layer": "object",
+      "subject": "all four foreground potted plants, every leaf and each of the four pots",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next leaf-4 card edit target. Make its alpha parallax foreground: isolate ONLY all four foreground potted plants, every leaf and each of the four pots. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "leaf-3",
+      "layer": "object",
+      "subject": "all three foreground cacti with their flowers and terracotta pots",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next leaf-3 card edit target. Make its alpha parallax foreground: isolate ONLY all three foreground cacti with their flowers and terracotta pots. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "leaf-5",
+      "layer": "background",
+      "subject": "all five foreground avocados",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next leaf-5 card edit target. Make a clean parallax background: remove ONLY all five foreground avocados, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "leaf-8",
+      "layer": "object",
+      "subject": "the entire green leaf reverse arrows and the central record player, turntable and gold supporting tray",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next leaf-8 card edit target. Make its alpha parallax foreground: isolate ONLY the entire green leaf reverse arrows and the central record player, turntable and gold supporting tray. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "leaf-5",
+      "layer": "object",
+      "subject": "all five foreground avocados",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next leaf-5 card edit target. Make its alpha parallax foreground: isolate ONLY all five foreground avocados. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "leaf-9",
+      "layer": "background",
+      "subject": "the entire large gold zero medallion, green leaf ornaments, green velvet cushion and gold pedestal",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next leaf-9 card edit target. Make a clean parallax background: remove ONLY the entire large gold zero medallion, green leaf ornaments, green velvet cushion and gold pedestal, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "leaf-9",
+      "layer": "object",
+      "subject": "the entire large gold zero medallion, green leaf ornaments, green velvet cushion and gold pedestal",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next leaf-9 card edit target. Make its alpha parallax foreground: isolate ONLY the entire large gold zero medallion, green leaf ornaments, green velvet cushion and gold pedestal. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "leaf-7",
+      "layer": "background",
+      "subject": "the complete large gold-and-green downward pointer, attached leaf decorations, light cone, all three colored pawn figures and their small gold pawn bases",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next leaf-7 card edit target. Make a clean parallax background: remove ONLY the complete large gold-and-green downward pointer, attached leaf decorations, light cone, all three colored pawn figures and their small gold pawn bases, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "sun-2",
+      "layer": "background",
+      "subject": "both foreground spiral butter cookies and the entire white-and-gold plate",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next sun-2 card edit target. Make a clean parallax background: remove ONLY both foreground spiral butter cookies and the entire white-and-gold plate, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "leaf-10",
+      "layer": "background",
+      "subject": "the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and leaf ornaments directly attached to the central object",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next leaf-10 card edit target. Make a clean parallax background: remove ONLY the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and leaf ornaments directly attached to the central object, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "leaf-10",
+      "layer": "object",
+      "subject": "the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and leaf ornaments directly attached to the central object",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next leaf-10 card edit target. Make its alpha parallax foreground: isolate ONLY the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and leaf ornaments directly attached to the central object. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "leaf-k",
+      "layer": "object",
+      "subject": "the complete gold tray containing exactly ten stuffed green olives and all ten olives",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next leaf-k card edit target. Make its alpha parallax foreground: isolate ONLY the complete gold tray containing exactly ten stuffed green olives and all ten olives. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "leaf-6",
+      "layer": "object",
+      "subject": "all six limes and the entire gold serving tray",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next leaf-6 card edit target. Make its alpha parallax foreground: isolate ONLY all six limes and the entire gold serving tray. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "leaf-6",
+      "layer": "background",
+      "subject": "all six limes and the entire gold serving tray",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next leaf-6 card edit target. Make a clean parallax background: remove ONLY all six limes and the entire gold serving tray, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "sun-3",
+      "layer": "background",
+      "subject": "all three cupcakes, their orange garnish and complete gold three-tier serving stand",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next sun-3 card edit target. Make a clean parallax background: remove ONLY all three cupcakes, their orange garnish and complete gold three-tier serving stand, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "sun-6",
+      "layer": "background",
+      "subject": "all six croissants and the entire gold serving tray",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next sun-6 card edit target. Make a clean parallax background: remove ONLY all six croissants and the entire gold serving tray, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "sun-3",
+      "layer": "object",
+      "subject": "all three cupcakes, their orange garnish and complete gold three-tier serving stand",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next sun-3 card edit target. Make its alpha parallax foreground: isolate ONLY all three cupcakes, their orange garnish and complete gold three-tier serving stand. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "sun-4",
+      "layer": "background",
+      "subject": "all four cake slices, their fruit garnish and all four gold serving plates and stands",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next sun-4 card edit target. Make a clean parallax background: remove ONLY all four cake slices, their fruit garnish and all four gold serving plates and stands, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "sun-6",
+      "layer": "object",
+      "subject": "all six croissants and the entire gold serving tray",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next sun-6 card edit target. Make its alpha parallax foreground: isolate ONLY all six croissants and the entire gold serving tray. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "sun-7",
+      "layer": "background",
+      "subject": "the complete large gold sun downward pointer, light cone, all three colored pawn figures and their small gold pawn bases",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next sun-7 card edit target. Make a clean parallax background: remove ONLY the complete large gold sun downward pointer, light cone, all three colored pawn figures and their small gold pawn bases, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "sun-7",
+      "layer": "object",
+      "subject": "the complete large gold sun downward pointer, light cone, all three colored pawn figures and their small gold pawn bases",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next sun-7 card edit target. Make its alpha parallax foreground: isolate ONLY the complete large gold sun downward pointer, light cone, all three colored pawn figures and their small gold pawn bases. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "sun-4",
+      "layer": "object",
+      "subject": "all four cake slices, their fruit garnish and all four gold serving plates and stands",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next sun-4 card edit target. Make its alpha parallax foreground: isolate ONLY all four cake slices, their fruit garnish and all four gold serving plates and stands. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "sun-9",
+      "layer": "background",
+      "subject": "the entire large gold zero medallion, gold sun ornaments, red velvet cushion and gold pedestal",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next sun-9 card edit target. Make a clean parallax background: remove ONLY the entire large gold zero medallion, gold sun ornaments, red velvet cushion and gold pedestal, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "leaf-k",
+      "layer": "background",
+      "subject": "the complete gold tray containing exactly ten stuffed green olives and all ten olives",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next leaf-k card edit target. Make a clean parallax background: remove ONLY the complete gold tray containing exactly ten stuffed green olives and all ten olives, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "sun-9",
+      "layer": "object",
+      "subject": "the entire large gold zero medallion, gold sun ornaments, red velvet cushion and gold pedestal",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next sun-9 card edit target. Make its alpha parallax foreground: isolate ONLY the entire large gold zero medallion, gold sun ornaments, red velvet cushion and gold pedestal. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "sun-5",
+      "layer": "object",
+      "subject": "all five glazed donuts and their complete gold serving stand",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next sun-5 card edit target. Make its alpha parallax foreground: isolate ONLY all five glazed donuts and their complete gold serving stand. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "sun-2",
+      "layer": "object",
+      "subject": "both foreground spiral butter cookies and the entire white-and-gold plate",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next sun-2 card edit target. Make its alpha parallax foreground: isolate ONLY both foreground spiral butter cookies and the entire white-and-gold plate. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "sun-5",
+      "layer": "background",
+      "subject": "all five glazed donuts and their complete gold serving stand",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next sun-5 card edit target. Make a clean parallax background: remove ONLY all five glazed donuts and their complete gold serving stand, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "sun-k",
+      "layer": "object",
+      "subject": "all ten small lemon cupcakes, their lemon garnish and the entire gold serving stand",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next sun-k card edit target. Make its alpha parallax foreground: isolate ONLY all ten small lemon cupcakes, their lemon garnish and the entire gold serving stand. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "sun-10",
+      "layer": "background",
+      "subject": "the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and attached sun ornaments",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next sun-10 card edit target. Make a clean parallax background: remove ONLY the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and attached sun ornaments, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "sun-8",
+      "layer": "object",
+      "subject": "the entire golden reverse arrows and the central record player, turntable and gold supporting tray",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next sun-8 card edit target. Make its alpha parallax foreground: isolate ONLY the entire golden reverse arrows and the central record player, turntable and gold supporting tray. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "sun-k",
+      "layer": "background",
+      "subject": "all ten small lemon cupcakes, their lemon garnish and the entire gold serving stand",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next sun-k card edit target. Make a clean parallax background: remove ONLY all ten small lemon cupcakes, their lemon garnish and the entire gold serving stand, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "sun-10",
+      "layer": "object",
+      "subject": "the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and attached sun ornaments",
+      "prompt": "Use case: background-extraction. Image 1 is the existing 100next sun-10 card edit target. Make its alpha parallax foreground: isolate ONLY the complete minus-ten medallion, downward arrow, open gold cash drawer, spilled coins and attached sun ornaments. Preserve the EXACT count, arrangement, original scale and positions within the SAME FULL portrait canvas. Keep original shapes, colors, lighting, ink outlines and details. Remove unrelated room/table/ocean/scenery, background objects, cast shadows and reflected duplicates. Everything outside the specified foreground silhouette must be true alpha transparency. Keep the original empty top, bottom and side padding. No colored background, no checkerboard pixels, no crop to object bounds, no added objects, no labels or border. Output ONE transparent foreground image."
+    },
+    {
+      "key": "sun-8",
+      "layer": "background",
+      "subject": "the entire golden reverse arrows and the central record player, turntable and gold supporting tray",
+      "prompt": "Use case: precise-object-edit. Image 1 is the existing 100next sun-8 card edit target. Make a clean parallax background: remove ONLY the entire golden reverse arrows and the central record player, turntable and gold supporting tray, including their cast shadows and reflected duplicates. Reconstruct the empty underlying tabletop, counter, room furnishings or ocean water naturally and continuously. Preserve the exact original full-bleed portrait framing, camera, bold cartoon ink outlines, scenery, palette, lighting and all unrelated details. No replacement foreground subjects, no new objects, no text, border or holo. Output ONE opaque clean background with the original portrait composition."
+    },
+    {
+      "key": "sun-a",
+      "layer": "background/object",
+      "source": "Approved Sun 1 moving mockup",
+      "note": "Reused the approved clean background and transparent object without regenerating."
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { LatestFrame } from '../ui/LatestFrame';
+import { setParallaxPosition } from '../ui/ParallaxHand';
 // Feeds pointer motion into the DOM fallback's suit foil. Midnight reflects
 // inside the artwork; its printed border matches the deck preview.
 export class HoloShader {
@@ -26,6 +27,7 @@ export class HoloShader {
     this.pointerFrame.cancel();
     clearTimeout(this.stillTimer);
     if (!this.active) return;
+    setParallaxPosition(this.active,0,0);
     this.active.style.removeProperty('--card-tilt-x');
     this.active.style.removeProperty('--card-tilt-y');
     this.active.style.removeProperty('--holo-x');
@@ -62,6 +64,7 @@ export class HoloShader {
     card.style.setProperty('--card-tilt-y', `${((x - .5) * 9).toFixed(2)}deg`);
     card.style.setProperty('--holo-x', `${(x * 100).toFixed(1)}%`);
     card.style.setProperty('--holo-y', `${(y * 100).toFixed(1)}%`);
+    setParallaxPosition(card,(x-.5)*2,(y-.5)*2);
     card.style.setProperty('--foil-angle',`${(35+(x-.5)*90+(y-.5)*36).toFixed(1)}deg`);
     const travel=this.lastPointer ? Math.hypot(event.clientX-this.lastPointer.x,event.clientY-this.lastPointer.y) : 0;
     this.lastPointer={x:event.clientX,y:event.clientY};

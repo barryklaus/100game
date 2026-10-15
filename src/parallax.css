@@ -1,0 +1,20 @@
+/* Two decoded artwork layers, with the existing print above both. No idle animation. */
+.parallax-face{position:absolute;inset:0;z-index:2;visibility:hidden;border-radius:5.5% / 3.95%;overflow:hidden;pointer-events:none;background:linear-gradient(135deg,var(--card-frame-highlight),var(--card-accent) 13%,var(--card-accent) 51%,var(--card-frame-highlight) 84%,var(--card-accent));backface-visibility:hidden;transform-origin:center;}
+.parallax-effect-on .parallax-ready{background:transparent!important;}
+.parallax-effect-on .parallax-ready > img{visibility:hidden;}
+.parallax-effect-on .parallax-ready .parallax-face{visibility:visible;}
+.midnight-mode .playing-card[data-parallax-key]::after{display:none!important;}
+.parallax-art{position:absolute;inset:3.65% 5.1%;overflow:hidden;border-radius:4% / 2.8%;isolation:isolate;}
+.playing-card .parallax-background{position:absolute;inset:0;z-index:0;transform:translate(var(--parallax-bg-x,0%),var(--parallax-bg-y,0%)) scale(1.06);}
+.playing-card .parallax-background img,.playing-card img.parallax-object{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:fill;border-radius:0!important;filter:none!important;opacity:1!important;}
+.playing-card img.parallax-object{z-index:2;transform:translate(var(--parallax-object-x,0%),var(--parallax-object-y,0%));}
+.parallax-background::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse,#fff 0 10%,transparent 32%) 1px 3px/7px 11px repeat,radial-gradient(ellipse,#00dfff 0 10%,transparent 30%) 2px 1px/11px 7px repeat,radial-gradient(ellipse,#ff14ad 0 8%,transparent 28%) 4px 3px/13px 17px repeat,radial-gradient(ellipse,var(--foil-bright) 0 10%,transparent 30%) 3px 2px/17px 13px repeat;background-position:var(--holo-x,50%) var(--holo-y,50%),var(--holo-y,50%) var(--holo-x,50%),var(--holo-x,50%) 3px,3px var(--holo-y,50%);background-blend-mode:screen;mix-blend-mode:screen;opacity:calc(var(--foil-motion,0)*.92);}
+.parallax-ready:not(.dragging):not(.inspecting) .parallax-face{transform:perspective(850px) rotateX(calc(var(--gyro-x,0deg) + var(--card-tilt-x,0deg))) rotateY(calc(var(--gyro-y,0deg) + var(--card-tilt-y,0deg)));}
+.parallax-ready.selected:not(.dragging):not(.inspecting) .parallax-face{transform:perspective(850px) rotateX(var(--gyro-x,0deg)) rotateY(var(--gyro-y,0deg));}
+.parallax-ready > img{object-fit:fill!important;}
+.parallax-ready.selected .parallax-face{box-shadow:0 0 0 3px #ffe18d;}
+.parallax-ready .parallax-face{box-shadow:0 13px 11px #0009;}
+.parallax-ready:not(.dragging) :is(.parallax-background,.parallax-object){transition:transform 130ms ease-out;}
+.parallax-ready[data-foil-moving] :is(.parallax-background,.parallax-object){transition:none;}
+.card-departing .parallax-face,.receiving-card .parallax-face,.game-page[data-phase="ended"] .parallax-face{visibility:hidden!important;}
+.reduce-motion .parallax-background::after{opacity:0!important;}

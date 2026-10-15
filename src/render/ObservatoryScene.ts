@@ -26,6 +26,8 @@ import { ForegroundCards } from './ForegroundCards';
 import { cardScreenScale } from './CardScreenFit';
 import { screenRect } from '../ui/ScreenShake';
 import { FramePacer, RenderInvalidation } from './RenderBudget';
+import { parallaxLayersFor } from '../ui/ParallaxHand';
+import { installParallaxFlight, type ParallaxFlight } from './ParallaxFlight';
 
 type SceneState = {
   roundEnded?: boolean;
@@ -197,6 +199,7 @@ export class ObservatoryScene {
   }
 
   configure(options: {quality:QualityPreset; reducedMotion:boolean}): void {
+    this.hand.configure(options.reducedMotion);
     if(this.qualityConfigured && this.quality===options.quality && this.reducedMotion===options.reducedMotion) return;
     const qualityChanged = !this.qualityConfigured || this.quality !== options.quality;
     this.qualityConfigured=true;
@@ -211,7 +214,6 @@ export class ObservatoryScene {
       this.ceilingLight.shadow.map?.dispose();
       this.ceilingLight.shadow.map=null;
     }
-    this.hand.configure(options.reducedMotion);
     this.ring.configure(options.quality);
     this.fireworks.configure(options.quality);
     this.discardPile.setDetail(options.quality==='ultra'?14:options.quality==='high'?10:options.quality==='medium'?7:4);
@@ -313,6 +315,7 @@ export class ObservatoryScene {
         const texture = face ? await cardFaceTexture(loaded, face,maximum) : pileBackTexture(loaded,maximum);
         if (texture !== loaded) loaded.dispose();
         texture.colorSpace = THREE.SRGBColorSpace;
+        texture.userData.parallaxFlat=url.includes('/parallax-v1/');
         texture.anisotropy = Math.min(QUALITY_PRESETS[this.quality].textureAnisotropy, this.renderer.capabilities.getMaxAnisotropy());
         this.loadedTextures.set(key, texture);
         return texture;
@@ -386,7 +389,13 @@ export class ObservatoryScene {
     root.name = 'card-flight';
     root.visible = false;
     const visual = new THREE.Group();
-    visual.add(createCardMesh(frontTexture,backTexture,/-[789]|-10\./.test(frontUrl)));
+    const card=createCardMesh(frontTexture,backTexture,/-[789]|-10\./.test(frontUrl));
+    const layers=parallaxLayersFor(frontUrl),face=cardFaceFromUrl(frontUrl);
+    if(layers&&face){
+      const print=await cardFaceTexture(frontTexture,face,Infinity,true);
+      visual.userData.parallaxFlight=installParallaxFlight(card,print,layers.background,layers.object);
+    }
+    visual.add(card);
     // Tessellate while the pointer is held, rather than at the release boundary.
     visual.userData.flightFlex=flyingCardFlex(visual);
     root.add(visual);
@@ -395,6 +404,7 @@ export class ObservatoryScene {
   }
 
   warmCardThrow(frontUrl:string):void{if(this.canAnimate)this.preparedThrow.warm(frontUrl);}
+  warmCardArtwork(frontUrl:string):void{void this.loadTexture(frontUrl).catch(()=>{});}
   cancelWarmCardThrow():void{this.preparedThrow.clear();}
   private disposeFlyingCard(root:THREE.Group):void{
     root.removeFromParent();
@@ -464,6 +474,7 @@ export class ObservatoryScene {
       this.activeFlights++;
       const step = (now: number): void => {
         const raw = Math.min(1, (now - started) / duration);
+        (visual.userData.parallaxFlight as ParallaxFlight|undefined)?.progress(raw);
         const flightT = raw;
         const t = flightT*flightT*(3-2*flightT);
         const inverse = 1 - t;
@@ -542,6 +553,8 @@ export class ObservatoryScene {
       throw error;
     }
     if (handRect) sourceRect = handRect;
+    const held=cardId?Array.from(document.querySelectorAll<HTMLElement>('.local-hand .hand-card,.shared-hand .hand-card')).find(card=>card.dataset.card===cardId):undefined;
+    (visual.userData.parallaxFlight as ParallaxFlight|undefined)?.pose(Number(held?.dataset.parallaxX??0),Number(held?.dataset.parallaxY??0));
     const distance = innerHeight > innerWidth * 1.08 ? 4.9 : 5.35;
     // Keep dragging until this snapshot; clearing it earlier resets tilt/depth.
     this.hand.update(0);
@@ -549,10 +562,15 @@ export class ObservatoryScene {
     if(!pose&&cardId){
       // Portrait uses a lossless DOM hand. Carry its actual fan/drag rotation
       // into the 3D flight rather than flattening it at the release boundary.
-      const element=Array.from(document.querySelectorAll<HTMLElement>('.local-hand .hand-card')).find(card=>card.dataset.card===cardId);
+      const element=held;
       if(element){
         const transform=getComputedStyle(element).transform;
         const matrix=new THREE.Matrix4().fromArray(Array.from(new DOMMatrix(transform==='none'?undefined:transform).toFloat64Array()));
+        const face=element.querySelector<HTMLElement>('.parallax-face');
+        if(face&&element.classList.contains('parallax-ready')){
+          const inner=getComputedStyle(face).transform;
+          matrix.multiply(new THREE.Matrix4().fromArray(Array.from(new DOMMatrix(inner==='none'?undefined:inner).toFloat64Array())));
+        }
         const flipY=new THREE.Matrix4().makeScale(1,-1,1);
         matrix.premultiply(flipY).multiply(flipY);
         const localRotation=new THREE.Quaternion(),scale=new THREE.Vector3();

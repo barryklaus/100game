@@ -1,4 +1,5 @@
 import { prefersLosslessHand } from '../game/deck';
+import { setParallaxPosition } from './ParallaxHand';
 
 type PermissionOrientationEvent = typeof DeviceOrientationEvent & {
   requestPermission?: () => Promise<'granted' | 'denied'>;
@@ -103,8 +104,9 @@ export class GyroHand {
     root.style.setProperty('--gyro-x', `${this.x.toFixed(2)}deg`);
     root.style.setProperty('--gyro-y', `${this.y.toFixed(2)}deg`);
     const foil = Math.min(.48, motion * 1.5);
-    for (const card of Array.from(document.querySelectorAll<HTMLElement>('.crisp-mobile-hand .local-hand .hand-card'))) {
+    for (const card of Array.from(document.querySelectorAll<HTMLElement>('.crisp-mobile-hand .local-hand .hand-card,.crisp-mobile-hand .shared-hand .hand-card'))) {
       if (card.classList.contains('dragging') || card.classList.contains('inspecting')) continue;
+      setParallaxPosition(card,this.y/9,-this.x/9);
       card.style.setProperty('--holo-x', `${(50 + this.y * 3).toFixed(1)}%`);
       card.style.setProperty('--holo-y', `${(50 - this.x * 3).toFixed(1)}%`);
       card.style.setProperty('--foil-angle', `${(35 + this.y * 5 + this.x * 2).toFixed(1)}deg`);
