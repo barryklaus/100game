@@ -6,6 +6,20 @@ const FONT = 'Luckiest Guy';
 const EDGE = 54; // Roughly five percent of the card width: B's frame, made thicker.
 
 let fontPromise: Promise<void> | undefined;
+export function cardTextureDimensions(width:number,height:number,maximum=Infinity):{width:number;height:number}{
+  const scale=Math.min(1,maximum/Math.max(width,height));
+  return {width:Math.max(1,Math.round(width*scale)),height:Math.max(1,Math.round(height*scale))};
+}
+
+/** Pile-only delivery copy; original hand and flight images keep their native pixels. */
+export function pileBackTexture(source:THREE.Texture,maximum:number):THREE.Texture{
+  const image=source.image as CanvasImageSource&{width:number;height:number};
+  const size=cardTextureDimensions(image.width,image.height,maximum);
+  if(size.width===image.width&&size.height===image.height)return source;
+  const canvas=document.createElement('canvas');canvas.width=size.width;canvas.height=size.height;
+  canvas.getContext('2d')!.drawImage(image,0,0,size.width,size.height);
+  return new THREE.CanvasTexture(canvas);
+}
 function loadFaceFont(): Promise<void> {
   fontPromise ??= document.fonts.load(`96px "${FONT}"`).then(() => undefined).catch(() => undefined);
   return fontPromise;
@@ -52,10 +66,10 @@ function lines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): s
 }
 
 /** Print fixed card information once. Moving artwork light is a separate mesh. */
-export async function cardFaceTexture(source: THREE.Texture, face: CardFace): Promise<THREE.CanvasTexture> {
+export async function cardFaceTexture(source: THREE.Texture, face: CardFace,maximum=Infinity): Promise<THREE.CanvasTexture> {
   const [, frame] = await Promise.all([loadFaceFont(), cardFrameImage(face.suit)]);
   const image = source.image as CanvasImageSource & { width: number; height: number };
-  const width = image.width || 1064, height = image.height || 1478;
+  const {width,height}=cardTextureDimensions(image.width||1064,image.height||1478,maximum);
   const edge = width * EDGE / 1064;
   const canvas = document.createElement('canvas');
   canvas.width = width;

@@ -1,3 +1,4 @@
+import { LatestFrame } from '../ui/LatestFrame';
 // Feeds pointer motion into the DOM fallback's suit foil. Midnight reflects
 // inside the artwork; its printed border matches the deck preview.
 export class HoloShader {
@@ -5,6 +6,7 @@ export class HoloShader {
   private active: HTMLElement | null = null;
   private lastPointer: {x:number;y:number}|null = null;
   private stillTimer = 0;
+  private pointerFrame=new LatestFrame<PointerEvent>(event=>this.paintPointer(event));
 
   constructor() {
     window.addEventListener('pointermove', this.onPointerMove, { passive: true });
@@ -21,6 +23,7 @@ export class HoloShader {
   }
 
   private clearActive(): void {
+    this.pointerFrame.cancel();
     clearTimeout(this.stillTimer);
     if (!this.active) return;
     this.active.style.removeProperty('--card-tilt-x');
@@ -37,6 +40,10 @@ export class HoloShader {
   }
 
   private onPointerMove = (event: PointerEvent): void => {
+    if(this.isEnabled)this.pointerFrame.schedule(event);
+  };
+
+  private paintPointer(event:PointerEvent):void {
     if (!this.isEnabled) return;
     const card = (event.target as Element | null)?.closest<HTMLElement>('.playing-card:not(.waiting-hand)') ?? null;
     if (card !== this.active) {
@@ -44,9 +51,13 @@ export class HoloShader {
       this.active = card;
     }
     if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / Math.max(1, rect.width)));
-    const y = Math.max(0, Math.min(1, (event.clientY - rect.top) / Math.max(1, rect.height)));
+    const clamp=(value:number)=>Math.max(0,Math.min(1,value));
+    // Drag already supplies tilt. Reading its bounds after writing the transform
+    // would force Safari to lay out the card again for every touch sample.
+    const dragging=card.classList.contains('dragging');
+    const rect=dragging?undefined:card.getBoundingClientRect();
+    const x=dragging?clamp(.5+Number(card.dataset.tiltY||0)*1.25):clamp((event.clientX-rect!.left)/Math.max(1,rect!.width));
+    const y=dragging?clamp(.5-Number(card.dataset.tiltX||0)*1.25):clamp((event.clientY-rect!.top)/Math.max(1,rect!.height));
     card.style.setProperty('--card-tilt-x', `${((.5 - y) * 7).toFixed(2)}deg`);
     card.style.setProperty('--card-tilt-y', `${((x - .5) * 9).toFixed(2)}deg`);
     card.style.setProperty('--holo-x', `${(x * 100).toFixed(1)}%`);
@@ -63,14 +74,19 @@ export class HoloShader {
       card.removeAttribute('data-foil-moving');
     },90);
     card.dataset.cardHover = 'true';
-  };
+  }
 
   private onPointerDown = (event: PointerEvent): void => {
     const card = (event.target as Element | null)?.closest<HTMLElement>('.playing-card:not(.waiting-hand)');
-    if (this.isEnabled && card) card.dataset.cardPressed = 'true';
+    if (this.isEnabled && card) {
+      if(card!==this.active){this.clearActive();this.active=card;}
+      card.dataset.cardPressed = 'true';
+    }
   };
 
   private onPointerUp = (): void => {
+    this.pointerFrame.cancel();
+    clearTimeout(this.stillTimer);
     this.active?.removeAttribute('data-card-pressed');
     this.active?.style.setProperty('--foil-motion','0');
     this.active?.removeAttribute('data-foil-moving');

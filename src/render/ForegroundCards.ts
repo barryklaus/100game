@@ -6,6 +6,7 @@ export class ForegroundCards {
   private renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
   private active = false;
   private painted = false;
+  private size={width:0,height:0,pixelRatio:0};
   contextLost = false;
 
   constructor(private camera: THREE.PerspectiveCamera, onContextChange: () => void) {
@@ -29,6 +30,8 @@ export class ForegroundCards {
   }
 
   resize(width: number, height: number, pixelRatio: number): void {
+    if(this.size.width===width&&this.size.height===height&&this.size.pixelRatio===pixelRatio)return;
+    this.size={width,height,pixelRatio};
     this.renderer.setPixelRatio(pixelRatio);
     this.renderer.setSize(width, height, false);
   }

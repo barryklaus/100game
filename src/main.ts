@@ -21,6 +21,7 @@ import './account.css';
 import { TotalPresentation } from './ui/TotalPresentation';
 import { totalMarkup } from './ui/totalFeedback';
 import { screenRect, setScreenDanger, unshakenRect } from './ui/ScreenShake';
+import { LatestFrame } from './ui/LatestFrame';
 import { PlayerRing } from './ui/PlayerRing';
 import { CHARACTER_SPRITE_VERSION } from './ui/CharacterSpriteLayout';
 import { scoreTransition } from './ui/ScoreTransition';
@@ -663,7 +664,7 @@ function gameView(): string {
   const totalStyle = totalClass(presentedTotal.visible.total);
   const seats=visibleTableSeats();
 
-  return `<main class="game-page" data-event="${state.event}" data-phase="${state.phase}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>${brandMarkup}</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>100 <span>OBSERVATORY</span></strong><small>${outcomeDemo?(freedomDemo?'Freedom':'Death')+' demo · No statistics saved':`${online?'Private online table':'Local table'} · Round ${state.round}`}</small></div></div>${outcomeDemo?'':outcomeCounters(account?.snapshot.user?totalAccountStats(account.snapshot):stats,import.meta.env.BASE_URL)}<div class="header-status"><span class="round-pill">Round ${state.round}</span><span class="turn-pill">${state.phase==='ended'?'Round scores':`${actor===localSeat()?'Your':escapeHtml(active.name)+'’s'} ${state.phase==='target'?'choice':'turn'}`}</span></div><div class="header-actions"><button data-action="history" aria-label="Game history">▤</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}${isNextVersion?`<small class="alpha-build">ALPHA 0.1.0 · ${escapeHtml(import.meta.env.VITE_BUILD_ID)}</small>`:''}
+  return `<main class="game-page" data-event="${state.event}" data-phase="${state.phase}"><header class="game-header"><div class="game-logo"><span class="game-crown">♛</span><strong>100</strong><small>${brandMarkup}</small></div><div class="match-plaque"><span class="plaque-crown">♛</span><div><strong>100 <span>OBSERVATORY</span></strong><small>${outcomeDemo?(freedomDemo?'Freedom':'Death')+' demo · No statistics saved':`${online?'Private online table':'Local table'} · Round ${state.round}`}</small></div></div>${outcomeDemo?'':outcomeCounters(account?.snapshot.user?totalAccountStats(account.snapshot):stats,import.meta.env.BASE_URL)}<div class="header-status"><span class="round-pill">Round ${state.round}</span><span class="turn-pill">${state.phase==='ended'?'Round scores':`${actor===localSeat()?'Your':escapeHtml(active.name)+'’s'} ${state.phase==='target'?'choice':'turn'}`}</span></div><div class="header-actions"><button data-action="history" aria-label="Game history">▤</button><button data-action="settings" aria-label="Settings">⚙</button><button data-action="menu" aria-label="Menu">☰</button></div></header>${online?.error ? `<div class="online-alert" role="status">${escapeHtml(online.error)}</div>` : ''}${isNextVersion?`<small class="alpha-build">ALPHA ${escapeHtml(import.meta.env.VITE_APP_VERSION)} · ${escapeHtml(import.meta.env.VITE_BUILD_ID)}</small>`:''}
     ${outcomeDemo && state.phase==='playing'?`<div class="death-demo-note" role="region" aria-label="${freedomDemo?'Freedom':'Last card'} demo"><span><strong>${escapeHtml(mine.name)}: ${freedomDemo?FREEDOM_POINTS-2:DEATH_POINTS+5} points</strong> · Total 99<small>${freedomDemo?`Play Zero. The next Overflow earns +2 → Freedom at ${FREEDOM_POINTS}.`:`Play one last card. Overflow −5 → Death at −${Math.abs(DEATH_POINTS)}.`}</small></span><button class="primary-button" data-action="demo-play" ${state.current!==0||locked?'disabled':''}>${state.current!==0?'Watching the final turn…':freedomDemo?'Play Zero →':'Play final card →'}</button></div>`:''}
     <div class="game-layout"><section class="arena" aria-label="Game table"><div class="table-rim"><div class="table-felt"><div class="energy-system ${totalStyle}"><div class="total-wrap ${totalStyle}"><span class="total-caption">SHARED TOTAL</span><div class="total-number" role="status" aria-live="polite" aria-label="Shared total">${totalMarkup(presentedTotal.visible.total)}</div><div class="total-event">${presentedTotal.visible.caption}</div><div class="ring-direction" aria-label="${state.direction===1?'Clockwise':'Counterclockwise'} turn order">${state.direction===1?'› · › · ›':'‹ · ‹ · ‹'}</div></div></div><div class="table-cards"><div class="pile-wrap"><div class="draw-stack"><div class="playing-card card-back" role="img" aria-label="Draw pile"><img src="${backImage}" alt="Draw pile" draggable="false"></div></div></div><div class="pile-wrap"><div class="played-slot">${top?cardElement(top,false,'last-card'):'<span class="empty-slot">PLAY HERE</span>'}</div></div></div></div></div>
       <div class="seat-layer player-ring" aria-label="Players around the table" style="--player-count:${seats.length}">${seats.map(i=>seatHtml(state!.players[i],i,seats.length)).join('')}</div>
@@ -1005,6 +1006,7 @@ document.addEventListener('keydown',event=>{
 });
 let lastCardTap:CardTap|null=null;
 let lastHover='';
+const dragPaint=new LatestFrame<()=>void>(paint=>paint());
 const swingCue=document.createElement('div');
 swingCue.className='boomerang-cue';swingCue.hidden=true;swingCue.textContent='BOOMERANG · release';
 swingCue.setAttribute('role','status');swingCue.setAttribute('aria-live','polite');
@@ -1028,24 +1030,31 @@ app.addEventListener('pointerdown',event=>{
 app.addEventListener('pointermove',event=>{
   if(!drag||event.pointerId!==drag.pointerId)return;
   const dx=event.clientX-drag.x,dy=event.clientY-drag.y,now=performance.now();
-  if(Math.hypot(dx,dy)>8){drag.moved=true;clearTimeout(drag.holdTimer);drag.inspecting=false;drag.element.classList.remove('inspecting');drag.element.classList.add('dragging');}
+  if(!drag.moved&&Math.hypot(dx,dy)>8){drag.moved=true;clearTimeout(drag.holdTimer);drag.inspecting=false;drag.element.classList.remove('inspecting');drag.element.classList.add('dragging');}
   if(!drag.moved)return;
   const elapsed=Math.max(8,now-drag.lastTime);drag.vx=(event.clientX-drag.lastX)/elapsed;drag.vy=(event.clientY-drag.lastY)/elapsed;
   const tx=settings.reducedMotion?0:Math.max(-17,Math.min(17,-dy*.07+drag.vy*-3));
   const ty=settings.reducedMotion?0:Math.max(-20,Math.min(20,dx*.07+drag.vx*3));
   const turn=settings.reducedMotion?0:Math.max(-9,Math.min(9,dx*.025));
-  drag.element.dataset.tiltX=String(tx*Math.PI/180);drag.element.dataset.tiltY=String(ty*Math.PI/180);drag.element.dataset.turn=String(turn*Math.PI/180);
   const swingReady=!!drag.swing?.move(event.clientX,event.clientY,now)&&canControlActor()&&state?.phase==='playing'&&!modal;
-  swingCue.hidden=!swingReady;
-  if(swingReady){swingCue.style.left=`${Math.max(85,Math.min(innerWidth-85,event.clientX))}px`;swingCue.style.top=`${Math.max(85,Math.min(innerHeight-45,event.clientY-54))}px`;}
-  drag.element.classList.toggle('flick-ready',swingReady||isPlayGesture({dx,dy,duration:now-drag.time,canceled:false,inspecting:false,canPlay:canControlActor(),grip:drag.grip,releaseVX:drag.vx}));
+  const flickReady=swingReady||isPlayGesture({dx,dy,duration:now-drag.time,canceled:false,inspecting:false,canPlay:canControlActor(),grip:drag.grip,releaseVX:drag.vx});
   const crispTilt=document.documentElement.classList.contains('crisp-mobile-hand') ? ` rotateX(${-tx}deg) rotateY(${-ty}deg) rotateZ(${-turn}deg)` : '';
-  drag.element.style.transform=`translate3d(${dx}px,${dy}px,24px) ${drag.baseTransform==='none'?'':drag.baseTransform}${crispTilt}`;
+  const current=drag;
+  dragPaint.schedule(()=>{
+    if(drag!==current||!current.element.isConnected)return;
+    current.element.dataset.tiltX=String(tx*Math.PI/180);current.element.dataset.tiltY=String(ty*Math.PI/180);current.element.dataset.turn=String(turn*Math.PI/180);
+    swingCue.hidden=!swingReady;
+    if(swingReady){swingCue.style.left=`${Math.max(85,Math.min(innerWidth-85,event.clientX))}px`;swingCue.style.top=`${Math.max(85,Math.min(innerHeight-45,event.clientY-54))}px`;}
+    current.element.classList.toggle('flick-ready',flickReady);
+    current.element.style.transform=`translate3d(${dx}px,${dy}px,24px) ${current.baseTransform==='none'?'':current.baseTransform}${crispTilt}`;
+  });
   drag.lastX=event.clientX;drag.lastY=event.clientY;drag.lastTime=now;
 });
 function endDrag(event:PointerEvent):void{
   clearTimeout(emoteHoldTimer);
   if(!drag||event.pointerId!==drag.pointerId)return;
+  // Commit the latest held pose before the flight takes ownership on release.
+  dragPaint.flush();
   const current=drag;drag=null;clearTimeout(current.holdTimer);
   swingCue.hidden=true;
   const dx=event.clientX-current.x,dy=event.clientY-current.y,dist=Math.hypot(dx,dy);

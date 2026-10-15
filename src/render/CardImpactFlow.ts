@@ -3,6 +3,7 @@ export class CardImpactFlow {
   private key='';
   private age=2;
   private arrived=true;
+  get active():boolean{return this.age<1.05;}
   setCard(key:string):void {
     if(key===this.key)return;
     this.key=key;this.age=key?0:2;this.arrived=!key;

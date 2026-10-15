@@ -202,9 +202,9 @@
 .total-number{position:relative;}
 .total-value{display:inline-block;position:relative;top:.13em;}
 .total-shard{position:absolute;inset:.13em 0 -.13em;pointer-events:none;opacity:0;}
-/* At 100, pulse the warning light without moving or resizing the large number. */
-.observatory-mode .at100 .total-value{color:#ff5637;animation:total-critical 1.1s ease-in-out infinite;text-shadow:0 3px 0 #8a1e10,0 0 16px #ff3d1644;}
-@keyframes total-critical{0%,100%{text-shadow:0 3px 0 #8a1e10,0 0 16px #ff3d1644}50%{text-shadow:0 3px 0 #8a1e10,0 0 26px #ff3d1688}}
+/* Composite the warning pulse without repainting a blurred text shadow each frame. */
+.observatory-mode .at100 .total-value{color:#ff5637;animation:total-critical 1.1s ease-in-out infinite;text-shadow:0 3px 0 #8a1e10,0 0 20px #ff3d1677;}
+@keyframes total-critical{0%,100%{opacity:.92}50%{opacity:1}}
 /* One composite moves the room, table, characters, number and cards together. */
 .total-danger100 body:not(:has(.modal-overlay)){animation:screen-danger .24s linear infinite;will-change:translate;}
 .total-danger100 .observatory-backdrop{inset:-24px;}

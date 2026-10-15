@@ -10,8 +10,9 @@ await build({entryPoints:['src/ui/ConditionPreview.ts'],outfile:'dist-next/condi
 const conditionPage=await readFile('dist-next/condition-preview/index.html','utf8');
 await writeFile('dist-next/condition-preview/index.html',conditionPage.replace('/src/ui/ConditionPreview.ts','/condition-preview/preview.js').replace('</head>','<link rel="stylesheet" href="/condition-preview/preview.css"></head>'));
 await writeFile('dist-next/_routes.json', JSON.stringify({ version: 1, include: ['/api/*'], exclude: [] }));
+const appVersion=JSON.parse(await readFile('package.json','utf8')).version;
 const commit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-await writeFile('dist-next/release.json', JSON.stringify({ version: '100next', commit, builtAt: new Date().toISOString() }));
+await writeFile('dist-next/release.json', JSON.stringify({ version: '100next', appVersion, commit, builtAt: new Date().toISOString() }));
 await writeFile('dist-next/_headers', '/release.json\n  Cache-Control: no-store\n/velvet-ledger/*\n  X-Robots-Tag: noindex, nofollow\n  Referrer-Policy: same-origin\n  X-Content-Type-Options: nosniff\n  Content-Security-Policy: default-src \'self\'; script-src \'self\'; style-src \'self\'; connect-src \'self\'; img-src \'self\' data:; form-action \'self\'; frame-ancestors \'none\'; base-uri \'none\'\n');
 const html = await readFile('dist-next/index.html', 'utf8');
 await writeFile('dist-next/index.html', html.replace(/<title>.*?<\/title>/, '<title>100next — We were friends before this.</title>')

@@ -2,6 +2,8 @@
 
 The owner has requested automatic GitHub pushes and live publishing for each completed 100next iteration.
 
+- Include the released Alpha version and short build commit in every completed update report. Bump the patch version for completed product updates, and keep the in-game build label aligned with package.json.
+
 - Work labeled **100next** belongs on branch `100next` and at `https://100next.pages.dev/`.
 - Preserve `main`, tag `stable-2026-10-02`, and the stable Worker `100game`. Do not merge 100next into main or deploy the stable Worker unless the owner explicitly asks.
 - 100next starts with the existing Observatory assets. The Midnight Social Club assets are mockups; do not integrate them without a request.

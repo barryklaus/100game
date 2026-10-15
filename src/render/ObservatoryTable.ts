@@ -227,15 +227,22 @@ export class ArcaneTotalRing {
   private direction=1;
   private arrival=0;
   private quality:QualityPreset='high';
+  get active():boolean{return this.elapsed<1.05||this.arrival>0;}
   constructor(){
     this.group.position.set(0,0,0);
     const metal=this.metal;
     for(const [r,w] of [[1.34,.012],[1.48,.007],[1.63,.013]])this.group.add(inlaidRing(r,w,metal));
     this.group.add(inlaidRing(1.38,.007,this.light));
+    // Identical engravings share geometry and submit two draws instead of 24.
+    const sectors=new THREE.InstancedMesh(new THREE.TorusGeometry(1.55,.012,5,12,Math.PI/9),this.light,12);
+    const markers=new THREE.InstancedMesh(new THREE.ConeGeometry(.035,.12,3),metal,12);
+    this.sectors.name='total-ring-sectors';this.orbit.name='total-ring-markers';
+    const pose=new THREE.Object3D();
     for(let i=0;i<12;i++){
-      const sector=new THREE.Mesh(new THREE.TorusGeometry(1.55,.012,5,12,Math.PI/9),this.light);sector.rotation.x=-Math.PI/2;sector.rotation.z=i*Math.PI/6;sector.scale.z=.04;sector.position.y=.3482;this.sectors.add(sector);
-      const a=i/12*Math.PI*2;const marker=new THREE.Mesh(new THREE.ConeGeometry(.035,.12,3),metal);marker.rotation.set(-Math.PI/2,0,-a);marker.scale.z=.015;marker.position.set(Math.sin(a)*1.74,.3482,Math.cos(a)*1.74);this.orbit.add(marker);
+      pose.rotation.set(-Math.PI/2,0,i*Math.PI/6);pose.scale.set(1,1,.04);pose.position.set(0,.3482,0);pose.updateMatrix();sectors.setMatrixAt(i,pose.matrix);
+      const a=i/12*Math.PI*2;pose.rotation.set(-Math.PI/2,0,-a);pose.scale.set(1,1,.015);pose.position.set(Math.sin(a)*1.74,.3482,Math.cos(a)*1.74);pose.updateMatrix();markers.setMatrixAt(i,pose.matrix);
     }
+    this.sectors.add(sectors);this.orbit.add(markers);
     this.group.add(this.orbit,this.sectors);
     this.pulse=new THREE.Mesh(new THREE.RingGeometry(1.2,1.24,96),new THREE.MeshBasicMaterial({color:0x97bdff,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));this.pulse.rotation.x=-Math.PI/2;this.pulse.position.y=.3486;this.group.add(this.pulse);
     const positions=new Float32Array(48*3);for(let i=0;i<48;i++){const a=i*2.399;positions[i*3]=Math.sin(a)*(1.4+(i%7)*.055);positions[i*3+1]=.4+(i%5)*.055;positions[i*3+2]=Math.cos(a)*(1.4+(i%7)*.055);}
@@ -262,7 +269,9 @@ export class ArcaneTotalRing {
     const active=['exact','bust','zero','minus'].includes(this.event);
     const material=this.pulse.material as THREE.MeshBasicMaterial;material.opacity=active?strength*(burst?.8:.45):0;material.color.copy(this.light.color);
     const inward=this.event==='zero'||this.event==='minus';this.pulse.scale.setScalar(inward?1.5-t*.65:1+t*.85);
-    const particles=this.fragments.material as THREE.PointsMaterial;particles.opacity=reduced?0:(this.quality==='ultra'?.22:.12)+strength*(burst?.75:.25);particles.color.copy(this.light.color);
-    this.fragments.rotation.y+=reduced?0:delta*.035*this.direction;this.fragments.position.y=burst?strength*.5:0;
+    const particles=this.fragments.material as THREE.PointsMaterial;particles.opacity=reduced?0:strength*(burst?.75:.25);particles.color.copy(this.light.color);
+    this.fragments.visible=!reduced&&strength>0;
+    if(this.fragments.visible)this.fragments.rotation.y+=delta*.035*this.direction;
+    this.fragments.position.y=burst?strength*.5:0;
   }
 }

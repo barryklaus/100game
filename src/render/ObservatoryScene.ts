@@ -17,13 +17,15 @@ import { ObservatoryTable, ArcaneTotalRing } from './ObservatoryTable';
 import { PhysicalHand } from './PhysicalHand';
 import { CLEAN_CARD_LAYER, createCardMesh } from './CardMesh';
 import { cardFaceFromUrl } from '../game/cardFace';
-import { cardFaceTexture } from './CardFaceTexture';
+import { cardFaceTexture, pileBackTexture } from './CardFaceTexture';
+import { prefersLosslessHand } from '../game/deck';
 import { CardPile } from './CardPile';
 import { CardFlightFit } from './CardFlightFit';
 import { flyingCardFlex } from './CardFlex';
 import { ForegroundCards } from './ForegroundCards';
 import { cardScreenScale } from './CardScreenFit';
 import { screenRect } from '../ui/ScreenShake';
+import { FramePacer, RenderInvalidation } from './RenderBudget';
 
 type SceneState = {
   roundEnded?: boolean;
@@ -51,8 +53,11 @@ export class ObservatoryScene {
   private camera = new THREE.PerspectiveCamera(42, innerWidth / innerHeight, .1, 80);
   private clock = new THREE.Clock();
   private frame = 0;
-  private lastRafTime = 0;
-  private frameAccumulator = 0;
+  private pacer = new FramePacer();
+  private worldPaint = new RenderInvalidation();
+  private worldRenders=0;
+  private windowRenders=0;
+  private projectedRim?:Array<{x:number;y:number}>;
   private renderScale = 1;
   private fastSamples = 0;
   private activeFlights = 0;
@@ -62,6 +67,7 @@ export class ObservatoryScene {
   private roundEnded = false;
   private contextLost=false;
   private quality: QualityPreset = 'high';
+  private pileTextureLimit=prefersLosslessHand()?768:Infinity;
   private reducedMotion = false;
   private qualityConfigured = false;
   private composer?: EffectComposer;
@@ -150,12 +156,18 @@ export class ObservatoryScene {
     this.resize();
     this.renderer.shadowMap.needsUpdate = true;
     addEventListener('resize', this.resize, { passive: true });
+    document.addEventListener('visibilitychange',this.onVisibility);
     this.loop();
   }
 
   set qualityHigh(value: boolean) { this.configure({quality:value?'high':'mobile',reducedMotion:this.reducedMotion}); }
 
+  private onVisibility=():void=>{
+    if(!document.hidden)this.worldPaint.request();
+  };
+
   private refreshContext = (): void => {
+    this.worldPaint.request();
     this.contextLost = this.renderer.getContext().isContextLost() || this.foreground.contextLost;
     if (this.contextLost) this.onCardArrival?.(this.playKey);
     this.renderer.domElement.hidden = !this.active || this.contextLost;
@@ -208,6 +220,7 @@ export class ObservatoryScene {
   }
 
   update(next: SceneState): void {
+    this.worldPaint.request();
     if(!next.active||next.roundEnded)this.preparedThrow.clear();
     this.active = next.active;
     this.roundEnded = !!next.roundEnded;
@@ -228,6 +241,7 @@ export class ObservatoryScene {
     const deckUpdate = this.deckPile.setCards(Array.from({length:next.drawCount??0},()=>next.drawCardUrl),next.drawCardUrl);
     const discardUpdate = this.discardPile.setCards(next.discardCards??(next.discardCardUrl?[next.discardCardUrl]:[]),next.drawCardUrl);
     void Promise.allSettled([deckUpdate,discardUpdate]).then(()=>{
+      this.worldPaint.request();
       this.renderer.shadowMap.needsUpdate=true;
       clearTimeout(this.pruneTimer);
       this.pruneTimer=window.setTimeout(()=>this.pruneTextureCache(),300);
@@ -262,8 +276,8 @@ export class ObservatoryScene {
     // The center rings inherit the exact oval stretch and tilt of the engraving.
     this.table.group.add(this.ring.group);
     this.world.add(this.table.group,this.fireworks.points);
-    this.deckPile=new CardPile(true,url=>this.loadTexture(url));
-    this.discardPile=new CardPile(false,url=>this.loadTexture(url));
+    this.deckPile=new CardPile(true,url=>this.loadTexture(url,true));
+    this.discardPile=new CardPile(false,url=>this.loadTexture(url,true));
     this.deckStack=this.deckPile.group;this.discardStack=this.discardPile.group;
     this.deckStack.position.set(-2.42,0,0);
     this.discardStack.position.set(2.42,0,0);
@@ -288,32 +302,32 @@ export class ObservatoryScene {
     }
   }
 
-  private loadTexture(url: string): Promise<THREE.Texture> {
-    this.textureLastUsed.set(url, performance.now());
-    let pending = this.textureCache.get(url);
+  private loadTexture(url: string,pile=false): Promise<THREE.Texture> {
+    const maximum=pile?this.pileTextureLimit:Infinity;
+    const key=Number.isFinite(maximum)?`${maximum}:${url}`:url;
+    this.textureLastUsed.set(key, performance.now());
+    let pending = this.textureCache.get(key);
     if (!pending) {
       pending = this.textureLoader.loadAsync(url).then(async loaded => {
         const face = cardFaceFromUrl(url);
-        const texture = face ? await cardFaceTexture(loaded, face) : loaded;
+        const texture = face ? await cardFaceTexture(loaded, face,maximum) : pileBackTexture(loaded,maximum);
         if (texture !== loaded) loaded.dispose();
         texture.colorSpace = THREE.SRGBColorSpace;
         texture.anisotropy = Math.min(QUALITY_PRESETS[this.quality].textureAnisotropy, this.renderer.capabilities.getMaxAnisotropy());
-        this.loadedTextures.set(url, texture);
+        this.loadedTextures.set(key, texture);
         return texture;
       }).catch(error => {
-        this.textureCache.delete(url);
-        this.textureLastUsed.delete(url);
+        this.textureCache.delete(key);
+        this.textureLastUsed.delete(key);
         throw error;
       });
-      this.textureCache.set(url, pending);
+      this.textureCache.set(key, pending);
     }
     return pending;
   }
 
   /** Keep only a small warm set of high-resolution cards in GPU memory. */
   private pruneTextureCache(): void {
-    const maximum = 14;
-    if (this.loadedTextures.size <= maximum) return;
     const active = new Set<THREE.Texture>();
     [this.scene, this.foreground.scene].forEach(scene => scene.traverse(object => {
       if (!(object instanceof THREE.Mesh)) return;
@@ -323,6 +337,12 @@ export class ObservatoryScene {
         if (map) active.add(map);
       });
     }));
+    const mobile=Number.isFinite(this.pileTextureLimit);
+    const commonBack=this.loadedTextures.get(this.drawCardUrl);
+    if(mobile&&commonBack)active.add(commonBack);
+    const protectedLoaded=[...this.loadedTextures.values()].filter(texture=>active.has(texture)).length;
+    const maximum=mobile?protectedLoaded+2:14;
+    if(this.loadedTextures.size<=maximum)return;
     const unused = [...this.loadedTextures.entries()]
       .filter(([,texture]) => !active.has(texture))
       .sort(([a],[b]) => (this.textureLastUsed.get(a)??0) - (this.textureLastUsed.get(b)??0));
@@ -592,7 +612,7 @@ export class ObservatoryScene {
     const layer = document.querySelector<HTMLElement>('.seat-layer.player-ring');
     if (!layer) return;
     this.world.updateMatrixWorld(true);
-    const rim = Array.from({length:97},(_,i)=>{
+    const rim = this.projectedRim??=Array.from({length:97},(_,i)=>{
       const angle=i/96*Math.PI*2;
       const point=this.table.group.localToWorld(new THREE.Vector3(Math.cos(angle)*5.02,.355,Math.sin(angle)*5.02)).project(this.camera);
       return {x:(point.x*.5+.5)*innerWidth,y:(-point.y*.5+.5)*innerHeight};
@@ -628,6 +648,8 @@ export class ObservatoryScene {
   }
 
   private resize = (): void => {
+    this.worldPaint.request();
+    this.projectedRim=undefined;
     const portrait = innerHeight > innerWidth * 1.08;
     this.camera.aspect = innerWidth / innerHeight;
     this.camera.fov = portrait ? 46 : 40;
@@ -779,33 +801,36 @@ export class ObservatoryScene {
 
   private loop = (stamp = performance.now()): void => {
     this.frame = requestAnimationFrame(this.loop);
-    if (!this.active || document.hidden || this.contextLost) { this.clock.getDelta();this.lastRafTime=stamp;this.frameAccumulator=0;return; }
-    const sinceLast = this.lastRafTime ? Math.min(50,stamp-this.lastRafTime) : 1000/60;
-    this.lastRafTime=stamp;
-    this.frameAccumulator=Math.min(50,this.frameAccumulator+sinceLast);
-    if(this.frameAccumulator < 1000/60-1) return;
-    this.frameAccumulator %= 1000/60;
+    if (!this.active || document.hidden || this.contextLost) { this.clock.getDelta();this.pacer.reset(stamp);return; }
+    if(!this.pacer.step(stamp))return;
     const realDelta=this.clock.getDelta();
     const delta = Math.min(.05, realDelta);
     this.profileFrames++;this.profileDelta+=realDelta;
     const time = this.clock.elapsedTime;
+    // Include the final settling frame, before update() turns an effect inactive.
+    const moving=this.cardFlow.active||this.ring.active||this.fireworks.points.visible;
     this.animate(time, delta);
-    if (this.activeFlights) this.renderer.shadowMap.needsUpdate = true;
     this.renderer.info.reset();
-    if(QUALITY_PRESETS[this.quality].bloom)this.renderWithCleanCards();else this.renderer.render(this.scene, this.camera);
+    if(this.worldPaint.consume(moving,this.renderer.shadowMap.enabled&&this.renderer.shadowMap.needsUpdate)){
+      if(QUALITY_PRESETS[this.quality].bloom)this.renderWithCleanCards();else this.renderer.render(this.scene, this.camera);
+      this.worldRenders++;this.windowRenders++;
+    }
     this.foreground.render();
     if(time-this.profileTime>2.4){
       const frameMs=this.profileDelta/this.profileFrames*1000;
       this.renderer.domElement.dataset.frameMs=frameMs.toFixed(1);
       this.renderer.domElement.dataset.drawCalls=String(this.renderer.info.render.calls + this.foreground.drawCalls);
       this.renderer.domElement.dataset.triangles=String(this.renderer.info.render.triangles);
-      if(frameMs>19.5 && this.renderScale>.66){
+      this.renderer.domElement.dataset.worldRenders=String(this.worldRenders);
+      this.renderer.domElement.dataset.cardTextureBytes=String([...this.loadedTextures.values()].reduce((sum,texture)=>sum+(texture.image.width||0)*(texture.image.height||0)*4,0));
+      // Idle DOM animation is not evidence that the table needs a resolution change.
+      if(this.windowRenders>45&&frameMs>19.5 && this.renderScale>.66){
         this.renderScale=Math.max(.65,this.renderScale-(frameMs>28?.15:.1));
         this.fastSamples=0;this.resize();
-      } else if(frameMs<17.5 && this.renderScale<1){
+      } else if(this.windowRenders>45&&frameMs<17.5 && this.renderScale<1){
         if(++this.fastSamples>=2){this.renderScale=Math.min(1,this.renderScale+.05);this.fastSamples=0;this.resize();}
       } else this.fastSamples=0;
-      this.profileFrames=0;this.profileDelta=0;this.profileTime=time;
+      this.profileFrames=0;this.profileDelta=0;this.profileTime=time;this.windowRenders=0;
     }
   };
 
@@ -819,6 +844,7 @@ export class ObservatoryScene {
     this.foreground.dispose();
     this.deckPile.dispose();this.discardPile.dispose();
     removeEventListener('resize', this.resize);
+    document.removeEventListener('visibilitychange',this.onVisibility);
     [this.scene, this.foreground.scene].forEach(scene => scene.traverse(object => {
       if (object instanceof THREE.Mesh || object instanceof THREE.Points) {
         object.geometry.dispose();
