@@ -7,7 +7,7 @@ export type CardFace = {
   index: string;
   accent: string;
   special: boolean;
-  theme?: 'midnight';
+  theme?: 'midnight' | 'engraved';
   title?: string;
   detail?: string;
 };
@@ -23,7 +23,7 @@ const actions: Partial<Record<Rank, { title: string; detail: string }>> = {
   '10': { title: '−10', detail: 'Subtract 10 from the total.' },
 };
 
-export function cardFace(card: Pick<Card, 'suit' | 'rank'>): CardFace {
+export function cardFace(card: Pick<Card, 'suit' | 'rank'>, theme?: CardFace['theme']): CardFace {
   const action = actions[card.rank];
   return {
     suit: card.suit,
@@ -33,6 +33,8 @@ export function cardFace(card: Pick<Card, 'suit' | 'rank'>): CardFace {
     accent: accents[card.suit],
     special: Boolean(action),
     ...action,
+    ...(theme ? {theme} : {}),
+    ...(theme === 'engraved' && card.rank === '10' ? {index: 'DEDUCT', title: 'DEDUCT'} : {}),
   };
 }
 
@@ -43,6 +45,7 @@ export function cardFaceFromUrl(url: string): CardFace | null {
   const rank = match[2].toUpperCase() as Rank;
   if (!SUITS.includes(suit) || !RANKS.includes(rank)) return null;
   const face = cardFace({ suit, rank });
+  if (url.includes('/engraved-v1/')) return cardFace({suit, rank}, 'engraved');
   if (url.includes('/midnight-v1/')) {
     face.theme = 'midnight';
     face.accent = { fire: '#c6130b', water: '#0750d6', leaf: '#0b9028', sun: '#d39804' }[suit];

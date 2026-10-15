@@ -10,5 +10,5 @@ export const REACTIONS = [
 export function reactionPhrase(id:unknown):string|undefined{return REACTIONS.find(item=>item.id===id)?.text;}
 export interface RoomReaction {serial:number;seat:number;phrase:string;expiresAt:number}
 export function specialPhrase(rank:string):string|undefined {
-  return ({'7':'CHOOSE · Your problem now.','8':'REVERSE · Plot twist.','9':'ZERO · Nothing to see here.','10':'−10 · Crisis postponed.'} as Record<string,string>)[rank];
+  return ({'7':'CHOOSE · Your problem now.','8':'REVERSE · Plot twist.','9':'ZERO · Nothing to see here.','10':'DEDUCT · Crisis postponed.'} as Record<string,string>)[rank];
 }

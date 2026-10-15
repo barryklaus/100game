@@ -91,13 +91,13 @@ const cameraRight = new THREE.Vector3();
 const cameraUp = new THREE.Vector3();
 const foilSuitIndex: Record<Suit, number> = { fire: 0, water: 1, leaf: 2, sun: 3 };
 
-function cardFoilMaterial(special: boolean, suit: Suit, midnight = false): THREE.ShaderMaterial {
+function cardFoilMaterial(special: boolean, suit: Suit, midnight = false, engraved?: THREE.Texture): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
-    name: midnight ? 'midnight-artwork-hologram' : special ? 'prismatic-special-border' : 'metallic-card-border',
-    transparent: midnight,
-    depthWrite: !midnight,
+    name: engraved ? 'engraved-suit-hologram' : midnight ? 'midnight-artwork-hologram' : special ? 'prismatic-special-border' : 'metallic-card-border',
+    transparent: midnight || Boolean(engraved),
+    depthWrite: !midnight && !engraved,
     toneMapped: false,
-    uniforms: { uTilt: { value: 0 }, uMotion: { value: 0 }, uSpecial: { value: special ? 1 : 0 }, uSuit: { value: foilSuitIndex[suit] }, uMidnight: { value: midnight ? 1 : 0 }, uRainbow: { value: midnight ? 1 : 0 } },
+    uniforms: { uTilt: { value: 0 }, uMotion: { value: 0 }, uSpecial: { value: special ? 1 : 0 }, uSuit: { value: foilSuitIndex[suit] }, uMidnight: { value: midnight ? 1 : 0 }, uRainbow: { value: midnight ? 1 : 0 }, uEngraved: {value: engraved ? 1 : 0}, uPrint: {value: engraved ?? null} },
     vertexShader: `
       varying vec2 vUv;
       void main() {
@@ -113,6 +113,8 @@ function cardFoilMaterial(special: boolean, suit: Suit, midnight = false): THREE
       uniform float uSuit;
       uniform float uMidnight;
       uniform float uRainbow;
+      uniform float uEngraved;
+      uniform sampler2D uPrint;
       float foilHash(vec2 p) {
         vec3 h = fract(vec3(p.xyx) * 0.1031);
         h += dot(h, h.yzx + 33.33);
@@ -141,6 +143,36 @@ function cardFoilMaterial(special: boolean, suit: Suit, midnight = false): THREE
         return (1.0 - smoothstep(0.018, 0.045, rays)) * (1.0 - smoothstep(0.18, 0.32, length(p)));
       }
       void main() {
+        if (uEngraved > 0.5) {
+          // Sample the approved print: ink and ivory never receive the laminate.
+          // Reusing the print avoids an extra GPU mask texture and any readback.
+          if (uMotion <= 0.0) { gl_FragColor = vec4(0.0); return; }
+          vec3 p = texture2D(uPrint,vUv).rgb * 255.0;
+          bool colored = p.r > 65.0 && p.r > p.g*1.8 && p.r > p.b*1.65;
+          vec3 metal = vec3(1.0,0.07,0.015);
+          vec3 highlight = vec3(1.0,0.55,0.12);
+          if (uSuit > 0.5 && uSuit < 1.5) {
+            colored = p.b > 50.0 && p.b > p.r*1.3 && p.b > p.g*1.13;
+            metal = vec3(0.015,0.16,1.0); highlight = vec3(0.08,0.75,1.0);
+          } else if (uSuit > 1.5 && uSuit < 2.5) {
+            colored = p.g > 40.0 && p.g > p.r*1.16 && p.g > p.b*1.22;
+            metal = vec3(0.015,0.65,0.10); highlight = vec3(0.40,1.0,0.18);
+          } else if (uSuit > 2.5) {
+            colored = p.r > 90.0 && p.g > 65.0 && p.r > p.b*1.65 && p.g > p.b*1.35 && p.r > p.g*1.06 && p.g > p.r*.52;
+            metal = vec3(0.86,0.42,0.02); highlight = vec3(1.0,0.90,0.35);
+          }
+          if (!colored) { gl_FragColor = vec4(0.0); return; }
+          vec2 grainUv = vUv * vec2(178.0,248.0);
+          float grain = foilHash(floor(grainUv));
+          float facet = 0.5 + 0.5*sin(grain*37.0+uTilt*19.0);
+          float detail = 1.0-smoothstep(1.0,2.4,max(fwidth(grainUv.x),fwidth(grainUv.y)));
+          float glitter = smoothstep(0.78,0.995,facet)*detail;
+          vec3 reflected = mix(metal,highlight,0.5+0.5*sin(grain*15.0+uTilt*5.0));
+          reflected = mix(reflected,vec3(1.0),smoothstep(0.985,0.999,facet)*.70);
+          gl_FragColor = vec4(reflected,sqrt(clamp(uMotion*1.8,0.0,1.0))*glitter*.96);
+          #include <colorspace_fragment>
+          return;
+        }
         vec3 darkMetal = vec3(0.17, 0.035, 0.027);
         vec3 colorMetal = vec3(0.78, 0.15, 0.045);
         vec3 brightMetal = vec3(1.0, 0.65, 0.21);
@@ -262,7 +294,8 @@ export function createCardMesh(front: THREE.Texture, back: THREE.Texture, specia
   face.castShadow = true;
   root.add(face);
 
-  const reverse = new THREE.Mesh(createCardSurfaceGeometry(back, height), new THREE.MeshBasicMaterial({
+  // Both prints share the physical face silhouette, even if source ratios differ.
+  const reverse = new THREE.Mesh(createCardSurfaceGeometry(front, height), new THREE.MeshBasicMaterial({
     map: back, color: 0xffffff, toneMapped: false, fog: false,
   }));
   reverse.name = 'card-back';
@@ -273,10 +306,11 @@ export function createCardMesh(front: THREE.Texture, back: THREE.Texture, specia
   const faceInfo = front.userData?.cardFace as { special?: boolean; suit?: Suit; theme?: string } | undefined;
   const isSpecial = Boolean(faceInfo?.special ?? special);
   const midnight = faceInfo?.theme === 'midnight';
+  const engraved = faceInfo?.theme === 'engraved';
   // A back-only deck card uses its printed back without an extra foil frame.
-  if((front!==back||faceInfo)&&!front.userData?.parallaxFlat){
-  const foil = new THREE.Mesh(midnight ? createCardArtworkFoilGeometry(front, isSpecial, height) : createCardFoilGeometry(front, height), cardFoilMaterial(isSpecial, faceInfo?.suit ?? 'sun', midnight));
-  foil.name = midnight ? 'card-artwork-foil' : 'card-border-foil';
+  if((front!==back||faceInfo)&&!front.userData?.parallaxFlat&&(!engraved||isSpecial)){
+  const foil = new THREE.Mesh(engraved ? createCardSurfaceGeometry(front,height) : midnight ? createCardArtworkFoilGeometry(front, isSpecial, height) : createCardFoilGeometry(front, height), cardFoilMaterial(isSpecial, faceInfo?.suit ?? 'sun', midnight, engraved ? front : undefined));
+  foil.name = engraved ? 'card-suit-foil' : midnight ? 'card-artwork-foil' : 'card-border-foil';
   foil.position.z = thickness / 2 + .00035;
   let hasFoilPose = false;
   const lastNormal = new THREE.Vector3();
@@ -289,12 +323,12 @@ export function createCardMesh(front: THREE.Texture, back: THREE.Texture, specia
     cameraRight.setFromMatrixColumn(camera.matrixWorld, 0);
     cameraUp.setFromMatrixColumn(camera.matrixWorld, 1);
     shader.uniforms.uTilt.value = foilNormal.dot(cameraRight) * .8 + foilNormal.dot(cameraUp) * .5;
-    const motion = hasFoilPose ? Math.min(1, foilPosition.distanceTo(lastPosition) * 28 + foilNormal.distanceTo(lastNormal) * (midnight ? 42 : 14)) : 0;
+    const motion = hasFoilPose ? Math.min(1, foilPosition.distanceTo(lastPosition) * 28 + foilNormal.distanceTo(lastNormal) * (midnight || engraved ? 42 : 14)) : 0;
     const stamp = performance.now();
     motionEnvelope = Math.max(motion, motionEnvelope * Math.exp(-(stamp - lastStamp) / 65));
     if (motionEnvelope < .003) motionEnvelope = 0;
     lastStamp = stamp;
-    shader.uniforms.uMotion.value = document.documentElement.classList.contains('reduce-motion') ? 0 : midnight ? motionEnvelope : motion;
+    shader.uniforms.uMotion.value = document.documentElement.classList.contains('reduce-motion') ? 0 : midnight || engraved ? motionEnvelope : motion;
     lastPosition.copy(foilPosition); lastNormal.copy(foilNormal); hasFoilPose = true;
   };
   foil.userData.cardFoil = true;

@@ -67,6 +67,21 @@ function lines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): s
 
 /** Print fixed card information once. Moving artwork light is a separate mesh. */
 export async function cardFaceTexture(source: THREE.Texture, face: CardFace,maximum=Infinity,printOnly=false): Promise<THREE.CanvasTexture> {
+  if (face.theme === 'engraved') {
+    // Corner labels, rules and ornaments are already printed in the approved art.
+    // Only the traditional outer silhouette is applied at runtime.
+    const image = source.image as CanvasImageSource & {width:number;height:number};
+    const {width,height} = cardTextureDimensions(image.width,image.height,maximum);
+    const canvas = document.createElement('canvas');
+    canvas.width = width; canvas.height = height;
+    const ctx = canvas.getContext('2d')!;
+    rounded(ctx,0,0,width,height,width*.055); ctx.clip();
+    ctx.drawImage(image,0,0,width,height);
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.userData.cardFace = face;
+    return texture;
+  }
   const [, frame] = await Promise.all([loadFaceFont(), cardFrameImage(face.suit)]);
   const image = source.image as CanvasImageSource & { width: number; height: number };
   const {width,height}=cardTextureDimensions(image.width||1064,image.height||1478,maximum);

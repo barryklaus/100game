@@ -1,0 +1,424 @@
+{
+  "version": "engraved-v1",
+  "width": 1064,
+  "height": 1486,
+  "encoding": "lossless WebP",
+  "physicalCards": 52,
+  "uniqueFaces": 44,
+  "holo": "special cards; suit-colored details only",
+  "parallax": false,
+  "artworks": [
+    {
+      "key": "fire-a",
+      "suit": "fire",
+      "rank": "a",
+      "index": "1",
+      "special": false,
+      "url": "assets/cards/engraved-v1/fire-a.webp",
+      "sha256": "a69a806ff8848acb386f8f2133c865ebd01abe37ab0414e3b209b2d5b3ef4c03"
+    },
+    {
+      "key": "water-a",
+      "suit": "water",
+      "rank": "a",
+      "index": "1",
+      "special": false,
+      "url": "assets/cards/engraved-v1/water-a.webp",
+      "sha256": "dd016313feb9a27959629455b821a0a16c1924940609d066fdfcb8a16db3deaa"
+    },
+    {
+      "key": "leaf-a",
+      "suit": "leaf",
+      "rank": "a",
+      "index": "1",
+      "special": false,
+      "url": "assets/cards/engraved-v1/leaf-a.webp",
+      "sha256": "2faca6440e6704c73b6ec6c317c77e23f1c27f577cf08858182b54511601bf77"
+    },
+    {
+      "key": "sun-a",
+      "suit": "sun",
+      "rank": "a",
+      "index": "1",
+      "special": false,
+      "url": "assets/cards/engraved-v1/sun-a.webp",
+      "sha256": "003bdf36574bdcb23609d6eefb787fb7e49e29d7818453c926776c240266800f"
+    },
+    {
+      "key": "fire-2",
+      "suit": "fire",
+      "rank": "2",
+      "index": "2",
+      "special": false,
+      "url": "assets/cards/engraved-v1/fire-2.webp",
+      "sha256": "99385e1b4d6ee4d84050b3832762ee8a5217fb35493c0959868b2f4b018a2230"
+    },
+    {
+      "key": "water-2",
+      "suit": "water",
+      "rank": "2",
+      "index": "2",
+      "special": false,
+      "url": "assets/cards/engraved-v1/water-2.webp",
+      "sha256": "b7a05d1283a005679463877da56cbb717f399772ae2b5331ce9932d2121d6456"
+    },
+    {
+      "key": "leaf-2",
+      "suit": "leaf",
+      "rank": "2",
+      "index": "2",
+      "special": false,
+      "url": "assets/cards/engraved-v1/leaf-2.webp",
+      "sha256": "4c33d3280ca4e3fe65819b88bc3e64a9e7288c010362a548e6bc6b65889e35a4"
+    },
+    {
+      "key": "sun-2",
+      "suit": "sun",
+      "rank": "2",
+      "index": "2",
+      "special": false,
+      "url": "assets/cards/engraved-v1/sun-2.webp",
+      "sha256": "c941b33d252afdb553e68d1d24805ff6a404e48161837f07255235c3b99a4654"
+    },
+    {
+      "key": "fire-3",
+      "suit": "fire",
+      "rank": "3",
+      "index": "3",
+      "special": false,
+      "url": "assets/cards/engraved-v1/fire-3.webp",
+      "sha256": "3df4797b312dce853caa8c4797aeeb1307d4e6882cdb960b3e0094887b915c15"
+    },
+    {
+      "key": "water-3",
+      "suit": "water",
+      "rank": "3",
+      "index": "3",
+      "special": false,
+      "url": "assets/cards/engraved-v1/water-3.webp",
+      "sha256": "fce506ba928d6f062189fcb661f22d0002d0b045eb69bd8b98bc9c2bab2ccf04"
+    },
+    {
+      "key": "leaf-3",
+      "suit": "leaf",
+      "rank": "3",
+      "index": "3",
+      "special": false,
+      "url": "assets/cards/engraved-v1/leaf-3.webp",
+      "sha256": "4dee8fce3e012c58fc7330928bc0eed573ce6627f11de8bada57608bc48bead8"
+    },
+    {
+      "key": "sun-3",
+      "suit": "sun",
+      "rank": "3",
+      "index": "3",
+      "special": false,
+      "url": "assets/cards/engraved-v1/sun-3.webp",
+      "sha256": "d61bb00b3e5ddfa2cf45d3b4694188a21a717a6565931ad19fa8cc28cc60a6b8"
+    },
+    {
+      "key": "fire-4",
+      "suit": "fire",
+      "rank": "4",
+      "index": "4",
+      "special": false,
+      "url": "assets/cards/engraved-v1/fire-4.webp",
+      "sha256": "125d83b1118af9da27dd3643f71ad8ad74249a2eb21b5c54be663baff0e8c953"
+    },
+    {
+      "key": "water-4",
+      "suit": "water",
+      "rank": "4",
+      "index": "4",
+      "special": false,
+      "url": "assets/cards/engraved-v1/water-4.webp",
+      "sha256": "a116f949677f22a995730172ec5e3c536b5248ba872764cfc43ac58ee14c9f91"
+    },
+    {
+      "key": "leaf-4",
+      "suit": "leaf",
+      "rank": "4",
+      "index": "4",
+      "special": false,
+      "url": "assets/cards/engraved-v1/leaf-4.webp",
+      "sha256": "8530eeb4dced4c86c76cb4553c333cceab154527c70e823a348c5def8cee037a"
+    },
+    {
+      "key": "sun-4",
+      "suit": "sun",
+      "rank": "4",
+      "index": "4",
+      "special": false,
+      "url": "assets/cards/engraved-v1/sun-4.webp",
+      "sha256": "dc284362aaf7b6419f8343a259e5c9cac12cafa544568291829863d4edbaebbc"
+    },
+    {
+      "key": "fire-5",
+      "suit": "fire",
+      "rank": "5",
+      "index": "5",
+      "special": false,
+      "url": "assets/cards/engraved-v1/fire-5.webp",
+      "sha256": "1c7dc93d24b740f5947e2e85a5722d5fc280c12e792462037fcbcd3145939922"
+    },
+    {
+      "key": "water-5",
+      "suit": "water",
+      "rank": "5",
+      "index": "5",
+      "special": false,
+      "url": "assets/cards/engraved-v1/water-5.webp",
+      "sha256": "8f9e2c2c962a44bee5fd812623927b93ed5e1e71b28c3f2bcc219932e08c2e98"
+    },
+    {
+      "key": "leaf-5",
+      "suit": "leaf",
+      "rank": "5",
+      "index": "5",
+      "special": false,
+      "url": "assets/cards/engraved-v1/leaf-5.webp",
+      "sha256": "b8cef949ea7619ce3ea78b5ba824bbbe9365a4e975b655a7209f89cbb27e634a"
+    },
+    {
+      "key": "sun-5",
+      "suit": "sun",
+      "rank": "5",
+      "index": "5",
+      "special": false,
+      "url": "assets/cards/engraved-v1/sun-5.webp",
+      "sha256": "354c576814b59936bdf9a24bd42cfd06064e798a514d98346d64ecfa85abe2d0"
+    },
+    {
+      "key": "fire-6",
+      "suit": "fire",
+      "rank": "6",
+      "index": "6",
+      "special": false,
+      "url": "assets/cards/engraved-v1/fire-6.webp",
+      "sha256": "b12890cab363ddcb4911a44230bb1be632781aa6bd1ac7887a1641ec7040b16b"
+    },
+    {
+      "key": "water-6",
+      "suit": "water",
+      "rank": "6",
+      "index": "6",
+      "special": false,
+      "url": "assets/cards/engraved-v1/water-6.webp",
+      "sha256": "2af738d573b678cd11428beea329da39d636be1060b71c2ec2e5d9906b0cc53e"
+    },
+    {
+      "key": "leaf-6",
+      "suit": "leaf",
+      "rank": "6",
+      "index": "6",
+      "special": false,
+      "url": "assets/cards/engraved-v1/leaf-6.webp",
+      "sha256": "ae60be6a3f5adb8a9e8f030be583f7b2a0d702401c8d4cca489c69dbfc7c3465"
+    },
+    {
+      "key": "sun-6",
+      "suit": "sun",
+      "rank": "6",
+      "index": "6",
+      "special": false,
+      "url": "assets/cards/engraved-v1/sun-6.webp",
+      "sha256": "65bc722da43c0a1d6c03584fbd67eb958bb7a909577160c3453c9fa41d40126d"
+    },
+    {
+      "key": "fire-k",
+      "suit": "fire",
+      "rank": "k",
+      "index": "10",
+      "special": false,
+      "url": "assets/cards/engraved-v1/fire-k.webp",
+      "sha256": "65c8c72a8df53738cb850d89b510825ed8f747e618d80230ff120f8edb093fb0"
+    },
+    {
+      "key": "water-k",
+      "suit": "water",
+      "rank": "k",
+      "index": "10",
+      "special": false,
+      "url": "assets/cards/engraved-v1/water-k.webp",
+      "sha256": "9f8827f72f6976646a565e1d1c6bf7f9c899ec644bd406f4323c0b4321c85178"
+    },
+    {
+      "key": "leaf-k",
+      "suit": "leaf",
+      "rank": "k",
+      "index": "10",
+      "special": false,
+      "url": "assets/cards/engraved-v1/leaf-k.webp",
+      "sha256": "9180ef168bc30abebc8c8aa703a6f6383a4c88a9653cec572b162d4cf3ed9522"
+    },
+    {
+      "key": "sun-k",
+      "suit": "sun",
+      "rank": "k",
+      "index": "10",
+      "special": false,
+      "url": "assets/cards/engraved-v1/sun-k.webp",
+      "sha256": "6d2de20509fe2517e643359525a47074c04f6e2848694f9268822d41c2940911"
+    },
+    {
+      "key": "fire-7",
+      "suit": "fire",
+      "rank": "7",
+      "index": "CHOOSE",
+      "special": true,
+      "url": "assets/cards/engraved-v1/fire-7.webp",
+      "sha256": "5a8f5404af012e2c1bc50d1ab5b0e430096bab454ef29e1d40532a4337640015",
+      "foilMask": "assets/cards/engraved-v1/foil/fire-7.png"
+    },
+    {
+      "key": "water-7",
+      "suit": "water",
+      "rank": "7",
+      "index": "CHOOSE",
+      "special": true,
+      "url": "assets/cards/engraved-v1/water-7.webp",
+      "sha256": "02fb6289d800dfb5e36962f7c4215f37915cf3a1fdf2c17c1f51fa8a7141c245",
+      "foilMask": "assets/cards/engraved-v1/foil/water-7.png"
+    },
+    {
+      "key": "leaf-7",
+      "suit": "leaf",
+      "rank": "7",
+      "index": "CHOOSE",
+      "special": true,
+      "url": "assets/cards/engraved-v1/leaf-7.webp",
+      "sha256": "d4093025d22ddbb2483cf72ae35a7caf90b4a5b03e98515c80ea608d6d56b2f0",
+      "foilMask": "assets/cards/engraved-v1/foil/leaf-7.png"
+    },
+    {
+      "key": "sun-7",
+      "suit": "sun",
+      "rank": "7",
+      "index": "CHOOSE",
+      "special": true,
+      "url": "assets/cards/engraved-v1/sun-7.webp",
+      "sha256": "c5044454d64038431937e9704176ffbcd57555b308e599ae94de52fcef5e6ea9",
+      "foilMask": "assets/cards/engraved-v1/foil/sun-7.png"
+    },
+    {
+      "key": "fire-8",
+      "suit": "fire",
+      "rank": "8",
+      "index": "REVERSE",
+      "special": true,
+      "url": "assets/cards/engraved-v1/fire-8.webp",
+      "sha256": "3057a76eaf224333e3ab1360b8f66d779cffa810fb099ef496ef6fc1a22613ea",
+      "foilMask": "assets/cards/engraved-v1/foil/fire-8.png"
+    },
+    {
+      "key": "water-8",
+      "suit": "water",
+      "rank": "8",
+      "index": "REVERSE",
+      "special": true,
+      "url": "assets/cards/engraved-v1/water-8.webp",
+      "sha256": "cb6c7b0490fda91eb6884bb382acaee001249184959a4d722c116905d3ae2953",
+      "foilMask": "assets/cards/engraved-v1/foil/water-8.png"
+    },
+    {
+      "key": "leaf-8",
+      "suit": "leaf",
+      "rank": "8",
+      "index": "REVERSE",
+      "special": true,
+      "url": "assets/cards/engraved-v1/leaf-8.webp",
+      "sha256": "1108e6a7a168b69e64052f66213107f9c2f505872d52a6a833acc5a3e7767547",
+      "foilMask": "assets/cards/engraved-v1/foil/leaf-8.png"
+    },
+    {
+      "key": "sun-8",
+      "suit": "sun",
+      "rank": "8",
+      "index": "REVERSE",
+      "special": true,
+      "url": "assets/cards/engraved-v1/sun-8.webp",
+      "sha256": "580a82b952ee6adf4b4c70ead905ab99996a0733106fc75da60d449dd69b112f",
+      "foilMask": "assets/cards/engraved-v1/foil/sun-8.png"
+    },
+    {
+      "key": "fire-9",
+      "suit": "fire",
+      "rank": "9",
+      "index": "ZERO",
+      "special": true,
+      "url": "assets/cards/engraved-v1/fire-9.webp",
+      "sha256": "db9de7cf9de86a2ffe7fa2ffe14e77f76c54bed5dd6342509ed85470f3090840",
+      "foilMask": "assets/cards/engraved-v1/foil/fire-9.png"
+    },
+    {
+      "key": "water-9",
+      "suit": "water",
+      "rank": "9",
+      "index": "ZERO",
+      "special": true,
+      "url": "assets/cards/engraved-v1/water-9.webp",
+      "sha256": "50a210f9368b6720e6fecd76497fed595ca2cd03f8af4a48a2e65953d0440e9d",
+      "foilMask": "assets/cards/engraved-v1/foil/water-9.png"
+    },
+    {
+      "key": "leaf-9",
+      "suit": "leaf",
+      "rank": "9",
+      "index": "ZERO",
+      "special": true,
+      "url": "assets/cards/engraved-v1/leaf-9.webp",
+      "sha256": "87f5b9b105d1f34ad1ae48532b7b198692c450441d0df7151c443d82c7e1ae01",
+      "foilMask": "assets/cards/engraved-v1/foil/leaf-9.png"
+    },
+    {
+      "key": "sun-9",
+      "suit": "sun",
+      "rank": "9",
+      "index": "ZERO",
+      "special": true,
+      "url": "assets/cards/engraved-v1/sun-9.webp",
+      "sha256": "0ced5c4f689a714141e01b04fb88e88b3bf0ce1409cf8d9188fa168e82fbc289",
+      "foilMask": "assets/cards/engraved-v1/foil/sun-9.png"
+    },
+    {
+      "key": "fire-10",
+      "suit": "fire",
+      "rank": "10",
+      "index": "DEDUCT",
+      "special": true,
+      "url": "assets/cards/engraved-v1/fire-10.webp",
+      "sha256": "8d8efe22e301495cdfabf65a16d97cb2d8108a3fb3e5631ddb28a9b78b1195c7",
+      "foilMask": "assets/cards/engraved-v1/foil/fire-10.png"
+    },
+    {
+      "key": "water-10",
+      "suit": "water",
+      "rank": "10",
+      "index": "DEDUCT",
+      "special": true,
+      "url": "assets/cards/engraved-v1/water-10.webp",
+      "sha256": "e08b1b2cd115f4af6b28a0dbc5b97f2f12a39aec0b7f6019c58bb3b941dd769f",
+      "foilMask": "assets/cards/engraved-v1/foil/water-10.png"
+    },
+    {
+      "key": "leaf-10",
+      "suit": "leaf",
+      "rank": "10",
+      "index": "DEDUCT",
+      "special": true,
+      "url": "assets/cards/engraved-v1/leaf-10.webp",
+      "sha256": "8f319b5a0ec98edfcfae4c15fd85aa42bd756083de3b699fceeb969c09b0e54d",
+      "foilMask": "assets/cards/engraved-v1/foil/leaf-10.png"
+    },
+    {
+      "key": "sun-10",
+      "suit": "sun",
+      "rank": "10",
+      "index": "DEDUCT",
+      "special": true,
+      "url": "assets/cards/engraved-v1/sun-10.webp",
+      "sha256": "9165227d62e293ffe95b99b854bb14810625f8098e19646277254f4ba624c05e",
+      "foilMask": "assets/cards/engraved-v1/foil/sun-10.png"
+    }
+  ]
+}

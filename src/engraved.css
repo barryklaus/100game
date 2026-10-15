@@ -1,0 +1,39 @@
+/* Full-bleed engraved prints supply their own typography and ornament. */
+.engraved-mode .playing-card.engraved-card {
+  --card-aspect:1064 / 1486;
+  aspect-ratio:1064 / 1486;
+  background:transparent!important;
+  border:0!important;
+  padding:0;
+}
+.engraved-mode .engraved-card > img {
+  width:100%;height:100%;object-fit:fill!important;
+  border-radius:5.5% / 3.95%;
+}
+.engraved-mode .engraved-card .card-print {display:none!important;}
+.engraved-mode .engraved-card::after,
+.engraved-mode.world3d-active .hand-card.engraved-card::after {display:none!important;}
+.engraved-mode .engraved-card.special::after,
+.engraved-mode.world3d-active .hand-card.engraved-card.special::after {
+  display:block!important;
+  inset:0;padding:0;z-index:2;
+  border-radius:5.5% / 3.95%;
+  background:
+    radial-gradient(ellipse at var(--holo-x,50%) var(--holo-y,50%),var(--engraved-e),transparent 47%),
+    conic-gradient(from var(--foil-angle,45deg) at var(--holo-x,50%) var(--holo-y,50%),var(--engraved-a),var(--engraved-b) 14%,var(--engraved-e) 30%,var(--engraved-a) 47%,var(--engraved-d) 67%,var(--engraved-c) 83%,var(--engraved-a));
+  background-size:145% 145%;
+  background-position:var(--holo-x,50%) var(--holo-y,50%);
+  background-blend-mode:screen;mix-blend-mode:screen;
+  -webkit-mask:var(--engraved-mask) 0 0 / 100% 100% no-repeat;
+  mask:var(--engraved-mask) 0 0 / 100% 100% no-repeat;
+  -webkit-mask-composite:source-over;mask-composite:add;
+  opacity:calc(var(--foil-motion,0) * .96)!important;
+  filter:saturate(1.55) brightness(1.15)!important;
+  animation:none!important;
+}
+.engraved-mode .engraved-card.suit-fire {--engraved-a:#630603;--engraved-b:#e3280c;--engraved-c:#ff9d35;--engraved-d:#ff450d;--engraved-e:#ffe2a1;}
+.engraved-mode .engraved-card.suit-water {--engraved-a:#07184a;--engraved-b:#0753ff;--engraved-c:#34d3ff;--engraved-d:#078ff5;--engraved-e:#d1f9ff;}
+.engraved-mode .engraved-card.suit-leaf {--engraved-a:#063b14;--engraved-b:#10a03d;--engraved-c:#9bff76;--engraved-d:#15e56c;--engraved-e:#ddffc5;}
+.engraved-mode .engraved-card.suit-sun {--engraved-a:#65420a;--engraved-b:#daa11c;--engraved-c:#fff4a9;--engraved-d:#ffc028;--engraved-e:#fffbd9;}
+.engraved-mode.world3d-active .hand-card.engraved-card.mesh-ready::after,
+.engraved-mode.reduce-motion .engraved-card::after {display:none!important;}
