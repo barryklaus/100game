@@ -36,6 +36,24 @@ export class ForegroundCards {
     this.renderer.setSize(width, height, false);
   }
 
+  /** Upload the two visible cards and compile their flight shader before release. */
+  async prepare(root:THREE.Group):Promise<void>{
+    if(this.contextLost)return;
+    const textures=new Set<THREE.Texture>();
+    root.traverse(object=>{
+      if(!(object instanceof THREE.Mesh))return;
+      const materials=Array.isArray(object.material)?object.material:[object.material];
+      for(const material of materials){
+        const map=(material as THREE.MeshBasicMaterial).map;if(map)textures.add(map);
+        for(const uniform of Object.values((material as THREE.ShaderMaterial).uniforms??{})){
+          if(uniform.value?.isTexture)textures.add(uniform.value);
+        }
+      }
+    });
+    for(const texture of textures)this.renderer.initTexture(texture);
+    await this.renderer.compileAsync(root,this.camera,this.scene);
+  }
+
   render(): void {
     const visible = this.active && !this.contextLost && this.scene.children.some(card => card.visible);
     this.renderer.domElement.hidden = !visible;

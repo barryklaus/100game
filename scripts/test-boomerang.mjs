@@ -85,4 +85,12 @@ prepared.warm('old');prepared.warm('new');builders[2].resolve('old mesh');builde
 assert.equal(await prepared.take('new'),'new mesh');assert.deepEqual(disposed,['late canceled mesh','old mesh']);
 prepared.warm('failed');builders[4].reject(new Error('decode'));await Promise.resolve();prepared.warm('failed');
 builders[5].resolve('retry');assert.equal(await prepared.take('failed'),'retry','Failed warming can retry safely');
+const handBuilds=[],handDisposals=[];
+const handCache=new PreparedCardFlight(async key=>{handBuilds.push(key);return key;},value=>handDisposals.push(value),2);
+handCache.warm('left');handCache.warm('right');await Promise.resolve();
+assert.equal(await handCache.take('left'),'left');assert.equal(await handCache.take('right'),'right');
+assert.deepEqual(handBuilds,['left','right'],'Both visible cards are built before the player chooses which to flick');
+handCache.warm('old-a');handCache.warm('old-b');handCache.warm('new');await Promise.resolve();
+assert.deepEqual(handDisposals,['old-a'],'Prewarming remains bounded to two cards');
+handCache.clear();await Promise.resolve();assert.deepEqual(handDisposals,['old-a','old-b','new']);
 console.log('Boomerang checks passed: charge/cancel detection, bounded loops, continuous release velocity, immediate uninterrupted spin, exact settled landing, and prepared-flight reuse/cancellation/retry.');

@@ -22,6 +22,7 @@ import { TotalPresentation } from './ui/TotalPresentation';
 import { totalMarkup } from './ui/totalFeedback';
 import { screenRect, setScreenDanger, unshakenRect } from './ui/ScreenShake';
 import { LatestFrame } from './ui/LatestFrame';
+import { CardReleaseCarry } from './ui/CardReleaseCarry';
 import { PlayerRing } from './ui/PlayerRing';
 import { CHARACTER_SPRITE_VERSION } from './ui/CharacterSpriteLayout';
 import { scoreTransition } from './ui/ScoreTransition';
@@ -147,7 +148,7 @@ let observedOnlineRound = 0;
 const audio = new AudioManager();
 const remoteCardAudio=new RemoteCardAudio(cue=>audio.play(cue));
 const holo = new HoloShader();
-const parallaxHand = new ParallaxHand(app,url=>observatory?.warmCardArtwork(url));
+const parallaxHand = new ParallaxHand(app,url=>{if(isNextVersion)observatory?.warmCardArtwork(url);});
 const gyro = new GyroHand();
 gyro.onStatusChange = () => {
   const button = document.querySelector<HTMLButtonElement>('[data-action="gyro-enable"]');
@@ -507,11 +508,14 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   if (!card) { locked = false; return; }
   const specialThrow=!!state.match&&!state.players[throwingSeat].specialThrowUsed&&(specialThrowArm?.key===specialThrowKey()||((state.players[throwingSeat].kind==='cpu'||autoEnabled(throwingSeat))&&chooseCpuSpecialThrow(state,card)));
   if(settings.reducedMotion){audio.play('slap');locked=false;resolveCard(cardId,specialThrow);return;}
+  const carry=immediateRelease&&releaseVelocity&&source?new CardReleaseCarry(source,releaseVelocity):undefined;
+  try {
   const origin = source || document.querySelector<HTMLElement>(`.seat[data-seat="${state.current}"]`) || document.querySelector<HTMLElement>('.draw-stack')!;
   let start = screenRect(origin);
   if (observatory?.canAnimate && !settings.reducedMotion) {
     try {
       await observatory.playCardToDiscard(cardImage(card), start, spin, source?cardId:undefined,()=>{
+        carry?.stop();
         departingCardId=source?cardId:null;
         source?.classList.add('card-departing');
         if(source)app.querySelector<HTMLElement>(`.local-hand [data-card="${cardId}"]`)?.classList.add('card-departing');
@@ -520,7 +524,7 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
       }, async () => {
         const hand = immediateRelease?undefined:await playerRing.prepareThrow(throwingSeat,specialThrow);
         if (state !== playState || state.turn !== playTurn) throw new Error('The turn changed before the card left.');
-        return source || !hand ? undefined : unshakenRect(hand);
+        return source ? screenRect(source) : !hand ? undefined : unshakenRect(hand);
       },releaseVelocity);
       if (state !== playState || state.turn !== playTurn) { playerRing.cancelThrow(throwingSeat); locked = false; return; }
       audio.play('slap');
@@ -541,6 +545,8 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
     if (!source && hand) start = unshakenRect(hand);
   } catch { source?.classList.remove('dragging');playerRing.cancelThrow(throwingSeat); locked = false; return; }
   playerRing.release(throwingSeat,specialThrow);
+  if(source)start=screenRect(source);
+  carry?.stop();
   if (source) {
     flying = source.cloneNode(true) as HTMLElement;
     flying.classList.remove('selected', 'dragging', 'waiting-hand', 'card-departing');
@@ -581,6 +587,7 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   if(online&&awaitingNetwork){
     const detach=()=>{if(!awaitingNetwork||state!==playState){flying.remove();return;}requestAnimationFrame(detach);};requestAnimationFrame(detach);
   }else requestAnimationFrame(()=>flying.remove());
+  } finally {carry?.stop();}
 }
 function chooseTarget(target: number): void {
   if (!state || state.phase !== 'target' || locked || awaitingNetwork || (online && state.turn !== online.state?.turn)) return;
@@ -1082,7 +1089,6 @@ function endDrag(event:PointerEvent):void{
     void animatePlay(current.id,current.element,spin,{x:vx,y:vy});
   }
   else{
-    observatory?.cancelWarmCardThrow();
     current.element.classList.remove('dragging');
     const from=current.element.style.transform;
     current.element.style.transform='';

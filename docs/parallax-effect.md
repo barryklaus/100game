@@ -1,4 +1,4 @@
-# Parallax Effect — Alpha 0.1.3
+# Parallax Effect — Alpha 0.1.4
 
 Settings → **Parallax Effect** adds three visual layers to the hand:
 
@@ -68,3 +68,23 @@ The same treatment is used on the flat DOM hand when parallax is off.
 Regression checks cover the first held movement, no separate foil RAF during
 dragging, release continuity, canceled returns and Reduced motion. Local browser
 replays exercise the actual gesture handlers with both mouse and touch pointers.
+
+## Seamless throw handoff — 0.1.4
+
+- Normalize relative and absolute card URLs so visible-hand warming and release
+  consume the same prepared card. Keep at most two preparations, including with
+  parallax off. Returning a held card keeps its preparation available.
+- Prepare geometry, upload native textures and compile flight shaders while the
+  hand is visible. Optional layers must be ready before a layered card is warmed.
+- A compositor animation immediately carries a released card at its real pointer
+  velocity if preparation is still pending. The flight snapshots that moving
+  position and rotation before canceling the carry and hiding the hand card.
+- Update concurrent flights together and paint their new positions in the same
+  frame, paced at 60 Hz. Preserve exact discard fitting and the atomic pile handoff.
+- Clear preparations on exits, outcomes, effect changes and context loss.
+
+Local integration replay: prepared desktop handoff measured 21 ms; a portrait
+touch throw with an artificial 160 ms preparation delay kept moving in all nine
+sampled intervals and had a visible flight at handoff. These are browser fixture
+measurements, not physical iPhone frame-rate claims. Regression tests cover the
+carry, same-frame paint, batching, shader/texture preparation and bounded reuse.

@@ -56,8 +56,17 @@ export class ParallaxHand {
   private sync():void {
     if(this.disposed)return;
     for(const card of visibleLayers.keys())if(!card.isConnected){visibleLayers.delete(card);}
-    for(const card of Array.from(this.root.querySelectorAll<HTMLElement>('.local-hand .hand-card[data-parallax-key],.shared-hand .hand-card[data-parallax-key]'))){
+    for(const card of Array.from(this.root.querySelectorAll<HTMLElement>('.local-hand .hand-card,.shared-hand .hand-card'))){
       if(this.pending.has(card))continue;
+      if(!card.dataset.parallaxKey){
+        const source=card.querySelector<HTMLImageElement>(':scope > img');if(!source)continue;
+        this.pending.add(card);
+        void source.decode().then(()=>{
+          if(this.disposed||!card.isConnected)return;
+          this.ready?.(source.dataset.standardSrc??source.src);
+        }).catch(()=>{});
+        continue;
+      }
       const background=card.querySelector<HTMLImageElement>('.parallax-background img'),object=card.querySelector<HTMLImageElement>('.parallax-object'),face=card.querySelector<HTMLElement>('.parallax-face');
       if(!background||!object||!face)continue;
       this.pending.add(card);

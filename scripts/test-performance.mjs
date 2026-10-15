@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {build} from 'esbuild';
 const load=async path=>{
-  const entry=path==='src/render/ObservatoryScene.ts'?{stdin:{contents:`export * from './${path}'; export {Scene,Texture,Mesh,MeshBasicMaterial,PlaneGeometry} from 'three';`,resolveDir:process.cwd(),sourcefile:'performance-test-entry.ts'}}:{entryPoints:[path]};
+  const entry=['src/render/ObservatoryScene.ts','src/render/ForegroundCards.ts'].includes(path)?{stdin:{contents:`export * from './${path}'; export {Scene,Group,Texture,Mesh,MeshBasicMaterial,ShaderMaterial,PlaneGeometry} from 'three';`,resolveDir:process.cwd(),sourcefile:'performance-test-entry.ts'}}:{entryPoints:[path]};
   const result=await build({...entry,bundle:true,platform:'node',format:'esm',write:false,define:{'import.meta.env.BASE_URL':'"/"','import.meta.env.MODE':'"100next"'}});
   return import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);
 };
@@ -44,11 +44,22 @@ const action=decodes.run(async()=>order.push('action'),2,'receive');
 decodes.promote('now-visible',2);unlock();await Promise.all([blocker,background,promoted,action]);
 assert.deepEqual(order,['action','promoted','background'],'Visible/action frames and promoted prefetches take priority over unused warming');
 
-const {ForegroundCards}=await load('src/render/ForegroundCards.ts');
+const {ForegroundCards,Group:PrepGroup,Texture:PrepTexture,Mesh:PrepMesh,MeshBasicMaterial:PrepBasic,ShaderMaterial:PrepShader,PlaneGeometry:PrepGeometry}=await load('src/render/ForegroundCards.ts');
 const calls=[],foreground=Object.create(ForegroundCards.prototype);
 Object.assign(foreground,{size:{width:0,height:0,pixelRatio:0},renderer:{setPixelRatio:value=>calls.push(value),setSize:(w,h)=>calls.push([w,h])}});
 foreground.resize(390,844,2);foreground.resize(390,844,2);assert.equal(calls.length,2,'Table resolution adaptation must not reallocate the unchanged crisp foreground canvas');
 foreground.resize(844,390,2);assert.equal(calls.length,4,'A real orientation change still resizes the foreground');
+
+const warmRenderer=Object.create(ForegroundCards.prototype),preparedRoot=new PrepGroup(),uploaded=[];
+preparedRoot.visible=false;
+const front=new PrepTexture(),bg=new PrepTexture(),object=new PrepTexture();
+preparedRoot.add(new PrepMesh(new PrepGeometry(),new PrepBasic({map:front})),new PrepMesh(new PrepGeometry(),new PrepShader({uniforms:{uPrint:{value:front},uBackground:{value:bg},uObject:{value:object}}})));
+let compiled,finished=false;
+Object.assign(warmRenderer,{contextLost:false,scene:new PrepGroup(),camera:{},renderer:{initTexture:texture=>uploaded.push(texture),compileAsync:()=>new Promise(resolve=>{compiled=resolve;})}});
+const prepared=warmRenderer.prepare(preparedRoot).then(()=>{finished=true;});
+assert.deepEqual(uploaded,[front,bg,object],'All native print and layer textures are uploaded once before the throw');
+assert.equal(finished,false);assert.equal(preparedRoot.visible,false,'Preparation cannot flash a second card on screen');
+compiled();await prepared;assert(finished,'Prepared release waits for its shader to finish compiling, ahead of the gesture');
 
 const {cardTextureDimensions}=await load('src/render/CardFaceTexture.ts');
 assert.deepEqual(cardTextureDimensions(1064,1486),{width:1064,height:1486},'Full-resolution hand/flight textures keep every native pixel');

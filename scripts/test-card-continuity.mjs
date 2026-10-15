@@ -52,12 +52,13 @@ try {
     visual.userData.flightFlex=()=>{};
     const camera=new PerspectiveCamera(42,1.5,.1,80);camera.position.z=5;
     Object.assign(subject,{
-      camera,reducedMotion:false,activeFlights:0,active:true,contextLost:false,quality:'high',lastEventKey:'old',
+      camera,reducedMotion:false,activeFlights:0,flightTicks:new Set(),flightFrame:0,flightPacer:{step:()=>true,reset(){}},active:true,contextLost:false,quality:'high',lastEventKey:'old',
       scene:new Scene(),handoff:new CardHandoff(),hand:{update:()=>{}},
       renderer:{shadowMap:{needsUpdate:false},render:()=>events.push('pile-painted')},
-      foreground:{scene:new Scene(),render:()=>events.push('foreground-painted')},
+      foreground:{scene:new Scene(),render:()=>{events.push('foreground-painted');painted.push(root.position.clone());}},
       disposeFlyingCard:card=>{events.push('flight-removed');card.removeFromParent();},pruneTextureCache:()=>{},
     });
+    const painted=[];
     subject.foreground.scene.add(root);
     const start=new Vector3(1,-1,0),end=new Vector3(-1,0,-2);
     const flight=subject.animateCardFlight({root,visual,start,end,startQuaternion:new Quaternion(),endQuaternion:new Quaternion(),startScale:1,endScale:1,draw,releaseVelocity:draw?undefined:{x:.6,y:-.4}});
@@ -66,6 +67,7 @@ try {
     const tick=elapsed=>{now=elapsed;const callback=queue.shift();assert(callback);callback(now);};
     if(!draw){
       tick(.01);
+      assert(painted.at(-1).distanceTo(root.position)<1e-12,'The updated flight is painted in its own frame, without waiting for the next world loop');
       const worldPerPixel=2*5*Math.tan(42*Math.PI/360)/800;
       assert(Math.abs((root.position.x-start.x)/.01/worldPerPixel-.6)<.001,'Release starts with the held card horizontal velocity');
       assert(Math.abs((root.position.y-start.y)/.01/worldPerPixel-.4)<.001,'Release starts with the held card upward velocity');
@@ -88,4 +90,31 @@ try {
     }
   }
 } finally {Object.assign(globalThis,saved);}
-console.log('Card continuity passed: atomic reshuffles, delayed/stale/failed texture updates, immediate paint, release velocity, continuous landing, draw cleanup and discard paint order.');
+
+// Visible-image readiness and pointer input may spell the same URL differently.
+const urls=Object.create(ObservatoryScene.prototype),built=[];
+globalThis.document={baseURI:'https://100next.pages.dev/'};
+Object.assign(urls,{active:true,contextLost:false,roundEnded:false,reducedMotion:false,preparedThrow:{warm:url=>built.push(url)}});
+urls.warmCardThrow('/assets/cards/midnight-v1/fire-4.webp');
+assert.equal(built[0],urls.cardSource('https://100next.pages.dev/assets/cards/midnight-v1/fire-4.webp'),'Ready artwork and release use one preparation key');
+
+const {CardReleaseCarry}=await load('src/ui/CardReleaseCarry.ts');
+let carryFrames,carryOptions,canceled=0;
+document.timeline={currentTime:500};
+globalThis.getComputedStyle=()=>({transform:'matrix(1, 0, 0, 1, 22, -31)'});
+const carryAnimation={cancel:()=>canceled++};
+const carryCard={animate:(frames,options)=>{carryFrames=frames;carryOptions=options;return carryAnimation;}};
+const carry=new CardReleaseCarry(carryCard,{x:.5,y:-.8});
+assert.equal(carryOptions.easing,'linear');assert.equal(carryFrames[0].transform,'matrix(1, 0, 0, 1, 22, -31)');
+assert(carryFrames[1].transform.startsWith('translate3d(500px,-800px,0)'),'An uncached release immediately continues its real velocity instead of parking the held card');
+assert.equal(carryAnimation.startTime,500,'The carry starts on the current compositor timeline, with no pending-start frame');
+carry.stop();assert.equal(canceled,1,'The incoming flight cancels the bridge at its pose snapshot');
+
+// All concurrent flights update before one paint, including the first moved frame.
+const batch=Object.create(ObservatoryScene.prototype),order=[];
+Object.assign(batch,{flightTicks:new Set(),flightFrame:9,flightPacer:{step:()=>true},foreground:{render:()=>order.push('paint')}});
+for(const key of ['a','b'])batch.flightTicks.add(()=>order.push(key));
+const oldRaf=globalThis.requestAnimationFrame;globalThis.requestAnimationFrame=()=>1;
+batch.tickFlights(20);assert.deepEqual(order,['a','b','paint'],'Concurrent dealing/throws do not multiply GPU draws or add a frame of latency');
+globalThis.requestAnimationFrame=oldRaf;
+console.log('Card continuity passed: same-frame flight paint, bounded hand prewarming, canonical URLs, immediate cold-release carry, release velocity, exact landing, draw cleanup and discard paint order.');

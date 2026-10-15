@@ -63,7 +63,11 @@ export class ObservatoryScene {
   private renderScale = 1;
   private fastSamples = 0;
   private activeFlights = 0;
-  private preparedThrow=new PreparedCardFlight(url=>this.makeFlyingCard(url),flight=>this.disposeFlyingCard(flight.root));
+  private flightTicks=new Set<(stamp:number)=>void>();
+  private flightFrame=0;
+  private flightPacer=new FramePacer();
+  private throwWarmMode=false;
+  private preparedThrow=new PreparedCardFlight(url=>this.makeFlyingCard(url),flight=>this.disposeFlyingCard(flight.root),2);
   private handoff = new CardHandoff();
   private active = false;
   private roundEnded = false;
@@ -171,6 +175,7 @@ export class ObservatoryScene {
   private refreshContext = (): void => {
     this.worldPaint.request();
     this.contextLost = this.renderer.getContext().isContextLost() || this.foreground.contextLost;
+    if(this.contextLost)this.preparedThrow.clear();
     if (this.contextLost) this.onCardArrival?.(this.playKey);
     this.renderer.domElement.hidden = !this.active || this.contextLost;
     this.foreground.setActive(this.active && !this.roundEnded && !this.contextLost);
@@ -199,6 +204,8 @@ export class ObservatoryScene {
   }
 
   configure(options: {quality:QualityPreset; reducedMotion:boolean}): void {
+    const warmMode=document.documentElement.classList.contains('parallax-effect-on');
+    if(warmMode!==this.throwWarmMode){this.preparedThrow.clear();this.throwWarmMode=warmMode;}
     this.hand.configure(options.reducedMotion);
     if(this.qualityConfigured && this.quality===options.quality && this.reducedMotion===options.reducedMotion) return;
     const qualityChanged = !this.qualityConfigured || this.quality !== options.quality;
@@ -304,7 +311,12 @@ export class ObservatoryScene {
     }
   }
 
+  private cardSource(url:string):string {
+    return typeof document!=='undefined'&&document.baseURI?new URL(url,document.baseURI).href:url;
+  }
+
   private loadTexture(url: string,pile=false): Promise<THREE.Texture> {
+    url=this.cardSource(url);
     const maximum=pile?this.pileTextureLimit:Infinity;
     const key=Number.isFinite(maximum)?`${maximum}:${url}`:url;
     this.textureLastUsed.set(key, performance.now());
@@ -341,7 +353,7 @@ export class ObservatoryScene {
       });
     }));
     const mobile=Number.isFinite(this.pileTextureLimit);
-    const commonBack=this.loadedTextures.get(this.drawCardUrl);
+    const commonBack=this.loadedTextures.get(this.cardSource(this.drawCardUrl));
     if(mobile&&commonBack)active.add(commonBack);
     const protectedLoaded=[...this.loadedTextures.values()].filter(texture=>active.has(texture)).length;
     const maximum=mobile?protectedLoaded+2:14;
@@ -381,6 +393,7 @@ export class ObservatoryScene {
   }
 
   private async makeFlyingCard(frontUrl: string): Promise<{ root: THREE.Group; visual: THREE.Group }> {
+    frontUrl=this.cardSource(frontUrl);
     const [frontTexture, backTexture] = await Promise.all([
       this.loadTexture(frontUrl),
       this.loadTexture(this.drawCardUrl || frontUrl),
@@ -400,12 +413,17 @@ export class ObservatoryScene {
     visual.userData.flightFlex=flyingCardFlex(visual);
     root.add(visual);
     this.foreground.scene.add(root);
+    try {await this.foreground.prepare(root);}
+    catch(error){this.disposeFlyingCard(root);throw error;}
     return { root, visual };
   }
 
-  warmCardThrow(frontUrl:string):void{if(this.canAnimate)this.preparedThrow.warm(frontUrl);}
-  warmCardArtwork(frontUrl:string):void{void this.loadTexture(frontUrl).catch(()=>{});}
-  cancelWarmCardThrow():void{this.preparedThrow.clear();}
+  warmCardThrow(frontUrl:string):void{
+    frontUrl=this.cardSource(frontUrl);
+    if(frontUrl.includes('/parallax-v1/')&&!parallaxLayersFor(frontUrl))return;
+    if(this.canAnimate&&this.active&&!this.roundEnded&&!this.reducedMotion)this.preparedThrow.warm(frontUrl);
+  }
+  warmCardArtwork(frontUrl:string):void{this.warmCardThrow(frontUrl);}
   private disposeFlyingCard(root:THREE.Group):void{
     root.removeFromParent();
     root.traverse(object=>{
@@ -415,6 +433,16 @@ export class ObservatoryScene {
         materials.forEach(material=>material.dispose());
       }
     });
+  }
+
+  /** Update every flying card, then paint once in that same browser frame. */
+  private tickFlights(stamp:number):void{
+    this.flightFrame=0;
+    if(this.flightPacer.step(stamp)){
+      for(const tick of [...this.flightTicks])tick(stamp);
+      this.foreground.render();
+    }
+    if(this.flightTicks.size)this.flightFrame=requestAnimationFrame(now=>this.tickFlights(now));
   }
 
   private animateCardFlight(options: {
@@ -450,10 +478,9 @@ export class ObservatoryScene {
     fit.apply(root,0);
     visual.rotation.y = draw ? Math.PI : 0;
     const flex=visual.userData.flightFlex as ReturnType<typeof flyingCardFlex>;
+    const started = performance.now();
     onStart?.();
     this.hand.update(0);
-    this.foreground.render();
-    const started = performance.now();
     const boomerang=!draw&&spin?.kind==='boomerang'&&!this.reducedMotion;
     const duration = this.reducedMotion ? 80 : draw ? 520 : boomerang ? (spin!.turns===3?1080:920) : spin ? (spin.turns===2?720:560) : 440;
     const right=new THREE.Vector3(1,0,0).applyQuaternion(this.camera.quaternion);
@@ -500,8 +527,8 @@ export class ObservatoryScene {
           spinRotation.setFromAxisAngle(spinAxis,spin.turns*Math.PI*2*(momentum?boomerangTiming(raw).spin:t));
           visual.quaternion.premultiply(spinRotation);
         }
-        if (raw < 1) requestAnimationFrame(step);
-        else {
+        if (raw >= 1) {
+          this.flightTicks.delete(step);
           this.activeFlights--;
           this.renderer.shadowMap.needsUpdate = true;
           let released = false;
@@ -540,12 +567,17 @@ export class ObservatoryScene {
           }
         }
       };
-      requestAnimationFrame(step);
+      if(!this.flightTicks.size)this.flightPacer.reset(started);
+      this.flightTicks.add(step);
+      // Paint the release now, with elapsed setup time included in its motion.
+      step(performance.now());
+      this.foreground.render();
+      if(!this.flightFrame&&this.flightTicks.size)this.flightFrame=requestAnimationFrame(now=>this.tickFlights(now));
     });
   }
 
   async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin?:CardSpin, cardId?:string, onStart?:()=>void, onReady?:()=>Promise<DOMRect|undefined>,releaseVelocity?:{x:number;y:number}): Promise<void> {
-    const { root, visual } = await (cardId?this.preparedThrow.take(frontUrl):this.makeFlyingCard(frontUrl));
+    const { root, visual } = await (cardId?this.preparedThrow.take(this.cardSource(frontUrl)):this.makeFlyingCard(frontUrl));
     let handRect: DOMRect | undefined;
     try { handRect = await onReady?.(); }
     catch (error) {
@@ -833,7 +865,7 @@ export class ObservatoryScene {
       if(QUALITY_PRESETS[this.quality].bloom)this.renderWithCleanCards();else this.renderer.render(this.scene, this.camera);
       this.worldRenders++;this.windowRenders++;
     }
-    this.foreground.render();
+    if(!this.activeFlights)this.foreground.render();
     if(time-this.profileTime>2.4){
       const frameMs=this.profileDelta/this.profileFrames*1000;
       this.renderer.domElement.dataset.frameMs=frameMs.toFixed(1);
@@ -857,6 +889,7 @@ export class ObservatoryScene {
     this.handoff.clear();
     this.totalPulse?.cancel();
     cancelAnimationFrame(this.frame);
+    cancelAnimationFrame(this.flightFrame);this.flightTicks.clear();
     clearTimeout(this.pruneTimer);
     this.hand.dispose();this.composer?.dispose();this.bloom?.dispose();this.ao?.dispose();this.environment.dispose();
     this.foreground.dispose();
