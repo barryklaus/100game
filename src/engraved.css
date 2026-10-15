@@ -7,8 +7,9 @@
   padding:0;
 }
 .engraved-mode .engraved-card > img {
+  inset:0;
   width:100%;height:100%;object-fit:fill!important;
-  border-radius:5.5% / 3.95%;
+  border-radius:5.5% / 3.95%!important;
 }
 .engraved-mode .engraved-card .card-print {display:none!important;}
 .engraved-mode .engraved-card::after,
@@ -37,3 +38,20 @@
 .engraved-mode .engraved-card.suit-sun {--engraved-a:#65420a;--engraved-b:#daa11c;--engraved-c:#fff4a9;--engraved-d:#ffc028;--engraved-e:#fffbd9;}
 .engraved-mode.world3d-active .hand-card.engraved-card.mesh-ready::after,
 .engraved-mode.reduce-motion .engraved-card::after {display:none!important;}
+
+/* Reserve space for the fan's downward translation and rotated bottom corners.
+   The clearance scales with the actual card height, including tablet portrait. */
+@media(orientation:portrait) {
+  .engraved-mode.observatory-mode .local-hand {
+    --portrait-card-height:min(39svh,57vw);
+    bottom:calc(max(14px,env(safe-area-inset-bottom)) + var(--portrait-card-height)*.14)!important;
+  }
+  .engraved-mode.observatory-mode .local-hand .hand-card {
+    height:var(--portrait-card-height)!important;
+  }
+}
+@media(orientation:portrait) and (min-width:600px) {
+  .engraved-mode.observatory-mode .local-hand:has(.special-throw-toggle) {
+    --portrait-card-height:min(36svh,53vw);
+  }
+}
