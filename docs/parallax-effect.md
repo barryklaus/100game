@@ -1,4 +1,4 @@
-# Parallax Effect — Alpha 0.1.2
+# Parallax Effect — Alpha 0.1.3
 
 Settings → **Parallax Effect** adds three visual layers to the hand:
 
@@ -51,3 +51,20 @@ the same artwork in each suit.
 
 Portrait browser testing does not measure frame rate on a physical iPhone XS Max.
 The default remains off to preserve the existing mobile performance budget.
+
+## Held motion and shine correction — 0.1.3
+
+The gesture now paints parallax and holographic motion in the same coalesced
+update as the held card's tilt. The first movement starts the glitter; captured
+mouse and touch movement does not depend on the pointer remaining above the
+original slot. Tilt uses its full bounded range for clearly visible depth.
+Released throws keep that final pose, while returned/canceled cards recenter.
+
+The background reflects stronger metallic rainbow flakes through a small SVG
+grain tile. Glitter remains behind the object, border, numbers and special-card
+instructions. It fades when movement stops, without an idle animation loop.
+The same treatment is used on the flat DOM hand when parallax is off.
+
+Regression checks cover the first held movement, no separate foil RAF during
+dragging, release continuity, canceled returns and Reduced motion. Local browser
+replays exercise the actual gesture handlers with both mouse and touch pointers.

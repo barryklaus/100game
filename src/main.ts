@@ -1049,6 +1049,7 @@ app.addEventListener('pointermove',event=>{
   dragPaint.schedule(()=>{
     if(drag!==current||!current.element.isConnected)return;
     current.element.dataset.tiltX=String(tx*Math.PI/180);current.element.dataset.tiltY=String(ty*Math.PI/180);current.element.dataset.turn=String(turn*Math.PI/180);
+    holo.paintDrag(current.element,tx,ty,event.clientX,event.clientY);
     swingCue.hidden=!swingReady;
     if(swingReady){swingCue.style.left=`${Math.max(85,Math.min(innerWidth-85,event.clientX))}px`;swingCue.style.top=`${Math.max(85,Math.min(innerHeight-45,event.clientY-54))}px`;}
     current.element.classList.toggle('flick-ready',flickReady);
@@ -1071,6 +1072,7 @@ function endDrag(event:PointerEvent):void{
   const canPlay=!canceled&&!current.inspecting&&canControlActor()&&state?.phase==='playing';
   const boomerang=canPlay?current.swing?.release(releasedAt,{x:vx,y:vy}):undefined;
   const shouldPlay=!!boomerang||isPlayGesture({dx,dy,duration:releasedAt-current.time,canceled,inspecting:current.inspecting,canPlay:!!canPlay,grip:current.grip,releaseVX:vx});
+  holo.releaseDrag(current.element,shouldPlay);
   if(current.element.hasPointerCapture(event.pointerId))current.element.releasePointerCapture(event.pointerId);
   current.element.classList.remove('flick-ready','inspecting');
   if(shouldPlay){

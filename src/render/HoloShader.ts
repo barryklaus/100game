@@ -5,6 +5,7 @@ import { setParallaxPosition } from '../ui/ParallaxHand';
 export class HoloShader {
   private isEnabled = true;
   private active: HTMLElement | null = null;
+  private dragged: HTMLElement | null = null;
   private lastPointer: {x:number;y:number}|null = null;
   private stillTimer = 0;
   private pointerFrame=new LatestFrame<PointerEvent>(event=>this.paintPointer(event));
@@ -38,12 +39,34 @@ export class HoloShader {
     this.active.removeAttribute('data-card-pressed');
     this.active.removeAttribute('data-foil-moving');
     this.active = null;
+    this.dragged = null;
     this.lastPointer = null;
   }
 
   private onPointerMove = (event: PointerEvent): void => {
+    // The gesture's coalesced paint owns held cards, including captured touches.
+    // A second RAF here can paint yesterday's tilt or drop the release sample.
+    if(this.dragged||(event.target as Element|null)?.closest('.playing-card.dragging'))return;
     if(this.isEnabled)this.pointerFrame.schedule(event);
   };
+
+  /** Called inside the card's own visual update; no hit test or layout read. */
+  paintDrag(card:HTMLElement,tiltX:number,tiltY:number,clientX:number,clientY:number):void {
+    if(!this.isEnabled)return;
+    this.pointerFrame.cancel();
+    if(card!==this.active){this.clearActive();this.active=card;}
+    this.dragged=card;
+    const x=.5+Math.max(-1,Math.min(1,tiltY/20))*.5;
+    const y=.5-Math.max(-1,Math.min(1,tiltX/17))*.5;
+    this.paintPose(card,x,y,clientX,clientY);
+  }
+
+  releaseDrag(card:HTMLElement,keepPose:boolean):void {
+    if(this.dragged===card)this.dragged=null;
+    if(keepPose)return; // The prepared throw snapshots these exact offsets.
+    setParallaxPosition(card,0,0);
+    card.style.removeProperty('--card-tilt-x');card.style.removeProperty('--card-tilt-y');
+  }
 
   private paintPointer(event:PointerEvent):void {
     if (!this.isEnabled) return;
@@ -60,22 +83,26 @@ export class HoloShader {
     const rect=dragging?undefined:card.getBoundingClientRect();
     const x=dragging?clamp(.5+Number(card.dataset.tiltY||0)*1.25):clamp((event.clientX-rect!.left)/Math.max(1,rect!.width));
     const y=dragging?clamp(.5-Number(card.dataset.tiltX||0)*1.25):clamp((event.clientY-rect!.top)/Math.max(1,rect!.height));
+    this.paintPose(card,x,y,event.clientX,event.clientY);
+  }
+
+  private paintPose(card:HTMLElement,x:number,y:number,clientX:number,clientY:number):void {
     card.style.setProperty('--card-tilt-x', `${((.5 - y) * 7).toFixed(2)}deg`);
     card.style.setProperty('--card-tilt-y', `${((x - .5) * 9).toFixed(2)}deg`);
     card.style.setProperty('--holo-x', `${(x * 100).toFixed(1)}%`);
     card.style.setProperty('--holo-y', `${(y * 100).toFixed(1)}%`);
     setParallaxPosition(card,(x-.5)*2,(y-.5)*2);
     card.style.setProperty('--foil-angle',`${(35+(x-.5)*90+(y-.5)*36).toFixed(1)}deg`);
-    const travel=this.lastPointer ? Math.hypot(event.clientX-this.lastPointer.x,event.clientY-this.lastPointer.y) : 0;
-    this.lastPointer={x:event.clientX,y:event.clientY};
-    const motion=Math.min(.9,travel/18);
+    const travel=this.lastPointer ? Math.hypot(clientX-this.lastPointer.x,clientY-this.lastPointer.y) : 0;
+    this.lastPointer={x:clientX,y:clientY};
+    const motion=Math.min(1,Math.sqrt(travel/12));
     card.style.setProperty('--foil-motion',motion.toFixed(2));
     card.toggleAttribute('data-foil-moving',motion>.08);
     clearTimeout(this.stillTimer);
     this.stillTimer=window.setTimeout(()=>{
       card.style.setProperty('--foil-motion','0');
       card.removeAttribute('data-foil-moving');
-    },90);
+    },140);
     card.dataset.cardHover = 'true';
   }
 
@@ -83,6 +110,7 @@ export class HoloShader {
     const card = (event.target as Element | null)?.closest<HTMLElement>('.playing-card:not(.waiting-hand)');
     if (this.isEnabled && card) {
       if(card!==this.active){this.clearActive();this.active=card;}
+      this.lastPointer={x:event.clientX,y:event.clientY};
       card.dataset.cardPressed = 'true';
     }
   };
@@ -90,6 +118,7 @@ export class HoloShader {
   private onPointerUp = (): void => {
     this.pointerFrame.cancel();
     clearTimeout(this.stillTimer);
+    this.dragged=null;
     this.active?.removeAttribute('data-card-pressed');
     this.active?.style.setProperty('--foil-motion','0');
     this.active?.removeAttribute('data-foil-moving');
