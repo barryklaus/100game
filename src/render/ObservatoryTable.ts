@@ -135,7 +135,7 @@ export class ObservatoryTable {
   private direction=0;
   private arrows:THREE.InstancedMesh;
   private arrowInk=new THREE.MeshBasicMaterial({color:0xa27a3e,side:THREE.DoubleSide});
-  constructor(cartoon=false,engraved=false,onArtworkReady=()=>{}){
+  constructor(cartoon=false,lighting:'default'|'engraved'|'moody'='default',onArtworkReady=()=>{}){
     // One draw call for a ring of chevrons, physically laid on the tabletop.
     const chevron=new THREE.Shape();
     chevron.moveTo(-.09,-.07);chevron.lineTo(.02,0);chevron.lineTo(-.09,.07);
@@ -146,11 +146,12 @@ export class ObservatoryTable {
     const metal=this.metal;
     if(cartoon){metal.color.set(0xc39645);metal.metalness=.18;metal.roughness=.75;}
     const wood=cartoon?new THREE.MeshBasicMaterial({map:walnut(true),color:0xffffff}):new THREE.MeshStandardMaterial({map:walnut(),color:0xf4bd83,metalness:.08,roughness:.3});
+    if(lighting==='moody')wood.color.set(0x9a8c74);
     const base=new THREE.Mesh(new THREE.CylinderGeometry(5.05,4.98,.36,128),cartoon?new THREE.MeshBasicMaterial({color:0x472914}):wood);base.position.y=.14;base.receiveShadow=true;this.group.add(base);
     const rail=new THREE.Mesh(new THREE.RingGeometry(4.72,5.05,128),wood);rail.rotation.x=-Math.PI/2;rail.position.y=.345;rail.receiveShadow=true;this.group.add(rail);
     const top=new THREE.Mesh(new THREE.CircleGeometry(4.74,128),new THREE.MeshStandardMaterial({map:engraving(cartoon),roughness:cartoon?1:.91,metalness:cartoon?0:.06}));
     const surface=top.material as THREE.MeshStandardMaterial;
-    if(engraved){
+    if(lighting==='engraved'){
       // Two baked print textures replace the old procedural art, with no extra surface draws.
       const loader=new THREE.TextureLoader(),root=`${import.meta.env.BASE_URL}assets/scene/engraved-v1/`;
       loader.load(root+'table-felt.webp',texture=>{
@@ -192,8 +193,17 @@ export class ObservatoryTable {
       if(cartoon){
         // Keep the ink/felt palette instead of washing it out with a PBR hotspot.
         // Retain a little physical light and all gameplay light traveling through the atlas.
-        shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',`
+        const illumination=lighting==='moody'?`
+          // A stationary overhead light pool follows the tabletop UVs at every camera angle.
+          // Baked into this existing surface pass; no extra mesh, blur or animated render pass.
+          float pool=1.-smoothstep(.13,.60,length(vMapUv-vec2(.5))*2.);
+          vec3 roomInk=diffuseColor.rgb*vec3(.36,.43,.49);
+          vec3 litInk=diffuseColor.rgb*vec3(1.40,1.25,.92);
+          outgoingLight=mix(roomInk,litInk,pool)+vec3(1.,.72,.30)*pool*.05+totalEmissiveRadiance*.86;
+        `:`
           outgoingLight=mix(diffuseColor.rgb*.9,outgoingLight,.14)+totalEmissiveRadiance*.86;
+        `;
+        shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',`${illumination}
           #include <opaque_fragment>`);
       }
     };

@@ -4,7 +4,26 @@
   font-weight:400;font-style:normal;font-display:swap;
 }
 .engraved-world {--engraved-gold:#e2b862;--engraved-ivory:#fff0c9;}
-.engraved-world .observatory-backdrop::after {background:linear-gradient(#04080e18,transparent 30%,#02080b08 70%,#02050835);}
+.engraved-world .observatory-backdrop::after {
+  /* The faint ceiling beam shares the existing static room overlay. */
+  background:conic-gradient(from 168deg at 50% -20%,transparent 0deg,#ffe6b508 7deg,#ffe6b516 12deg,#ffe6b508 17deg,transparent 24deg),radial-gradient(ellipse at 50% 29%,#02081536 0%,#02081280 55%,#01040bc4 100%),linear-gradient(#02071820,#02071144);
+  background-size:100% 62%,100% 100%,100% 100%;background-repeat:no-repeat;
+}
+.engraved-world .seat-layer .sprite-seat .character {
+  filter:brightness(.76) saturate(.91)!important;transition:filter .18s ease-out;
+}
+.engraved-world.midnight-mode .seat-layer .sprite-seat.active:not(.targetable):not(.overflow-support) .character {
+  filter:brightness(1.15) saturate(1.04) drop-shadow(0 0 4px #fff0c3bb) drop-shadow(0 0 15px #ffc86599)!important;
+}
+.engraved-world .seat-layer .sprite-seat.targetable .character {
+  filter:brightness(1.08) drop-shadow(0 0 4px #fff) drop-shadow(0 0 12px #ffffffaa)!important;
+}
+.engraved-world .seat-layer .sprite-seat.overflow-culprit .character {
+  filter:brightness(1.15) drop-shadow(0 0 6px #fff0c3bb) drop-shadow(0 0 18px #ffc86599)!important;
+}
+.engraved-world .seat-layer .sprite-seat.active .seat-name {border-color:#ffe6a4;color:#fff7de;}
+.engraved-world.reduce-motion .seat-layer .sprite-seat .character {transition:none;}
+@media(prefers-reduced-motion:reduce){.engraved-world .seat-layer .sprite-seat .character {transition:none;}}
 .engraved-world .game-header {background:linear-gradient(#03080c99,transparent)!important;}
 .engraved-world .match-plaque strong,
 .engraved-world .header-status,
@@ -17,7 +36,7 @@
 .engraved-world .energy-system .total-number {
   font-family:'Spicy Rice',Georgia,serif!important;font-weight:400!important;font-style:normal!important;
   letter-spacing:-.055em;line-height:.85;
-  text-shadow:1px 2px 0 #6d5732,0 7px 0 #231e15,0 10px 16px #0009!important;
+  text-shadow:1px 2px 0 #6d5732,0 7px 0 #231e15,0 10px 16px #0009,0 0 20px #ffe4a329!important;
 }
 .engraved-world .total-value {top:0;transform-origin:center bottom;}
 .engraved-world .total-impact-ghost {
@@ -70,9 +89,12 @@
 .engraved-world .seat-layer[data-layout="all"] .sprite-seat .seat-info {left:50%;width:min(15.5vw,calc(88vw / var(--visible-player-count)));transform:translateX(-50%);}
 .engraved-world .ring-controls[data-layout="all"]>button {display:none;}
 .engraved-world .seat-layer[data-layout="all"] .sprite-seat .seat-name {font-size:clamp(9px,1vw,16px);}
-.engraved-world:not(.world3d-active) .game-page {background-image:linear-gradient(#03070c22,#03070c44),url('/assets/scene/engraved-v1/room-desktop.webp')!important;}
+.engraved-world:not(.world3d-active) .game-page {background-image:linear-gradient(#02071880,#01050bbf),url('/assets/scene/engraved-v1/room-desktop.webp')!important;}
+.engraved-world:not(.world3d-active) .table-felt::before {
+  background:radial-gradient(ellipse at 50% 50%,#a8874155,transparent 40%),repeating-radial-gradient(ellipse,#07252e 0 14%,#aa8a4655 14.2%,#07252e 14.5% 16%);
+}
 @media(orientation:portrait) {
-  .engraved-world:not(.world3d-active) .game-page {background-image:linear-gradient(#03070c22,#03070c44),url('/assets/scene/engraved-v1/room-mobile.webp')!important;}
+  .engraved-world:not(.world3d-active) .game-page {background-image:linear-gradient(#02071880,#01050bbf),url('/assets/scene/engraved-v1/room-mobile.webp')!important;}
   .engraved-world .seat-layer .sprite-seat .seat-name {max-width:22vw;padding:2px 4px;font-size:10px;gap:1px;}
   .engraved-world .seat-layer .sprite-seat .seat-count {margin-left:1px;}
 }

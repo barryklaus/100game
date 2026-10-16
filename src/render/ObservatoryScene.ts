@@ -118,10 +118,12 @@ export class ObservatoryScene {
   private currentTotal=0;
   private flowColor():string{return `hsl(${43*(1-Math.max(0,Math.min(1,this.currentTotal/100)))} 100% 65%)`;}
   private localSeat = 0;
+  private readonly moodyRoom: boolean;
 
   constructor(roomTheme: 'observatory' | 'midnight' | 'engraved' = 'observatory') {
+    this.moodyRoom=roomTheme==='engraved';
     // Restore the teal celestial atlas; the engraved room and characters stay in place.
-    this.table = new ObservatoryTable(roomTheme !== 'observatory');
+    this.table = new ObservatoryTable(roomTheme !== 'observatory',this.moodyRoom?'moody':'default');
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.info.autoReset=false;
@@ -157,7 +159,7 @@ export class ObservatoryScene {
     const room=new RoomEnvironment();
     this.environment=pmrem.fromScene(room,.025);
     this.scene.environment=this.environment.texture;
-    this.scene.environmentIntensity=.18;
+    this.scene.environmentIntensity=this.moodyRoom ? .08 : .18;
     room.dispose();pmrem.dispose();
     this.hand=new PhysicalHand(this.foreground.scene,this.camera,url=>this.loadTexture(url));
     this.resize();
@@ -274,15 +276,16 @@ export class ObservatoryScene {
   private buildWorld(): void {
     this.scene.add(this.world);
     this.world.position.z=-.35;
-    this.scene.add(new THREE.HemisphereLight(0x7485ba,0x080811,.27));
-    this.ceilingLight.position.set(-.7,9,1.1);
-    this.ceilingLight.target.position.set(0,.35,-.5);
+    this.scene.add(new THREE.HemisphereLight(0x7485ba,0x080811,this.moodyRoom ? .16 : .27));
+    this.ceilingLight.position.set(this.moodyRoom?0:-.7,9,this.moodyRoom?-.35:1.1);
+    this.ceilingLight.target.position.set(0,.35,this.moodyRoom?-.35:-.5);
+    if(this.moodyRoom){this.ceilingLight.angle=.32;this.ceilingLight.penumbra=.88;this.ceilingLight.intensity=210;}
     this.ceilingLight.castShadow=true;
     this.ceilingLight.shadow.bias=-.0003;
     this.ceilingLight.shadow.normalBias=.018;
     this.ceilingLight.shadow.radius=5;
     this.scene.add(this.ceilingLight,this.ceilingLight.target);
-    const rim=new THREE.DirectionalLight(0x6669bc,.7);rim.position.set(2,2,-5);this.scene.add(rim);
+    const rim=new THREE.DirectionalLight(0x6669bc,this.moodyRoom ? .28 : .7);rim.position.set(2,2,-5);this.scene.add(rim);
     // The center rings inherit the exact oval stretch and tilt of the engraving.
     this.table.group.add(this.ring.group);
     this.world.add(this.table.group,this.fireworks.points);
