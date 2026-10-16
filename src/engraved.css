@@ -51,7 +51,7 @@
   }
 }
 @media(orientation:portrait) and (min-width:600px) {
-  .engraved-mode.observatory-mode .local-hand:has(.special-throw-toggle) {
+  .engraved-mode.observatory-mode .local-hand.special-throw-hand {
     --portrait-card-height:min(36svh,53vw);
   }
 }
