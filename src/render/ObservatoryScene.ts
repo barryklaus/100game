@@ -245,7 +245,7 @@ export class ObservatoryScene {
     this.ring.setTotal(next.total);
     this.table.setTotal(next.total);
     this.playKey = next.active?(next.playKey??''):'';
-    this.cardFlow.setCard(this.playKey);
+    if(next.active)this.cardFlow.setCard(this.playKey);else this.cardFlow.clear();
     if (!next.active || next.event === 'none') this.pendingOverflow = false;
     this.drawCardUrl = next.drawCardUrl;
     this.pileShadows[0].visible = (next.drawCount ?? 0) > 0;
@@ -271,6 +271,8 @@ export class ObservatoryScene {
     this.foreground.setActive(next.active && !next.roundEnded && !this.contextLost);
     document.documentElement.classList.toggle('world3d-active', next.active&&!this.contextLost);
     document.documentElement.classList.toggle('world3d-total', next.active&&!this.contextLost);
+    // A landed throw's accepted state commits its total in this same browser frame.
+    this.applyImpactFlow(this.cardFlow.update(0,this.reducedMotion));
   }
 
   private buildWorld(): void {
@@ -443,7 +445,9 @@ export class ObservatoryScene {
   private tickFlights(stamp:number):void{
     this.flightFrame=0;
     if(this.flightPacer.step(stamp)){
+      const impact=this.cardFlow?.inFlight;
       for(const tick of [...this.flightTicks])tick(stamp);
+      if(impact)this.paintWorld(true);
       this.foreground.render();
     }
     if(this.flightTicks.size)this.flightFrame=requestAnimationFrame(now=>this.tickFlights(now));
@@ -465,6 +469,7 @@ export class ObservatoryScene {
     releaseVelocity?:{x:number;y:number};
     onStart?: () => void;
     onArrive?: () => void;
+    impactCardId?:string;
   }): Promise<void> {
     const { root, visual, start, end, startQuaternion, endQuaternion, startScale, endScale, draw, spin, onStart, onArrive } = options;
     const fit=new CardFlightFit(
@@ -483,6 +488,7 @@ export class ObservatoryScene {
     visual.rotation.y = draw ? Math.PI : 0;
     const flex=visual.userData.flightFlex as ReturnType<typeof flyingCardFlex>;
     const started = performance.now();
+    if(!draw&&options.impactCardId)this.cardFlow.beginFlight(options.impactCardId);
     onStart?.();
     this.hand.update(0);
     const boomerang=!draw&&spin?.kind==='boomerang'&&!this.reducedMotion;
@@ -505,6 +511,11 @@ export class ObservatoryScene {
       this.activeFlights++;
       const step = (now: number): void => {
         const raw = Math.min(1, (now - started) / duration);
+        if(!draw&&options.impactCardId){
+          this.cardFlow.seekFlight(raw);
+          this.applyImpactFlow(this.cardFlow.update(0,this.reducedMotion));
+          this.worldPaint.request();
+        }
         (visual.userData.parallaxFlight as ParallaxFlight|undefined)?.progress(raw);
         const flightT = raw;
         const t = flightT*flightT*(3-2*flightT);
@@ -532,6 +543,7 @@ export class ObservatoryScene {
           visual.quaternion.premultiply(spinRotation);
         }
         if (raw >= 1) {
+          if(!draw&&options.impactCardId)this.cardFlow.landFlight();
           this.flightTicks.delete(step);
           this.activeFlights--;
           this.renderer.shadowMap.needsUpdate = true;
@@ -575,12 +587,13 @@ export class ObservatoryScene {
       this.flightTicks.add(step);
       // Paint the release now, with elapsed setup time included in its motion.
       step(performance.now());
+      if(!draw&&options.impactCardId)this.paintWorld(true);
       this.foreground.render();
       if(!this.flightFrame&&this.flightTicks.size)this.flightFrame=requestAnimationFrame(now=>this.tickFlights(now));
     });
   }
 
-  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin?:CardSpin, cardId?:string, onStart?:()=>void, onReady?:()=>Promise<DOMRect|undefined>,releaseVelocity?:{x:number;y:number}): Promise<void> {
+  async playCardToDiscard(frontUrl: string, sourceRect: DOMRect, spin?:CardSpin, cardId?:string, onStart?:()=>void, onReady?:()=>Promise<DOMRect|undefined>,releaseVelocity?:{x:number;y:number},impactCardId?:string): Promise<void> {
     const { root, visual } = await (cardId?this.preparedThrow.take(this.cardSource(frontUrl)):this.makeFlyingCard(frontUrl));
     let handRect: DOMRect | undefined;
     try { handRect = await onReady?.(); }
@@ -620,8 +633,10 @@ export class ObservatoryScene {
     const end = landing.position;
     const startQuaternion = pose?.quaternion??this.camera.quaternion.clone();
     const endQuaternion = landing.quaternion;
-    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: pose?.scale??this.screenScale(sourceRect, distance), endScale: 1, endMatrix:landing.matrix, draw: false, spin, onStart,releaseVelocity });
+    await this.animateCardFlight({ root, visual, start, end, startQuaternion, endQuaternion, startScale: pose?.scale??this.screenScale(sourceRect, distance), endScale: 1, endMatrix:landing.matrix, draw: false, spin, onStart,releaseVelocity,impactCardId });
   }
+
+  cancelCardImpact():void {this.cardFlow.cancelFlight();this.worldPaint.request();}
 
   async drawCardToHand(frontUrl: string, targetRect: DOMRect, cardId?:string, onArrive?:()=>void): Promise<void> {
     const { root, visual } = await this.makeFlyingCard(frontUrl);
@@ -755,6 +770,12 @@ export class ObservatoryScene {
       this.positionSeatOverlays();this.lastSeatUpdate=time;this.seatProjectionDirty=false;
     }
     const flow=this.cardFlow.update(delta,this.reducedMotion);
+    this.applyImpactFlow(flow);
+    this.ring.update(delta,this.reducedMotion);
+    this.hand.update(delta);
+  }
+
+  private applyImpactFlow(flow:{progress:number;strength:number;arrival:boolean}):void {
     this.table.setFlow(flow.progress,flow.strength);
     if(flow.arrival){
       this.onCardArrival?.(this.playKey);
@@ -774,8 +795,14 @@ export class ObservatoryScene {
         ],{duration:360,easing:'ease-out'});
       }
     }
-    this.ring.update(delta,this.reducedMotion);
-    this.hand.update(delta);
+  }
+
+  private paintWorld(moving=false):void {
+    if(!this.active||this.contextLost)return;
+    if(this.worldPaint.consume(moving,this.renderer.shadowMap.enabled&&this.renderer.shadowMap.needsUpdate)){
+      if(QUALITY_PRESETS[this.quality].bloom)this.renderWithCleanCards();else this.renderer.render(this.scene,this.camera);
+      this.worldRenders++;this.windowRenders++;
+    }
   }
 
   /** Keep bloom/AO on the room while drawing the printed cards without either. */
@@ -867,10 +894,7 @@ export class ObservatoryScene {
     const moving=this.cardFlow.active||this.ring.active||this.fireworks.points.visible;
     this.animate(time, delta);
     this.renderer.info.reset();
-    if(this.worldPaint.consume(moving,this.renderer.shadowMap.enabled&&this.renderer.shadowMap.needsUpdate)){
-      if(QUALITY_PRESETS[this.quality].bloom)this.renderWithCleanCards();else this.renderer.render(this.scene, this.camera);
-      this.worldRenders++;this.windowRenders++;
-    }
+    if(!this.cardFlow.inFlight)this.paintWorld(moving);
     if(!this.activeFlights)this.foreground.render();
     if(time-this.profileTime>2.4){
       const frameMs=this.profileDelta/this.profileFrames*1000;

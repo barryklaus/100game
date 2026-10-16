@@ -144,6 +144,7 @@ let lastTurnKey = '';
 let awaitingNetwork = false;
 let pendingLog = '';
 let remoteFlight=false;
+let outboundFlight:HostedRoom|null=null;
 let remoteFlightKey='';
 let snapshotRoom: OnlineRoom | HostedRoom | null = null;
 const remoteSnapshots: GameState[] = [];
@@ -247,6 +248,8 @@ function roomChanged(): void {
     snapshotRoom = online;remoteSnapshots.length = 0;remoteFlightKey = '';
   }
   if (online.status === 'playing' && online.state && online.state !== state && !remoteSnapshots.includes(online.state)) remoteSnapshots.push(online.state);
+  // Confirmation may arrive during our throw. Keep it queued until the actual landing frame.
+  if(outboundFlight===online&&online.status==='playing'&&!online.error)return;
   const previous = state;
   const incoming=remoteSnapshots[0] ?? online.state;
   const incomingTop=incoming?.played.at(-1);
@@ -258,7 +261,7 @@ function roomChanged(): void {
     const seat=document.querySelector<HTMLElement>(`.seat[data-seat="${previous.current}"]`);
     if(seat){const room=online,actor=previous.current;
       const source=actor===online.localSeat?app.querySelector<HTMLElement>(`.local-hand [data-card="${incomingTop.id}"]`):null;
-      remoteFlight=true;remoteFlightKey=remoteKey;void observatory.playCardToDiscard(cardImage(incomingTop),screenRect(source??seat),undefined,source?incomingTop.id:undefined,()=>{if(source){departingCardId=incomingTop.id;source.classList.add('card-departing');}playerRing.release(actor,incoming.lastSpecialThrow?.cardId===incomingTop.id);remoteCardAudio.throw(remoteKey);},source&&incoming.lastSpecialThrow?.cardId!==incomingTop.id?undefined:()=>playerRing.prepareThrow(actor,incoming.lastSpecialThrow?.cardId===incomingTop.id).then(rect=>rect?unshakenRect(rect):undefined)).then(()=>{if(online===room)remoteCardAudio.land(remoteKey);}).catch(()=>playerRing.cancelThrow(actor)).finally(()=>{remoteFlight=false;if(online===room)roomChanged();});return;}
+      remoteFlight=true;remoteFlightKey=remoteKey;void observatory.playCardToDiscard(cardImage(incomingTop),screenRect(source??seat),undefined,source?incomingTop.id:undefined,()=>{if(source){departingCardId=incomingTop.id;source.classList.add('card-departing');}playerRing.release(actor,incoming.lastSpecialThrow?.cardId===incomingTop.id);remoteCardAudio.throw(remoteKey);},source&&incoming.lastSpecialThrow?.cardId!==incomingTop.id?undefined:()=>playerRing.prepareThrow(actor,incoming.lastSpecialThrow?.cardId===incomingTop.id).then(rect=>rect?unshakenRect(rect):undefined),undefined,isNextVersion?incomingTop.id:undefined).then(()=>{if(online===room)remoteCardAudio.land(remoteKey);}).catch(()=>{observatory?.cancelCardImpact();playerRing.cancelThrow(actor);}).finally(()=>{remoteFlight=false;if(online===room)roomChanged();});return;}
   }
   state = incoming;
   if(previous&&state&&previous.round===state.round&&previous.played.at(-1)?.id!==state.played.at(-1)?.id&&(previous.current!==online.localSeat||previous.players[previous.current].autopilot===true))remoteCardAudio.land(remoteKey);
@@ -460,7 +463,7 @@ function specialThrowToggle(seat:number):string {
   const disabled=used||locked||openingDeal||state.phase!=='playing'||state.current!==seat||!canControlActor();
   return `<button type="button" class="special-throw-toggle" data-action="special-throw" data-special-seat="${seat}" aria-pressed="${armed}" title="Once per round. Next-player Overflow earns +2. A direct backfire costs −7 total." ${disabled?'disabled':''}><span aria-hidden="true">✦</span> Special Throw <small>${used?'USED THIS ROUND':armed?'ARMED · +2 setup':'1 / ROUND'}</small></button>`;
 }
-function resolveCard(cardId: string,specialThrow=false): void {
+function resolveCard(cardId: string,specialThrow=false,paintPending=true): void {
   if (!state || state.phase !== 'playing' || awaitingNetwork) return;
   const actor = state.current;
   const card = state.players[actor].hand.find(item => item.id === cardId);
@@ -475,7 +478,7 @@ function resolveCard(cardId: string,specialThrow=false): void {
       save();
     }
     selectedCard = null; awaitingNetwork = !online.isHost || online instanceof HostedRoom; pendingLog = state.log[0];
-    if (awaitingNetwork) render();
+    if (awaitingNetwork&&paintPending) render();
     online.play(cardId,specialThrow); return;
   }
   const previousLocalHand = new Set(state.players[localSeat()].hand.map(item => item.id));
@@ -518,8 +521,15 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   if (!card) { locked = false; return; }
   const specialThrow=!!state.match&&!state.players[throwingSeat].specialThrowUsed&&(specialThrowArm?.key===specialThrowKey()||((state.players[throwingSeat].kind==='cpu'||autoEnabled(throwingSeat))&&chooseCpuSpecialThrow(state,card)));
   if(settings.reducedMotion){audio.play('slap');locked=false;resolveCard(cardId,specialThrow);return;}
+  const outgoingRoom=isNextVersion&&online instanceof HostedRoom?online:null;
+  let submitted=false;
   const carry=immediateRelease&&releaseVelocity&&source?new CardReleaseCarry(source,releaseVelocity):undefined;
   try {
+  if(outgoingRoom){
+    // Send while the throw prepares, preserving the held DOM pose and its continuous release.
+    outboundFlight=outgoingRoom;submitted=true;resolveCard(cardId,specialThrow,false);
+    if(outgoingRoom.error){locked=false;return;}
+  }
   const origin = source || document.querySelector<HTMLElement>(`.seat[data-seat="${state.current}"]`) || document.querySelector<HTMLElement>('.draw-stack')!;
   let start = screenRect(origin);
   if (observatory?.canAnimate && !settings.reducedMotion) {
@@ -535,16 +545,19 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
         const hand = immediateRelease?undefined:await playerRing.prepareThrow(throwingSeat,specialThrow);
         if (state !== playState || state.turn !== playTurn) throw new Error('The turn changed before the card left.');
         return source ? screenRect(source) : !hand ? undefined : unshakenRect(hand);
-      },releaseVelocity);
+      },releaseVelocity,isNextVersion?card.id:undefined);
       if (state !== playState || state.turn !== playTurn) { playerRing.cancelThrow(throwingSeat); locked = false; return; }
       audio.play('slap');
       locked = false;
-      resolveCard(cardId,specialThrow);
+      if(submitted){outboundFlight=null;if(online===outgoingRoom)roomChanged();}
+      else resolveCard(cardId,specialThrow);
       return;
     } catch {
+      if(isNextVersion)observatory.cancelCardImpact();
       departingCardId=null;
       source?.classList.remove('card-departing');
       playerRing.cancelThrow(throwingSeat);
+      if(submitted&&outgoingRoom?.error){locked=false;return;}
       if (state !== playState || state.turn !== playTurn) { source?.classList.remove('dragging'); locked = false; return; }
     }
   }
@@ -593,11 +606,16 @@ async function animatePlay(cardId: string, source?: HTMLElement, spin?: CardSpin
   await flying.animate(frames, { duration, easing:momentum?'linear':'cubic-bezier(.2,.8,.2,1)', fill:'forwards' }).finished.catch(() => undefined);
   audio.play('slap');
   if (state !== playState || state.turn !== playTurn) { flying.remove();playerRing.cancelThrow(throwingSeat); locked = false; return; }
-  locked = false; resolveCard(cardId,specialThrow);
+  locked = false;
+  if(submitted){outboundFlight=null;if(online===outgoingRoom)roomChanged();}
+  else resolveCard(cardId,specialThrow);
   if(online&&awaitingNetwork){
     const detach=()=>{if(!awaitingNetwork||state!==playState){flying.remove();return;}requestAnimationFrame(detach);};requestAnimationFrame(detach);
   }else requestAnimationFrame(()=>flying.remove());
-  } finally {carry?.stop();}
+  } finally {
+    carry?.stop();
+    if(submitted&&outboundFlight===outgoingRoom){outboundFlight=null;if(online===outgoingRoom)roomChanged();}
+  }
 }
 function chooseTarget(target: number): void {
   if (!state || state.phase !== 'target' || locked || awaitingNetwork || (online && state.turn !== online.state?.turn)) return;
