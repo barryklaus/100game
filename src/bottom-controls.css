@@ -19,6 +19,8 @@
   z-index:auto;
 }
 .midnight-mode.world3d-active .game-page .hand-dock {position:absolute;z-index:auto;}
+/* Mobile uses sharp HTML cards: table < hand < flying cards < controls. */
+.midnight-mode.world3d-active .game-page .local-hand {z-index:20;}
 .midnight-mode.world3d-active .game-page :is(.emote-menu,.info-fab,.special-throw-toggle) {z-index:40;}
 @media(max-width:600px),(orientation:landscape) and (max-height:520px) {
   .midnight-mode .game-page {--bottom-control-size:44px;}
