@@ -5,6 +5,28 @@ export class TotalImpact {
   private animations: Animation[] = [];
   private ghost?: HTMLElement;
   private generation = 0;
+  private round = '';
+  private total?: number;
+  private element?: HTMLElement;
+
+  /** Follow the displayed total, including HTML fallback, without replaying on turn/UI renders. */
+  sync(element: HTMLElement | null, round: string, total: number, reducedMotion: boolean): void {
+    const reset = !element || !round || round !== this.round;
+    const previous = this.total;
+    const replaced = element !== this.element;
+    this.round = round;
+    this.total = element && round ? total : undefined;
+    this.element = element ?? undefined;
+    if (reset) {
+      this.cancel();
+      return;
+    }
+    if (previous !== undefined && previous !== total) {
+      this.show(element, previous, total, reducedMotion);
+    } else if (reducedMotion || replaced) {
+      this.cancel();
+    }
+  }
 
   cancel(): void {
     ++this.generation;
@@ -32,11 +54,11 @@ export class TotalImpact {
       { transform: 'translateY(0) scale(1)', opacity: 1 },
       { transform: 'translateY(-.12em) scale(.95)', opacity: 0 },
     ], { duration: 130, easing: 'ease-out', fill: 'forwards' });
-    // Grow upward from the baseline, keeping the hand controls clear on short screens.
+    // The approved Impact settle: rise in, overshoot, then compress onto the baseline.
     const arriving = value.animate([
-      { transform: 'translateY(.025em) scale(.86,.94)', opacity: 0 },
+      { transform: 'translateY(.12em) scale(.86,.94)', opacity: 0 },
       { transform: 'translateY(-.035em) scale(1.12,1.05)', opacity: 1, offset: .44 },
-      { transform: 'translateY(0) scale(.985,1.02)', opacity: 1, offset: .76 },
+      { transform: 'translateY(.01em) scale(.985,1.02)', opacity: 1, offset: .76 },
       { transform: 'translateY(0) scale(1)', opacity: 1 },
     ], { duration: 380, easing: 'cubic-bezier(.2,.75,.25,1)' });
     this.animations = [departing, arriving];

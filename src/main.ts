@@ -179,7 +179,6 @@ let observatory: ObservatoryScene | undefined;
 try { observatory = new ObservatoryScene(isNextVersion ? 'engraved' : 'observatory'); observatory.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion}); } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
 
 if (observatory) observatory.onCardArrival = key => {
-  const previous = presentedTotal.visible.total;
   if (!presentedTotal.arrive(key)) return;
   // Update only the score, preserving an in-progress card drag and draw animation.
   const total = document.querySelector<HTMLElement>('.total-number');
@@ -192,7 +191,7 @@ if (observatory) observatory.onCardArrival = key => {
   audio.setPresentedTotal(presentedTotal.visible.total);
   setScreenDanger(presentedTotal.visible.total);
   if (total) {
-    if (isNextVersion) totalImpact.show(total, previous, presentedTotal.visible.total, settings.reducedMotion || matchMedia('(prefers-reduced-motion: reduce)').matches);
+    if (isNextVersion) syncTotalImpact();
     else total.innerHTML = totalMarkup(presentedTotal.visible.total);
   }
   syncPlayerRing();
@@ -202,6 +201,14 @@ if (observatory) observatory.onCardArrival = key => {
 
 function totalClass(total: number): string {
   return total>100?'busted':total===100?'at100':total>=CONFIG.TOTAL_WARNING_3?'danger':total>=CONFIG.TOTAL_WARNING_2?'warning-2':total>=CONFIG.TOTAL_WARNING_1?'warning-1':'';
+}
+
+function syncTotalImpact(): void {
+  if (!isNextVersion) return;
+  const active = !!state && (!online || online.status === 'playing');
+  totalImpact.sync(active ? app.querySelector<HTMLElement>('.total-number') : null,
+    active ? gameRoundKey() : '', presentedTotal.visible.total,
+    settings.reducedMotion || matchMedia('(prefers-reduced-motion: reduce)').matches);
 }
 
 const escapeHtml = (value: string): string => value.replace(/[&<>"']/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char]!);
@@ -808,12 +815,12 @@ function render(): void {
   const discard = state?.played.at(-1);
   const playKey = state&&discard?`${state.round}:${discard.id}:${state.played.length}`:'';
   const active = !!state && (!online || online.status === 'playing');
-  if (!active || settings.reducedMotion) totalImpact.cancel();
   presentedTotal.sync(active?`${state!.round}:${state!.players.map(player=>player.name).join(':')}`:'', playKey, {
     total: state?.total ?? 0,
     caption: !state?'':state.total>100?'OVERFLOW':state.event==='exact'?`EXACT 100 · +${state.match?1:3}`:state.event==='zero'?'ZERO · TOTAL HELD':state.event==='minus'?'−10':state.phase==='target'?'CHOOSE A PLAYER':'',
   }, !!observatory?.canAnimate && !settings.reducedMotion);
   updateGameView(app, (online && online.status !== 'playing' ? lobbyView() : state ? gameView() : onlineMode ? onlineView() : setupView()) + modalView());
+  syncTotalImpact();
   if(focusedLimit&&!state)app.querySelector<HTMLInputElement>(`[data-limit-scope="room"][data-match-limit="${focusedLimit}"]`)?.focus({preventScroll:true});
   for(const [name,value] of accountFields){const input=document.querySelector<HTMLInputElement>(`#account-form input[name="${name}"]`);if(input)input.value=value;}
   syncPlayerRing();
