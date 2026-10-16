@@ -1,6 +1,7 @@
 import { reactionPhrase, type RoomReaction } from '../data/reactions';
 import { cpuActionDelay } from './cpuTiming';
 import { isOut } from './conditions';
+import { normalizeMatchLimits, validMatchLimits, type MatchLimits } from './matchLimits';
 import { CONFIG, MOODS } from '../data/config';
 import { chooseCpuCard, chooseCpuTarget, chooseCpuSpecialThrow } from './cpu';
 import { projectForSeat } from './projection';
@@ -11,6 +12,7 @@ export type Profile = Pick<PlayerConfig, 'name' | 'avatar' | 'mood' | 'lifetimeP
 export type RoomCommand =
   | { type: 'cpu-count'; count: number }
   | { type: 'cpu-profile'; index: number; name: string; avatar: number }
+  | { type: 'match-limits'; limits: MatchLimits }
   | { type: 'start'; round?: number }
   | { type: 'play'; cardId: string; turn?: number; specialThrow?: boolean }
   | { type: 'target'; seat: number; turn?: number }
@@ -23,6 +25,7 @@ export interface RoomData {
   reaction?:RoomReaction;
   lifetimeSettledRound?: string;
   nextRules?:boolean;
+  matchLimits?:MatchLimits;
   id: string;
   seats: PlayerConfig[];
   members: Member[];
@@ -81,9 +84,10 @@ function retireOutcomes(room:RoomData):void {
 }
 function touch(room: RoomData, now: number): void { retireOutcomes(room);room.revision++; room.updatedAt = now; scheduleCpuAction(room, now); }
 
-export function createRoom(id: string, profile: unknown, token: string, now = Date.now()): RoomData {
+export function createRoom(id: string, profile: unknown, token: string, now = Date.now(), limits?: unknown): RoomData {
+  if(limits!==undefined&&!validMatchLimits(limits))throw new RoomError('Use whole points: Freedom 1–1000; Death −3 to −999 in steps of 3.');
   const first = cleanProfile(profile);
-  return { id, seats: [human(first)], members: [{ token, seat: 0, profile: first, disconnectedAt: null }], cpuCount: 0, hostSeat: 0, state: null, revision: 1, updatedAt: now };
+  return { id, matchLimits:normalizeMatchLimits(limits), seats: [human(first)], members: [{ token, seat: 0, profile: first, disconnectedAt: null }], cpuCount: 0, hostSeat: 0, state: null, revision: 1, updatedAt: now };
 }
 
 export function seatForToken(room: RoomData, token: string): number | null {
@@ -238,13 +242,17 @@ export function applyCommand(room: RoomData, seat: number, command: RoomCommand,
     const player=room.cpuProfiles![command.index];
     player.name=command.name.trim().slice(0,15)||player.name;
     player.avatar=command.avatar;
+  } else if (command.type === 'match-limits') {
+    if(!room.nextRules||seat!==room.hostSeat||room.state)throw new RoomError('Only the host can set match limits before the table starts.',403);
+    if(!validMatchLimits(command.limits))throw new RoomError('Use whole points: Freedom 1–1000; Death −3 to −999 in steps of 3.');
+    room.matchLimits=normalizeMatchLimits(command.limits);
   } else if (command.type === 'start') {
     if (seat !== room.hostSeat || room.seats.length < CONFIG.PLAYER_MIN) throw new RoomError('Only the host can start a table with at least two players.', 403);
     if (room.state && room.state.phase !== 'ended') throw new RoomError('Finish the current round first.', 409);
     if(room.state?.match?.complete)throw new RoomError('This table is finished. Create a new room.',409);
     const nextRound = room.state&&!room.state.match?.complete ? room.state.round + 1 : 1;
     room.reaction=undefined;
-    room.state = createGame(room.seats, nextRound, Math.random, room.nextRules?(room.state?.match?.complete?true:room.state?.match??true):undefined);
+    room.state = createGame(room.seats, nextRound, Math.random, room.nextRules?(room.state?.match?.complete?true:room.state?.match??true):undefined,room.matchLimits);
   } else if (command.type === 'play') {
     if(room.state?.players[seat]?.autopilot)throw new RoomError('Turn Autopilot off before playing.',409);
     if (!room.state || room.state.phase !== 'playing' || room.state.current !== seat || typeof command.cardId !== 'string') throw new RoomError('It is not your turn.', 409);
@@ -263,6 +271,7 @@ export function snapshotForSeat(room: RoomData, seat: number) {
   return {
     type: 'snapshot' as const, roomId: room.id, seat, hostSeat: room.hostSeat,
     reaction:room.reaction, seats: room.seats, cpuCount: room.cpuCount, revision: room.revision,
+    matchLimits:normalizeMatchLimits(room.state?.match?.limits??room.matchLimits),
     state: room.state ? projectForSeat(room.state, seat) : null,
   };
 }

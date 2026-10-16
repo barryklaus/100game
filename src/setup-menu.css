@@ -44,3 +44,42 @@
 }
 
 .midnight-mode .setup-secondary { display: block; width: 100%; margin-top: 11px; padding: 15px 20px; }
+
+.match-limits {
+  min-width: 0;
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px solid #b99b6066;
+  border-radius: 14px;
+  background: #101827;
+}
+.match-limits legend, .match-limits h3 {
+  padding: 0 7px;
+  margin: 0;
+  color: #f0d3a0;
+  font-size: .95rem;
+  font-weight: 800;
+}
+.match-limit-fields, .match-limit-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.match-limit-fields label { display: flex; flex-direction: column; gap: 9px; font-size: .85rem; color: #eee0c7; }
+.match-limit-fields input {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 1px solid #b99b60;
+  border-radius: 10px;
+  background: #080f1c;
+  color: #fff2d2;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+.match-limit-fields input:focus-visible { outline: 3px solid #ffe0a0; outline-offset: 2px; }
+.match-limits p { margin: 12px 0 0; color: #b6b4b8; font-size: .75rem; line-height: 1.5; }
+.match-limit-summary { margin: 14px 0 0; }
+.match-limit-summary dt { font-size: .85rem; color: #eee0c7; }
+.match-limit-summary dd { margin: 5px 0 0; font-size: 1.4rem; font-weight: 800; color: #fff2d2; }

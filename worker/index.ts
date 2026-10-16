@@ -117,7 +117,7 @@ export class GameRoom {
     if (request.method !== 'POST') return json({ error: 'POST required.' }, 405);
     const raw = await request.text();
     if (raw.length > 2048) return json({ error: 'Request is too large.' }, 413);
-    let input: { profile?: unknown; token?: unknown };
+    let input: { profile?: unknown; token?: unknown; matchLimits?:unknown };
     try { input = JSON.parse(raw) as typeof input; }
     catch { return json({ error: 'Invalid request.' }, 400); }
     if (!input || typeof input !== 'object' || Array.isArray(input)) return json({ error: 'Invalid request.' }, 400);
@@ -129,7 +129,7 @@ export class GameRoom {
         if (action === 'create') {
           if (this.room) throw new RoomError('This room code is already in use. Create a new room.', 409);
           const token = crypto.randomUUID();
-          this.room = createRoom(id, input.profile, token);
+          this.room = createRoom(id, input.profile, token, Date.now(),this.env.ACCOUNTS?input.matchLimits:undefined);
           this.room.nextRules=!!this.env.ACCOUNTS;
           if(account)this.room.members[0].accountId=account.id;
           await this.refreshPoints();

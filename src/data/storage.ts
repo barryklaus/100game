@@ -1,5 +1,6 @@
 import { MOODS } from './config';
 import type { PlayerConfig } from '../game/types';
+import { normalizeMatchLimits, type MatchLimits } from '../game/matchLimits';
 import { defaultQuality, normalizeQuality, type QualityPreset } from '../render/quality';
 
 export interface Stats { freedoms: number; deaths: number; rounds: number; exacts: number; survives: number; busts: number; cards: number; sevens: number; eights: number; nines: number; tens: number; rating: number; currency: number }
@@ -15,6 +16,7 @@ export interface Settings {
   graphics: QualityPreset;
   difficulty: 'easy' | 'normal';
   playerCount: number;
+  matchLimits: MatchLimits;
   seats: PlayerConfig[];
 }
 const defaultNames = ['You', 'Mira', 'Kai', 'Luma', 'Sol', 'Ren', 'Ari', 'Nova'];
@@ -58,6 +60,7 @@ export function normalizeSettings(value: unknown): Settings {
     graphics: normalizeQuality(data.graphics, defaultQuality()),
     difficulty: data.difficulty === 'easy' ? 'easy' : 'normal',
     playerCount: Math.round(clamp(data.playerCount, 4, 2, 8)),
+    matchLimits: normalizeMatchLimits(data.matchLimits),
     seats,
   };
 }

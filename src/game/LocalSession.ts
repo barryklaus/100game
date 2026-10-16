@@ -1,5 +1,6 @@
 import { MOODS } from '../data/config';
 import { makeDeck } from './deckCore';
+import { validMatchLimits } from './matchLimits';
 import type { GameState } from './types';
 import type { RoundAccounts } from '../../worker/roundAccounts';
 import { cleanStatDelta } from '../account/model';
@@ -38,6 +39,7 @@ export function validLocalState(value:unknown):value is GameState {
   if(!pile(value.drawPile)||!pile(value.played)||seen.size!==cards.length)return false;
   const match=value.match;
   if(!object(match)||!Array.isArray(match.scores)||match.scores.length!==count||!match.scores.every(integer)||typeof match.complete!=='boolean')return false;
+  if(match.limits!==undefined&&!validMatchLimits(match.limits))return false;
   for(const field of ['dead','newlyDead','freed','newlyFreed'])if(!seats(match[field])||new Set(match[field]).size!==match[field].length)return false;
   if(match.dead.some((id:number)=>match.freed.includes(id))||match.newlyDead.some((id:number)=>!match.dead.includes(id))||match.newlyFreed.some((id:number)=>!match.freed.includes(id)))return false;
   for(const field of ['previous','setup'])if(match[field]!==null&&!seat(match[field]))return false;

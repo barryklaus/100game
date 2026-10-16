@@ -1,5 +1,6 @@
 import { CONFIG } from '../data/config';
-import { isOut, FREEDOM_POINTS, DEATH_POINTS } from './conditions';
+import { isOut } from './conditions';
+import { normalizeMatchLimits, type MatchLimits } from './matchLimits';
 import { cardDisplayRank, makeDeck, shuffle } from './deckCore';
 import type { Card, GameState, PlayerConfig } from './types';
 
@@ -24,12 +25,12 @@ function addLog(state: GameState, message: string): void {
   state.log = state.log.slice(0, 24);
 }
 
-export function createGame(configs: PlayerConfig[], round = 1, random = Math.random, nextMatch?: GameState['match']|true): GameState {
+export function createGame(configs: PlayerConfig[], round = 1, random = Math.random, nextMatch?: GameState['match']|true, limits?: MatchLimits): GameState {
   if (configs.length < CONFIG.PLAYER_MIN || configs.length > CONFIG.PLAYER_MAX) throw new Error('Invalid player count');
   const drawPile = shuffle(makeDeck(), random);
   const match=nextMatch===true?{scores:configs.map(()=>0),dead:[],newlyDead:[],freed:[],newlyFreed:[],previous:null,setup:null,complete:false}:nextMatch?{...nextMatch,scores:[...nextMatch.scores],dead:[...nextMatch.dead],freed:[...nextMatch.freed??[]],newlyDead:[],newlyFreed:[],previous:null,setup:null}:undefined;
   if(match?.complete)throw new Error('Start a new match after the table is cleared.');
-  if(match){match.previousSpecialThrow=false;match.setupBonus=0;match.backfire=null;delete match.retaliation;}
+  if(match){match.limits=normalizeMatchLimits(nextMatch===true?limits:nextMatch?.limits);match.previousSpecialThrow=false;match.setupBonus=0;match.backfire=null;delete match.retaliation;}
   const players = configs.map((config, id) => ({ ...config, id, hand: match?.dead.includes(id)||match?.freed?.includes(id)?[]:drawPile.splice(0, CONFIG.HAND_SIZE), ratingDelta: 0, exacts: 0, ...(match?{specialThrowUsed:false}:{}) }));
   const living=players.filter(player=>!match?.dead.includes(player.id)&&!match?.freed?.includes(player.id));
   if(living.length<2)throw new Error('A round needs at least two living players.');
@@ -101,7 +102,7 @@ export function playCard(state: GameState, cardId: string, specialThrow = false)
     if(backfire){state.match!.backfire=player.id;addLog(state,`${player.name}'s Special Throw backfired · Overflow −5, retaliation −2.`);}
     state.players.forEach(other => { if (other.id !== player.id&&!isOut(state,other.id)) other.ratingDelta += CONFIG.RATING_SURVIVE; });
     if(state.match){
-      const match=state.match;
+      const match=state.match,limits=normalizeMatchLimits(match.limits);
       match.setup=match.previous!==player.id?match.previous:null;
       match.setupBonus=match.setup===null?0:match.previousSpecialThrow?2:1;
       if(match.setup!==null){
@@ -112,9 +113,9 @@ export function playCard(state: GameState, cardId: string, specialThrow = false)
       for(const other of state.players){
         if(isOut(state,other.id))continue;
         match.scores[other.id]+=other.ratingDelta;
-        if(match.scores[other.id]<=DEATH_POINTS){match.dead.push(other.id);match.newlyDead.push(other.id);match.outcomePoints[other.id]=match.scores[other.id];}
+        if(match.scores[other.id]<=limits.death){match.dead.push(other.id);match.newlyDead.push(other.id);match.outcomePoints[other.id]=match.scores[other.id];}
         else {
-          if(match.scores[other.id]>=FREEDOM_POINTS){match.freed.push(other.id);match.newlyFreed.push(other.id);match.outcomePoints[other.id]=match.scores[other.id];addLog(state,`${other.name} earned Freedom with ${match.scores[other.id]} table points.`);}
+          if(match.scores[other.id]>=limits.freedom){match.freed.push(other.id);match.newlyFreed.push(other.id);match.outcomePoints[other.id]=match.scores[other.id];addLog(state,`${other.name} earned Freedom with ${match.scores[other.id]} table points.`);}
         }
       }
       for(const other of state.players)if(isOut(state,other.id)&&other.hand.length){state.drawPile.push(...other.hand);other.hand=[];}

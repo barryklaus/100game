@@ -1,4 +1,5 @@
 import type { Mood, Rank, Suit } from '../data/config';
+import type { MatchLimits } from './matchLimits';
 
 export interface Card { id: string; suit: Suit; rank: Rank }
 export interface PlayerConfig { autopilot?: boolean; name: string; kind: 'human' | 'cpu'; mood: Mood; avatar: number; lifetimePoints?: number; freedoms?: number; deaths?: number }
@@ -6,7 +7,7 @@ export interface Player extends PlayerConfig { id: number; hand: Card[]; ratingD
 export type Phase = 'playing' | 'target' | 'ended';
 export interface GameState {
   /** Present only in 100next. Settled scores persist between rounds. */
-  match?: { scores:number[]; dead:number[]; newlyDead:number[]; freed?:number[]; newlyFreed?:number[]; outcomePoints?:Record<number,number>; previous:number|null; previousSpecialThrow?:boolean; setup:number|null; setupBonus?:number; retaliation?:{thrower:number;responder:number}; backfire?:number|null; complete:boolean };
+  match?: { limits?:MatchLimits; scores:number[]; dead:number[]; newlyDead:number[]; freed?:number[]; newlyFreed?:number[]; outcomePoints?:Record<number,number>; previous:number|null; previousSpecialThrow?:boolean; setup:number|null; setupBonus?:number; retaliation?:{thrower:number;responder:number}; backfire?:number|null; complete:boolean };
   /** Public presentation marker for the most recently accepted Special Throw. */
   lastSpecialThrow?: { player:number; cardId:string; turn:number };
   players: Player[];

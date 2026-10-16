@@ -1,9 +1,10 @@
 import type { RoomReaction } from '../data/reactions';
 import type { RoomCommand, Profile } from './hostedCore';
 import { isOut } from './conditions';
+import { normalizeMatchLimits, type MatchLimits } from './matchLimits';
 import type { GameState, PlayerConfig } from './types';
 
-type Snapshot = { reaction?:RoomReaction; type: 'snapshot'; roomId: string; seat: number; hostSeat: number; seats: PlayerConfig[]; cpuCount: number; revision: number; state: GameState | null };
+type Snapshot = { matchLimits?:MatchLimits; reaction?:RoomReaction; type: 'snapshot'; roomId: string; seat: number; hostSeat: number; seats: PlayerConfig[]; cpuCount: number; revision: number; state: GameState | null };
 type ServerMessage = Snapshot | { type: 'error'; message: string };
 
 /** One hosted room per Cloudflare Durable Object. No player needs to keep a host tab open. */
@@ -15,6 +16,7 @@ export class HostedRoom {
   seats: PlayerConfig[] = [];
   state: GameState | null = null;
   cpuCount = 0;
+  matchLimits=normalizeMatchLimits(undefined);
   status: 'connecting' | 'lobby' | 'playing' | 'disconnected' = 'connecting';
   reaction?:RoomReaction;
   reactionOnly=false;
@@ -30,7 +32,7 @@ export class HostedRoom {
 
   get isHost(): boolean { return this.localSeat >= 0 && this.localSeat === this.hostSeat; }
 
-  constructor(private initialMode: 'host' | 'guest', roomId: string, private profile: Profile, private onUpdate: () => void) {
+  constructor(private initialMode: 'host' | 'guest', roomId: string, private profile: Profile, private onUpdate: () => void, private initialLimits?:MatchLimits) {
     this.roomId = roomId;
     void this.open(initialMode);
   }
@@ -44,7 +46,7 @@ export class HostedRoom {
       const response = await fetch(`/api/rooms/${this.roomId}/${mode === 'host' ? 'create' : 'join'}`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         signal: AbortSignal.timeout(15_000),
-        body: JSON.stringify({ profile: this.profile, token: mode === 'guest' ? localStorage.getItem(this.storageKey) : null }),
+        body: JSON.stringify({ profile: this.profile, token: mode === 'guest' ? localStorage.getItem(this.storageKey) : null, ...(mode==='host'&&this.initialLimits?{matchLimits:this.initialLimits}:{}) }),
       });
       const result = await response.json() as { token?: string; seat?: number; error?: string };
       if (!response.ok || !result.token || !Number.isInteger(result.seat)) throw new Error(result.error || 'Could not open the room.');
@@ -95,6 +97,7 @@ export class HostedRoom {
       this.hostSeat = message.hostSeat;
       this.seats = message.seats;
       this.cpuCount = message.cpuCount;
+      this.matchLimits=normalizeMatchLimits(message.matchLimits);
       this.state = message.state;
       this.reaction = message.reaction;
       this.reactionOnly = message.reaction?.serial===message.revision;
@@ -138,6 +141,7 @@ export class HostedRoom {
   }
 
   setCpuCount(count: number): void { if (this.isHost && this.status === 'lobby') this.send({ type: 'cpu-count', count }); }
+  setMatchLimits(limits:MatchLimits):void {if(this.isHost&&this.status==='lobby')this.send({type:'match-limits',limits});}
   setCpuProfile(index:number,profile:Pick<PlayerConfig,'name'|'avatar'>):void {if(this.isHost&&this.status==='lobby')this.send({type:'cpu-profile',index,name:profile.name,avatar:profile.avatar});}
   startRound(round?: number): void { if (this.isHost) this.send({ type: 'start', round }); }
   play(cardId: string, specialThrow=false): void { if (this.state?.phase === 'playing' && this.state.current === this.localSeat) this.send({ type: 'play', cardId, turn: this.state.turn ?? 0,...(specialThrow?{specialThrow:true}:{}) }); }

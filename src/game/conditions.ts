@@ -1,6 +1,7 @@
 import type { GameState } from './types';
-export const FREEDOM_POINTS=15;
-export const DEATH_POINTS=-15;
+import { DEFAULT_MATCH_LIMITS } from './matchLimits';
+export const FREEDOM_POINTS=DEFAULT_MATCH_LIMITS.freedom;
+export const DEATH_POINTS=DEFAULT_MATCH_LIMITS.death;
 export function isOut(state:GameState,seat:number):boolean {
   return !!(state.match?.dead.includes(seat)||state.match?.freed?.includes(seat));
 }
@@ -10,7 +11,8 @@ export function tableSeats(state:GameState,settled=true):number[] {
 }
 export type Condition=0|1|2|3|4;
 /** Evaluate only settled match scores. Zero is healthy; positive scores recover. */
-export function conditionForScore(score:number):Condition {
-  return score<=DEATH_POINTS?4:score<=-11?3:score<=-6?2:score<0?1:0;
+export function conditionForScore(score:number,death=DEATH_POINTS):Condition {
+  const depth=-score,limit=Math.abs(death);
+  return score>=0?0:depth>=limit?4:depth<=Math.ceil(limit/3)?1:depth<=Math.ceil(limit*2/3)?2:3;
 }
 export const conditionName=(stage:Condition):string=>['Healthy','Bruised','Battered','Held together by bandages','Dead'][stage];

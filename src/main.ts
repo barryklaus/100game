@@ -9,6 +9,7 @@ import './death-demo.css';
 import './character-picker.css';
 import './setup-menu.css';
 import { conditionForScore, isOut, tableSeats, FREEDOM_POINTS, DEATH_POINTS } from './game/conditions';
+import { normalizeMatchLimits, validMatchLimits, MAX_MATCH_LIMIT, MAX_DEATH_LIMIT, type MatchLimits } from './game/matchLimits';
 import { freedomScene } from './ui/FreedomScene';
 import './freedom.css';
 import { deathScene } from './ui/DeathScene';
@@ -123,6 +124,7 @@ let modal: 'rules' | 'settings' | 'stats' | 'history' | 'menu' | 'account' | 'ch
 let characterSeat = 0;
 let characterCpu:number|null=null;
 const roomCpuDrafts=new Map<number,string>();
+const roomLimitDrafts=new Map<keyof MatchLimits,string>();
 const roomCpu=(index:number):PlayerConfig|undefined=>online?.seats.filter(seat=>seat.kind==='cpu')[index];
 const canEditRoomCpus=():boolean=>isNextVersion&&!!online?.isHost&&online.status==='lobby';
 let emotesOpen = false;
@@ -217,6 +219,7 @@ const autopilotSeat=():number=>!online&&state?.players[state.phase==='target'?st
 const canControlActor = (): boolean => !!state && !remoteFlight && !autoEnabled(state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current) && !awaitingNetwork && (!online || state.turn === online.state?.turn) && state.players[state.phase === 'target' ? state.pendingSevens.at(-1)! : state.current]?.kind === 'human' && (!online || (state.phase === 'target' ? state.pendingSevens.at(-1) : state.current) === online.localSeat);
 function closeOnline(): void {
   dismissedOutcomeKeys.clear();
+  roomLimitDrafts.clear();
   clearReactions();lastRoomReaction=0;
   roomCpuDrafts.clear();characterCpu=null;
   online?.close(); online = null; state = null; onlineMode = null; selectedCard = null; recordedRound = 0; awaitingNetwork = false; pendingLog = ''; observedOnlineHand.clear(); observedOnlineRound = 0; clearCpu();
@@ -225,6 +228,7 @@ function closeOnline(): void {
 }
 function roomChanged(): void {
   if (!online) return;
+  if(online instanceof HostedRoom)for(const [field,value] of roomLimitDrafts){if(online.error||Number(value)===online.matchLimits[field])roomLimitDrafts.delete(field);}
   for(const [index,name] of roomCpuDrafts){const cpu=roomCpu(index);if(!cpu||cpu.name===name.trim().slice(0,15)||(name.trim()===''))roomCpuDrafts.delete(index);}
   if(characterCpu!==null&&(!canEditRoomCpus()||!roomCpu(characterCpu))){characterCpu=null;modal=null;}
   if(online instanceof HostedRoom&&online.reaction&&online.reaction.serial>lastRoomReaction){
@@ -309,8 +313,9 @@ function connectOnline(mode: 'host' | 'join'): void {
   dismissedOutcomeKeys.clear();
   online?.close(); online = null; state = null; awaitingNetwork = false; selectedCard = null; lastTurnKey = ''; observedOnlineHand.clear(); observedOnlineRound = 0;
   hostedLobbyInitialized = false;roomCpuDrafts.clear();characterCpu=null;clearReactions();lastRoomReaction=0;
-  const Room = isHostedVersion ? HostedRoom : OnlineRoom;
-  online = new Room(mode === 'join' ? 'guest' : 'host', code, { name, avatar, mood: settings.seats[0].mood, ...(isNextVersion?savedOutcomes(settings.seats[0],true):{}) }, roomChanged);
+  roomLimitDrafts.clear();
+  const profile={ name, avatar, mood: settings.seats[0].mood, ...(isNextVersion?savedOutcomes(settings.seats[0],true):{}) };
+  online = isHostedVersion ? new HostedRoom(mode === 'join' ? 'guest' : 'host',code,profile,roomChanged,isNextVersion?settings.matchLimits:undefined) : new OnlineRoom(mode === 'join' ? 'guest' : 'host',code,profile,roomChanged);
   onlineMode = mode; recordedRound = 0;
   if (mode === 'host') { online.setCpuCount(roomCpuCount); history.replaceState(null, '', castPath(code)); }
   render();
@@ -432,7 +437,7 @@ function startGame(round = 1): void {
   practiceRound=account?.snapshot.user?newRoundAccounts({0:account.snapshot.user.id}):null;
   const seats = settings.seats.slice(0, settings.playerCount).map((seat, i) => ({ ...seat, name: seat.name.trim() || defaultSeats[i].name }));
   const previous=state?.match;
-  state = outcomeDemo ? createOutcomeDemo(demoCharacter, 20 + demoRun++) : createGame(seats, round, Math.random, isNextVersion?(state&&round>state.round&&!previous?.complete?previous??true:true):undefined);
+  state = outcomeDemo ? createOutcomeDemo(demoCharacter, 20 + demoRun++) : createGame(seats, round, Math.random, isNextVersion?(state&&round>state.round&&!previous?.complete?previous??true:true):undefined,settings.matchLimits);
   if(isNextVersion&&!outcomeDemo)state.players.forEach((player,index)=>{
     Object.assign(player,savedOutcomes(player,index===0));
     outcomeHistory.set(localPointsKey(player,pointsCast()),{freedoms:player.freedoms??0,deaths:player.deaths??0});
@@ -653,12 +658,20 @@ function cardElement(card: Card, selected = false, extra = ''): string {
   const image = hand && prefersLosslessHand() ? cardImageLossless(card) : cardImage(card);
   return `<div class="playing-card suit-${face.suit} ${special ? 'special' : 'standard'} ${isNextVersion?'engraved-card':''} ${selected ? 'selected' : ''} ${extra}" data-card="${card.id}" ${foilMask} role="${interactive?'button':'img'}" ${interactive?`tabindex="0" aria-pressed="${selected}" aria-keyshortcuts="ArrowLeft ArrowRight Space Enter"`:''} aria-label="${rank} of ${card.suit}${special ? ', special card' : ''}"><img src="${image}"${handSources} alt="${rank} of ${card.suit}" draggable="false">${isNextVersion?'':`<span class="card-print" aria-hidden="true"><span class="card-frame" style="background-image:url(&quot;${cardFrameUrl(face.suit)}&quot;)"></span><span class="card-index top ${face.index.length>3?'word-index':''}" data-index="${face.index}">${face.index}</span>${special ? `<span class="card-action"><strong>${face.title}</strong><small>${face.detail}</small></span>` : ''}<span class="card-index bottom ${face.index.length>3?'word-index':''}" data-index="${face.index}">${face.index}</span></span>`}</div>`;
 }
+function tableLimits(): MatchLimits {
+  return normalizeMatchLimits(state?.match ? state.match.limits : online instanceof HostedRoom ? online.matchLimits : settings.matchLimits);
+}
+function matchLimitsView(limits:MatchLimits,scope:'setup'|'room',editable=true):string {
+  if(!editable)return `<section class="match-limits"><h3>Match limits</h3><dl class="match-limit-summary"><div><dt>★ Freedom</dt><dd>+${limits.freedom}</dd></div><div><dt>☾ Death</dt><dd>−${Math.abs(limits.death)}</dd></div></dl><p>Set by the host · Fixed for this match.</p></section>`;
+  return `<fieldset class="match-limits"><legend>Match limits</legend><div class="match-limit-fields"><label><span>★ Freedom at</span><input type="number" inputmode="numeric" min="1" max="${MAX_MATCH_LIMIT}" step="1" required aria-label="Freedom points" data-match-limit="freedom" data-limit-scope="${scope}" value="${escapeHtml(scope==='room'?roomLimitDrafts.get('freedom')??String(limits.freedom):String(limits.freedom))}"></label><label><span>☾ Death at</span><input type="number" min="-${MAX_DEATH_LIMIT}" max="-3" step="3" required aria-label="Death points" data-match-limit="death" data-limit-scope="${scope}" value="${escapeHtml(scope==='room'?roomLimitDrafts.get('death')??String(limits.death):String(limits.death))}"></label></div><p>Death uses multiples of 3 for the three injury stages.<br>${scope==='room'?'Applies to everyone · ':''}Fixed for every round of this match.</p></fieldset>`;
+}
 function setupView(): string {
   return `<main class="setup-page">
     <div class="setup-hero"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">THE CARD GAME</div><h1>${headlineMarkup}</h1><p>${introCopy}</p><div class="hero-cards">${cardElement({id:'fire-7',suit:'fire',rank:'7'},false,'hero-card one')}${cardElement({id:'water-8',suit:'water',rank:'8'},false,'hero-card two')}${cardElement({id:'sun-10',suit:'sun',rank:'10'},false,'hero-card three')}</div><div class="hero-footer">${gameTagline}</div></div>
     <section class="setup-panel"><div class="panel-top"><span class="eyebrow">GATHER ROUND</span><nav class="top-links" aria-label="Game options">${account?`<button data-action="account">${escapeHtml(account.snapshot.user?.username??'Sign in')}</button>`:''}<button data-action="rules">How to play</button><button data-action="stats">Stats</button><button data-action="settings">Settings</button></nav></div><h2>Set the table</h2><p class="muted">Choose 2–8 players. Any seat can be Human or CPU.</p>
 
       <div class="setup-controls"><label>PLAYERS<select id="player-count">${Array.from({length:7},(_,i)=>`<option value="${i+2}" ${settings.playerCount===i+2?'selected':''}>${i+2} players${i+2===4?' · recommended':''}</option>`).join('')}</select></label>${isNextVersion?'':`<label>CPU DIFFICULTY<select id="difficulty"><option value="easy" ${settings.difficulty==='easy'?'selected':''}>Easy</option><option value="normal" ${settings.difficulty==='normal'?'selected':''}>Normal</option></select></label>`}</div>
+      ${isNextVersion?matchLimitsView(settings.matchLimits,'setup'):''}
       <div class="seat-editor">${settings.seats.slice(0,settings.playerCount).map((seat,i)=>`<div class="seat-row"><div class="seat-number">${String(i+1).padStart(2,'0')}</div>${isNextVersion?`<button type="button" class="avatar-tiny character-picker-trigger" data-character-seat="${i}" aria-label="Player ${i+1} character: ${escapeHtml(avatarNames[seat.avatar % avatarNames.length])}. Choose character" aria-haspopup="dialog" title="Choose character"><img src="${avatarImage(seat.avatar)}" alt=""></button>`:`<div class="avatar-tiny"><img src="${avatarImage(seat.avatar)}" alt=""></div>`}<input aria-label="Player ${i+1} name" data-seat-name="${i}" ${i===0&&account?.snapshot.user?'readonly':''} maxlength="15" value="${escapeHtml(seat.name)}"><select aria-label="Player ${i+1} type" data-seat-kind="${i}"><option value="human" ${seat.kind==='human'?'selected':''}>Human</option><option value="cpu" ${seat.kind==='cpu'?'selected':''}>CPU</option></select>${isNextVersion?'':`<select aria-label="Player ${i+1} avatar" data-seat-avatar="${i}">${avatarNames.map((name,v)=>`<option value="${v}" ${seat.avatar===v?'selected':''}>${escapeHtml(name)}</option>`).join('')}</select>`}<select aria-label="Player ${i+1} mood" data-seat-mood="${i}">${MOODS.map(m=>`<option ${seat.mood===m?'selected':''}>${m}</option>`).join('')}</select></div>`).join('')}</div>
       ${isNextVersion?`<button class="primary-button start-button" data-action="online-setup">PLAY ONLINE WITH FRIENDS <span aria-hidden="true">➜</span></button><button class="secondary-button setup-secondary" data-action="start">START LOCAL GAME</button><p class="setup-note">Online: share a room link · Local: pass one device</p>`:`<button class="primary-button start-button" data-action="start">START LOCAL GAME <span>➜</span></button><button class="secondary-button online-entry" data-action="online-setup">PLAY ONLINE WITH FRIENDS</button><p class="setup-note">Local: pass one device · Online: share a room link, one Human per device</p>`}
     </section></main>`;
@@ -667,7 +680,7 @@ function avatarPicker(seatIndex = 0, selectedAvatar = settings.seats[seatIndex].
   return `<div class="avatar-picker" role="group" aria-label="Choose a character">${avatarNames.map((name, index) => `<button class="avatar-choice ${selectedAvatar === index ? 'chosen' : ''}" data-avatar-choice="${index}" data-avatar-seat="${seatIndex}" aria-label="${escapeHtml(name)}" aria-pressed="${selectedAvatar === index}"><img src="${avatarImage(index)}" alt=""><span>${escapeHtml(name)}</span></button>`).join('')}</div>`;
 }
 function onlineView(): string {
-  return `<main class="online-page"><section class="online-panel"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">PLAY TOGETHER</div><h1>Online table</h1><p>Each friend plays from their own browser. Share a room link to play together.</p><div class="online-tabs"><button class="${onlineMode === 'host' ? 'current' : ''}" data-action="host-tab">Create room</button><button class="${onlineMode === 'join' ? 'current' : ''}" data-action="join-tab">Join room</button></div>${account?`<button class="text-button" data-action="account">${escapeHtml(account.snapshot.user?.username??'Sign in to save your statistics')}</button>`:''}<label class="online-field">YOUR NAME<input ${account?.snapshot.user?'readonly':''} id="online-name" maxlength="15" value="${escapeHtml(settings.seats[0].name)}"></label><div class="online-avatar-heading">YOUR CHARACTER <span>${escapeHtml(avatarNames[settings.seats[0].avatar % avatarNames.length])}</span></div>${avatarPicker()}${onlineMode === 'join' ? `<label class="online-field">ROOM CODE OR INVITE LINK<input id="room-code" autocomplete="off" value="${escapeHtml(joinCode)}" placeholder="100-abc123…"></label>` : ''}<button class="primary-button start-button" data-action="${onlineMode === 'join' ? 'join-room' : 'create-room'}">${onlineMode === 'join' ? 'JOIN ROOM' : 'CREATE ROOM'} ➜</button><button class="text-button" data-action="back-setup">Back to local setup</button></section></main>`;
+  return `<main class="online-page"><section class="online-panel"><div class="brand-mark"><span class="crown">♛</span><strong>100</strong></div><div class="eyebrow">PLAY TOGETHER</div><h1>Online table</h1><p>Each friend plays from their own browser. Share a room link to play together.</p><div class="online-tabs"><button class="${onlineMode === 'host' ? 'current' : ''}" data-action="host-tab">Create room</button><button class="${onlineMode === 'join' ? 'current' : ''}" data-action="join-tab">Join room</button></div>${account?`<button class="text-button" data-action="account">${escapeHtml(account.snapshot.user?.username??'Sign in to save your statistics')}</button>`:''}<label class="online-field">YOUR NAME<input ${account?.snapshot.user?'readonly':''} id="online-name" maxlength="15" value="${escapeHtml(settings.seats[0].name)}"></label><div class="online-avatar-heading">YOUR CHARACTER <span>${escapeHtml(avatarNames[settings.seats[0].avatar % avatarNames.length])}</span></div>${avatarPicker()}${isNextVersion&&onlineMode!=='join'?matchLimitsView(settings.matchLimits,'setup'):''}${onlineMode === 'join' ? `<label class="online-field">ROOM CODE OR INVITE LINK<input id="room-code" autocomplete="off" value="${escapeHtml(joinCode)}" placeholder="100-abc123…"></label>` : ''}<button class="primary-button start-button" data-action="${onlineMode === 'join' ? 'join-room' : 'create-room'}">${onlineMode === 'join' ? 'JOIN ROOM' : 'CREATE ROOM'} ➜</button><button class="text-button" data-action="back-setup">Back to local setup</button></section></main>`;
 }
 function lobbySeat(seat:PlayerConfig,index:number):string {
   const cpuIndex=online!.seats.slice(0,index).filter(player=>player.kind==='cpu').length;
@@ -677,7 +690,7 @@ function lobbySeat(seat:PlayerConfig,index:number):string {
 function lobbyView(): string {
   if (!online) return onlineView();
   const invite = `${location.origin}${castPath(online.roomId)}`;
-  return `<main class="online-page"><section class="online-panel"><div class="eyebrow">${online.isHost ? 'YOUR ROOM' : 'JOINING A ROOM'}</div><h1>${online.status === 'disconnected' ? 'Connection ended' : online.status === 'connecting' ? 'Connecting…' : 'Gather your players'}</h1><p role="status">${online.error ? escapeHtml(online.error) : online.isHost ? 'Share this link. Each friend joins from a separate browser.' : 'Waiting for the host to start the round.'}</p>${online.isHost && online.status === 'lobby' ? `<div class="invite-box"><input readonly aria-label="Invite link" value="${escapeHtml(invite)}"><button data-action="copy-invite">COPY LINK</button></div>` : ''}<div class="lobby-seats">${online.seats.map((seat,i)=>lobbySeat(seat,i)).join('')}</div>${online.isHost && online.status === 'lobby' ? `<label class="online-field">CPU PLAYERS <select id="room-cpus">${Array.from({length:Math.max(0,9-online.seats.filter(s=>s.kind==='human').length)},(_,i)=>`<option value="${i}" ${online!.cpuCount===i?'selected':''}>${i}</option>`).join('')}</select></label><button class="primary-button start-button" data-action="start-online" ${online.seats.length<2?'disabled':''}>START ONLINE ROUND ➜</button><p class="setup-note">${online.seats.length}/8 seats · At least two players needed${isNextVersion?'<br>Rename CPUs and click their avatars to choose characters.':''}</p>` : ''}${online.status === 'disconnected' ? `<button class="primary-button start-button" data-action="retry-room">${online instanceof HostedRoom ? 'RECONNECT TO ROOM' : online.isHost ? 'CREATE NEW ROOM' : 'TRY JOINING AGAIN'} ➜</button>` : ''}<button class="text-button" data-action="leave-room">Leave room</button></section></main>`;
+  return `<main class="online-page"><section class="online-panel"><div class="eyebrow">${online.isHost ? 'YOUR ROOM' : 'JOINING A ROOM'}</div><h1>${online.status === 'disconnected' ? 'Connection ended' : online.status === 'connecting' ? 'Connecting…' : 'Gather your players'}</h1><p role="status">${online.error ? escapeHtml(online.error) : online.isHost ? 'Share this link. Each friend joins from a separate browser.' : 'Waiting for the host to start the round.'}</p>${online.isHost && online.status === 'lobby' ? `<div class="invite-box"><input readonly aria-label="Invite link" value="${escapeHtml(invite)}"><button data-action="copy-invite">COPY LINK</button></div>` : ''}<div class="lobby-seats">${online.seats.map((seat,i)=>lobbySeat(seat,i)).join('')}</div>${isNextVersion&&online instanceof HostedRoom&&online.status==='lobby'?matchLimitsView(online.matchLimits,'room',online.isHost):''}${online.isHost && online.status === 'lobby' ? `<label class="online-field">CPU PLAYERS <select id="room-cpus">${Array.from({length:Math.max(0,9-online.seats.filter(s=>s.kind==='human').length)},(_,i)=>`<option value="${i}" ${online!.cpuCount===i?'selected':''}>${i}</option>`).join('')}</select></label><button class="primary-button start-button" data-action="start-online" ${online.seats.length<2?'disabled':''}>START ONLINE ROUND ➜</button><p class="setup-note">${online.seats.length}/8 seats · At least two players needed${isNextVersion?'<br>Rename CPUs and click their avatars to choose characters.':''}</p>` : ''}${online.status === 'disconnected' ? `<button class="primary-button start-button" data-action="retry-room">${online instanceof HostedRoom ? 'RECONNECT TO ROOM' : online.isHost ? 'CREATE NEW ROOM' : 'TRY JOINING AGAIN'} ➜</button>` : ''}<button class="text-button" data-action="leave-room">Leave room</button></section></main>`;
 }
 function seatHtml(player: GameState['players'][number], index: number, count: number): string {
   if (!state) return '';
@@ -719,7 +732,7 @@ function gameView(): string {
 function shownCondition(index:number):number {
   if(!state?.match||state.match.freed?.includes(index))return 0;
   const before=state.phase==='ended'&&(presentedTotal.pending||!playerRing.scoresReady(gameRoundKey()));
-  return conditionForScore(state.match.scores[index]-(before?state.players[index].ratingDelta:0));
+  return conditionForScore(state.match.scores[index]-(before?state.players[index].ratingDelta:0),normalizeMatchLimits(state.match.limits).death);
 }
 function resultView(): string {
   if (!state) return '';
@@ -751,7 +764,7 @@ function beginNextRound():void {
 function modalView(): string {
   if (!modal) return '';
   const cpuChoice=characterCpu===null?undefined:roomCpu(characterCpu);
-  const body = modal==='characters'?cpuChoice?`<h2 id="character-picker-title">Choose a character</h2><p>CPU ${characterCpu!+1} · ${escapeHtml(roomCpuDrafts.get(characterCpu!)??cpuChoice.name)}</p>${avatarPicker(0,cpuChoice.avatar)}`:`<h2 id="character-picker-title">Choose a character</h2><p>Player ${characterSeat+1} · ${escapeHtml(settings.seats[characterSeat].name)}</p>${avatarPicker(characterSeat)}`:modal==='account'&&account?accountView(account)+(online?'<p>Sign in before joining a room to record its online statistics.</p>':''):modal==='stats'&&account?.snapshot.user?accountStatistics(account):modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. Turn order continues from them.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>${isNextVersion?'DEDUCT':'MINUS TEN'}</strong><span>Subtract 10.</span></div></div><p>${isNextVersion?"Survive +1. Hit exactly 100 +1, once per player per round. Set up the next player’s Overflow +1. Special Throw: toggle it above your hand before playing, once per player per round. If the next player overflows, your setup earns +2 instead of +1. If they survive, Special Throw earns no bonus. If their reply makes you overflow on the very next play, your penalty is −7: Overflow −5 plus a −2 backfire. It works with any card, including CHOOSE and REVERSE. Overflow −5. Match scores persist: −1 to −5 bruised, −6 to −10 battered, −11 to −14 bandaged, −15 or below Death. Freedom at +15 table points, after a settled round. Every new table starts at 0; leaving clears table points. All-time Freedom and Death statistics remain. Freed and dead players leave the room. A table with fewer than two active players ends; start a new match to play again.":"Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5."} Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Keyboard: use ← / → (or ↑ / ↓) to highlight a card, then press Space or Enter to throw it. Your replacement card draws automatically. Flick the right edge left or the left edge right to flip it. Flick upward from the top edge or double-tap the top edge for a somersault. Corners tumble diagonally; slow sideways drags stay in your hand.${isNextVersion?' Use AUTO beside Emote to let the challenging CPU play your cards, choose targets, and continue to the next round automatically. Online, the host’s Auto controls the next round. Tap it again to take control; a throw already underway finishes first. Hold a card and swing it back and forth twice (or three times), then release for a spinning boomerang throw. Look for the release cue. Hold Shift with Space or Enter for a boomerang throw.':''}</p>`
+  const body = modal==='characters'?cpuChoice?`<h2 id="character-picker-title">Choose a character</h2><p>CPU ${characterCpu!+1} · ${escapeHtml(roomCpuDrafts.get(characterCpu!)??cpuChoice.name)}</p>${avatarPicker(0,cpuChoice.avatar)}`:`<h2 id="character-picker-title">Choose a character</h2><p>Player ${characterSeat+1} · ${escapeHtml(settings.seats[characterSeat].name)}</p>${avatarPicker(characterSeat)}`:modal==='account'&&account?accountView(account)+(online?'<p>Sign in before joining a room to record its online statistics.</p>':''):modal==='stats'&&account?.snapshot.user?accountStatistics(account):modal==='rules' ? `<h2>How to play</h2><p>Keep the shared total at or below 100. Play one of your two cards every turn, then draw a replacement. The player who takes the total over 100 causes Overflow; everyone else survives.</p><div class="rules-grid"><div><strong>1–6</strong><span>Add face value</span></div><div><strong>10</strong><span>Add 10</span></div><div><strong>CHOOSE PLAYER</strong><span>Make another player play now. Turn order continues from them.</span></div><div><strong>REVERSE</strong><span>Reverse direction. Then pass the turn to the next player.</span></div><div><strong>ZERO</strong><span>Add nothing.</span></div><div><strong>${isNextVersion?'DEDUCT':'MINUS TEN'}</strong><span>Subtract 10.</span></div></div><p>${isNextVersion?"Survive +1. Hit exactly 100 +1, once per player per round. Set up the next player’s Overflow +1. Special Throw: toggle it above your hand before playing, once per player per round. If the next player overflows, your setup earns +2 instead of +1. If they survive, Special Throw earns no bonus. If their reply makes you overflow on the very next play, your penalty is −7: Overflow −5 plus a −2 backfire. It works with any card, including CHOOSE and REVERSE. Overflow −5. Match scores persist. Injuries worsen as you approach the chosen Death limit. "+`Death at −${Math.abs(tableLimits().death)}. Freedom at +${tableLimits().freedom} table points, after a settled round. `+" Every new table starts at 0; leaving clears table points. All-time Freedom and Death statistics remain. Freed and dead players leave the room. A table with fewer than two active players ends; start a new match to play again.":"Hit exactly 100 for +3 rating; play continues. Survive for +1. Overflow for −5."} Suits are visual only.</p><p><strong>Controls:</strong> drag or flick a card toward the center. On touch screens, swipe it. Double-tap or double-click a card to play it. Keyboard: use ← / → (or ↑ / ↓) to highlight a card, then press Space or Enter to throw it. Your replacement card draws automatically. Flick the right edge left or the left edge right to flip it. Flick upward from the top edge or double-tap the top edge for a somersault. Corners tumble diagonally; slow sideways drags stay in your hand.${isNextVersion?' Use AUTO beside Emote to let the challenging CPU play your cards, choose targets, and continue to the next round automatically. Online, the host’s Auto controls the next round. Tap it again to take control; a throw already underway finishes first. Hold a card and swing it back and forth twice (or three times), then release for a spinning boomerang throw. Look for the release cue. Hold Shift with Space or Enter for a boomerang throw.':''}</p>`
   : modal==='settings' ? `<h2>Table settings</h2><div class="modal-setting"><label for="graphics">Visual quality</label><select id="graphics">${(['ultra','high','medium','mobile'] as const).map(tier=>`<option value="${tier}" ${settings.graphics===tier?'selected':''}>${tier==='mobile'?'Lite / Mobile':tier.charAt(0).toUpperCase()+tier.slice(1)}</option>`).join('')}</select><small>Ultra adds richer shadows and reflections. Every preset keeps the table and cards sharp; Mobile uses a lighter render budget.</small></div>${[['volume','Master volume',settings.volume],['sfxVolume','Sound effects',settings.sfxVolume],['musicVolume','Music',settings.musicVolume],['ambienceVolume','Ambience',settings.ambienceVolume]].map(([id,label,value])=>`<div class="modal-setting"><label for="${id}">${label}<output for="${id}">${Math.round(Number(value)*100)}%</output></label><input id="${id}" type="range" min="0" max="1" step=".01" value="${value}"></div>`).join('')}<label class="setting-toggle"><input id="muted" type="checkbox" ${settings.muted?'checked':''}>Mute all sounds</label><label class="setting-toggle"><input id="reducedMotion" type="checkbox" ${settings.reducedMotion?'checked':''}>Reduced motion</label><div class="modal-setting gyro-setting"><label>Phone tilt</label><button class="secondary-button" data-action="gyro-enable" ${!gyro.available || settings.reducedMotion ? 'disabled' : ''}>${gyro.status === 'on' ? 'Recenter phone tilt' : gyro.status === 'waiting' ? 'Waiting for motion…' : 'Enable phone tilt'}</button><small id="gyro-status">${settings.reducedMotion ? 'Turn off Reduced motion to use phone tilt.' : gyro.status === 'on' ? 'Move your phone gently to tilt the cards. Dragging a card takes control.' : gyro.status === 'denied' ? 'Motion access was denied. You can still drag cards to tilt them.' : gyro.available ? 'Available on supported phones.' : 'Motion sensors are unavailable in this browser.'}</small></div><div class="modal-setting"><label for="uiScale">Interface size <output for="uiScale">${Math.round(settings.uiScale*100)}%</output></label><input id="uiScale" type="range" min=".85" max="1.2" step=".05" value="${settings.uiScale}"></div><p>Settings save on this device.</p>`
   : modal==='stats' ? `<h2>Local statistics</h2><div class="stats-grid">${[['Freedom',stats.freedoms],['Death',stats.deaths],['Rounds',stats.rounds],['Exact 100s',stats.exacts],['Survivals',stats.survives],['Overflows',stats.busts],['Cards played',stats.cards],['Choose Player',stats.sevens],['Reverse',stats.eights],['Zero',stats.nines],['Minus Ten',stats.tens]].map(([label,value])=>`<div><span>${label}</span><strong>${value}</strong></div>`).join('')}</div><p>Your statistics are saved on this device.</p>`
   : modal==='history' ? `<h2>Game history</h2><p>Recent moves at this table.</p><ul class="history-list">${state?.log.length ? state.log.map(gameLogLine).join('') : '<li>No cards have been played yet.</li>'}</ul>`
@@ -789,6 +802,7 @@ function render(): void {
   if(specialThrowArm&&specialThrowArm.key!==specialThrowKey()){playerRing.cancelSpecialThrow(specialThrowArm.seat);specialThrowArm=null;}
   if(isNextVersion&&!outcomeDemo)localSession.save(state&&!online&&!onlineMode?{state,cast:pointsCast(),practice:practiceRound,dismissed:[...dismissedOutcomeKeys]}:null);
   const accountFields=modal==='account'&&!account?.snapshot.user?Array.from(document.querySelectorAll<HTMLInputElement>('#account-form input')).map(input=>[input.name,input.value] as const):[];
+  const focusedLimit=document.activeElement instanceof HTMLInputElement&&document.activeElement.dataset.limitScope==='room'?document.activeElement.dataset.matchLimit:undefined;
   const discard = state?.played.at(-1);
   const playKey = state&&discard?`${state.round}:${discard.id}:${state.played.length}`:'';
   const active = !!state && (!online || online.status === 'playing');
@@ -798,6 +812,7 @@ function render(): void {
     caption: !state?'':state.total>100?'OVERFLOW':state.event==='exact'?`EXACT 100 · +${state.match?1:3}`:state.event==='zero'?'ZERO · TOTAL HELD':state.event==='minus'?'−10':state.phase==='target'?'CHOOSE A PLAYER':'',
   }, !!observatory?.canAnimate && !settings.reducedMotion);
   updateGameView(app, (online && online.status !== 'playing' ? lobbyView() : state ? gameView() : onlineMode ? onlineView() : setupView()) + modalView());
+  if(focusedLimit&&!state)app.querySelector<HTMLInputElement>(`[data-limit-scope="room"][data-match-limit="${focusedLimit}"]`)?.focus({preventScroll:true});
   for(const [name,value] of accountFields){const input=document.querySelector<HTMLInputElement>(`#account-form input[name="${name}"]`);if(input)input.value=value;}
   syncPlayerRing();
   if (modal === 'characters') {
@@ -931,7 +946,10 @@ app.addEventListener('click', event => {
     if (action === 'back-setup') { onlineMode = null; history.replaceState(null, '', castPath()); render(); }
     if (action === 'create-room' || action === 'join-room') connectOnline(action === 'create-room' ? 'host' : 'join');
     if (action === 'retry-room' && online) { if (online instanceof HostedRoom) online.retry(); else connectOnline(online.isHost ? 'host' : 'join'); }
-    if (action === 'start-online') online?.startRound();
+    if (action === 'start-online') {
+      const field=app.querySelector<HTMLInputElement>('[data-limit-scope="room"][data-match-limit]');
+      if(!field||updateMatchLimit(field))online?.startRound();
+    }
     if (action === 'leave-room') { modal = null; closeOnline(); }
     if (action === 'copy-invite' && online) void navigator.clipboard.writeText(`${location.origin}${castPath(online.roomId)}`).then(()=>flash('Invite link copied')).catch(()=>flash('Select and copy the invite link.'));
     if (action === 'again') beginNextRound();
@@ -976,8 +994,29 @@ app.addEventListener('click', event => {
   if (seat?.dataset.target) { chooseTarget(Number(seat.dataset.target)); return; }
 
 });
+function updateMatchLimit(el:HTMLInputElement|HTMLSelectElement):boolean {
+  if(isNextVersion&&(el.dataset.matchLimit==='freedom'||el.dataset.matchLimit==='death')){
+    const field=el.dataset.matchLimit,room=el.dataset.limitScope==='room';
+    if(room&&(!(online instanceof HostedRoom)||!online.isHost||online.status!=='lobby'))return false;
+    if(!room&&(state||online))return false;
+    const before=room?(online as HostedRoom).matchLimits:settings.matchLimits;
+    if(room)roomLimitDrafts.set(field,el.value);
+    const limits=room?{freedom:Number(roomLimitDrafts.get('freedom')??before.freedom),death:Number(roomLimitDrafts.get('death')??before.death)}:{...before,[field]:Number(el.value)};
+    if(!validMatchLimits(limits)){
+      roomLimitDrafts.delete(field);el.value=String(before[field]);
+      flash('Use whole points: Freedom 1–1000; Death −3 to −999 in steps of 3.','bust');return false;
+    }
+    settings.matchLimits=normalizeMatchLimits(limits);save();
+    if(room&&(limits.freedom!==before.freedom||limits.death!==before.death))(online as HostedRoom).setMatchLimits(limits);
+  }
+  return true;
+}
+app.addEventListener('focusout',event=>{
+  if(event.target instanceof HTMLInputElement&&event.target.dataset.matchLimit)updateMatchLimit(event.target);
+});
 app.addEventListener('change', event => {
   const el = event.target as HTMLInputElement | HTMLSelectElement;
+  if(el.dataset.matchLimit)updateMatchLimit(el);
   if (el.id === 'player-count') { settings.playerCount = Number(el.value); save(); render(); }
   if (el.id === 'difficulty' && !isNextVersion) { settings.difficulty = el.value as Settings['difficulty']; save(); }
   if(el.dataset.roomCpuName!==undefined&&canEditRoomCpus()){const index=Number(el.dataset.roomCpuName),cpu=roomCpu(index);if(cpu)online!.setCpuProfile(index,{name:el.value,avatar:cpu.avatar});}
@@ -994,6 +1033,8 @@ app.addEventListener('change', event => {
 });
 app.addEventListener('input', event => {
   const el = event.target as HTMLInputElement;
+  if(el.dataset.limitScope==='room'&&(el.dataset.matchLimit==='freedom'||el.dataset.matchLimit==='death'))roomLimitDrafts.set(el.dataset.matchLimit,el.value);
+  if(el.dataset.limitScope==='setup'&&(el.dataset.matchLimit==='freedom'||el.dataset.matchLimit==='death')&&validMatchLimits({...settings.matchLimits,[el.dataset.matchLimit]:Number(el.value)}))updateMatchLimit(el);
   if (el.id === 'room-code') joinCode = el.value;
   if(el.dataset.roomCpuName!==undefined&&canEditRoomCpus())roomCpuDrafts.set(Number(el.dataset.roomCpuName),el.value);
   if(el.dataset.seatName!==undefined){settings.seats[Number(el.dataset.seatName)].name=el.value;save();}
