@@ -38,9 +38,10 @@
   white-space:nowrap;line-height:1.1;text-shadow:0 1px 2px #000;
 }
 .engraved-world .seat-layer .sprite-seat .seat-name::before {display:none;}
+.engraved-world .seat-layer .sprite-seat .seat-label {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .engraved-world .seat-layer .sprite-seat .seat-count {
   color:#fff1c9;border-color:#dab365aa;border-radius:2px;
-  font-family:Georgia,'Times New Roman',serif;margin-left:3px;
+  font-family:Georgia,'Times New Roman',serif;margin-left:3px;flex-shrink:0;
 }
 .engraved-world .seat-layer .sprite-seat .seat-meta {color:#f1d9a5;text-shadow:0 1px 3px #000;}
 .engraved-world .special-throw-toggle {color:#f7deb0;border-color:#d6a852aa;background:#091811c9;letter-spacing:.05em;}
@@ -53,14 +54,14 @@
 .engraved-world .autopilot-toggle small {font-family:Georgia,'Times New Roman',serif;font-weight:700;}
 .engraved-world .seat-layer[data-layout="all"] .sprite-seat.master-seat {width:min(32vw,calc(160vw / var(--visible-player-count)),48svh,480px)!important;cursor:default;}
 .engraved-world .seat-layer[data-layout="all"] .sprite-seat.master-seat.targetable {cursor:pointer;}
-.engraved-world .seat-layer[data-layout="all"] .sprite-seat .seat-info {left:50%;width:calc(88vw / var(--visible-player-count));transform:translateX(-50%);}
+.engraved-world .seat-layer[data-layout="all"] .sprite-seat .seat-info {left:50%;width:min(15.5vw,calc(88vw / var(--visible-player-count)));transform:translateX(-50%);}
 .engraved-world .ring-controls[data-layout="all"]>button {display:none;}
 .engraved-world .seat-layer[data-layout="all"] .sprite-seat .seat-name {font-size:clamp(9px,1vw,16px);}
 .engraved-world:not(.world3d-active) .game-page {background-image:linear-gradient(#03070c22,#03070c44),url('/assets/scene/engraved-v1/room-desktop.webp')!important;}
 .engraved-world:not(.world3d-active) .table-felt::before {background:url('/assets/scene/engraved-v1/table-felt.webp') center/100% 100%!important;border-color:#ad884a!important;}
 @media(orientation:portrait) {
   .engraved-world:not(.world3d-active) .game-page {background-image:linear-gradient(#03070c22,#03070c44),url('/assets/scene/engraved-v1/room-mobile.webp')!important;}
-  .engraved-world .seat-layer .sprite-seat .seat-name {padding:2px 4px;font-size:10px;gap:1px;}
+  .engraved-world .seat-layer .sprite-seat .seat-name {max-width:22vw;padding:2px 4px;font-size:10px;gap:1px;}
   .engraved-world .seat-layer .sprite-seat .seat-count {margin-left:1px;}
 }
 @media(orientation:landscape) and (max-height:520px) {
