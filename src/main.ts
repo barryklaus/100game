@@ -19,6 +19,7 @@ import { totalAccountStats } from './account/model';
 import { newRoundAccounts, recordPlayed, roundDelta, type RoundAccounts } from '../worker/roundAccounts';
 import './account.css';
 import { TotalPresentation } from './ui/TotalPresentation';
+import { TotalImpact } from './ui/TotalImpact';
 import { totalMarkup } from './ui/totalFeedback';
 import { screenRect, setScreenDanger, unshakenRect } from './ui/ScreenShake';
 import { LatestFrame } from './ui/LatestFrame';
@@ -169,14 +170,15 @@ document.documentElement.classList.toggle('engraved-mode', isNextVersion);
 document.documentElement.classList.toggle('engraved-world', isNextVersion);
 document.documentElement.classList.toggle('death-demo-mode', outcomeDemo);
 const presentedTotal = new TotalPresentation();
+const totalImpact = new TotalImpact();
 let observatory: ObservatoryScene | undefined;
 try { observatory = new ObservatoryScene(isNextVersion ? 'engraved' : 'observatory'); observatory.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion}); } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
 
 if (observatory) observatory.onCardArrival = key => {
+  const previous = presentedTotal.visible.total;
   if (!presentedTotal.arrive(key)) return;
   // Update only the score, preserving an in-progress card drag and draw animation.
-  const total = document.querySelector('.total-number');
-  if (total) total.innerHTML = totalMarkup(presentedTotal.visible.total);
+  const total = document.querySelector<HTMLElement>('.total-number');
   for (const selector of ['energy-system', 'total-wrap']) {
     const element = document.querySelector(`.${selector}`);
     if (element) element.className = `${selector} ${totalClass(presentedTotal.visible.total)}`;
@@ -185,6 +187,10 @@ if (observatory) observatory.onCardArrival = key => {
   if (caption) caption.textContent = presentedTotal.visible.caption;
   audio.setPresentedTotal(presentedTotal.visible.total);
   setScreenDanger(presentedTotal.visible.total);
+  if (total) {
+    if (isNextVersion) totalImpact.show(total, previous, presentedTotal.visible.total, settings.reducedMotion || matchMedia('(prefers-reduced-motion: reduce)').matches);
+    else total.innerHTML = totalMarkup(presentedTotal.visible.total);
+  }
   syncPlayerRing();
   if (state?.phase === 'ended') render();
   if (remoteSnapshots.length) queueMicrotask(() => roomChanged());
@@ -768,6 +774,7 @@ function render(): void {
   const discard = state?.played.at(-1);
   const playKey = state&&discard?`${state.round}:${discard.id}:${state.played.length}`:'';
   const active = !!state && (!online || online.status === 'playing');
+  if (!active || settings.reducedMotion) totalImpact.cancel();
   presentedTotal.sync(active?`${state!.round}:${state!.players.map(player=>player.name).join(':')}`:'', playKey, {
     total: state?.total ?? 0,
     caption: !state?'':state.total>100?'OVERFLOW':state.event==='exact'?`EXACT 100 · +${state.match?1:3}`:state.event==='zero'?'ZERO · TOTAL HELD':state.event==='minus'?'−10':state.phase==='target'?'CHOOSE A PLAYER':'',

@@ -43,6 +43,8 @@ function patch(current: Node, next: Node): void {
   }
   if (!(current instanceof HTMLElement) || !(next instanceof HTMLElement)) return;
   attributes(current, next);
+  // Preserve the short-lived outgoing glyph and running impact across unrelated renders.
+  if (current.matches('.total-number') && current.querySelector('.total-value')?.textContent === next.querySelector('.total-value')?.textContent) return;
   // Card hit targets intentionally keep their existing lifecycle: it resets drag
   // classes and lets PhysicalHand attach the new targets after a completed play.
   if (current.matches('.local-hand, .shared-hand, .table-cards')) {
@@ -79,7 +81,7 @@ function children(current: HTMLElement, next: HTMLElement): void {
 
 export function updateGameView(root: HTMLElement, markup: string): void {
   const handPositions=new Map(Array.from(root.querySelectorAll<HTMLElement>('.local-hand .hand-card')).map(card=>[card.dataset.card!,screenRect(card)]));
-  const previousTotal=root.querySelector('.total-number')?.textContent;
+  const previousTotal=root.querySelector('.total-value')?.textContent;
   const template = document.createElement('template');
   template.innerHTML = markup;
   const next = template.content.firstElementChild;
@@ -100,6 +102,6 @@ export function updateGameView(root: HTMLElement, markup: string): void {
       });
     }
     const total=root.querySelector<HTMLElement>('.total-number');
-    if(total&&previousTotal!==total.textContent)total.animate([{translate:'0 5px',opacity:.55},{translate:'0 0',opacity:1}],{duration:260,easing:'ease-out'});
+    if(total&&!document.documentElement.classList.contains('engraved-world')&&previousTotal!==total.querySelector('.total-value')?.textContent)total.animate([{translate:'0 5px',opacity:.55},{translate:'0 0',opacity:1}],{duration:260,easing:'ease-out'});
   }
 }

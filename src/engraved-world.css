@@ -19,7 +19,13 @@
   letter-spacing:-.055em;line-height:.85;
   text-shadow:1px 2px 0 #6d5732,0 7px 0 #231e15,0 10px 16px #0009!important;
 }
-.engraved-world .total-value {top:0;}
+.engraved-world .total-value {top:0;transform-origin:center bottom;}
+.engraved-world .total-impact-ghost {
+  position:absolute;top:0;left:50%;translate:-50% 0;display:inline-block;
+  transform-origin:center bottom;pointer-events:none;
+}
+.reduce-motion .total-impact-ghost {display:none;}
+@media(prefers-reduced-motion:reduce){.total-impact-ghost {display:none;}}
 .engraved-world .total-caption {font-family:Georgia,'Times New Roman',serif!important;font-weight:700;letter-spacing:.22em;}
 @media(orientation:landscape) {
   .engraved-world .total-caption {position:absolute;top:-18px;bottom:auto;margin:0;white-space:nowrap;}
@@ -65,7 +71,6 @@
 .engraved-world .ring-controls[data-layout="all"]>button {display:none;}
 .engraved-world .seat-layer[data-layout="all"] .sprite-seat .seat-name {font-size:clamp(9px,1vw,16px);}
 .engraved-world:not(.world3d-active) .game-page {background-image:linear-gradient(#03070c22,#03070c44),url('/assets/scene/engraved-v1/room-desktop.webp')!important;}
-.engraved-world:not(.world3d-active) .table-felt::before {background:url('/assets/scene/engraved-v1/table-felt.webp') center/100% 100%!important;border-color:#ad884a!important;}
 @media(orientation:portrait) {
   .engraved-world:not(.world3d-active) .game-page {background-image:linear-gradient(#03070c22,#03070c44),url('/assets/scene/engraved-v1/room-mobile.webp')!important;}
   .engraved-world .seat-layer .sprite-seat .seat-name {max-width:22vw;padding:2px 4px;font-size:10px;gap:1px;}

@@ -120,7 +120,8 @@ export class ObservatoryScene {
   private localSeat = 0;
 
   constructor(roomTheme: 'observatory' | 'midnight' | 'engraved' = 'observatory') {
-    this.table = new ObservatoryTable(roomTheme !== 'observatory',roomTheme==='engraved',()=>this.worldPaint.request());
+    // Restore the teal celestial atlas; the engraved room and characters stay in place.
+    this.table = new ObservatoryTable(roomTheme !== 'observatory');
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.info.autoReset=false;
@@ -761,7 +762,7 @@ export class ObservatoryScene {
       const total=document.querySelector<HTMLElement>('.total-number');
       this.totalPulse?.cancel();
       // Exactly 100 uses its stationary warning light instead of a size bounce.
-      if(total&&!this.reducedMotion&&!total.closest('.at100,.busted')){
+      if(total&&!this.reducedMotion&&!document.documentElement.classList.contains('engraved-world')&&!total.closest('.at100,.busted')){
         const color=this.flowColor();
         this.totalPulse=total.animate([
           {scale:'1',textShadow:`0 0 0 ${color}`},
