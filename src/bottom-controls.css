@@ -14,6 +14,12 @@
 .midnight-mode .game-page :is(.emote-trigger,.autopilot-toggle,.info-fab) {
   width:var(--bottom-control-size);
 }
+/* Lift only the controls above foreground cards; characters and totals stay below. */
+.midnight-mode.world3d-active #app:not(:has(.modal-overlay,.result-overlay,.death-scene,.freedom-scene)) {
+  z-index:auto;
+}
+.midnight-mode.world3d-active .game-page .hand-dock {position:absolute;z-index:auto;}
+.midnight-mode.world3d-active .game-page :is(.emote-menu,.info-fab,.special-throw-toggle) {z-index:40;}
 @media(max-width:600px),(orientation:landscape) and (max-height:520px) {
   .midnight-mode .game-page {--bottom-control-size:44px;}
 }

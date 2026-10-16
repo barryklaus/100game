@@ -706,6 +706,9 @@ export class ObservatoryScene {
       const rect=bounds[index];
       if(rect.width<1)return;
       const ratio=seat.offsetWidth/rect.width;
+      // Keep the label just below the same rim that clips the character's waist.
+      const nameY=(edgeAt(rect.left+rect.width*.5)-rect.top)*ratio+4;
+      seat.style.setProperty('--table-name-y',`${nameY.toFixed(1)}px`);
       const padding=24/seat.offsetWidth;
       const points=Array.from({length:9},(_,i)=>{
         const fraction=1+padding-i/8*(1+padding*2);

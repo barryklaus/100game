@@ -25,7 +25,7 @@ function attributes(current: HTMLElement, next: HTMLElement): void {
     ? new Set(['data-ready','data-frame','data-cards','data-animation']) : current.matches('.master-frame') ? new Set(['src','style']) : new Set<string>();
   // These coordinates belong to the 3D renderer, not the HTML view template.
   const projected = current.matches('.seat')
-    ? ['--seat-chair-x', '--seat-chair-y', '--table-seat-y', '--table-seat-clip'].map(name => [name, current.style.getPropertyValue(name)] as const)
+    ? ['--seat-chair-x', '--seat-chair-y', '--table-seat-y', '--table-seat-clip', '--table-name-y'].map(name => [name, current.style.getPropertyValue(name)] as const)
     : [];
   for (const attribute of Array.from(current.attributes)) {
     if (!next.hasAttribute(attribute.name) && !runtimeSpriteAttributes.has(attribute.name)) current.removeAttribute(attribute.name);

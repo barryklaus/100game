@@ -69,11 +69,13 @@
 .engraved-world .ring-controls>button {border-color:#ddb45b!important;color:#f7d58b;}
 .engraved-world .ring-marker.current {color:#271805;background:#edc77b;}
 .engraved-world .header-status .turn-pill {font-weight:700;color:#ffe7ac;}
+.engraved-world .seat-layer .sprite-seat .seat-info {
+  top:var(--table-name-y,80%)!important;padding:0!important;
+}
 .engraved-world .seat-layer .sprite-seat .seat-name {
   display:inline-flex;align-items:center;justify-content:center;gap:3px;
-  max-width:100%;padding:3px 9px;
-  border:1px solid #ddaf57;border-radius:3px;
-  background:#071413ed;box-shadow:inset 0 0 0 2px #071413,inset 0 0 0 3px #c999483d;
+  max-width:100%;padding:0 2px;
+  border:0;border-radius:0;background:transparent;box-shadow:none;
   color:var(--engraved-ivory);font-family:Georgia,'Times New Roman',serif!important;font-weight:700;
   white-space:nowrap;line-height:1.1;text-shadow:0 1px 2px #000;
 }
@@ -103,7 +105,7 @@
 }
 @media(orientation:portrait) {
   .engraved-world:not(.world3d-active) .game-page {background-image:linear-gradient(#02071880,#01050bbf),url('/assets/scene/engraved-v1/room-mobile.webp')!important;}
-  .engraved-world .seat-layer .sprite-seat .seat-name {max-width:22vw;padding:2px 4px;font-size:10px;gap:1px;}
+  .engraved-world .seat-layer .sprite-seat .seat-name {max-width:22vw;padding:0 2px;font-size:10px;gap:1px;}
   .engraved-world .seat-layer .sprite-seat .seat-count {margin-left:1px;}
 }
 @media(orientation:portrait) and (min-width:600px) {
@@ -111,9 +113,8 @@
 }
 @media(orientation:landscape) and (max-height:520px) {
   .engraved-world .seat-layer[data-layout="all"] .sprite-seat.master-seat {width:min(calc(160vw / var(--visible-player-count)),58svh)!important;}
-  .engraved-world .seat-layer[data-layout="all"] .sprite-seat .seat-name {font-size:10px;padding:2px 4px;}
+  .engraved-world .seat-layer[data-layout="all"] .sprite-seat .seat-name {font-size:10px;padding:0 2px;}
   .engraved-world .seat-layer[data-layout="all"] .sprite-seat .seat-count {font-size:8px;padding:1px 2px;min-width:11px;}
-  .engraved-world .seat-layer[data-layout="all"] .sprite-seat .seat-info {top:78%!important;}
   .engraved-world .energy-system .total-wrap {top:calc(var(--total-y,49svh) - 1.5svh)!important;}
   .engraved-world .energy-system .total-number {font-size:clamp(48px,14svh,74px)!important;}
   .engraved-world .seat-layer[data-layout="all"] .sprite-seat .seat-meta {display:none!important;}
