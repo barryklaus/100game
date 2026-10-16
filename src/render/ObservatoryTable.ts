@@ -135,7 +135,7 @@ export class ObservatoryTable {
   private direction=0;
   private arrows:THREE.InstancedMesh;
   private arrowInk=new THREE.MeshBasicMaterial({color:0xa27a3e,side:THREE.DoubleSide});
-  constructor(cartoon=false){
+  constructor(cartoon=false,engraved=false,onArtworkReady=()=>{}){
     // One draw call for a ring of chevrons, physically laid on the tabletop.
     const chevron=new THREE.Shape();
     chevron.moveTo(-.09,-.07);chevron.lineTo(.02,0);chevron.lineTo(-.09,.07);
@@ -150,6 +150,20 @@ export class ObservatoryTable {
     const rail=new THREE.Mesh(new THREE.RingGeometry(4.72,5.05,128),wood);rail.rotation.x=-Math.PI/2;rail.position.y=.345;rail.receiveShadow=true;this.group.add(rail);
     const top=new THREE.Mesh(new THREE.CircleGeometry(4.74,128),new THREE.MeshStandardMaterial({map:engraving(cartoon),roughness:cartoon?1:.91,metalness:cartoon?0:.06}));
     const surface=top.material as THREE.MeshStandardMaterial;
+    if(engraved){
+      // Two baked print textures replace the old procedural art, with no extra surface draws.
+      const loader=new THREE.TextureLoader(),root=`${import.meta.env.BASE_URL}assets/scene/engraved-v1/`;
+      loader.load(root+'table-felt.webp',texture=>{
+        texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=16;
+        surface.map?.dispose();surface.map=texture;surface.needsUpdate=true;onArtworkReady();
+      });
+      loader.load(root+'table-wood.webp',texture=>{
+        texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=8;
+        texture.wrapS=texture.wrapT=THREE.RepeatWrapping;
+        wood.map?.dispose();wood.map=texture;wood.needsUpdate=true;
+        base.material=wood;onArtworkReady();
+      });
+    }
     surface.onBeforeCompile=shader=>{
       shader.uniforms.uTableDanger=this.danger;
       shader.uniforms.uTableFlow=this.flow;

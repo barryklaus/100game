@@ -1,0 +1,26 @@
+{
+  "style": "engraved copperplate observatory",
+  "reference": "Approved engraved-world-v1 full-game mockup",
+  "assets": [
+    {
+      "file": "room-desktop.webp",
+      "width": 1586,
+      "height": 992
+    },
+    {
+      "file": "room-mobile.webp",
+      "width": 941,
+      "height": 1672
+    },
+    {
+      "file": "table-felt.webp",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "file": "table-wood.webp",
+      "width": 1254,
+      "height": 1254
+    }
+  ]
+}

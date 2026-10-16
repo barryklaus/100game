@@ -20,6 +20,12 @@ export function traditionalRingSeat(index: number, center: number, count: number
   const pose=ringSeat(index,center,count,portrait,spotlight);
   return {...pose,x:.5+pose.distance*(portrait?.235:.155),scale:1-Math.min(1,Math.abs(pose.distance)/1.5)*.03};
 }
+/** Wide tables keep every logical seat still. Portrait and the overflow spotlight use the carousel. */
+export function responsiveRingSeat(index:number,center:number,count:number,portrait:boolean,spotlight=false) {
+  if(portrait||spotlight)return traditionalRingSeat(index,center,count,portrait,spotlight);
+  const distance=index-(count-1)/2, step=Math.min(.155,.88/Math.max(1,count));
+  return {distance,visible:true,opacity:1,x:.5+distance*step,y:.30+Math.pow(distance/Math.max(1,count/2),2)*.012,scale:1-Math.min(1,Math.abs(distance)/Math.max(1,count/2))*.03};
+}
 export type CharacterFrame = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 export function faceFrame(total: number, active: boolean, relieved: boolean, overflow: boolean, mood = 'Normal'): CharacterFrame {
   if (overflow) return 5;

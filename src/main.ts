@@ -38,6 +38,7 @@ import './table-social.css';
 import './special-throw.css';
 import './parallax.css';
 import './engraved.css';
+import './engraved-world.css';
 import { engravedFoilMaskPath } from './game/engravedDeck';
 import { settleParallaxClone } from './ui/ParallaxHand';
 import { CONFIG, MOODS, moodSymbols, suitSymbols } from './data/config';
@@ -165,10 +166,11 @@ bindAudioLifecycle(audio);
 document.documentElement.classList.add('observatory-mode');
 document.documentElement.classList.toggle('midnight-mode', isNextVersion);
 document.documentElement.classList.toggle('engraved-mode', isNextVersion);
+document.documentElement.classList.toggle('engraved-world', isNextVersion);
 document.documentElement.classList.toggle('death-demo-mode', outcomeDemo);
 const presentedTotal = new TotalPresentation();
 let observatory: ObservatoryScene | undefined;
-try { observatory = new ObservatoryScene(isNextVersion ? 'midnight' : 'observatory'); observatory.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion}); } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
+try { observatory = new ObservatoryScene(isNextVersion ? 'engraved' : 'observatory'); observatory.configure({quality:settings.graphics,reducedMotion:settings.reducedMotion}); } catch { /* Keep the accessible HTML game if WebGL is unavailable. */ }
 
 if (observatory) observatory.onCardArrival = key => {
   if (!presentedTotal.arrive(key)) return;

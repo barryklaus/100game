@@ -5,7 +5,7 @@ import { DecodeQueue } from './DecodeQueue';
 import { specialThrows, specialThrowDurations, specialThrowReleaseMs } from './SpecialThrowData';
 interface CastState { active:number; total:number; overflow:boolean; overflowSeat?:number; target:boolean; reducedMotion:boolean }
 interface Seat { element:HTMLElement; image:HTMLImageElement; id:string; condition:number; data:MasterAnimationSet; epoch:number; held:1|2; frame:string; mood:string; fallen:boolean; timer:number; blinkTimer:number; phase:'rest'|'prepare'|'release'|'receive'; warmed:boolean; specialWarmed:boolean; special:boolean; animation?:{frames:string[];resolve:()=>void;done:Promise<void>} }
-export function masterFrameUrl(id:string,frame='rest',condition=0):string { return `${import.meta.env.BASE_URL}assets/social-club/${frame.startsWith('special-')?'special-throw-v1/'+id:condition&&conditionAnimations[id]?.[condition]?'condition-animation-v1/'+id+'/'+condition:'master-animation-v2/'+id}/${frame}.webp`; }
+export function masterFrameUrl(id:string,frame='rest',condition=0):string { return `${import.meta.env.BASE_URL}assets/social-club/${import.meta.env?.MODE==='100next'?'engraved-v1/':''}${frame.startsWith('special-')?'special-throw-v1/'+id:condition&&conditionAnimations[id]?.[condition]?'condition-animation-v1/'+id+'/'+condition:'master-animation-v2/'+id}/${frame}.webp`; }
 export function masterFrameBounds(id:string,frame='rest',condition=0):number[] {
  if(frame.startsWith('special-')&&specialThrows[id]?.bounds[frame])return specialThrows[id].bounds[frame];
  const data=conditionAnimations[id]?.[condition]??masterAnimations[id], [x,y,w,h]=data.bounds[frame], [scale,dx,dy]=data.registration??[1,0,0], [poseScale,poseX,poseY]=data.poseRegistration?.[frame]??[1,0,0];

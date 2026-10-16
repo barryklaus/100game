@@ -1,4 +1,4 @@
-import { faceFrame, nearestCenter, ringSeat, traditionalRingSeat, seatDistance, type CharacterFrame } from './PlayerRingModel';
+import { faceFrame, nearestCenter, ringSeat, traditionalRingSeat, responsiveRingSeat, seatDistance, type CharacterFrame } from './PlayerRingModel';
 import { characterHandAnchors } from './CharacterSpriteLayout';
 import { TraditionalCharacters } from './TraditionalCharacters';
 import { masterHandRect } from './MasterCharacters';
@@ -48,7 +48,10 @@ export class PlayerRing {
     root.addEventListener('click', event => {
       if (performance.now() < this.suppressClickUntil && (event.target as HTMLElement).closest('.seat-layer')) { event.preventDefault(); event.stopImmediatePropagation(); }
     }, true);
-    window.addEventListener('resize', () => this.paint());
+    window.addEventListener('resize', () => {
+      if(!this.busy){this.cancelMove();this.center=this.targetCenter=Math.max(0,this.slot(this.state.active))+.5;}
+      this.paint();
+    });
   }
 
   sync(next: RingState): void {
@@ -91,6 +94,7 @@ export class PlayerRing {
 
   scoresReady(roundKey: string): boolean { return this.state.roundKey === roundKey && this.overflowStage === 'complete'; }
   private slot(index:number):number{return this.state.seats?this.state.seats.indexOf(index):index;}
+  private get allVisible():boolean{return import.meta.env?.MODE==='100next'&&innerHeight<=innerWidth*(import.meta.env?.MODE==="100next"?1:1.08)&&this.overflowStage==='idle';}
 
   private tumbleReady(index: number): Promise<void> {
     if(this.masters.has(index))return this.masters.warm(index,'tumble');
@@ -173,6 +177,7 @@ export class PlayerRing {
     return this.moving;
   }
   focus(index: number): Promise<void> {
+    if(this.allVisible)return Promise.resolve();
     if (this.overflowStage !== 'idle') return Promise.resolve();
     if (!this.state.count || this.state.count <= 4) return Promise.resolve();
     const slot=this.slot(index);if(slot<0)return Promise.resolve();
@@ -180,12 +185,12 @@ export class PlayerRing {
   }
   /** Keep the throwing hand and replacement-card destination still during a flight. */
   show(index: number): void { if (!this.busy) void this.focus(index); }
-  browse(direction: number): void { if (!this.busy) void this.rotate(Math.round(this.center - .5) + .5 + direction); }
+  browse(direction: number): void { if (!this.busy&&!this.allVisible) void this.rotate(Math.round(this.center - .5) + .5 + direction); }
   private get busy(): boolean { return !!(this.preparing.size || this.throws.size || this.dragging || this.overflowStage !== 'idle'); }
   get swiping(): boolean { return !!this.dragging; }
   private down = (event: PointerEvent): void => {
     const target = (event.target as HTMLElement).closest<HTMLElement>('.seat-layer');
-    if (!target || this.state.count <= 4 || event.button !== 0 || this.busy) return;
+    if (!target || this.allVisible || this.state.count <= 4 || event.button !== 0 || this.busy) return;
     this.cancelMove();
     this.dragging = { id: event.pointerId, x: event.clientX, center: this.center, element: target, moved: false };
     this.dragReleased = new Promise(resolve => { this.finishDrag = resolve; });
@@ -361,9 +366,14 @@ export class PlayerRing {
   }
   private paint(): void {
     if (!this.state.count) return;
-    const portrait = innerHeight > innerWidth * 1.08;
+    const portrait = innerHeight > innerWidth * (import.meta.env?.MODE==="100next"?1:1.08);
+    if(import.meta.env?.MODE==='100next'){
+      const layer=this.root.querySelector<HTMLElement>('.seat-layer');
+      if(layer){layer.dataset.layout=this.allVisible?'all':'carousel';layer.style.setProperty('--visible-player-count',String(this.allVisible?this.state.count:Math.min(4,this.state.count)));}
+      this.root.querySelector<HTMLElement>('.ring-controls')?.setAttribute('data-layout',this.allVisible?'all':'carousel');
+    }
     this.root.querySelectorAll<HTMLElement>('.seat').forEach(seat => {
-      const index = Number(seat.dataset.seat), layout=this.traditional.has(index)||seat.classList.contains('master-seat')?traditionalRingSeat:ringSeat;
+      const index = Number(seat.dataset.seat), layout=import.meta.env?.MODE==='100next'?responsiveRingSeat:this.traditional.has(index)||seat.classList.contains('master-seat')?traditionalRingSeat:ringSeat;
       const slot=this.slot(index);
       if(slot<0){seat.hidden=true;seat.inert=true;seat.setAttribute('aria-hidden','true');return;}
       const pose = layout(slot, this.center, this.state.count, portrait, this.overflowStage !== 'idle');
@@ -371,7 +381,7 @@ export class PlayerRing {
       seat.style.setProperty('--ring-y', `${pose.y * 100}svh`);
       seat.style.setProperty('--ring-scale', String(pose.scale));
       seat.style.opacity = String(pose.opacity);
-      seat.style.zIndex = String(4 - Math.round(Math.abs(pose.distance)));
+      seat.style.zIndex = String(10 - Math.round(Math.abs(pose.distance)));
       seat.hidden = !pose.visible;
       seat.setAttribute('aria-hidden', String(!pose.visible));
       seat.inert = !pose.visible;
@@ -379,7 +389,7 @@ export class PlayerRing {
       if (pose.visible) void this.spriteReady(index);
     });
     this.root.querySelectorAll<HTMLElement>('[data-ring-focus]').forEach(marker => {
-      const pose = ringSeat(this.slot(Number(marker.dataset.ringFocus)), this.center, this.state.count, portrait, this.overflowStage !== 'idle');
+      const pose = (import.meta.env?.MODE==='100next'?responsiveRingSeat:ringSeat)(this.slot(Number(marker.dataset.ringFocus)), this.center, this.state.count, portrait, this.overflowStage !== 'idle');
       marker.classList.toggle('in-view', pose.visible);
       marker.setAttribute('aria-pressed', String(pose.visible));
     });

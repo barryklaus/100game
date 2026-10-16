@@ -8,9 +8,10 @@ export function masterCharacter(index: number) {
 }
 export function masterImage(index: number, portrait = false): string {
   const id = masterCharacter(index).id;
-  if(!portrait)return `${import.meta.env.BASE_URL}assets/social-club/masters-native-v1/${id}-master.webp`;
+  const finish=import.meta.env?.MODE==='100next'?'engraved-v1/':'';
+  if(!portrait)return `${import.meta.env.BASE_URL}assets/social-club/${finish}masters-native-v1/${id}-master.webp`;
   const revision = id === 'finn' ? '-v2' : '';
-  return `${import.meta.env.BASE_URL}assets/social-club/masters-v1/${id}-${portrait ? 'portrait' : 'master'}${revision}.webp`;
+  return `${import.meta.env.BASE_URL}assets/social-club/${finish}masters-v1/${id}-${portrait ? 'portrait' : 'master'}${revision}.webp`;
 }
 /** The artwork stays a whole drawing; these invisible anchors connect the actual flying cards. */
 export function masterHandRect(root: HTMLElement, index: number, catching = false): DOMRect | undefined {

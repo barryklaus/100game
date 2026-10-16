@@ -54,7 +54,7 @@ try{
   globalThis.innerHeight=portrait?844:800;globalThis.innerWidth=portrait?390:1200;
   const values=[],nodes=[1,3,7].map(id=>({dataset:{seat:String(id)},style:{setProperty:(key,value)=>{if(key==='--ring-x')values.push(parseFloat(value));}},classList:{contains:()=>true},setAttribute:()=>{}}));
   const ring=Object.create(PlayerRing.prototype);
-  Object.assign(ring,{state:{count:3,seats:[1,3,7]},center:1,overflowStage:'idle',traditional:{has:()=>false},root:{querySelectorAll:selector=>selector==='.seat'?nodes:[]},spriteReady:()=>Promise.resolve(),paintFrames:()=>{}});
+  Object.assign(ring,{state:{count:3,seats:[1,3,7]},center:1,overflowStage:'idle',traditional:{has:()=>false},root:{querySelector:()=>null,querySelectorAll:selector=>selector==='.seat'?nodes:[]},spriteReady:()=>Promise.resolve(),paintFrames:()=>{}});
   ring.paint();
   assert(values[0]<50&&values[1]===50&&values[2]>50,'Remaining characters pack around the center instead of keeping empty old slots');
   assert(nodes.every(node=>node.hidden===false&&node.inert===false));

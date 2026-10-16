@@ -119,8 +119,8 @@ export class ObservatoryScene {
   private flowColor():string{return `hsl(${43*(1-Math.max(0,Math.min(1,this.currentTotal/100)))} 100% 65%)`;}
   private localSeat = 0;
 
-  constructor(roomTheme: 'observatory' | 'midnight' = 'observatory') {
-    this.table = new ObservatoryTable(roomTheme === 'midnight');
+  constructor(roomTheme: 'observatory' | 'midnight' | 'engraved' = 'observatory') {
+    this.table = new ObservatoryTable(roomTheme !== 'observatory',roomTheme==='engraved',()=>this.worldPaint.request());
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.info.autoReset=false;
@@ -138,7 +138,7 @@ export class ObservatoryScene {
     this.backdrop.hidden=true;
     const source=document.createElement('source');
     source.media='(orientation: portrait)';
-    const roomAssets = roomTheme === 'midnight' ? 'midnight-mystery-v2' : 'celestial-v1';
+    const roomAssets = roomTheme === 'engraved'?'engraved-v1':roomTheme === 'midnight' ? 'midnight-mystery-v2' : 'celestial-v1';
     source.srcset=`${import.meta.env.BASE_URL}assets/scene/${roomAssets}/room-mobile.webp`;
     const image=document.createElement('img');
     image.src=`${import.meta.env.BASE_URL}assets/scene/${roomAssets}/room-desktop.webp`;
@@ -587,7 +587,7 @@ export class ObservatoryScene {
     if (handRect) sourceRect = handRect;
     const held=cardId?Array.from(document.querySelectorAll<HTMLElement>('.local-hand .hand-card,.shared-hand .hand-card')).find(card=>card.dataset.card===cardId):undefined;
     (visual.userData.parallaxFlight as ParallaxFlight|undefined)?.pose(Number(held?.dataset.parallaxX??0),Number(held?.dataset.parallaxY??0));
-    const distance = innerHeight > innerWidth * 1.08 ? 4.9 : 5.35;
+    const distance = innerHeight > innerWidth * (import.meta.env?.MODE==="100next"?1:1.08) ? 4.9 : 5.35;
     // Keep dragging until this snapshot; clearing it earlier resets tilt/depth.
     this.hand.update(0);
     let pose=cardId?this.hand.cardPose(cardId):undefined;
@@ -621,7 +621,7 @@ export class ObservatoryScene {
 
   async drawCardToHand(frontUrl: string, targetRect: DOMRect, cardId?:string, onArrive?:()=>void): Promise<void> {
     const { root, visual } = await this.makeFlyingCard(frontUrl);
-    const distance = innerHeight > innerWidth * 1.08 ? 4.85 : 5.15;
+    const distance = innerHeight > innerWidth * (import.meta.env?.MODE==="100next"?1:1.08) ? 4.85 : 5.15;
     const drawn = this.deckPile.cardPose(this.deckPile.count);
     const start = drawn.position;
     this.hand.update(0);
@@ -642,7 +642,7 @@ export class ObservatoryScene {
       pile.style.setProperty('--pile-label-x',`${(point.x*.5+.5)*innerWidth}px`);
       pile.style.setProperty('--pile-label-y',`${(-point.y*.5+.5)*innerHeight+7}px`);
     });
-    const portrait=innerHeight>innerWidth*1.08;
+    const portrait=innerHeight>innerWidth*(import.meta.env?.MODE==="100next"?1:1.08);
     const total=this.tablePoint(0,.3475,0).project(this.camera);
     document.documentElement.style.setProperty('--total-x',`${(total.x*.5+.5)*innerWidth}px`);
     document.documentElement.style.setProperty('--total-y',`${(-total.y*.5+.5)*innerHeight}px`);
@@ -700,12 +700,14 @@ export class ObservatoryScene {
   private resize = (): void => {
     this.worldPaint.request();
     this.projectedRim=undefined;
-    const portrait = innerHeight > innerWidth * 1.08;
+    const portrait = innerHeight > innerWidth * (import.meta.env?.MODE==="100next"?1:1.08);
     this.camera.aspect = innerWidth / innerHeight;
     this.camera.fov = portrait ? 46 : 40;
     this.camera.position.set(0, portrait ? 10.0 : 7.0, portrait ? 14.2 : 11.0);
     this.world.rotation.x = .18;
-    this.table.group.scale.set(portrait ? 1.30 : 1.45,1,.70);
+    const widePhone=import.meta.env?.MODE==='100next'&&!portrait&&innerHeight<=520;
+    const tableWidth=widePhone?1.45*Math.max(1,Math.min(1.5,this.camera.aspect/1.65)):1.45;
+    this.table.group.scale.set(portrait ? 1.30 : tableWidth,1,.70);
     this.camera.lookAt(0, portrait ? .6 : .95, portrait ? .1 : -.3);
     this.camera.updateProjectionMatrix();
     this.camera.updateMatrixWorld();
