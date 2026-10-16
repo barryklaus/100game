@@ -5,9 +5,17 @@
 }
 .engraved-world {--engraved-gold:#e2b862;--engraved-ivory:#fff0c9;}
 .engraved-world .observatory-backdrop::after {
-  /* The faint ceiling beam shares the existing static room overlay. */
-  background:conic-gradient(from 168deg at 50% -20%,transparent 0deg,#ffe6b508 7deg,#ffe6b516 12deg,#ffe6b508 17deg,transparent 24deg),radial-gradient(ellipse at 50% 29%,#02081536 0%,#02081280 55%,#01040bc4 100%),linear-gradient(#02071820,#02071144);
-  background-size:100% 62%,100% 100%,100% 100%;background-repeat:no-repeat;
+  background:radial-gradient(ellipse at 50% 29%,#02081536 0%,#02081280 55%,#01040bc4 100%),linear-gradient(#02071820,#02071144);
+}
+.engraved-world .game-page::before {
+  /* A static shaft sits above the physical table and behind characters, number and cards. */
+  --beam-y:var(--total-y,49svh);
+  position:fixed;inset:auto;left:var(--total-x,50vw);top:-8svh;
+  width:calc(var(--beam-y) * .64 + 12svh);height:calc(var(--beam-y) + 16svh);
+  transform:translateX(-50%);z-index:1;pointer-events:none;opacity:1;filter:none;
+  background:conic-gradient(from 164deg at 50% 0%,transparent 0deg,#ffe0a31f 5deg,#ffe8b84d 12deg,#fff2d163 16deg,#ffe8b84d 20deg,#ffe0a31f 27deg,transparent 32deg)!important;
+  -webkit-mask-image:linear-gradient(#0008,#000 16%,#000d 65%,transparent 100%);
+  mask-image:linear-gradient(#0008,#000 16%,#000d 65%,transparent 100%);
 }
 .engraved-world .seat-layer .sprite-seat .character {
   filter:brightness(.76) saturate(.91)!important;transition:filter .18s ease-out;
