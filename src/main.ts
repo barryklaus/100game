@@ -41,6 +41,7 @@ import './special-throw.css';
 import './parallax.css';
 import './engraved.css';
 import './engraved-world.css';
+import './bottom-controls.css';
 import { engravedFoilMaskPath } from './game/engravedDeck';
 import { settleParallaxClone } from './ui/ParallaxHand';
 import { CONFIG, MOODS, moodSymbols, suitSymbols } from './data/config';

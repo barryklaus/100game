@@ -1,0 +1,22 @@
+/* One shared baseline and height for the entire bottom control row. */
+.midnight-mode .game-page {
+  --bottom-control-size:48px;
+  --bottom-control-inset:max(18px,env(safe-area-inset-bottom));
+}
+.midnight-mode .game-page :is(.emote-menu,.info-fab,.special-throw-toggle) {
+  bottom:var(--bottom-control-inset);
+}
+.midnight-mode .game-page :is(.emote-trigger,.autopilot-toggle,.info-fab,.special-throw-toggle) {
+  height:var(--bottom-control-size);
+  min-height:var(--bottom-control-size);
+  flex-shrink:0;
+}
+.midnight-mode .game-page :is(.emote-trigger,.autopilot-toggle,.info-fab) {
+  width:var(--bottom-control-size);
+}
+@media(max-width:600px),(orientation:landscape) and (max-height:520px) {
+  .midnight-mode .game-page {--bottom-control-size:44px;}
+}
+@media(max-width:360px) {
+  .midnight-mode .game-page .emote-menu {left:max(8px,env(safe-area-inset-left));gap:7px;}
+}
