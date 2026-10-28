@@ -1,0 +1,3535 @@
+{
+  "version": 1,
+  "character": "june",
+  "method": "complete native frames; precise eye/lash polygons; clean per-pose/condition donors; fixed dimensions and original alpha",
+  "records": [
+    {
+      "condition": 0,
+      "frame": "smug",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "08e982eaf26e7e2fd074c33617427f72c5d2ef80c1bacf84a784f4529cd32152",
+        "afterSha256": "08e982eaf26e7e2fd074c33617427f72c5d2ef80c1bacf84a784f4529cd32152"
+      },
+      "engravedProtected": {
+        "beforeSha256": "1cd0eb210b6e834b1512f972f051bc9f4378c488d2f89ca418705b84d4609509",
+        "afterSha256": "1cd0eb210b6e834b1512f972f051bc9f4378c488d2f89ca418705b84d4609509"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4011,
+      "engravedChangedPixels": 6634,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/smug.webp",
+        "beforeSha256": "6b5d4851d70cdbb3eb4fdbcb0b030df4a06fff34053ce29a9b0a223b5e5990b2",
+        "sha256": "b2e7e26dd99ae2f9ed5fec7e031fabb33a58c01c0e1e79e123f617b3a87d0fcb",
+        "width": 453,
+        "height": 1040,
+        "alphaSha256": "372ab57390eafaf5dac09662faad08e2fb52434e7e0dc2c6a922c3f21c58702c"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/smug.webp",
+        "beforeSha256": "876f256c6c28538eb14802ca5957dbcaf8daf6eb0647c72f8233c1c77a350446",
+        "sha256": "b13dad3370b66bb050d284d9798e33ac1846790ccecb3da4a855121654dd68aa",
+        "width": 453,
+        "height": 1040,
+        "alphaSha256": "372ab57390eafaf5dac09662faad08e2fb52434e7e0dc2c6a922c3f21c58702c"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "frustrated",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "0696dde97735efca3067e50dde29b769e3e3679f3fb5f39e22779f28e6671711",
+        "afterSha256": "0696dde97735efca3067e50dde29b769e3e3679f3fb5f39e22779f28e6671711"
+      },
+      "engravedProtected": {
+        "beforeSha256": "e8b50a1310b06f2c52f110f0b34c5b968ecb386e8fcb36351d78ecf7ae1fd674",
+        "afterSha256": "e8b50a1310b06f2c52f110f0b34c5b968ecb386e8fcb36351d78ecf7ae1fd674"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4011,
+      "engravedChangedPixels": 6637,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/frustrated.webp",
+        "beforeSha256": "2714705f92dcbc7a01d4b05eb56fec9d846304968914008fb23eb23d672a8db1",
+        "sha256": "a3ba021298e264a2c0f29affa2f0880d2e6a72772dc022552bd0d339752de703",
+        "width": 453,
+        "height": 1040,
+        "alphaSha256": "372ab57390eafaf5dac09662faad08e2fb52434e7e0dc2c6a922c3f21c58702c"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/frustrated.webp",
+        "beforeSha256": "5411ed0f2ca69100ca63b094745a21e62c3bd75549e8670de53b197aebd8060e",
+        "sha256": "e3fe559f3b8fd4ba3e8ef14b15b233e74055e7f2e272e10680e038fd35dd0f93",
+        "width": 453,
+        "height": 1040,
+        "alphaSha256": "372ab57390eafaf5dac09662faad08e2fb52434e7e0dc2c6a922c3f21c58702c"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "relieved",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "08e982eaf26e7e2fd074c33617427f72c5d2ef80c1bacf84a784f4529cd32152",
+        "afterSha256": "08e982eaf26e7e2fd074c33617427f72c5d2ef80c1bacf84a784f4529cd32152"
+      },
+      "engravedProtected": {
+        "beforeSha256": "bac421d706a0f61f95f03e8e5e51c420d28edc13b5855b110500d6e0cd696748",
+        "afterSha256": "bac421d706a0f61f95f03e8e5e51c420d28edc13b5855b110500d6e0cd696748"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4944,
+      "engravedChangedPixels": 6638,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/relieved.webp",
+        "beforeSha256": "7bd9ae6b2ceddff436d7a8d94450ff22925d811ea8a1a8bab16b26c989ba6860",
+        "sha256": "8ff2f1dcf5985b6c62f914810a14022145711ca36a73cf39a73b16eded1c1820",
+        "width": 453,
+        "height": 1040,
+        "alphaSha256": "372ab57390eafaf5dac09662faad08e2fb52434e7e0dc2c6a922c3f21c58702c"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/relieved.webp",
+        "beforeSha256": "cd130872a2b081daa9e0753d4f04de8ffac1a8f069c30738cb68b9d0c910a5c1",
+        "sha256": "07f3c43d694cc5ed4eec80ed988749859c8dcaff024cd9a2ea1b22b7ce47e4dd",
+        "width": 453,
+        "height": 1040,
+        "alphaSha256": "372ab57390eafaf5dac09662faad08e2fb52434e7e0dc2c6a922c3f21c58702c"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "delighted",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "d01c151464b8fae86d08741b78d5a0181cb972f1c9f770da55435dc000d837a9",
+        "afterSha256": "d01c151464b8fae86d08741b78d5a0181cb972f1c9f770da55435dc000d837a9"
+      },
+      "engravedProtected": {
+        "beforeSha256": "4c7ea44408d27dfaeb4775919bbd8856bbf30415b99ea172dfe527f7562efaca",
+        "afterSha256": "4c7ea44408d27dfaeb4775919bbd8856bbf30415b99ea172dfe527f7562efaca"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4944,
+      "engravedChangedPixels": 6635,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/delighted.webp",
+        "beforeSha256": "f33a955e4af71ad211979bdf9412db277617c2de6ba08028e37a3fb677581c00",
+        "sha256": "53f84c847215a2ffe472c3399e6532d03134dd3d2e868aeb5ce3d2459496fa9c",
+        "width": 453,
+        "height": 1040,
+        "alphaSha256": "372ab57390eafaf5dac09662faad08e2fb52434e7e0dc2c6a922c3f21c58702c"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/delighted.webp",
+        "beforeSha256": "4f3cc29f167283dbabe97f118afb643e93ce3c8ed851d3572b58462f6f239f88",
+        "sha256": "0472404c99ee6c8bcc2b15936535c941dd3e7c44085f9337b3c305f27a4078f3",
+        "width": 453,
+        "height": 1040,
+        "alphaSha256": "372ab57390eafaf5dac09662faad08e2fb52434e7e0dc2c6a922c3f21c58702c"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "blink-half",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "7ef569fd602795ea7d32ec138b38819c422c86d1aeb8c4f97a3045bf0b8d999a",
+        "afterSha256": "7ef569fd602795ea7d32ec138b38819c422c86d1aeb8c4f97a3045bf0b8d999a"
+      },
+      "engravedProtected": {
+        "beforeSha256": "79eb8b755e3f9016ada93567a315dd294b590018e0e2d6446291e067e75972b0",
+        "afterSha256": "79eb8b755e3f9016ada93567a315dd294b590018e0e2d6446291e067e75972b0"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4888,
+      "engravedChangedPixels": 6635,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/blink-half.webp",
+        "beforeSha256": "c6ba57a1abf26d5b06f741c4f0cecaf298eaa6bd768afef5b7b4661fe717a8bc",
+        "sha256": "c112692ea569c732cb909119c3f28af877beb4f10d5045c620ce98e2cfcc45a4",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/blink-half.webp",
+        "beforeSha256": "a8da68e1e709f3160853678c9c6979c6a97fab9fc74ef4b5054bb1913358d95e",
+        "sha256": "3ba96f7e16a020938c217dd2c71cbae56514a93e9ba046cfce7c19644f0ca93a",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "blink",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "7ef569fd602795ea7d32ec138b38819c422c86d1aeb8c4f97a3045bf0b8d999a",
+        "afterSha256": "7ef569fd602795ea7d32ec138b38819c422c86d1aeb8c4f97a3045bf0b8d999a"
+      },
+      "engravedProtected": {
+        "beforeSha256": "c2e21612aebb46c96771bbcdfbccb6fc4facd1fd402fd4fefaba7ecbb846d3cd",
+        "afterSha256": "c2e21612aebb46c96771bbcdfbccb6fc4facd1fd402fd4fefaba7ecbb846d3cd"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "a6bdf14e6d6c253050249a80953379aa399a0c04766f6f43897888ae87396c10"
+      },
+      "restoredTemplePixels": 5,
+      "changedPixels": 4927,
+      "engravedChangedPixels": 6641,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/blink.webp",
+        "beforeSha256": "e4a68ad916c051764dda4deff7bac95367cb47a3a6abd9f227bf83f7bc67414a",
+        "sha256": "0899f2ae56534788c0b30e3abd873e9dc7a3a284e5cf64e67d5c9a9703081bb9",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/blink.webp",
+        "beforeSha256": "610119810ea8f83a98f715b34a8299f576b65ea11ba789d2c98582442fe053dc",
+        "sha256": "46857de2abea78fd3e5bb36d60427424db5fa709178237a354f2b24fb43fbaf0",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "down-blink-half",
+      "donor": "down",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "7ef569fd602795ea7d32ec138b38819c422c86d1aeb8c4f97a3045bf0b8d999a",
+        "afterSha256": "7ef569fd602795ea7d32ec138b38819c422c86d1aeb8c4f97a3045bf0b8d999a"
+      },
+      "engravedProtected": {
+        "beforeSha256": "4fb49ca6aa72e8631c29f97a7f70f0bada443b2b052c2b28d5fd10bc589d9bfa",
+        "afterSha256": "4fb49ca6aa72e8631c29f97a7f70f0bada443b2b052c2b28d5fd10bc589d9bfa"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4851,
+      "engravedChangedPixels": 6631,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/down-blink-half.webp",
+        "beforeSha256": "fb96cb5baa97e989432c1fd900b1fb3d31b095a6670b3f43c72fea6c5f1c411f",
+        "sha256": "c112692ea569c732cb909119c3f28af877beb4f10d5045c620ce98e2cfcc45a4",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/down-blink-half.webp",
+        "beforeSha256": "7eccc4468973e8db794d75e63ba7e537ddc6be01d13e7de49472ba221f474219",
+        "sha256": "a536af041d76a9c74c19ca974444e3a39324ab45e363d7a3000821683c4ae943",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "down-blink",
+      "donor": "down",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "7ef569fd602795ea7d32ec138b38819c422c86d1aeb8c4f97a3045bf0b8d999a",
+        "afterSha256": "7ef569fd602795ea7d32ec138b38819c422c86d1aeb8c4f97a3045bf0b8d999a"
+      },
+      "engravedProtected": {
+        "beforeSha256": "c2e21612aebb46c96771bbcdfbccb6fc4facd1fd402fd4fefaba7ecbb846d3cd",
+        "afterSha256": "c2e21612aebb46c96771bbcdfbccb6fc4facd1fd402fd4fefaba7ecbb846d3cd"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "a6bdf14e6d6c253050249a80953379aa399a0c04766f6f43897888ae87396c10"
+      },
+      "restoredTemplePixels": 5,
+      "changedPixels": 4927,
+      "engravedChangedPixels": 6641,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/down-blink.webp",
+        "beforeSha256": "e4a68ad916c051764dda4deff7bac95367cb47a3a6abd9f227bf83f7bc67414a",
+        "sha256": "0899f2ae56534788c0b30e3abd873e9dc7a3a284e5cf64e67d5c9a9703081bb9",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/down-blink.webp",
+        "beforeSha256": "610119810ea8f83a98f715b34a8299f576b65ea11ba789d2c98582442fe053dc",
+        "sha256": "46857de2abea78fd3e5bb36d60427424db5fa709178237a354f2b24fb43fbaf0",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "nervous-blink-half",
+      "donor": "nervous",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "b1558c69f3fcd7adb841f6638824b427977b92a2b7f27815e61182ea6489a667",
+        "afterSha256": "b1558c69f3fcd7adb841f6638824b427977b92a2b7f27815e61182ea6489a667"
+      },
+      "engravedProtected": {
+        "beforeSha256": "f4c01b11498d06aa90418112ec083ab8aff50076e78bb34078e6e4baad3ffb02",
+        "afterSha256": "f4c01b11498d06aa90418112ec083ab8aff50076e78bb34078e6e4baad3ffb02"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4812,
+      "engravedChangedPixels": 6640,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/nervous-blink-half.webp",
+        "beforeSha256": "28724a49ee384d8a57f7000b172baa35d3e8bca8ac60d541aafc813bc15c1400",
+        "sha256": "ab0745b9e24726a35a0bd0e2124cc749cb1c06601c6d7b7c8bb017503b6af81a",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/nervous-blink-half.webp",
+        "beforeSha256": "416562cc7481f21e248d7b87cd0fe43ec5daa4b0a52baa774180d8bb7faaf009",
+        "sha256": "dafcbbd5a87a847d61b48d94fcad379ea7e92f51392a1b67de21d2520a316b3b",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "nervous-blink",
+      "donor": "nervous",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "b1558c69f3fcd7adb841f6638824b427977b92a2b7f27815e61182ea6489a667",
+        "afterSha256": "b1558c69f3fcd7adb841f6638824b427977b92a2b7f27815e61182ea6489a667"
+      },
+      "engravedProtected": {
+        "beforeSha256": "9a3c34ec27c4c5f71fb4ce65d101f08a4e5162625eae8465649a05f0b3de951b",
+        "afterSha256": "9a3c34ec27c4c5f71fb4ce65d101f08a4e5162625eae8465649a05f0b3de951b"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "a6bdf14e6d6c253050249a80953379aa399a0c04766f6f43897888ae87396c10"
+      },
+      "restoredTemplePixels": 5,
+      "changedPixels": 4928,
+      "engravedChangedPixels": 6634,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/nervous-blink.webp",
+        "beforeSha256": "0c23b68fdb08b90f3641797783c835b2bee73446bc9cba154970b39e5e16b2ce",
+        "sha256": "da8243100453538fd72c6b32f5a55f6db7e1b6316163c9e3f36e9744ca726e0d",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/nervous-blink.webp",
+        "beforeSha256": "df464bbb739c8c6d83c7cabae27ed342d84e783ea712102cf73b4505fb98f4bf",
+        "sha256": "9eb82a3be917cd3f7254bdd031afdf3e2e1c9493bbf7d1d5ebf8dcfef0f9e05e",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "panicked-blink-half",
+      "donor": "panicked",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "cdc153e56b63a2f8294f6d7b403b725e1dc2e0191047593f90ccdba45c56700d",
+        "afterSha256": "cdc153e56b63a2f8294f6d7b403b725e1dc2e0191047593f90ccdba45c56700d"
+      },
+      "engravedProtected": {
+        "beforeSha256": "0291824369adee43c9feb7b827ee4cea473495bc1b07a0277d1febcdedc5c3ae",
+        "afterSha256": "0291824369adee43c9feb7b827ee4cea473495bc1b07a0277d1febcdedc5c3ae"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4888,
+      "engravedChangedPixels": 6635,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/panicked-blink-half.webp",
+        "beforeSha256": "40511f5bced6011fdfca3bc1ca6403bc08ca0e42961a5a7e078f500d87331b3a",
+        "sha256": "8e4ac242881e65544e386a7eb4ef7cf3eed4aeddd4541c48bd61d0ccbc2f9bb2",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/panicked-blink-half.webp",
+        "beforeSha256": "65abd5f8e7f366df469644211029afa2dda6ddc7d15f5bbcc0488d233b56c995",
+        "sha256": "4eeeacb21fdbbe1f974d9ec48b013b0a6e594d35c11f313a3817444c010a9a49",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "panicked-blink",
+      "donor": "panicked",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "cdc153e56b63a2f8294f6d7b403b725e1dc2e0191047593f90ccdba45c56700d",
+        "afterSha256": "cdc153e56b63a2f8294f6d7b403b725e1dc2e0191047593f90ccdba45c56700d"
+      },
+      "engravedProtected": {
+        "beforeSha256": "b01716afcd18c5e157fbd3d37c969b7eba2280754801c9d09b0105013c6e27ea",
+        "afterSha256": "b01716afcd18c5e157fbd3d37c969b7eba2280754801c9d09b0105013c6e27ea"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "a6bdf14e6d6c253050249a80953379aa399a0c04766f6f43897888ae87396c10"
+      },
+      "restoredTemplePixels": 5,
+      "changedPixels": 4927,
+      "engravedChangedPixels": 6642,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/panicked-blink.webp",
+        "beforeSha256": "3b1c6b5e1f7c64cfed7e6bc59045bcfb528e393962c6ab0f5072f06199bb44eb",
+        "sha256": "dcfbb061a7b4215621d0f8a0412bdd7eca54bd3ad298c5339eff3c3e4baa48c7",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/panicked-blink.webp",
+        "beforeSha256": "c27e0279781786d37a939741e0cb251760d8dc9f742564fcf1a215d5a86d6c64",
+        "sha256": "954c5798d2228f3261c1e7557f22bbb4898c71639c29657c1754b44376951b92",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "amused-blink-half",
+      "donor": "amused",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "ec62a1173508bf1c7ce31a1f7c19a98d16169f0839693d3733e05cd73619c7b7",
+        "afterSha256": "ec62a1173508bf1c7ce31a1f7c19a98d16169f0839693d3733e05cd73619c7b7"
+      },
+      "engravedProtected": {
+        "beforeSha256": "7bf1ec2142c6d91360f15d2d84e09b10c4620acf70433a30aca7884e7b930332",
+        "afterSha256": "7bf1ec2142c6d91360f15d2d84e09b10c4620acf70433a30aca7884e7b930332"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4888,
+      "engravedChangedPixels": 6635,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/amused-blink-half.webp",
+        "beforeSha256": "3c4e61cd1d09b0eb0ad86107a1740eb698041e9c637e1bfaaa4a840ac6cd60a9",
+        "sha256": "72cee4e45f28f493cb8078a6f908ffbff4ac886e8728d8ca72b1af4c61efe900",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/amused-blink-half.webp",
+        "beforeSha256": "2cd4f795decabdf5fcd871317504f29f30901b06a78b103d5c10e2471325c988",
+        "sha256": "35455605deeb644b87d1b3c1b81739f58e5d1eadf18f2c80f9cd1d8cdda7d2e6",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "amused-blink",
+      "donor": "amused",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "ec62a1173508bf1c7ce31a1f7c19a98d16169f0839693d3733e05cd73619c7b7",
+        "afterSha256": "ec62a1173508bf1c7ce31a1f7c19a98d16169f0839693d3733e05cd73619c7b7"
+      },
+      "engravedProtected": {
+        "beforeSha256": "a7437b72efee2b65768d95e15f5dae25c46293383a53f5f9b543df3a2d0c8233",
+        "afterSha256": "a7437b72efee2b65768d95e15f5dae25c46293383a53f5f9b543df3a2d0c8233"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "a6bdf14e6d6c253050249a80953379aa399a0c04766f6f43897888ae87396c10"
+      },
+      "restoredTemplePixels": 5,
+      "changedPixels": 4927,
+      "engravedChangedPixels": 6642,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/amused-blink.webp",
+        "beforeSha256": "4d9e2bd5f3162933fd860ff37d8e9e99779e59722f8d8b9bcf73ea0cbf05eecf",
+        "sha256": "14596b22250ad387e974817728749de7d779c5f0ae770219b17e4a26c90b5711",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/amused-blink.webp",
+        "beforeSha256": "b39ef2eb4321951b502004345be5cd990459583e6ac6f76c1cb367fdfcc94c69",
+        "sha256": "5712b34c194683af2ed949382949ec3366de1746a2a204b9b0a2058e84b70628",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "smug-blink-half",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "7ef569fd602795ea7d32ec138b38819c422c86d1aeb8c4f97a3045bf0b8d999a",
+        "afterSha256": "7ef569fd602795ea7d32ec138b38819c422c86d1aeb8c4f97a3045bf0b8d999a"
+      },
+      "engravedProtected": {
+        "beforeSha256": "f226da44e23610bdd57ed81b6d5f6ec974fc2102af7c0ee95678b67f9dd95172",
+        "afterSha256": "f226da44e23610bdd57ed81b6d5f6ec974fc2102af7c0ee95678b67f9dd95172"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4889,
+      "engravedChangedPixels": 6635,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/smug-blink-half.webp",
+        "beforeSha256": "929f02564f5dde6b6ff3ac85ecd9bfcd40580fa7685a02fdcadafeebcf03c002",
+        "sha256": "c112692ea569c732cb909119c3f28af877beb4f10d5045c620ce98e2cfcc45a4",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/smug-blink-half.webp",
+        "beforeSha256": "3eff26381ca5bc0a354356c2819d9ae0ea9d56d98d5346166ceb2dafb1ad760e",
+        "sha256": "8b01fc837c796ae8cc37aefb356e31263e2884c542d56f6b566633f53fde937c",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "smug-blink",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "7ef569fd602795ea7d32ec138b38819c422c86d1aeb8c4f97a3045bf0b8d999a",
+        "afterSha256": "7ef569fd602795ea7d32ec138b38819c422c86d1aeb8c4f97a3045bf0b8d999a"
+      },
+      "engravedProtected": {
+        "beforeSha256": "1da77a60c974bc61f399cbd65ce8061322bb9f2ae857fd46bae60552b741b87e",
+        "afterSha256": "1da77a60c974bc61f399cbd65ce8061322bb9f2ae857fd46bae60552b741b87e"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4951,
+      "engravedChangedPixels": 6636,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/smug-blink.webp",
+        "beforeSha256": "15e65efed703d0abfcdb983d6edfae5be20a1a9af8ced8f88ab8aea2d98d53fb",
+        "sha256": "0899f2ae56534788c0b30e3abd873e9dc7a3a284e5cf64e67d5c9a9703081bb9",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/smug-blink.webp",
+        "beforeSha256": "dd332fa2cbc51c43ef8599735d76f5e23f56be15ce89f78fe7f60065798baaa2",
+        "sha256": "b45fc6f24b506b3031e12447905a9b26c581e1da13a1967960ea91d99cbecbfa",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "frustrated-blink-half",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "d3d4b65f2bfa0ff8daa99c9a874663e7dab66d470d2cdd9448e9f39d1d5375f9",
+        "afterSha256": "d3d4b65f2bfa0ff8daa99c9a874663e7dab66d470d2cdd9448e9f39d1d5375f9"
+      },
+      "engravedProtected": {
+        "beforeSha256": "f3e8d1e451aa7315a3b3918312046e03a4600037f95adff0187707c250444951",
+        "afterSha256": "f3e8d1e451aa7315a3b3918312046e03a4600037f95adff0187707c250444951"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4889,
+      "engravedChangedPixels": 6636,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/frustrated-blink-half.webp",
+        "beforeSha256": "727c1645b5d4c10560ce9e97c9f51927c683a4537593bf6778d335038c12658f",
+        "sha256": "f7fc2edbc3dfe5a480746badacb33381fcbad30cbf0ab4fd88a33b5d11b5c6ab",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/frustrated-blink-half.webp",
+        "beforeSha256": "0e8fbd0469396fb7def1b76ad9461e252dc7c276798e6ab893a48710b5f14e90",
+        "sha256": "5f017c9d5a780cec16534fd8b1b5784d80de98b388f0b71a5dfda89b36027e5f",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "frustrated-blink",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "d3d4b65f2bfa0ff8daa99c9a874663e7dab66d470d2cdd9448e9f39d1d5375f9",
+        "afterSha256": "d3d4b65f2bfa0ff8daa99c9a874663e7dab66d470d2cdd9448e9f39d1d5375f9"
+      },
+      "engravedProtected": {
+        "beforeSha256": "ab03afeda2855212ddd01bd3ffb3720227674e5f8d4d24a3a4ddb5436a76e764",
+        "afterSha256": "ab03afeda2855212ddd01bd3ffb3720227674e5f8d4d24a3a4ddb5436a76e764"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4951,
+      "engravedChangedPixels": 6639,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/frustrated-blink.webp",
+        "beforeSha256": "15ab650c011162676c24325d34ba8aff1e6fed738badddb092769f32f005c7c6",
+        "sha256": "4414869dd7951887f8465596bfe1d43ebde528aac20aff3d23dbc2e2b8996c24",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/frustrated-blink.webp",
+        "beforeSha256": "38b8f56f7cf4237390227858aea6680fbfe5702e204d5cb476bfb19a4a7cac9c",
+        "sha256": "4887a0eba8c270746357188463a72840093f3b1840c00073917193ae386492e0",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "defeated-blink-half",
+      "donor": "defeated",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "d3d4b65f2bfa0ff8daa99c9a874663e7dab66d470d2cdd9448e9f39d1d5375f9",
+        "afterSha256": "d3d4b65f2bfa0ff8daa99c9a874663e7dab66d470d2cdd9448e9f39d1d5375f9"
+      },
+      "engravedProtected": {
+        "beforeSha256": "63b37df444fba04b83bbf9ce49a1d1c8a205b6f10d237d38ba040fdcfc86af43",
+        "afterSha256": "63b37df444fba04b83bbf9ce49a1d1c8a205b6f10d237d38ba040fdcfc86af43"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4866,
+      "engravedChangedPixels": 6633,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/defeated-blink-half.webp",
+        "beforeSha256": "6bf8951677300d144af8f39ca3f02d888833156ed921169c9d0ecb6d6ea4658f",
+        "sha256": "b0b42ec486e38ec59e29c579d958acfcdf096bc168786528973ffd890c66997c",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/defeated-blink-half.webp",
+        "beforeSha256": "f5aa128bba152384e64dc1455ddacfd315d1c7744bde362860a359762ee1df7b",
+        "sha256": "710c61c1a75753d163684e218d4376a67341dc38f5f6b229d74149f6e03df630",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "defeated-blink",
+      "donor": "defeated",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "d3d4b65f2bfa0ff8daa99c9a874663e7dab66d470d2cdd9448e9f39d1d5375f9",
+        "afterSha256": "d3d4b65f2bfa0ff8daa99c9a874663e7dab66d470d2cdd9448e9f39d1d5375f9"
+      },
+      "engravedProtected": {
+        "beforeSha256": "e18e44222e6d155fcc3d534a0041776fe3c1b907d2d05563738a3c15df4d59c6",
+        "afterSha256": "e18e44222e6d155fcc3d534a0041776fe3c1b907d2d05563738a3c15df4d59c6"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "a6bdf14e6d6c253050249a80953379aa399a0c04766f6f43897888ae87396c10"
+      },
+      "restoredTemplePixels": 5,
+      "changedPixels": 4925,
+      "engravedChangedPixels": 6635,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/defeated-blink.webp",
+        "beforeSha256": "c997310f5e262e87c40069adda9eb073e2eba82aedb18716a5b75eaf7624a318",
+        "sha256": "4414869dd7951887f8465596bfe1d43ebde528aac20aff3d23dbc2e2b8996c24",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/defeated-blink.webp",
+        "beforeSha256": "0279d1dece5e0e3c5fe88cd5813e03580a99fd8aba7066ca3cf177b88114787d",
+        "sha256": "92617d4f7b3e13f6f9c0a298e107c7cb947e4c53e184e3b1771693f449d6c74a",
+        "width": 437,
+        "height": 1024,
+        "alphaSha256": "5b4eb3c2c766436e9aab2ac814cba6048addfcd393634186f3a2cdadb24fa098"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "release-blink-half",
+      "donor": "release",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "6c3840264d1ccb31e1aee555fb07b3f0460f61b3fd8fc9daf8e97bc429885835",
+        "afterSha256": "6c3840264d1ccb31e1aee555fb07b3f0460f61b3fd8fc9daf8e97bc429885835"
+      },
+      "engravedProtected": {
+        "beforeSha256": "7b7cc251e70b525a2e26169c36c7f3f174cb8844ec3c511195b3256aad90d5b9",
+        "afterSha256": "7b7cc251e70b525a2e26169c36c7f3f174cb8844ec3c511195b3256aad90d5b9"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4888,
+      "engravedChangedPixels": 6643,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/release-blink-half.webp",
+        "beforeSha256": "a4fbceaac35f5acfd9b681f18a4c34c0b29174fe38ef31709ded9e1ee96dd5e9",
+        "sha256": "b199457db3732190e949e7ba7ec26d786c7474816d69d97773a9209f444ec4bf",
+        "width": 411,
+        "height": 1024,
+        "alphaSha256": "d1cf12e7e97de3957cfca24506b4455eeace6f05b49ed844cf16c9bccd569a53"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/release-blink-half.webp",
+        "beforeSha256": "e75da94f2627e347ea475e7561069fb680db34b7ec31b30c228336b6c002f132",
+        "sha256": "98197b8a7fa4757d12fd71fcd3eaf3bc24d72298731412d3797feac9ac0555b1",
+        "width": 411,
+        "height": 1024,
+        "alphaSha256": "d1cf12e7e97de3957cfca24506b4455eeace6f05b49ed844cf16c9bccd569a53"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "release-blink",
+      "donor": "release",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "6c3840264d1ccb31e1aee555fb07b3f0460f61b3fd8fc9daf8e97bc429885835",
+        "afterSha256": "6c3840264d1ccb31e1aee555fb07b3f0460f61b3fd8fc9daf8e97bc429885835"
+      },
+      "engravedProtected": {
+        "beforeSha256": "8b8a74580765ed14e9644b79e7f5a92110ce8f93722161a3909a41dfbf7786e3",
+        "afterSha256": "8b8a74580765ed14e9644b79e7f5a92110ce8f93722161a3909a41dfbf7786e3"
+      },
+      "brows": {
+        "beforeSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613",
+        "afterSha256": "3163f6768f3a9861089392d654347cacc9a8ea105eefd07e36bc88d7f6db4613"
+      },
+      "temple": {
+        "beforeSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "afterSha256": "dc633edb71bfd29d6986794406bc9d4134b5f837bff34a7c07ae761214a747ce",
+        "basis": "matching clean donor pose",
+        "originalSha256": "a6bdf14e6d6c253050249a80953379aa399a0c04766f6f43897888ae87396c10"
+      },
+      "restoredTemplePixels": 5,
+      "changedPixels": 4927,
+      "engravedChangedPixels": 6638,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/release-blink.webp",
+        "beforeSha256": "f373dc6ed49d0afa5eaa71cc0112ed0e1a09502e0effdf06bce9d589b4cdcdc0",
+        "sha256": "886058c722bb0d72fd45f81cdbefba6e87c6432c6931a2fdcb5878e586d9fa50",
+        "width": 411,
+        "height": 1024,
+        "alphaSha256": "d1cf12e7e97de3957cfca24506b4455eeace6f05b49ed844cf16c9bccd569a53"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/release-blink.webp",
+        "beforeSha256": "b102f072f8ca936f5f2a26c49d49ee3249029c24705047139714070fb1aaa324",
+        "sha256": "50873e4559c16f6b95bf4ec81082516d0d6f07b2d1ae51ee9d9eff5034bb20cc",
+        "width": 411,
+        "height": 1024,
+        "alphaSha256": "d1cf12e7e97de3957cfca24506b4455eeace6f05b49ed844cf16c9bccd569a53"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "whole-throw-6-blink-half",
+      "donor": "whole-throw-6",
+      "allowedRegions": [
+        [
+          [
+            950.4402313624678,
+            647.1266066838047
+          ],
+          [
+            1028.7268637532134,
+            641.0893316195372
+          ],
+          [
+            1033.1176092544988,
+            698.0250642673521
+          ],
+          [
+            954.8309768637532,
+            704.0623393316196
+          ]
+        ],
+        [
+          [
+            1034.280848329049,
+            646.797557840617
+          ],
+          [
+            1100.3669665809769,
+            641.7011568123394
+          ],
+          [
+            1104.6008997429306,
+            696.603470437018
+          ],
+          [
+            1038.5147814910026,
+            701.6998714652956
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "7a5a48d05069a610dee167425bab8bc7ad01ede05791f0ec991c4ed90e44fd73",
+        "afterSha256": "7a5a48d05069a610dee167425bab8bc7ad01ede05791f0ec991c4ed90e44fd73"
+      },
+      "engravedProtected": {
+        "beforeSha256": "36b2a772569c71b381a9abcd9c9bb85f9dc48efcc0cea2fe9b826a8db07cb852",
+        "afterSha256": "36b2a772569c71b381a9abcd9c9bb85f9dc48efcc0cea2fe9b826a8db07cb852"
+      },
+      "brows": {
+        "beforeSha256": "2a10b88c76a87eea1e5b47aad8948a1ac31936b06aeb283e34c066faf1849589",
+        "afterSha256": "2a10b88c76a87eea1e5b47aad8948a1ac31936b06aeb283e34c066faf1849589"
+      },
+      "temple": {
+        "beforeSha256": "09c5dfbffb65f3e1cf09d4a0ac666214ec62bb7aecde8e3518827c7d8ea2ee54",
+        "afterSha256": "09c5dfbffb65f3e1cf09d4a0ac666214ec62bb7aecde8e3518827c7d8ea2ee54",
+        "basis": "matching clean donor pose",
+        "originalSha256": "09c5dfbffb65f3e1cf09d4a0ac666214ec62bb7aecde8e3518827c7d8ea2ee54"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 5079,
+      "engravedChangedPixels": 6754,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/whole-throw-6-blink-half.webp",
+        "beforeSha256": "c8eb2087ea7b28e5f9e7b7480e1e005f28f0f82050bc2590170ca58931052cb4",
+        "sha256": "c29d3a2714ad98c36afbfc67a3593fea6fb166a3c37d8250251f57f490e58a3d",
+        "width": 474,
+        "height": 1029,
+        "alphaSha256": "f018a1ee8386bb07b21079e7f3bd52decdc8897b95ff919aa334479a3c0735ce"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/whole-throw-6-blink-half.webp",
+        "beforeSha256": "86403761725604b1ae7f06e828c9faf90adc440dbde7d0ea0076a636d7448df6",
+        "sha256": "79d49f0ac3c57711d81473d5428b198e47776412133c1284990fdc7023c23f47",
+        "width": 474,
+        "height": 1029,
+        "alphaSha256": "f018a1ee8386bb07b21079e7f3bd52decdc8897b95ff919aa334479a3c0735ce"
+      }
+    },
+    {
+      "condition": 0,
+      "frame": "whole-throw-6-blink-closed",
+      "donor": "whole-throw-6",
+      "allowedRegions": [
+        [
+          [
+            950.4402313624678,
+            647.1266066838047
+          ],
+          [
+            1028.7268637532134,
+            641.0893316195372
+          ],
+          [
+            1033.1176092544988,
+            698.0250642673521
+          ],
+          [
+            954.8309768637532,
+            704.0623393316196
+          ]
+        ],
+        [
+          [
+            1034.280848329049,
+            646.797557840617
+          ],
+          [
+            1100.3669665809769,
+            641.7011568123394
+          ],
+          [
+            1104.6008997429306,
+            696.603470437018
+          ],
+          [
+            1038.5147814910026,
+            701.6998714652956
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "7a5a48d05069a610dee167425bab8bc7ad01ede05791f0ec991c4ed90e44fd73",
+        "afterSha256": "7a5a48d05069a610dee167425bab8bc7ad01ede05791f0ec991c4ed90e44fd73"
+      },
+      "engravedProtected": {
+        "beforeSha256": "2f6efe330528f03cf9dfd425692b5339c1af8e58c19c3faabc5eef1074777029",
+        "afterSha256": "2f6efe330528f03cf9dfd425692b5339c1af8e58c19c3faabc5eef1074777029"
+      },
+      "brows": {
+        "beforeSha256": "2a10b88c76a87eea1e5b47aad8948a1ac31936b06aeb283e34c066faf1849589",
+        "afterSha256": "2a10b88c76a87eea1e5b47aad8948a1ac31936b06aeb283e34c066faf1849589"
+      },
+      "temple": {
+        "beforeSha256": "09c5dfbffb65f3e1cf09d4a0ac666214ec62bb7aecde8e3518827c7d8ea2ee54",
+        "afterSha256": "09c5dfbffb65f3e1cf09d4a0ac666214ec62bb7aecde8e3518827c7d8ea2ee54",
+        "basis": "matching clean donor pose",
+        "originalSha256": "09c5dfbffb65f3e1cf09d4a0ac666214ec62bb7aecde8e3518827c7d8ea2ee54"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 5107,
+      "engravedChangedPixels": 6762,
+      "source": {
+        "path": "assets/social-club/master-animation-v2/june/whole-throw-6-blink-closed.webp",
+        "beforeSha256": "470d18901ee60ffd7c3515490e79c2d16332c38aadea1317c62392ca1fbafd12",
+        "sha256": "0c0d8da7652d499bebca8c263ffe838197bd4c1c573f31a5bec040dd1c8cc466",
+        "width": 474,
+        "height": 1029,
+        "alphaSha256": "f018a1ee8386bb07b21079e7f3bd52decdc8897b95ff919aa334479a3c0735ce"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/master-animation-v2/june/whole-throw-6-blink-closed.webp",
+        "beforeSha256": "d32957110e93258b0ce17f7e18f8e7e5a9f96bd8939811d30fe4b88fab61b71c",
+        "sha256": "44279f3a11b78dc5e47bd9fbf80305de48caa4ea739deb511c3f0607ea911981",
+        "width": 474,
+        "height": 1029,
+        "alphaSha256": "f018a1ee8386bb07b21079e7f3bd52decdc8897b95ff919aa334479a3c0735ce"
+      }
+    },
+    {
+      "condition": 1,
+      "frame": "rest-blink-half",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "2fe5007f63b9313dcff4907f70a482fa794903804da4bdf4f47eb2c167bad6d6",
+        "afterSha256": "2fe5007f63b9313dcff4907f70a482fa794903804da4bdf4f47eb2c167bad6d6"
+      },
+      "engravedProtected": {
+        "beforeSha256": "57c59409e80be55d999f9fcc55d953ab4d272c2783a697390eda3304de331faa",
+        "afterSha256": "57c59409e80be55d999f9fcc55d953ab4d272c2783a697390eda3304de331faa"
+      },
+      "brows": {
+        "beforeSha256": "8281011190d1c78b318998e140c3c49e907a31c8e1a36d6ceb945e8ab24adfdf",
+        "afterSha256": "8281011190d1c78b318998e140c3c49e907a31c8e1a36d6ceb945e8ab24adfdf"
+      },
+      "temple": {
+        "beforeSha256": "b3c9ada3180919b61ac82bab915af92d883a0ecfbaeff2a3e747e66d3e5819db",
+        "afterSha256": "b3c9ada3180919b61ac82bab915af92d883a0ecfbaeff2a3e747e66d3e5819db",
+        "basis": "matching clean donor pose",
+        "originalSha256": "b3c9ada3180919b61ac82bab915af92d883a0ecfbaeff2a3e747e66d3e5819db"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4693,
+      "engravedChangedPixels": 6556,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/1/rest-blink-half.webp",
+        "beforeSha256": "77f30c048c88a8c15ac69da0df0e1a2e21bbf40f664de2ff777643c4cc603db0",
+        "sha256": "818545bfde5f9c5057ac2bea2afbb8aca67f24eb47982a927b3fba5267056c9c",
+        "width": 430,
+        "height": 951,
+        "alphaSha256": "1c4dad32e4449fc1f944f2ba3bb4077d1305894c64e4cc375d0c188f3cc87c20"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/1/rest-blink-half.webp",
+        "beforeSha256": "e76f32419dc270289b5968a03b603177ea2ae1751cb73da6a885d5ec572ef885",
+        "sha256": "495e31db34141e340be4d0e89d559b59ba4455623f0fcf0c78b5eb0aa839819c",
+        "width": 430,
+        "height": 951,
+        "alphaSha256": "1c4dad32e4449fc1f944f2ba3bb4077d1305894c64e4cc375d0c188f3cc87c20"
+      }
+    },
+    {
+      "condition": 1,
+      "frame": "rest-blink",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "2fe5007f63b9313dcff4907f70a482fa794903804da4bdf4f47eb2c167bad6d6",
+        "afterSha256": "2fe5007f63b9313dcff4907f70a482fa794903804da4bdf4f47eb2c167bad6d6"
+      },
+      "engravedProtected": {
+        "beforeSha256": "f03522217e749897a97ec65dad5cb2466290b7307de24f07187306ede1635d44",
+        "afterSha256": "f03522217e749897a97ec65dad5cb2466290b7307de24f07187306ede1635d44"
+      },
+      "brows": {
+        "beforeSha256": "8281011190d1c78b318998e140c3c49e907a31c8e1a36d6ceb945e8ab24adfdf",
+        "afterSha256": "8281011190d1c78b318998e140c3c49e907a31c8e1a36d6ceb945e8ab24adfdf"
+      },
+      "temple": {
+        "beforeSha256": "b3c9ada3180919b61ac82bab915af92d883a0ecfbaeff2a3e747e66d3e5819db",
+        "afterSha256": "b3c9ada3180919b61ac82bab915af92d883a0ecfbaeff2a3e747e66d3e5819db",
+        "basis": "matching clean donor pose",
+        "originalSha256": "b3c9ada3180919b61ac82bab915af92d883a0ecfbaeff2a3e747e66d3e5819db"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4939,
+      "engravedChangedPixels": 6555,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/1/rest-blink.webp",
+        "beforeSha256": "37a74f78d8cb0c0f9da8134be31252b39a8f8b03793af0062520ca090b42c3f1",
+        "sha256": "5d8c1ea29ea3add5b74b290003fa1bc81db835c749dd7148cd3b1ae3fe9ee393",
+        "width": 430,
+        "height": 951,
+        "alphaSha256": "1c4dad32e4449fc1f944f2ba3bb4077d1305894c64e4cc375d0c188f3cc87c20"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/1/rest-blink.webp",
+        "beforeSha256": "f7fcce82bcefc887b25b1b340935b1192a84c2512438c31b576eae3d123a2660",
+        "sha256": "efa98139023fde6288d5b01c2ce3f3ee3b22888f72047f774c0bd8cc7b6fe6bf",
+        "width": 430,
+        "height": 951,
+        "alphaSha256": "1c4dad32e4449fc1f944f2ba3bb4077d1305894c64e4cc375d0c188f3cc87c20"
+      }
+    },
+    {
+      "condition": 1,
+      "frame": "down-blink-half",
+      "donor": "down",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "2fe5007f63b9313dcff4907f70a482fa794903804da4bdf4f47eb2c167bad6d6",
+        "afterSha256": "2fe5007f63b9313dcff4907f70a482fa794903804da4bdf4f47eb2c167bad6d6"
+      },
+      "engravedProtected": {
+        "beforeSha256": "e1188755b8f232fc45ce880b704f995f2e1a5d7937e1e4a61ec006428753b617",
+        "afterSha256": "e1188755b8f232fc45ce880b704f995f2e1a5d7937e1e4a61ec006428753b617"
+      },
+      "brows": {
+        "beforeSha256": "8281011190d1c78b318998e140c3c49e907a31c8e1a36d6ceb945e8ab24adfdf",
+        "afterSha256": "8281011190d1c78b318998e140c3c49e907a31c8e1a36d6ceb945e8ab24adfdf"
+      },
+      "temple": {
+        "beforeSha256": "b3c9ada3180919b61ac82bab915af92d883a0ecfbaeff2a3e747e66d3e5819db",
+        "afterSha256": "b3c9ada3180919b61ac82bab915af92d883a0ecfbaeff2a3e747e66d3e5819db",
+        "basis": "matching clean donor pose",
+        "originalSha256": "b3c9ada3180919b61ac82bab915af92d883a0ecfbaeff2a3e747e66d3e5819db"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4799,
+      "engravedChangedPixels": 6550,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/1/down-blink-half.webp",
+        "beforeSha256": "4de9f153679ff3f343f2e9f3123a1b3c0344468197c27f84651244098b72f9d5",
+        "sha256": "818545bfde5f9c5057ac2bea2afbb8aca67f24eb47982a927b3fba5267056c9c",
+        "width": 430,
+        "height": 951,
+        "alphaSha256": "1c4dad32e4449fc1f944f2ba3bb4077d1305894c64e4cc375d0c188f3cc87c20"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/1/down-blink-half.webp",
+        "beforeSha256": "8d9aee156ebcb52cb5962b3a53da7cc9557471d6c9987ecf0ab02880fe53273b",
+        "sha256": "b7adb0dcc13c06185e19f95a73d122507c3ae1afe9c791f59e56955cd371c510",
+        "width": 430,
+        "height": 951,
+        "alphaSha256": "1c4dad32e4449fc1f944f2ba3bb4077d1305894c64e4cc375d0c188f3cc87c20"
+      }
+    },
+    {
+      "condition": 1,
+      "frame": "down-blink",
+      "donor": "down",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "2fe5007f63b9313dcff4907f70a482fa794903804da4bdf4f47eb2c167bad6d6",
+        "afterSha256": "2fe5007f63b9313dcff4907f70a482fa794903804da4bdf4f47eb2c167bad6d6"
+      },
+      "engravedProtected": {
+        "beforeSha256": "f03522217e749897a97ec65dad5cb2466290b7307de24f07187306ede1635d44",
+        "afterSha256": "f03522217e749897a97ec65dad5cb2466290b7307de24f07187306ede1635d44"
+      },
+      "brows": {
+        "beforeSha256": "8281011190d1c78b318998e140c3c49e907a31c8e1a36d6ceb945e8ab24adfdf",
+        "afterSha256": "8281011190d1c78b318998e140c3c49e907a31c8e1a36d6ceb945e8ab24adfdf"
+      },
+      "temple": {
+        "beforeSha256": "b3c9ada3180919b61ac82bab915af92d883a0ecfbaeff2a3e747e66d3e5819db",
+        "afterSha256": "b3c9ada3180919b61ac82bab915af92d883a0ecfbaeff2a3e747e66d3e5819db",
+        "basis": "matching clean donor pose",
+        "originalSha256": "b3c9ada3180919b61ac82bab915af92d883a0ecfbaeff2a3e747e66d3e5819db"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4939,
+      "engravedChangedPixels": 6555,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/1/down-blink.webp",
+        "beforeSha256": "37a74f78d8cb0c0f9da8134be31252b39a8f8b03793af0062520ca090b42c3f1",
+        "sha256": "5d8c1ea29ea3add5b74b290003fa1bc81db835c749dd7148cd3b1ae3fe9ee393",
+        "width": 430,
+        "height": 951,
+        "alphaSha256": "1c4dad32e4449fc1f944f2ba3bb4077d1305894c64e4cc375d0c188f3cc87c20"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/1/down-blink.webp",
+        "beforeSha256": "f7fcce82bcefc887b25b1b340935b1192a84c2512438c31b576eae3d123a2660",
+        "sha256": "efa98139023fde6288d5b01c2ce3f3ee3b22888f72047f774c0bd8cc7b6fe6bf",
+        "width": 430,
+        "height": 951,
+        "alphaSha256": "1c4dad32e4449fc1f944f2ba3bb4077d1305894c64e4cc375d0c188f3cc87c20"
+      }
+    },
+    {
+      "condition": 1,
+      "frame": "release-blink-half",
+      "donor": "release",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "b19ff0795b1203621c7e4f20037af349cf2242983a456fd44398d7a4d86b2a8f",
+        "afterSha256": "b19ff0795b1203621c7e4f20037af349cf2242983a456fd44398d7a4d86b2a8f"
+      },
+      "engravedProtected": {
+        "beforeSha256": "e463d4fb737f670ab4e7d441da2cffca92c127618177212a3a0faa6483705c10",
+        "afterSha256": "e463d4fb737f670ab4e7d441da2cffca92c127618177212a3a0faa6483705c10"
+      },
+      "brows": {
+        "beforeSha256": "66ee4be15d21cf0acd6750fef9e2d8b23a8733774746391397d846d8fbcedba0",
+        "afterSha256": "66ee4be15d21cf0acd6750fef9e2d8b23a8733774746391397d846d8fbcedba0"
+      },
+      "temple": {
+        "beforeSha256": "5168c5145953066c8f6bfcbd393f8157779e8768262470a4d19ca78cf184e7c0",
+        "afterSha256": "5168c5145953066c8f6bfcbd393f8157779e8768262470a4d19ca78cf184e7c0",
+        "basis": "matching clean donor pose",
+        "originalSha256": "5168c5145953066c8f6bfcbd393f8157779e8768262470a4d19ca78cf184e7c0"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4691,
+      "engravedChangedPixels": 6529,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/1/release-blink-half.webp",
+        "beforeSha256": "0e367a5066def841adb2c0d893b5dc101151fe71187597dff9b1b35affe3ae9e",
+        "sha256": "5625c2d0adc9d2a349c4ea94a319453b2bc042edd53951c689f5901f3ae3e88d",
+        "width": 399,
+        "height": 781,
+        "alphaSha256": "64644941193fffaffd4087bcd3a218520e0eb8cf75482a61b7d97b026ff3ef7f"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/1/release-blink-half.webp",
+        "beforeSha256": "ada843e6c00e3f6e91eb36cc78b19f56738a112e61c92dd575506e7584632b85",
+        "sha256": "6aed7e6fa6a0f4c8f9cd2c0961576a725837069cad6885fc83f4e1078648b70b",
+        "width": 399,
+        "height": 781,
+        "alphaSha256": "64644941193fffaffd4087bcd3a218520e0eb8cf75482a61b7d97b026ff3ef7f"
+      }
+    },
+    {
+      "condition": 1,
+      "frame": "release-blink",
+      "donor": "release",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "b19ff0795b1203621c7e4f20037af349cf2242983a456fd44398d7a4d86b2a8f",
+        "afterSha256": "b19ff0795b1203621c7e4f20037af349cf2242983a456fd44398d7a4d86b2a8f"
+      },
+      "engravedProtected": {
+        "beforeSha256": "fb510e059ac44f5a7c8a1ea1836bb54fc6afd32529835bcfc9381c4cda12c88f",
+        "afterSha256": "fb510e059ac44f5a7c8a1ea1836bb54fc6afd32529835bcfc9381c4cda12c88f"
+      },
+      "brows": {
+        "beforeSha256": "66ee4be15d21cf0acd6750fef9e2d8b23a8733774746391397d846d8fbcedba0",
+        "afterSha256": "66ee4be15d21cf0acd6750fef9e2d8b23a8733774746391397d846d8fbcedba0"
+      },
+      "temple": {
+        "beforeSha256": "5168c5145953066c8f6bfcbd393f8157779e8768262470a4d19ca78cf184e7c0",
+        "afterSha256": "5168c5145953066c8f6bfcbd393f8157779e8768262470a4d19ca78cf184e7c0",
+        "basis": "matching clean donor pose",
+        "originalSha256": "5168c5145953066c8f6bfcbd393f8157779e8768262470a4d19ca78cf184e7c0"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4949,
+      "engravedChangedPixels": 6522,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/1/release-blink.webp",
+        "beforeSha256": "ee51ff5500048f3f1ff25d3b63704030937c82862f65fadef34dbe20f453ff98",
+        "sha256": "a142fb4cca0d74159d0e434d349fbacb371a85767ed1195f957d677c2fa2c9e9",
+        "width": 399,
+        "height": 781,
+        "alphaSha256": "64644941193fffaffd4087bcd3a218520e0eb8cf75482a61b7d97b026ff3ef7f"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/1/release-blink.webp",
+        "beforeSha256": "146de38fe75818467f6d0f0306cbb77808bf8cbd88d4e94ea5ee6e9dda249f11",
+        "sha256": "1c80f5129bbedcb83a7e18e521bdcab6b7da463e3b30e281ec0b9693cae5dd1d",
+        "width": 399,
+        "height": 781,
+        "alphaSha256": "64644941193fffaffd4087bcd3a218520e0eb8cf75482a61b7d97b026ff3ef7f"
+      }
+    },
+    {
+      "condition": 2,
+      "frame": "rest-blink-half",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "f15cd71f741e7d02b730bd4dee99b78419c9473ac409ea37d513daa411966325",
+        "afterSha256": "f15cd71f741e7d02b730bd4dee99b78419c9473ac409ea37d513daa411966325"
+      },
+      "engravedProtected": {
+        "beforeSha256": "5615b2e26cf7b85c08c973b77f8ac7684662bac0ba986fc190163c78cc4291e2",
+        "afterSha256": "5615b2e26cf7b85c08c973b77f8ac7684662bac0ba986fc190163c78cc4291e2"
+      },
+      "brows": {
+        "beforeSha256": "1211bf0f966ed67a7c923b7270adc832634cd36206dd23c1e4e9a888c5686233",
+        "afterSha256": "1211bf0f966ed67a7c923b7270adc832634cd36206dd23c1e4e9a888c5686233"
+      },
+      "temple": {
+        "beforeSha256": "499ec0f150a389423fd4df6f13f5f7e905684ba5125b313d0eac44bbd1db94d6",
+        "afterSha256": "499ec0f150a389423fd4df6f13f5f7e905684ba5125b313d0eac44bbd1db94d6",
+        "basis": "matching clean donor pose",
+        "originalSha256": "499ec0f150a389423fd4df6f13f5f7e905684ba5125b313d0eac44bbd1db94d6"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4765,
+      "engravedChangedPixels": 6572,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/2/rest-blink-half.webp",
+        "beforeSha256": "7a189af4b8e3bc098413b9e954871d1d2ac68553343dc27e5479a92cbcc2f06d",
+        "sha256": "e1dfdde849585b0e0c07770b608077381a90ce36600e30c3a84d0de95530701a",
+        "width": 440,
+        "height": 946,
+        "alphaSha256": "3399e02a23623797aa85cfe4c1502506ce151de5187e9b09d6d672a5c78e4454"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/2/rest-blink-half.webp",
+        "beforeSha256": "2d7b12ff4855666ef0e648feb6d17e590a8d4b2b2312c42139d964c42331f6e5",
+        "sha256": "9b576e2b339301ee3e271fd27a19989cfce110ff4fa400e20cdc4a1664f2bc56",
+        "width": 440,
+        "height": 946,
+        "alphaSha256": "3399e02a23623797aa85cfe4c1502506ce151de5187e9b09d6d672a5c78e4454"
+      }
+    },
+    {
+      "condition": 2,
+      "frame": "rest-blink",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "f15cd71f741e7d02b730bd4dee99b78419c9473ac409ea37d513daa411966325",
+        "afterSha256": "f15cd71f741e7d02b730bd4dee99b78419c9473ac409ea37d513daa411966325"
+      },
+      "engravedProtected": {
+        "beforeSha256": "76b6124f17e5b9d0ee3c86fc98fae4548bd89e825ec0ede39d2b1dcdc8e36414",
+        "afterSha256": "76b6124f17e5b9d0ee3c86fc98fae4548bd89e825ec0ede39d2b1dcdc8e36414"
+      },
+      "brows": {
+        "beforeSha256": "1211bf0f966ed67a7c923b7270adc832634cd36206dd23c1e4e9a888c5686233",
+        "afterSha256": "1211bf0f966ed67a7c923b7270adc832634cd36206dd23c1e4e9a888c5686233"
+      },
+      "temple": {
+        "beforeSha256": "499ec0f150a389423fd4df6f13f5f7e905684ba5125b313d0eac44bbd1db94d6",
+        "afterSha256": "499ec0f150a389423fd4df6f13f5f7e905684ba5125b313d0eac44bbd1db94d6",
+        "basis": "matching clean donor pose",
+        "originalSha256": "499ec0f150a389423fd4df6f13f5f7e905684ba5125b313d0eac44bbd1db94d6"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4958,
+      "engravedChangedPixels": 6563,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/2/rest-blink.webp",
+        "beforeSha256": "ad8e9fe8fdd40bd4d802918b6bb6c5193832a19e50ebcf239a5d4412d4a16c27",
+        "sha256": "d1fb87c3f214a6f9b978d7491fb1ce6286d107848dafb219f31394d7fe98959c",
+        "width": 440,
+        "height": 946,
+        "alphaSha256": "3399e02a23623797aa85cfe4c1502506ce151de5187e9b09d6d672a5c78e4454"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/2/rest-blink.webp",
+        "beforeSha256": "6994d00db94c0a92fcf14212c1645c850ea7fc2707b7ac58db92cf3bc0c720e2",
+        "sha256": "12ff98828ad2c6d1e39af531ceaba73dd45450fa9cc8fe6f2ef28881dbefbd3d",
+        "width": 440,
+        "height": 946,
+        "alphaSha256": "3399e02a23623797aa85cfe4c1502506ce151de5187e9b09d6d672a5c78e4454"
+      }
+    },
+    {
+      "condition": 2,
+      "frame": "down-blink-half",
+      "donor": "down",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "f15cd71f741e7d02b730bd4dee99b78419c9473ac409ea37d513daa411966325",
+        "afterSha256": "f15cd71f741e7d02b730bd4dee99b78419c9473ac409ea37d513daa411966325"
+      },
+      "engravedProtected": {
+        "beforeSha256": "7ce44a929c442b88c785fec80a133706e8c9f45bf79c5ad3243800b3048c082c",
+        "afterSha256": "7ce44a929c442b88c785fec80a133706e8c9f45bf79c5ad3243800b3048c082c"
+      },
+      "brows": {
+        "beforeSha256": "1211bf0f966ed67a7c923b7270adc832634cd36206dd23c1e4e9a888c5686233",
+        "afterSha256": "1211bf0f966ed67a7c923b7270adc832634cd36206dd23c1e4e9a888c5686233"
+      },
+      "temple": {
+        "beforeSha256": "499ec0f150a389423fd4df6f13f5f7e905684ba5125b313d0eac44bbd1db94d6",
+        "afterSha256": "499ec0f150a389423fd4df6f13f5f7e905684ba5125b313d0eac44bbd1db94d6",
+        "basis": "matching clean donor pose",
+        "originalSha256": "499ec0f150a389423fd4df6f13f5f7e905684ba5125b313d0eac44bbd1db94d6"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4854,
+      "engravedChangedPixels": 6570,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/2/down-blink-half.webp",
+        "beforeSha256": "2704362c092ce9449eddd82f3928e670dd02810bbe841e7008591f280b5212d0",
+        "sha256": "e1dfdde849585b0e0c07770b608077381a90ce36600e30c3a84d0de95530701a",
+        "width": 440,
+        "height": 946,
+        "alphaSha256": "3399e02a23623797aa85cfe4c1502506ce151de5187e9b09d6d672a5c78e4454"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/2/down-blink-half.webp",
+        "beforeSha256": "d639a5fa601a9c789ca4454a31060b8f314aafa678420c0bf8642e08192d456c",
+        "sha256": "329c041dddd23385d6945ef73b3eecb694f32178f28c5bcb6d124180abe118a4",
+        "width": 440,
+        "height": 946,
+        "alphaSha256": "3399e02a23623797aa85cfe4c1502506ce151de5187e9b09d6d672a5c78e4454"
+      }
+    },
+    {
+      "condition": 2,
+      "frame": "down-blink",
+      "donor": "down",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "f15cd71f741e7d02b730bd4dee99b78419c9473ac409ea37d513daa411966325",
+        "afterSha256": "f15cd71f741e7d02b730bd4dee99b78419c9473ac409ea37d513daa411966325"
+      },
+      "engravedProtected": {
+        "beforeSha256": "76b6124f17e5b9d0ee3c86fc98fae4548bd89e825ec0ede39d2b1dcdc8e36414",
+        "afterSha256": "76b6124f17e5b9d0ee3c86fc98fae4548bd89e825ec0ede39d2b1dcdc8e36414"
+      },
+      "brows": {
+        "beforeSha256": "1211bf0f966ed67a7c923b7270adc832634cd36206dd23c1e4e9a888c5686233",
+        "afterSha256": "1211bf0f966ed67a7c923b7270adc832634cd36206dd23c1e4e9a888c5686233"
+      },
+      "temple": {
+        "beforeSha256": "499ec0f150a389423fd4df6f13f5f7e905684ba5125b313d0eac44bbd1db94d6",
+        "afterSha256": "499ec0f150a389423fd4df6f13f5f7e905684ba5125b313d0eac44bbd1db94d6",
+        "basis": "matching clean donor pose",
+        "originalSha256": "499ec0f150a389423fd4df6f13f5f7e905684ba5125b313d0eac44bbd1db94d6"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4958,
+      "engravedChangedPixels": 6563,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/2/down-blink.webp",
+        "beforeSha256": "ad8e9fe8fdd40bd4d802918b6bb6c5193832a19e50ebcf239a5d4412d4a16c27",
+        "sha256": "d1fb87c3f214a6f9b978d7491fb1ce6286d107848dafb219f31394d7fe98959c",
+        "width": 440,
+        "height": 946,
+        "alphaSha256": "3399e02a23623797aa85cfe4c1502506ce151de5187e9b09d6d672a5c78e4454"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/2/down-blink.webp",
+        "beforeSha256": "6994d00db94c0a92fcf14212c1645c850ea7fc2707b7ac58db92cf3bc0c720e2",
+        "sha256": "12ff98828ad2c6d1e39af531ceaba73dd45450fa9cc8fe6f2ef28881dbefbd3d",
+        "width": 440,
+        "height": 946,
+        "alphaSha256": "3399e02a23623797aa85cfe4c1502506ce151de5187e9b09d6d672a5c78e4454"
+      }
+    },
+    {
+      "condition": 2,
+      "frame": "release-blink-half",
+      "donor": "release",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "ea4979fc9790504904d382e2a1c942687b909977ac310645fc1db2c0092b42e4",
+        "afterSha256": "ea4979fc9790504904d382e2a1c942687b909977ac310645fc1db2c0092b42e4"
+      },
+      "engravedProtected": {
+        "beforeSha256": "71e3dc35c99604ed99ec3fde7c39902572e6f0b5b22585f781eec02a642a5175",
+        "afterSha256": "71e3dc35c99604ed99ec3fde7c39902572e6f0b5b22585f781eec02a642a5175"
+      },
+      "brows": {
+        "beforeSha256": "f61f16a6b35428d2cae48ec118aa55ad6e18976824d24a2429f036f8c86846e2",
+        "afterSha256": "f61f16a6b35428d2cae48ec118aa55ad6e18976824d24a2429f036f8c86846e2"
+      },
+      "temple": {
+        "beforeSha256": "1fdd49d0872d0234ffa36db0dca213415e6449fbf3a77db6805664b102e1c343",
+        "afterSha256": "1fdd49d0872d0234ffa36db0dca213415e6449fbf3a77db6805664b102e1c343",
+        "basis": "matching clean donor pose",
+        "originalSha256": "1fdd49d0872d0234ffa36db0dca213415e6449fbf3a77db6805664b102e1c343"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4683,
+      "engravedChangedPixels": 6480,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/2/release-blink-half.webp",
+        "beforeSha256": "a1beb4138bda4efbfe04c8d56b589cd06b42d9f7a236c768075b6b73142546b1",
+        "sha256": "c95e2f5a7355f8d5a6f3c1e807ee71b8ece814afa6402c17dd1a34c03e28757a",
+        "width": 466,
+        "height": 832,
+        "alphaSha256": "4016d1a0a181f0d04b0ab9201c39a062fd1cab8f77f90e3bc780a46d39cebdb2"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/2/release-blink-half.webp",
+        "beforeSha256": "a1f9810cb680fd8e87062284138f72cc8f6828a3b8ae2b3d7a01f2c2046f9043",
+        "sha256": "28358ffa984bb4d5381e250c7777da8a16a6cba7e63582e4d70e035eae5497ed",
+        "width": 466,
+        "height": 832,
+        "alphaSha256": "4016d1a0a181f0d04b0ab9201c39a062fd1cab8f77f90e3bc780a46d39cebdb2"
+      }
+    },
+    {
+      "condition": 2,
+      "frame": "release-blink",
+      "donor": "release",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "ea4979fc9790504904d382e2a1c942687b909977ac310645fc1db2c0092b42e4",
+        "afterSha256": "ea4979fc9790504904d382e2a1c942687b909977ac310645fc1db2c0092b42e4"
+      },
+      "engravedProtected": {
+        "beforeSha256": "450fa12296d383c4a0d70ea9ae56dd4d7d72bf2f438a84bf86118464f0b1d74f",
+        "afterSha256": "450fa12296d383c4a0d70ea9ae56dd4d7d72bf2f438a84bf86118464f0b1d74f"
+      },
+      "brows": {
+        "beforeSha256": "f61f16a6b35428d2cae48ec118aa55ad6e18976824d24a2429f036f8c86846e2",
+        "afterSha256": "f61f16a6b35428d2cae48ec118aa55ad6e18976824d24a2429f036f8c86846e2"
+      },
+      "temple": {
+        "beforeSha256": "1fdd49d0872d0234ffa36db0dca213415e6449fbf3a77db6805664b102e1c343",
+        "afterSha256": "1fdd49d0872d0234ffa36db0dca213415e6449fbf3a77db6805664b102e1c343",
+        "basis": "matching clean donor pose",
+        "originalSha256": "1fdd49d0872d0234ffa36db0dca213415e6449fbf3a77db6805664b102e1c343"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4927,
+      "engravedChangedPixels": 6484,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/2/release-blink.webp",
+        "beforeSha256": "01d901bfe9512f1f43b48a9b0e709e6eb0a3d99c2a6a80f736cc5177b873b940",
+        "sha256": "fc7cccda0b6a352dd49960683cfc3293b21f3725a3dd6b1ec2d15088feaafcb4",
+        "width": 466,
+        "height": 832,
+        "alphaSha256": "4016d1a0a181f0d04b0ab9201c39a062fd1cab8f77f90e3bc780a46d39cebdb2"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/2/release-blink.webp",
+        "beforeSha256": "aa1183fb288aa73adf6c61c0682f16d7a8965e69e3d9913fb5de59422a771247",
+        "sha256": "409f310c53833f6b1c72469351a5364235250212f70c35932648f74b684713ef",
+        "width": 466,
+        "height": 832,
+        "alphaSha256": "4016d1a0a181f0d04b0ab9201c39a062fd1cab8f77f90e3bc780a46d39cebdb2"
+      }
+    },
+    {
+      "condition": 3,
+      "frame": "rest-blink-half",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "9435ace2033a10e337acc92c59b4bcb6bc3edfe2ef6a52f0882753ffdd0b652b",
+        "afterSha256": "9435ace2033a10e337acc92c59b4bcb6bc3edfe2ef6a52f0882753ffdd0b652b"
+      },
+      "engravedProtected": {
+        "beforeSha256": "68bd1ff644586053d89281dc3381f1ed790c594c1e5b386ed97f1d65018acfe1",
+        "afterSha256": "68bd1ff644586053d89281dc3381f1ed790c594c1e5b386ed97f1d65018acfe1"
+      },
+      "brows": {
+        "beforeSha256": "cd52d95a09ed5e80862c550f4a03069b2b51f453722f2548454eb04d234a45bd",
+        "afterSha256": "cd52d95a09ed5e80862c550f4a03069b2b51f453722f2548454eb04d234a45bd"
+      },
+      "temple": {
+        "beforeSha256": "fb6eb236787f4d4edaaa49012f01a99a392c562c45c15e40ed91953ab2c02bd0",
+        "afterSha256": "fb6eb236787f4d4edaaa49012f01a99a392c562c45c15e40ed91953ab2c02bd0",
+        "basis": "matching clean donor pose",
+        "originalSha256": "fb6eb236787f4d4edaaa49012f01a99a392c562c45c15e40ed91953ab2c02bd0"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4517,
+      "engravedChangedPixels": 6395,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/3/rest-blink-half.webp",
+        "beforeSha256": "82c68f20e2b23f748f1763dafa89eab685af223432db7906a44dec514326b2f4",
+        "sha256": "51097154dad03955099cc9ce870dba4452aab15cc6e55e782bff7a979101d504",
+        "width": 488,
+        "height": 956,
+        "alphaSha256": "9adc910a3c9b82f9a7546e83c1a77ef7a8619358298d1dfe4c36877bd5272fed"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/3/rest-blink-half.webp",
+        "beforeSha256": "72a2525caf26aee792fa6690b38f5eb6897b67edf031220b2abac91a8b6f2214",
+        "sha256": "d078ea0bcebfb8db876edab46e63c18787b3b5b0c1cff98b8da1b60a3e7c551d",
+        "width": 488,
+        "height": 956,
+        "alphaSha256": "9adc910a3c9b82f9a7546e83c1a77ef7a8619358298d1dfe4c36877bd5272fed"
+      }
+    },
+    {
+      "condition": 3,
+      "frame": "rest-blink",
+      "donor": "rest",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "9435ace2033a10e337acc92c59b4bcb6bc3edfe2ef6a52f0882753ffdd0b652b",
+        "afterSha256": "9435ace2033a10e337acc92c59b4bcb6bc3edfe2ef6a52f0882753ffdd0b652b"
+      },
+      "engravedProtected": {
+        "beforeSha256": "03da17dc42a6f03e2e3678340df55fe1f490120a7366e2fef60358a849093147",
+        "afterSha256": "03da17dc42a6f03e2e3678340df55fe1f490120a7366e2fef60358a849093147"
+      },
+      "brows": {
+        "beforeSha256": "cd52d95a09ed5e80862c550f4a03069b2b51f453722f2548454eb04d234a45bd",
+        "afterSha256": "cd52d95a09ed5e80862c550f4a03069b2b51f453722f2548454eb04d234a45bd"
+      },
+      "temple": {
+        "beforeSha256": "fb6eb236787f4d4edaaa49012f01a99a392c562c45c15e40ed91953ab2c02bd0",
+        "afterSha256": "fb6eb236787f4d4edaaa49012f01a99a392c562c45c15e40ed91953ab2c02bd0",
+        "basis": "matching clean donor pose",
+        "originalSha256": "fb6eb236787f4d4edaaa49012f01a99a392c562c45c15e40ed91953ab2c02bd0"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4779,
+      "engravedChangedPixels": 6390,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/3/rest-blink.webp",
+        "beforeSha256": "4fed316900250d486c680c5bb80bf227a78543bcdeec08b2f4a52b6cd5d023c5",
+        "sha256": "a24bbd9e225e2d0b82dd9b4f3a840d0dcc03bb6397b2f07a325555c4cab84d78",
+        "width": 488,
+        "height": 956,
+        "alphaSha256": "9adc910a3c9b82f9a7546e83c1a77ef7a8619358298d1dfe4c36877bd5272fed"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/3/rest-blink.webp",
+        "beforeSha256": "0d832e25057246ae55737ca5c77c2caa7d5cd69b28728332d85ea6984e62b193",
+        "sha256": "e444ac4b1ad732e9a50927216ea59be43a4ced324dd8489cb2a5b8ea3fdbe85b",
+        "width": 488,
+        "height": 956,
+        "alphaSha256": "9adc910a3c9b82f9a7546e83c1a77ef7a8619358298d1dfe4c36877bd5272fed"
+      }
+    },
+    {
+      "condition": 3,
+      "frame": "down-blink-half",
+      "donor": "down",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "9435ace2033a10e337acc92c59b4bcb6bc3edfe2ef6a52f0882753ffdd0b652b",
+        "afterSha256": "9435ace2033a10e337acc92c59b4bcb6bc3edfe2ef6a52f0882753ffdd0b652b"
+      },
+      "engravedProtected": {
+        "beforeSha256": "59c5384a02f77fe9a3c3acf6256a013c9846baac52b3bcc2e9a3cc194dc2c763",
+        "afterSha256": "59c5384a02f77fe9a3c3acf6256a013c9846baac52b3bcc2e9a3cc194dc2c763"
+      },
+      "brows": {
+        "beforeSha256": "cd52d95a09ed5e80862c550f4a03069b2b51f453722f2548454eb04d234a45bd",
+        "afterSha256": "cd52d95a09ed5e80862c550f4a03069b2b51f453722f2548454eb04d234a45bd"
+      },
+      "temple": {
+        "beforeSha256": "fb6eb236787f4d4edaaa49012f01a99a392c562c45c15e40ed91953ab2c02bd0",
+        "afterSha256": "fb6eb236787f4d4edaaa49012f01a99a392c562c45c15e40ed91953ab2c02bd0",
+        "basis": "matching clean donor pose",
+        "originalSha256": "fb6eb236787f4d4edaaa49012f01a99a392c562c45c15e40ed91953ab2c02bd0"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4641,
+      "engravedChangedPixels": 6392,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/3/down-blink-half.webp",
+        "beforeSha256": "43a91bc09eaa521b398656d460262b1dd7bb1c4eac7a6b851c77d897b56e9299",
+        "sha256": "51097154dad03955099cc9ce870dba4452aab15cc6e55e782bff7a979101d504",
+        "width": 488,
+        "height": 956,
+        "alphaSha256": "9adc910a3c9b82f9a7546e83c1a77ef7a8619358298d1dfe4c36877bd5272fed"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/3/down-blink-half.webp",
+        "beforeSha256": "6ac02b4c84d4c34ffbaf6051f4ad93ea894456d22493f843233568b5b7735f9c",
+        "sha256": "87768406264cf7ac7d555b9b8b4d3b0979a738a1e57e58718bd845e220389f5f",
+        "width": 488,
+        "height": 956,
+        "alphaSha256": "9adc910a3c9b82f9a7546e83c1a77ef7a8619358298d1dfe4c36877bd5272fed"
+      }
+    },
+    {
+      "condition": 3,
+      "frame": "down-blink",
+      "donor": "down",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "9435ace2033a10e337acc92c59b4bcb6bc3edfe2ef6a52f0882753ffdd0b652b",
+        "afterSha256": "9435ace2033a10e337acc92c59b4bcb6bc3edfe2ef6a52f0882753ffdd0b652b"
+      },
+      "engravedProtected": {
+        "beforeSha256": "03da17dc42a6f03e2e3678340df55fe1f490120a7366e2fef60358a849093147",
+        "afterSha256": "03da17dc42a6f03e2e3678340df55fe1f490120a7366e2fef60358a849093147"
+      },
+      "brows": {
+        "beforeSha256": "cd52d95a09ed5e80862c550f4a03069b2b51f453722f2548454eb04d234a45bd",
+        "afterSha256": "cd52d95a09ed5e80862c550f4a03069b2b51f453722f2548454eb04d234a45bd"
+      },
+      "temple": {
+        "beforeSha256": "fb6eb236787f4d4edaaa49012f01a99a392c562c45c15e40ed91953ab2c02bd0",
+        "afterSha256": "fb6eb236787f4d4edaaa49012f01a99a392c562c45c15e40ed91953ab2c02bd0",
+        "basis": "matching clean donor pose",
+        "originalSha256": "fb6eb236787f4d4edaaa49012f01a99a392c562c45c15e40ed91953ab2c02bd0"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4779,
+      "engravedChangedPixels": 6390,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/3/down-blink.webp",
+        "beforeSha256": "4fed316900250d486c680c5bb80bf227a78543bcdeec08b2f4a52b6cd5d023c5",
+        "sha256": "a24bbd9e225e2d0b82dd9b4f3a840d0dcc03bb6397b2f07a325555c4cab84d78",
+        "width": 488,
+        "height": 956,
+        "alphaSha256": "9adc910a3c9b82f9a7546e83c1a77ef7a8619358298d1dfe4c36877bd5272fed"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/3/down-blink.webp",
+        "beforeSha256": "0d832e25057246ae55737ca5c77c2caa7d5cd69b28728332d85ea6984e62b193",
+        "sha256": "e444ac4b1ad732e9a50927216ea59be43a4ced324dd8489cb2a5b8ea3fdbe85b",
+        "width": 488,
+        "height": 956,
+        "alphaSha256": "9adc910a3c9b82f9a7546e83c1a77ef7a8619358298d1dfe4c36877bd5272fed"
+      }
+    },
+    {
+      "condition": 3,
+      "frame": "release-blink-half",
+      "donor": "release",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "4ac3c3833d964e6aecb6fc8f443f041496c53112180bc91352e86fc31ef59f9a",
+        "afterSha256": "4ac3c3833d964e6aecb6fc8f443f041496c53112180bc91352e86fc31ef59f9a"
+      },
+      "engravedProtected": {
+        "beforeSha256": "4c986c03dc005df6a12f5d527326a5370547e95fe3fee02e5483ace07196a900",
+        "afterSha256": "4c986c03dc005df6a12f5d527326a5370547e95fe3fee02e5483ace07196a900"
+      },
+      "brows": {
+        "beforeSha256": "9e6d87ba12c56b2502eedea1db9b560cf1d81ca06d774d7c2807ad0d5fe0314c",
+        "afterSha256": "9e6d87ba12c56b2502eedea1db9b560cf1d81ca06d774d7c2807ad0d5fe0314c"
+      },
+      "temple": {
+        "beforeSha256": "fae98df91afd20b5197a7dcbc14aef907f1edb73a2b0d143e778bd5f7f60a059",
+        "afterSha256": "fae98df91afd20b5197a7dcbc14aef907f1edb73a2b0d143e778bd5f7f60a059",
+        "basis": "matching clean donor pose",
+        "originalSha256": "fae98df91afd20b5197a7dcbc14aef907f1edb73a2b0d143e778bd5f7f60a059"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4453,
+      "engravedChangedPixels": 6340,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/3/release-blink-half.webp",
+        "beforeSha256": "f69d5012c0365f5a0c90806e660b5058fc802a3ce3dbd3375445c28e601d48ba",
+        "sha256": "0b8335632bbd2c060656d422c9ebc759d3a9e34cd15c714102c5f2842da4b848",
+        "width": 488,
+        "height": 824,
+        "alphaSha256": "115056dcb0f8200883b542077fbcd25a05d35f59e57a125a43d98de7ef35738d"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/3/release-blink-half.webp",
+        "beforeSha256": "a22220188a37681af040e407b1175e95a4e4feaee7292ac0d861f042e6c1cdc8",
+        "sha256": "2965ebfc2308f7958f329c2c553892b248a045e81a1d30328412dfa5c0b30c24",
+        "width": 488,
+        "height": 824,
+        "alphaSha256": "115056dcb0f8200883b542077fbcd25a05d35f59e57a125a43d98de7ef35738d"
+      }
+    },
+    {
+      "condition": 3,
+      "frame": "release-blink",
+      "donor": "release",
+      "allowedRegions": [
+        [
+          [
+            958.0,
+            644.0
+          ],
+          [
+            1035.0,
+            644.0
+          ],
+          [
+            1035.0,
+            700.0
+          ],
+          [
+            958.0,
+            700.0
+          ]
+        ],
+        [
+          [
+            1040.0,
+            650.0
+          ],
+          [
+            1105.0,
+            650.0
+          ],
+          [
+            1105.0,
+            704.0
+          ],
+          [
+            1040.0,
+            704.0
+          ]
+        ]
+      ],
+      "alphaIdentical": true,
+      "protectedPixelsIdentical": true,
+      "browsIdentical": true,
+      "templeIdentical": true,
+      "protected": {
+        "beforeSha256": "4ac3c3833d964e6aecb6fc8f443f041496c53112180bc91352e86fc31ef59f9a",
+        "afterSha256": "4ac3c3833d964e6aecb6fc8f443f041496c53112180bc91352e86fc31ef59f9a"
+      },
+      "engravedProtected": {
+        "beforeSha256": "90e7e535fe518f9ebe43bc27a94ab1f062839401134640dccee31f44a65088fb",
+        "afterSha256": "90e7e535fe518f9ebe43bc27a94ab1f062839401134640dccee31f44a65088fb"
+      },
+      "brows": {
+        "beforeSha256": "9e6d87ba12c56b2502eedea1db9b560cf1d81ca06d774d7c2807ad0d5fe0314c",
+        "afterSha256": "9e6d87ba12c56b2502eedea1db9b560cf1d81ca06d774d7c2807ad0d5fe0314c"
+      },
+      "temple": {
+        "beforeSha256": "fae98df91afd20b5197a7dcbc14aef907f1edb73a2b0d143e778bd5f7f60a059",
+        "afterSha256": "fae98df91afd20b5197a7dcbc14aef907f1edb73a2b0d143e778bd5f7f60a059",
+        "basis": "matching clean donor pose",
+        "originalSha256": "fae98df91afd20b5197a7dcbc14aef907f1edb73a2b0d143e778bd5f7f60a059"
+      },
+      "restoredTemplePixels": 0,
+      "changedPixels": 4754,
+      "engravedChangedPixels": 6338,
+      "source": {
+        "path": "assets/social-club/condition-animation-v1/june/3/release-blink.webp",
+        "beforeSha256": "13500ba1729c7de350109fd73980306e08ac999e0d052767c3965ecd34d8c60d",
+        "sha256": "c61ccc31c0dbb975f34c9f9754712bd0875ce3316b1dd2036f38784ddc3189f6",
+        "width": 488,
+        "height": 824,
+        "alphaSha256": "115056dcb0f8200883b542077fbcd25a05d35f59e57a125a43d98de7ef35738d"
+      },
+      "engraved": {
+        "path": "assets/social-club/engraved-v1/condition-animation-v1/june/3/release-blink.webp",
+        "beforeSha256": "7f5329e0f822e3056ce0459e3c033b36804931ef13b7d83677c4a45a750371ba",
+        "sha256": "463db4c4ab348e0db5789e8ace54aa290034fc6ff4fd023e29dc524a5543c760",
+        "width": 488,
+        "height": 824,
+        "alphaSha256": "115056dcb0f8200883b542077fbcd25a05d35f59e57a125a43d98de7ef35738d"
+      }
+    }
+  ]
+}

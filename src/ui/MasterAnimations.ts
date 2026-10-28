@@ -8,7 +8,8 @@ interface CastState { active:number; total:number; overflow:boolean; overflowSea
 interface Seat { element:HTMLElement; image:HTMLImageElement; id:string; condition:number; data:MasterAnimationSet; epoch:number; held:1|2; frame:string; mood:string; fallen:boolean; timer:number; blinkTimer:number; phase:'rest'|'prepare'|'release'|'receive'; warmed:boolean; specialWarmed:boolean; special:boolean; animation?:{frames:string[];resolve:()=>void;done:Promise<void>;completedEpoch?:number} }
 export function masterFrameUrl(id:string,frame='rest',condition=0):string {
  const special=frame.startsWith('special-'),engraved=import.meta.env?.MODE==='100next';
- return `${import.meta.env.BASE_URL}assets/social-club/${engraved?'engraved-v1/':''}${special?'special-throw-v1/'+id:condition&&conditionAnimations[id]?.[condition]?'condition-animation-v1/'+id+'/'+condition:'master-animation-v2/'+id}/${frame}.webp${engraved&&special?'?v=2':''}`;
+ const revision=engraved?(special?'?v=2':id==='june'?'?v=june-eyes-1':''):'';
+ return `${import.meta.env.BASE_URL}assets/social-club/${engraved?'engraved-v1/':''}${special?'special-throw-v1/'+id:condition&&conditionAnimations[id]?.[condition]?'condition-animation-v1/'+id+'/'+condition:'master-animation-v2/'+id}/${frame}.webp${revision}`;
 }
 /** Until a matching injured Special Throw exists, retain that condition's complete throw drawings. */
 export function masterSpecialThrowFrames(id:string,condition=0):string[] {

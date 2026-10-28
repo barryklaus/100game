@@ -74,3 +74,23 @@ Hand cards and all draw/throw animations render in a transparent foreground canv
 Character throws and replacement draws fit both dimensions of the actual sprite hand anchor, with no minimum scale that would enlarge cards on phones. At round end, hand markup is cleared, remaining HTML hand cards are hidden, and the foreground canvas is disabled immediately so scores and round controls remain readable. A new round restores the foreground layer. The browser regression checks tiny hand targets, score-panel stacking, and restoration on both desktop and portrait viewports.
 
 The Cloudflare production build passes. Preview screenshots are in `docs/previews/`. A successful build does not establish an FPS guarantee on every phone; a two-device live multiplayer session has not been verified for this update.
+
+## June eye contour repair · 28 October 2026
+
+June's old half-closed and closed-eye drawings retained parts of the original
+upper lashes and produced dark smudges above straight replacement lids. The
+repair covers 24 healthy expression/blink frames and 18 injured blink frames,
+including the matching one-card action pose.
+
+`repair-june-eyes.py` branches each complete drawing from its clean matching
+pose and condition. Local harmonic skin/bruise interpolation replaces the old
+wipe; one curved eyelid and lashes are baked into the full frame. Original
+brows and hairline are preserved or restored from that clean donor. Mouth,
+body, silhouette, dimensions and display registration remain unchanged.
+
+Native and engraved exports are staged and validated before replacement.
+Engraved RGB outside the local eye context is preserved exactly and the
+repaired frames are encoded losslessly. `june-eye-repair-v1.json` records current
+file hashes and protected-pixel proofs; `test-june-eyes.mjs` checks them against
+the actual files. June's ordinary production images use the `june-eyes-1` cache
+revision. Special Throw images retain their separate revision.

@@ -28,13 +28,12 @@ def sources():
                     entries.append({'id':id,'frame':frame,'condition':int(stage),'bounds':bounds,'source':f'assets/social-club/{folder}/{frame}.webp'})
     return entries
 
-def finish(entry):
-    source=ROOT/'public'/entry['source']
-    image=Image.open(source).convert('RGBA')
+def engraved_image(image, bounds):
+    """Apply the finish without exporting, for local pixel-preserving repairs."""
     a=np.asarray(image).copy()
     rgb=a[:,:,:3].astype(np.float32)/255
     h,w=a.shape[:2]
-    x0,y0,bw,bh=entry['bounds']
+    x0,y0,bw,bh=bounds
     x=x0+np.arange(w,dtype=np.float32)*bw/w
     y=y0+np.arange(h,dtype=np.float32)*bh/h
     xx,yy=np.meshgrid(x,y)
@@ -55,6 +54,13 @@ def finish(entry):
     warm=np.clip(warm+grain[:,:,None],0,1)
     a[:,:,:3]=(warm*255+.5).astype(np.uint8)
     # Alpha is intentionally copied byte-for-byte from the source.
+    return Image.fromarray(a)
+
+def finish(entry):
+    source=ROOT/'public'/entry['source']
+    image=engraved_image(Image.open(source).convert('RGBA'),entry['bounds'])
+    a=np.asarray(image)
+    w,h=image.size
     tail=entry['source'].split('assets/social-club/',1)[1]
     destination=DEST/tail
     destination.parent.mkdir(parents=True,exist_ok=True)

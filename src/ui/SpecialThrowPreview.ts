@@ -169,6 +169,6 @@ for (const select of [character, condition]) select.addEventListener('change', r
 reduced.addEventListener('change', reset);
 table.addEventListener('change', updateCovers); guides.addEventListener('change', updateCovers);
 repeat.addEventListener('change', () => { if (!repeat.checked) clearTimeout(repeatTimer); });
-new ResizeObserver(() => { updateActionMetrics(); metrics(reference, '#reference-metrics', reference.src.split('/').pop()?.replace('.webp','') ?? 'idle'); }).observe(action);
+new ResizeObserver(() => { updateActionMetrics(); metrics(reference, '#reference-metrics', reference.src.split('?')[0].split('/').pop()?.replace('.webp','') ?? 'idle'); }).observe(action);
 window.addEventListener('pagehide', () => { ++generation; clearTimeout(repeatTimer); controller?.reset(); observer?.disconnect(); });
 reset();

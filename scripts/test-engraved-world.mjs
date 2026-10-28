@@ -25,7 +25,7 @@ const conditions=JSON.parse(readFileSync('public/assets/social-club/condition-an
 for(const [id,healthy] of Object.entries(master.characters))for(let stage=0;stage<4;stage++){
  const data=stage?conditions.characters[id][stage]:healthy;
  for(const frame of Object.keys(data.bounds)){
-  assert(existsSync('public'+masterFrameUrl(id,frame,stage)),`${id}/${stage}/${frame} is available in the game`);
+  assert(existsSync('public'+masterFrameUrl(id,frame,stage).split('?')[0]),`${id}/${stage}/${frame} is available in the game`);
   assert(bySource.has(masterFrameUrl(id,frame,stage).slice(1).split('?')[0].replace('engraved-v1/','')));
   assert(masterFrameBounds(id,frame,stage).every(Number.isFinite));
  }
