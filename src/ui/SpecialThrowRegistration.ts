@@ -1,0 +1,3 @@
+// Generated from the reviewed head/eye calibration by register-special-throws.py.
+// One uniform transform per complete character sequence; never fit individual silhouettes.
+export const specialThrowRegistration: Record<string, readonly [number, number, number]> = {"vince":[0.92,82.856,41.735],"finn":[0.74,222.107,153.549],"june":[0.85,153.83,85.914],"edgar":[0.87,74.193,88.093],"roxie":[0.82,165.485,92.324],"otis":[0.85,147.672,87.841],"paloma":[0.88,117.654,86.216],"bianca":[0.77,141.4,139.728],"vera":[0.82,185.382,172.134],"tess":[0.74,279.655,238.069],"nadia":[0.8,195.929,168.851],"leon":[0.78,216.907,249.138],"dottie":[0.7,270.374,267.221],"malik":[1.0,-12.359,18.084],"hugo":[0.79,198.854,152.197],"jasper":[0.83,154.454,148.887]};

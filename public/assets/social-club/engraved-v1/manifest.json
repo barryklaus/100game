@@ -1183,56 +1183,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/vince/special-01.webp",
       "width": 205,
       "height": 430,
-      "alphaSha256": "f3a7c3fb45d9d83353dc290fbf38d6262060e37431c6ea0c080aabb680d99c51"
+      "alphaSha256": "f3a7c3fb45d9d83353dc290fbf38d6262060e37431c6ea0c080aabb680d99c51",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vince/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vince/special-02.webp",
       "width": 240,
       "height": 430,
-      "alphaSha256": "af47aff759be80b0cfa1865f0f5c360400592a248def58f51eb8cd0261e618f1"
+      "alphaSha256": "af47aff759be80b0cfa1865f0f5c360400592a248def58f51eb8cd0261e618f1",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vince/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vince/special-03.webp",
       "width": 265,
       "height": 436,
-      "alphaSha256": "2a70d8cc5287e061ac333f2c3e632646a37f0b74ea6f3ec689c99b00afd644ec"
+      "alphaSha256": "2a70d8cc5287e061ac333f2c3e632646a37f0b74ea6f3ec689c99b00afd644ec",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vince/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vince/special-04.webp",
       "width": 207,
       "height": 434,
-      "alphaSha256": "60a91f8a5de01a0199193a893e4974be94ddfa5534371a84003d22876750deb4"
+      "alphaSha256": "60a91f8a5de01a0199193a893e4974be94ddfa5534371a84003d22876750deb4",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vince/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vince/special-05.webp",
       "width": 301,
       "height": 428,
-      "alphaSha256": "c5ba24ee6a1286f346ffb1371d137032e1bb9c11d28d8b845541924ce11b0df5"
+      "alphaSha256": "c5ba24ee6a1286f346ffb1371d137032e1bb9c11d28d8b845541924ce11b0df5",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vince/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vince/special-06.webp",
       "width": 330,
       "height": 434,
-      "alphaSha256": "783a5f6790835bc7333b896934f436c04e5e07f60bd7962105cbdf8a94544278"
+      "alphaSha256": "783a5f6790835bc7333b896934f436c04e5e07f60bd7962105cbdf8a94544278",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vince/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vince/special-07.webp",
       "width": 230,
       "height": 405,
-      "alphaSha256": "f1d69560a19331896f5e2a2fcb5995d23d17c1106cde9840b389d8622a730d79"
+      "alphaSha256": "f1d69560a19331896f5e2a2fcb5995d23d17c1106cde9840b389d8622a730d79",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vince/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vince/special-08.webp",
       "width": 233,
       "height": 437,
-      "alphaSha256": "86b15276a9c676ee8b56fd111a60e8693234267d1b496f45e48529984e45f18c"
+      "alphaSha256": "86b15276a9c676ee8b56fd111a60e8693234267d1b496f45e48529984e45f18c",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/finn/airfall.webp",
@@ -2415,56 +2423,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/finn/special-01.webp",
       "width": 176,
       "height": 345,
-      "alphaSha256": "d35259714717857c77abf91117050b82023b5f82910b75e01e43291ca5bf205a"
+      "alphaSha256": "d35259714717857c77abf91117050b82023b5f82910b75e01e43291ca5bf205a",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/finn/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/finn/special-02.webp",
       "width": 214,
       "height": 320,
-      "alphaSha256": "5a4053f806bcc900419b57a7bc62df5e983d88fa439a00fd78d409688172d3fd"
+      "alphaSha256": "5a4053f806bcc900419b57a7bc62df5e983d88fa439a00fd78d409688172d3fd",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/finn/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/finn/special-03.webp",
       "width": 197,
       "height": 345,
-      "alphaSha256": "2dbabc56b035af32858b4f5fab0749f3a277bb251ddbe0bd182dec6f0097b667"
+      "alphaSha256": "2dbabc56b035af32858b4f5fab0749f3a277bb251ddbe0bd182dec6f0097b667",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/finn/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/finn/special-04.webp",
       "width": 217,
       "height": 346,
-      "alphaSha256": "7848e222a4aeadb1036ff6a83850bb73e5c17d7d68cf75f65bdbd9dee8286fe3"
+      "alphaSha256": "7848e222a4aeadb1036ff6a83850bb73e5c17d7d68cf75f65bdbd9dee8286fe3",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/finn/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/finn/special-05.webp",
       "width": 215,
       "height": 311,
-      "alphaSha256": "faf1022a7267bb6d8392269dad8ad26ea1c9be643720fcfb770deb34de2e8840"
+      "alphaSha256": "faf1022a7267bb6d8392269dad8ad26ea1c9be643720fcfb770deb34de2e8840",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/finn/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/finn/special-06.webp",
       "width": 318,
       "height": 391,
-      "alphaSha256": "ce01ffec19e029e3b2a8321578bcdf4658ec88925cadf88de73d21818096d808"
+      "alphaSha256": "ce01ffec19e029e3b2a8321578bcdf4658ec88925cadf88de73d21818096d808",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/finn/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/finn/special-07.webp",
       "width": 167,
       "height": 390,
-      "alphaSha256": "7fbb800682797880b5d8562bc3e271bddadbf5df09be3a43e26b1b18b59dd561"
+      "alphaSha256": "7fbb800682797880b5d8562bc3e271bddadbf5df09be3a43e26b1b18b59dd561",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/finn/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/finn/special-08.webp",
       "width": 231,
       "height": 337,
-      "alphaSha256": "e831ecc633cf54776bd1b76769436ed97d62ed6fef76dd1730c309fef2115902"
+      "alphaSha256": "e831ecc633cf54776bd1b76769436ed97d62ed6fef76dd1730c309fef2115902",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/june/airfall.webp",
@@ -3647,56 +3663,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/june/special-01.webp",
       "width": 178,
       "height": 432,
-      "alphaSha256": "1e9955bfa81d71b8a9e7ca52556d8ec0e0383b5607e058664a2ba89759e0c6bf"
+      "alphaSha256": "1e9955bfa81d71b8a9e7ca52556d8ec0e0383b5607e058664a2ba89759e0c6bf",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/june/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/june/special-02.webp",
       "width": 174,
       "height": 434,
-      "alphaSha256": "a10513d1b18b8f065e8e1ba65342cddb95dc4ea3ab9d1ed07435a4a922e1dded"
+      "alphaSha256": "a10513d1b18b8f065e8e1ba65342cddb95dc4ea3ab9d1ed07435a4a922e1dded",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/june/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/june/special-03.webp",
       "width": 173,
       "height": 433,
-      "alphaSha256": "803a3bc7b27e4b30bdf8ccaa796f07f39bd44dc28fb0fdc61ef285d7a055a4ba"
+      "alphaSha256": "803a3bc7b27e4b30bdf8ccaa796f07f39bd44dc28fb0fdc61ef285d7a055a4ba",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/june/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/june/special-04.webp",
       "width": 209,
       "height": 426,
-      "alphaSha256": "e8ba373dee840c45e741e52b74acd8e13697f1631a814ff068ba164adcf733ba"
+      "alphaSha256": "e8ba373dee840c45e741e52b74acd8e13697f1631a814ff068ba164adcf733ba",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/june/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/june/special-05.webp",
       "width": 340,
       "height": 397,
-      "alphaSha256": "684aa4d7ae157c60274fe3262df36c69350e9bf3bf81ae197e7f2b505676a0ae"
+      "alphaSha256": "684aa4d7ae157c60274fe3262df36c69350e9bf3bf81ae197e7f2b505676a0ae",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/june/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/june/special-06.webp",
       "width": 306,
       "height": 398,
-      "alphaSha256": "47c499368e2468fbce16ba6beeb53eac07ac50153a6b9d4e77eced873f5d0001"
+      "alphaSha256": "47c499368e2468fbce16ba6beeb53eac07ac50153a6b9d4e77eced873f5d0001",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/june/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/june/special-07.webp",
       "width": 191,
       "height": 409,
-      "alphaSha256": "e89c8e30c601388d3f70cf139411a3a7b7f413d9f977bed08a1fdfae8cd20f24"
+      "alphaSha256": "e89c8e30c601388d3f70cf139411a3a7b7f413d9f977bed08a1fdfae8cd20f24",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/june/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/june/special-08.webp",
       "width": 174,
       "height": 410,
-      "alphaSha256": "45a0148cd8580621ff7c0813ec49f218e6f9d2e5917af0065e90a398a5be3a80"
+      "alphaSha256": "45a0148cd8580621ff7c0813ec49f218e6f9d2e5917af0065e90a398a5be3a80",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/edgar/airfall.webp",
@@ -4879,56 +4903,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/edgar/special-01.webp",
       "width": 189,
       "height": 427,
-      "alphaSha256": "5792325c19af8bd3d1662130011e0e4d17a6e484a2d9ebe50c64942477f8d3ab"
+      "alphaSha256": "5792325c19af8bd3d1662130011e0e4d17a6e484a2d9ebe50c64942477f8d3ab",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/edgar/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/edgar/special-02.webp",
       "width": 270,
       "height": 341,
-      "alphaSha256": "7e32bb4ed4a9ba0f3843ed44988aebaee98549413fd958d06a94aaaf1ebf8850"
+      "alphaSha256": "7e32bb4ed4a9ba0f3843ed44988aebaee98549413fd958d06a94aaaf1ebf8850",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/edgar/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/edgar/special-03.webp",
       "width": 233,
       "height": 420,
-      "alphaSha256": "10b4a6a6b492ad73347fdd35b3da4c8bdfc4798ede0a374bb223b392551f8236"
+      "alphaSha256": "10b4a6a6b492ad73347fdd35b3da4c8bdfc4798ede0a374bb223b392551f8236",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/edgar/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/edgar/special-04.webp",
       "width": 270,
       "height": 379,
-      "alphaSha256": "233170df77514e0f6ffffd7f4a3f2b46b174456907bbf7472fde6088595d7e34"
+      "alphaSha256": "233170df77514e0f6ffffd7f4a3f2b46b174456907bbf7472fde6088595d7e34",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/edgar/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/edgar/special-05.webp",
       "width": 329,
       "height": 374,
-      "alphaSha256": "e9a957aadd43bc287e25fb90c44ae297d7123715ede67366892395f01bc8cdad"
+      "alphaSha256": "e9a957aadd43bc287e25fb90c44ae297d7123715ede67366892395f01bc8cdad",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/edgar/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/edgar/special-06.webp",
       "width": 302,
       "height": 403,
-      "alphaSha256": "a0ee1d9e7863709c25c596f241d4bff1472e7c4e633db637209a23c3e79d0591"
+      "alphaSha256": "a0ee1d9e7863709c25c596f241d4bff1472e7c4e633db637209a23c3e79d0591",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/edgar/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/edgar/special-07.webp",
       "width": 228,
       "height": 375,
-      "alphaSha256": "454325f11a179ae06132630f2e43a5b6be997bb523fabe5a1cc3ae88a433f159"
+      "alphaSha256": "454325f11a179ae06132630f2e43a5b6be997bb523fabe5a1cc3ae88a433f159",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/edgar/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/edgar/special-08.webp",
       "width": 195,
       "height": 419,
-      "alphaSha256": "49ed7dc09e83cbc5a91a1fdb2e7080b11524a5edede3aa333b4f0cdd9f5a30a6"
+      "alphaSha256": "49ed7dc09e83cbc5a91a1fdb2e7080b11524a5edede3aa333b4f0cdd9f5a30a6",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/roxie/airfall.webp",
@@ -6111,56 +6143,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/roxie/special-01.webp",
       "width": 259,
       "height": 431,
-      "alphaSha256": "37b8f52b5d3d91662fcb87fda922f54ee8e0669a4e9a9ed61fdbf0633e8da860"
+      "alphaSha256": "37b8f52b5d3d91662fcb87fda922f54ee8e0669a4e9a9ed61fdbf0633e8da860",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/roxie/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/roxie/special-02.webp",
       "width": 270,
       "height": 424,
-      "alphaSha256": "3c4b1a5fd21553eac5aa26a869a9cf696994ca1dff830cf017e7d5301f94a3fa"
+      "alphaSha256": "3c4b1a5fd21553eac5aa26a869a9cf696994ca1dff830cf017e7d5301f94a3fa",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/roxie/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/roxie/special-03.webp",
       "width": 320,
       "height": 401,
-      "alphaSha256": "20e8509c61fc60e65a17efb00cdd44ee1037d5c2f6650412755087071d9cf310"
+      "alphaSha256": "20e8509c61fc60e65a17efb00cdd44ee1037d5c2f6650412755087071d9cf310",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/roxie/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/roxie/special-04.webp",
       "width": 284,
       "height": 390,
-      "alphaSha256": "cd674a69dbe3f9495b736c74e537ea1c93449ecb11cb487c4baa021b2de50ce8"
+      "alphaSha256": "cd674a69dbe3f9495b736c74e537ea1c93449ecb11cb487c4baa021b2de50ce8",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/roxie/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/roxie/special-05.webp",
       "width": 324,
       "height": 403,
-      "alphaSha256": "c2b5ecbfa707bac05d3753eb0397b8fd0f58a1e268e345d86efc2910352a3fe1"
+      "alphaSha256": "c2b5ecbfa707bac05d3753eb0397b8fd0f58a1e268e345d86efc2910352a3fe1",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/roxie/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/roxie/special-06.webp",
       "width": 376,
       "height": 416,
-      "alphaSha256": "d786816bea8893651cab58cfd04dfc6443d941a7dc792182248ba45aabd3d066"
+      "alphaSha256": "d786816bea8893651cab58cfd04dfc6443d941a7dc792182248ba45aabd3d066",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/roxie/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/roxie/special-07.webp",
       "width": 317,
       "height": 343,
-      "alphaSha256": "d1c242da79ea837e22199827ee5a86c2520c45fed6036b7ae834d187398c8e71"
+      "alphaSha256": "d1c242da79ea837e22199827ee5a86c2520c45fed6036b7ae834d187398c8e71",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/roxie/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/roxie/special-08.webp",
       "width": 254,
       "height": 428,
-      "alphaSha256": "363cc9caeed473c967f92d0bfae1d2556f3a17a1adce9e10633a503df1133643"
+      "alphaSha256": "363cc9caeed473c967f92d0bfae1d2556f3a17a1adce9e10633a503df1133643",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/otis/airfall.webp",
@@ -7343,56 +7383,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/otis/special-01.webp",
       "width": 232,
       "height": 401,
-      "alphaSha256": "aafd081c851d32572fd144e1b20ea618376ceb89e308ca1a4cefa094bba158c9"
+      "alphaSha256": "aafd081c851d32572fd144e1b20ea618376ceb89e308ca1a4cefa094bba158c9",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/otis/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/otis/special-02.webp",
       "width": 266,
       "height": 403,
-      "alphaSha256": "573c868d9114a79f2e3d121b34050b71991c77fc2257408dba13e1ba0cefa5df"
+      "alphaSha256": "573c868d9114a79f2e3d121b34050b71991c77fc2257408dba13e1ba0cefa5df",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/otis/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/otis/special-03.webp",
       "width": 383,
       "height": 348,
-      "alphaSha256": "ab09e0327de4ce01a4bd47517b8bd5b9a29d10f28c9a02446d0684efc6d2ae74"
+      "alphaSha256": "ab09e0327de4ce01a4bd47517b8bd5b9a29d10f28c9a02446d0684efc6d2ae74",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/otis/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/otis/special-04.webp",
       "width": 308,
       "height": 385,
-      "alphaSha256": "1d8824a443504cf3d510745c0494f05ebe9fcbb2d2607f32172daec1e2f05803"
+      "alphaSha256": "1d8824a443504cf3d510745c0494f05ebe9fcbb2d2607f32172daec1e2f05803",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/otis/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/otis/special-05.webp",
       "width": 268,
       "height": 365,
-      "alphaSha256": "f2ba2582b34ee8cd30810091e328750340affda60229a9152d9e9be9a88e8a2a"
+      "alphaSha256": "f2ba2582b34ee8cd30810091e328750340affda60229a9152d9e9be9a88e8a2a",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/otis/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/otis/special-06.webp",
       "width": 334,
       "height": 390,
-      "alphaSha256": "0366753418a86fac6239587964a9baf18366ec82745272dbaece41d797d04f48"
+      "alphaSha256": "0366753418a86fac6239587964a9baf18366ec82745272dbaece41d797d04f48",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/otis/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/otis/special-07.webp",
       "width": 297,
       "height": 408,
-      "alphaSha256": "65ec89f55ef9c993e244ed66be0d47610d8903a559bfef033b774577462dd055"
+      "alphaSha256": "65ec89f55ef9c993e244ed66be0d47610d8903a559bfef033b774577462dd055",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/otis/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/otis/special-08.webp",
       "width": 275,
       "height": 383,
-      "alphaSha256": "33c4008553d96c2a65ac16e596f597007cac3cf7e166ed19340403b42a6dca9a"
+      "alphaSha256": "33c4008553d96c2a65ac16e596f597007cac3cf7e166ed19340403b42a6dca9a",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/paloma/airfall.webp",
@@ -8575,56 +8623,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/paloma/special-01.webp",
       "width": 182,
       "height": 424,
-      "alphaSha256": "9b09972988e4831ae42a778c98f7d75ce68f58fc647eebd79246877d5767be83"
+      "alphaSha256": "9b09972988e4831ae42a778c98f7d75ce68f58fc647eebd79246877d5767be83",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/paloma/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/paloma/special-02.webp",
       "width": 166,
       "height": 425,
-      "alphaSha256": "8c2cfb0b6d395e2666b6b81e00d24a60171061ca6df134fd5a19bd6bcd976a38"
+      "alphaSha256": "8c2cfb0b6d395e2666b6b81e00d24a60171061ca6df134fd5a19bd6bcd976a38",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/paloma/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/paloma/special-03.webp",
       "width": 183,
       "height": 425,
-      "alphaSha256": "e7e3304dd5d6bf7f07bccc333782cebfd1a3326a619ceadf0931d44815a222d2"
+      "alphaSha256": "e7e3304dd5d6bf7f07bccc333782cebfd1a3326a619ceadf0931d44815a222d2",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/paloma/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/paloma/special-04.webp",
       "width": 245,
       "height": 402,
-      "alphaSha256": "6403186607832f4c2e683fb559864733811950432ca5b6bbd30fef16f25ddf5e"
+      "alphaSha256": "6403186607832f4c2e683fb559864733811950432ca5b6bbd30fef16f25ddf5e",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/paloma/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/paloma/special-05.webp",
       "width": 269,
       "height": 407,
-      "alphaSha256": "8533e89240f212d349bf8a3e0a363b4b785ceb914d2fb5133227ebf582a2c7bf"
+      "alphaSha256": "8533e89240f212d349bf8a3e0a363b4b785ceb914d2fb5133227ebf582a2c7bf",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/paloma/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/paloma/special-06.webp",
       "width": 317,
       "height": 407,
-      "alphaSha256": "b41db1a4470c4fb154bb286bd3e710b88692a070ef2000d952e8c337f4a72c7d"
+      "alphaSha256": "b41db1a4470c4fb154bb286bd3e710b88692a070ef2000d952e8c337f4a72c7d",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/paloma/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/paloma/special-07.webp",
       "width": 290,
       "height": 382,
-      "alphaSha256": "608e6842f1130103eb89ae9f0a4b19071e029886a4c117accfc0bb67b60c869b"
+      "alphaSha256": "608e6842f1130103eb89ae9f0a4b19071e029886a4c117accfc0bb67b60c869b",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/paloma/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/paloma/special-08.webp",
       "width": 164,
       "height": 416,
-      "alphaSha256": "65d83c11c5cfa3d4c9f9580dbd4e2b7d64abea494a4f92654c69289775f98704"
+      "alphaSha256": "65d83c11c5cfa3d4c9f9580dbd4e2b7d64abea494a4f92654c69289775f98704",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/bianca/airfall.webp",
@@ -9807,56 +9863,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/bianca/special-01.webp",
       "width": 205,
       "height": 345,
-      "alphaSha256": "a2e1045e57871dce2fa8d2cc6b10a19a13e5043bb7f8c2bec4283a1aa57da686"
+      "alphaSha256": "a2e1045e57871dce2fa8d2cc6b10a19a13e5043bb7f8c2bec4283a1aa57da686",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/bianca/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/bianca/special-02.webp",
       "width": 237,
       "height": 276,
-      "alphaSha256": "dbb37e85eebb185d1cf6d269cc0532598dfaca7e3a1a4ae0ec85a8a4e9a17869"
+      "alphaSha256": "dbb37e85eebb185d1cf6d269cc0532598dfaca7e3a1a4ae0ec85a8a4e9a17869",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/bianca/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/bianca/special-03.webp",
       "width": 275,
       "height": 338,
-      "alphaSha256": "ac14fe9dbcdefef51a61b079547d5d3b5098c4d8cfbd6da3cdc635ca08101bfb"
+      "alphaSha256": "ac14fe9dbcdefef51a61b079547d5d3b5098c4d8cfbd6da3cdc635ca08101bfb",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/bianca/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/bianca/special-04.webp",
       "width": 342,
       "height": 221,
-      "alphaSha256": "86a54b3198eaf0754044d0b968c174e2d78ac4f495f6733b0929e3e49bdb00cb"
+      "alphaSha256": "86a54b3198eaf0754044d0b968c174e2d78ac4f495f6733b0929e3e49bdb00cb",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/bianca/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/bianca/special-05.webp",
       "width": 298,
       "height": 272,
-      "alphaSha256": "83174e8c8873f41b1999984dbb5e62d0790160cecba4755e1b1cd0dd0e986f9e"
+      "alphaSha256": "83174e8c8873f41b1999984dbb5e62d0790160cecba4755e1b1cd0dd0e986f9e",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/bianca/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/bianca/special-06.webp",
       "width": 246,
       "height": 353,
-      "alphaSha256": "1fe29666b84b586157895219557cebd5edff7457aa85614a30e468cd518fe473"
+      "alphaSha256": "1fe29666b84b586157895219557cebd5edff7457aa85614a30e468cd518fe473",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/bianca/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/bianca/special-07.webp",
       "width": 222,
       "height": 268,
-      "alphaSha256": "b72eec2bd3b656d900d63026ddfb4b866ae1e80c4eba75322f1b2fadecf45ea9"
+      "alphaSha256": "b72eec2bd3b656d900d63026ddfb4b866ae1e80c4eba75322f1b2fadecf45ea9",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/bianca/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/bianca/special-08.webp",
       "width": 176,
       "height": 354,
-      "alphaSha256": "51ea93a9c750e9723b9d1047452890130a93a7624c964d32761897cfdabdc5f1"
+      "alphaSha256": "51ea93a9c750e9723b9d1047452890130a93a7624c964d32761897cfdabdc5f1",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/vera/rest.webp",
@@ -10829,56 +10893,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/vera/special-01.webp",
       "width": 161,
       "height": 425,
-      "alphaSha256": "8057d66bb6f1e3eab7c2ae898b381b19a055f2da21cebba5d25f6cab9794a19e"
+      "alphaSha256": "8057d66bb6f1e3eab7c2ae898b381b19a055f2da21cebba5d25f6cab9794a19e",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vera/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vera/special-02.webp",
       "width": 145,
       "height": 424,
-      "alphaSha256": "5f7586138b4773d5362eda71a5279887505c77f0ae565bf93cbd01b4e1874e25"
+      "alphaSha256": "5f7586138b4773d5362eda71a5279887505c77f0ae565bf93cbd01b4e1874e25",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vera/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vera/special-03.webp",
       "width": 181,
       "height": 423,
-      "alphaSha256": "3c8ae70c77e49f0c878c23d4ddbead6aeeac3e3eb7aa9ee43a3f4045b17d9b2c"
+      "alphaSha256": "3c8ae70c77e49f0c878c23d4ddbead6aeeac3e3eb7aa9ee43a3f4045b17d9b2c",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vera/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vera/special-04.webp",
       "width": 207,
       "height": 421,
-      "alphaSha256": "51b0f8cfa4c5e71ce769bde3bf3ac148d0ee8e1d42e5f503a9984f946b3a9557"
+      "alphaSha256": "51b0f8cfa4c5e71ce769bde3bf3ac148d0ee8e1d42e5f503a9984f946b3a9557",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vera/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vera/special-05.webp",
       "width": 258,
       "height": 409,
-      "alphaSha256": "db23252ec5b041d24a70b35ad0b373fe650c33e5e7c19b4aec3a1aff08a17fe9"
+      "alphaSha256": "db23252ec5b041d24a70b35ad0b373fe650c33e5e7c19b4aec3a1aff08a17fe9",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vera/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vera/special-06.webp",
       "width": 180,
       "height": 412,
-      "alphaSha256": "88c61bdaaf01d1b26973b7115109706c815529d752d39d0db102df5cf7bbab11"
+      "alphaSha256": "88c61bdaaf01d1b26973b7115109706c815529d752d39d0db102df5cf7bbab11",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vera/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vera/special-07.webp",
       "width": 224,
       "height": 417,
-      "alphaSha256": "c90abebcf1029a971582bb8a5c99a58c18d21b61e607a46614a555921dd6e1a7"
+      "alphaSha256": "c90abebcf1029a971582bb8a5c99a58c18d21b61e607a46614a555921dd6e1a7",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/vera/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/vera/special-08.webp",
       "width": 163,
       "height": 415,
-      "alphaSha256": "810bd2c641f1f7306d5b053f1c8ad7abed6f0b3f512b6b256b76bfc6ca9a919b"
+      "alphaSha256": "810bd2c641f1f7306d5b053f1c8ad7abed6f0b3f512b6b256b76bfc6ca9a919b",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/tess/rest.webp",
@@ -11844,56 +11916,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/tess/special-01.webp",
       "width": 201,
       "height": 423,
-      "alphaSha256": "84dbaf1d181b163706e7997474533ffa05482119d347a5e5f57e3cd090cd864f"
+      "alphaSha256": "84dbaf1d181b163706e7997474533ffa05482119d347a5e5f57e3cd090cd864f",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/tess/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/tess/special-02.webp",
       "width": 219,
       "height": 403,
-      "alphaSha256": "439b060daaba6f708cadb87e1da013053305d22aa001964d343c95ea7ea0d834"
+      "alphaSha256": "439b060daaba6f708cadb87e1da013053305d22aa001964d343c95ea7ea0d834",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/tess/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/tess/special-03.webp",
       "width": 215,
       "height": 423,
-      "alphaSha256": "b4d76b4e3c300f032f1da835e56e8fdb4e751f65278e5a012c119ddcb7f08f3b"
+      "alphaSha256": "b4d76b4e3c300f032f1da835e56e8fdb4e751f65278e5a012c119ddcb7f08f3b",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/tess/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/tess/special-04.webp",
       "width": 285,
       "height": 402,
-      "alphaSha256": "42945f2157ea9af7100e8a2c7ee20d9493b5bf4db3dbf2758e75ec7d4c88fc57"
+      "alphaSha256": "42945f2157ea9af7100e8a2c7ee20d9493b5bf4db3dbf2758e75ec7d4c88fc57",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/tess/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/tess/special-05.webp",
       "width": 284,
       "height": 398,
-      "alphaSha256": "afff30517adaa3b76b5ecf10875cdf55ee8cdf5c41e50c88c8b1dc28181e7772"
+      "alphaSha256": "afff30517adaa3b76b5ecf10875cdf55ee8cdf5c41e50c88c8b1dc28181e7772",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/tess/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/tess/special-06.webp",
       "width": 206,
       "height": 409,
-      "alphaSha256": "d91e564da1d0f9303546cd9dd57984705a99c13424686de84d2ccd2a49d139bc"
+      "alphaSha256": "d91e564da1d0f9303546cd9dd57984705a99c13424686de84d2ccd2a49d139bc",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/tess/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/tess/special-07.webp",
       "width": 214,
       "height": 425,
-      "alphaSha256": "3d39386a8a6145a1c205fd6a90b34d652f05d4c2a344ef5760647f39086d8150"
+      "alphaSha256": "3d39386a8a6145a1c205fd6a90b34d652f05d4c2a344ef5760647f39086d8150",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/tess/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/tess/special-08.webp",
       "width": 227,
       "height": 422,
-      "alphaSha256": "45bf63187c145abaf13e4491d388716f72f9c9cb3d1f7501f80e789911fe3ef1"
+      "alphaSha256": "45bf63187c145abaf13e4491d388716f72f9c9cb3d1f7501f80e789911fe3ef1",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/nadia/rest.webp",
@@ -12859,56 +12939,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/nadia/special-01.webp",
       "width": 153,
       "height": 420,
-      "alphaSha256": "c8822f4a6984b09dffd38bf0f795f9046356b46820c6f3e855b0667e2a3ee40e"
+      "alphaSha256": "c8822f4a6984b09dffd38bf0f795f9046356b46820c6f3e855b0667e2a3ee40e",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/nadia/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/nadia/special-02.webp",
       "width": 165,
       "height": 419,
-      "alphaSha256": "ca97d721c63c58f4a7b829a80c3f973ba41d42f1f299d7b27e74f2f73aea84bf"
+      "alphaSha256": "ca97d721c63c58f4a7b829a80c3f973ba41d42f1f299d7b27e74f2f73aea84bf",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/nadia/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/nadia/special-03.webp",
       "width": 175,
       "height": 423,
-      "alphaSha256": "5a9b09c7f7628a146e0357c552d8a4e4de637c0d69cec2b2fa29e9eeaa280381"
+      "alphaSha256": "5a9b09c7f7628a146e0357c552d8a4e4de637c0d69cec2b2fa29e9eeaa280381",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/nadia/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/nadia/special-04.webp",
       "width": 215,
       "height": 413,
-      "alphaSha256": "11bc8bf4dd48e202d8bdbe749a898caff8430c62457cc118e39e29fb9355fe84"
+      "alphaSha256": "11bc8bf4dd48e202d8bdbe749a898caff8430c62457cc118e39e29fb9355fe84",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/nadia/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/nadia/special-05.webp",
       "width": 237,
       "height": 394,
-      "alphaSha256": "de77c04774cc3f50d4213fb62ff0e23e0596e924d9473f3bc105b68ad9858c8f"
+      "alphaSha256": "de77c04774cc3f50d4213fb62ff0e23e0596e924d9473f3bc105b68ad9858c8f",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/nadia/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/nadia/special-06.webp",
       "width": 289,
       "height": 399,
-      "alphaSha256": "e4a6538d2969d2604bc25b3246c661ba1e538db528121d3c8a4dbe37183739ca"
+      "alphaSha256": "e4a6538d2969d2604bc25b3246c661ba1e538db528121d3c8a4dbe37183739ca",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/nadia/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/nadia/special-07.webp",
       "width": 198,
       "height": 385,
-      "alphaSha256": "6574f85600b7064993cf94a0363083475071eaa9fb697bb01696d11d47ff6922"
+      "alphaSha256": "6574f85600b7064993cf94a0363083475071eaa9fb697bb01696d11d47ff6922",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/nadia/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/nadia/special-08.webp",
       "width": 154,
       "height": 401,
-      "alphaSha256": "057b81ddd4f27145fce7e7b4e29d5e5d1ac0c2020f5d7a96658955c84ace9e34"
+      "alphaSha256": "057b81ddd4f27145fce7e7b4e29d5e5d1ac0c2020f5d7a96658955c84ace9e34",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/leon/rest.webp",
@@ -13874,56 +13962,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/leon/special-01.webp",
       "width": 215,
       "height": 409,
-      "alphaSha256": "b8a1f147711060eb85e9cab9867fbba9846fe334211d5df8df12f2bfc4a4423a"
+      "alphaSha256": "b8a1f147711060eb85e9cab9867fbba9846fe334211d5df8df12f2bfc4a4423a",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/leon/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/leon/special-02.webp",
       "width": 261,
       "height": 317,
-      "alphaSha256": "407e43ccbe5c88d3188c0036537bc5beb82cd6191451922f369785062d3ec0ee"
+      "alphaSha256": "407e43ccbe5c88d3188c0036537bc5beb82cd6191451922f369785062d3ec0ee",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/leon/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/leon/special-03.webp",
       "width": 247,
       "height": 378,
-      "alphaSha256": "576ce2c0e273b41c1ed1b4531fed5dd36fbdff4aba0d064d4692c1d344898fcc"
+      "alphaSha256": "576ce2c0e273b41c1ed1b4531fed5dd36fbdff4aba0d064d4692c1d344898fcc",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/leon/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/leon/special-04.webp",
       "width": 272,
       "height": 387,
-      "alphaSha256": "0622ea8a4bd59e553cad05d66df45ef17cf4bcbcfd3a6e995768d32bc7864c32"
+      "alphaSha256": "0622ea8a4bd59e553cad05d66df45ef17cf4bcbcfd3a6e995768d32bc7864c32",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/leon/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/leon/special-05.webp",
       "width": 450,
       "height": 330,
-      "alphaSha256": "860d2f91daecbf4eac67c328a727299f26f07bd47cf2e634cda90edee0100779"
+      "alphaSha256": "860d2f91daecbf4eac67c328a727299f26f07bd47cf2e634cda90edee0100779",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/leon/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/leon/special-06.webp",
       "width": 413,
       "height": 310,
-      "alphaSha256": "6f17b42905715914ed7546e9edbdf0bac196721eaf87dd0b95b538b997264c72"
+      "alphaSha256": "6f17b42905715914ed7546e9edbdf0bac196721eaf87dd0b95b538b997264c72",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/leon/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/leon/special-07.webp",
       "width": 189,
       "height": 335,
-      "alphaSha256": "c4533ac2bba495437dbe58941b9f5b2391bf74270ac2b3a64fd99ae2fee72d91"
+      "alphaSha256": "c4533ac2bba495437dbe58941b9f5b2391bf74270ac2b3a64fd99ae2fee72d91",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/leon/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/leon/special-08.webp",
       "width": 247,
       "height": 375,
-      "alphaSha256": "bfb464b72011c92484e3855449a26adacd345b7e121ccb0add6b00246bdd0615"
+      "alphaSha256": "bfb464b72011c92484e3855449a26adacd345b7e121ccb0add6b00246bdd0615",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/dottie/rest.webp",
@@ -14889,56 +14985,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/dottie/special-01.webp",
       "width": 194,
       "height": 400,
-      "alphaSha256": "025027ce5134dd8ced29520047766b89db6f9166d1fc470367d9b0c8cae52193"
+      "alphaSha256": "025027ce5134dd8ced29520047766b89db6f9166d1fc470367d9b0c8cae52193",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/dottie/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/dottie/special-02.webp",
       "width": 209,
       "height": 400,
-      "alphaSha256": "d18958c9ceffb3c0d032da262f29297302062b6900569fc33178e65136df3d26"
+      "alphaSha256": "d18958c9ceffb3c0d032da262f29297302062b6900569fc33178e65136df3d26",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/dottie/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/dottie/special-03.webp",
       "width": 231,
       "height": 304,
-      "alphaSha256": "e3967fddcd79f66789c6052c2b42c5acf395e808dcbaf37ed4d4e85c8da210d7"
+      "alphaSha256": "e3967fddcd79f66789c6052c2b42c5acf395e808dcbaf37ed4d4e85c8da210d7",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/dottie/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/dottie/special-04.webp",
       "width": 217,
       "height": 396,
-      "alphaSha256": "6da76828dc676882f73d767ca9c43106ae9f6f799b6fe623ae456f891a726b46"
+      "alphaSha256": "6da76828dc676882f73d767ca9c43106ae9f6f799b6fe623ae456f891a726b46",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/dottie/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/dottie/special-05.webp",
       "width": 310,
       "height": 378,
-      "alphaSha256": "43a483ffe48fce415d38206994e067fbe14d410aa4a8d2578ef630c63045a8aa"
+      "alphaSha256": "43a483ffe48fce415d38206994e067fbe14d410aa4a8d2578ef630c63045a8aa",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/dottie/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/dottie/special-06.webp",
       "width": 273,
       "height": 392,
-      "alphaSha256": "ec6f30ef1ca5831958e4929869fe54d5b76723315d8a453f96ee366f7f8e473a"
+      "alphaSha256": "ec6f30ef1ca5831958e4929869fe54d5b76723315d8a453f96ee366f7f8e473a",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/dottie/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/dottie/special-07.webp",
       "width": 205,
       "height": 390,
-      "alphaSha256": "d55e223dcd812126de646622811607c553fff0aad50e2476fc9d941e8a86a4da"
+      "alphaSha256": "d55e223dcd812126de646622811607c553fff0aad50e2476fc9d941e8a86a4da",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/dottie/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/dottie/special-08.webp",
       "width": 202,
       "height": 391,
-      "alphaSha256": "05206635e505ba0a1a900be8dd20b436e7b1384b41591aece28acac5f7913ddc"
+      "alphaSha256": "05206635e505ba0a1a900be8dd20b436e7b1384b41591aece28acac5f7913ddc",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/malik/rest.webp",
@@ -15904,56 +16008,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/malik/special-01.webp",
       "width": 162,
       "height": 408,
-      "alphaSha256": "55ec2a683e9605ec0b2d927b10e43858c55e27c94fed106cf8a35303e9b55f55"
+      "alphaSha256": "55ec2a683e9605ec0b2d927b10e43858c55e27c94fed106cf8a35303e9b55f55",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/malik/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/malik/special-02.webp",
       "width": 260,
       "height": 383,
-      "alphaSha256": "4c8f3353cfe6a6f29251ccaf23efba0734c641484d228d6bf22e98372396ca1b"
+      "alphaSha256": "4c8f3353cfe6a6f29251ccaf23efba0734c641484d228d6bf22e98372396ca1b",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/malik/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/malik/special-03.webp",
       "width": 307,
       "height": 370,
-      "alphaSha256": "198eb3da6bbaf286bad3fdea4f2765637ad8aa4a8334d2580e5a1795396c7027"
+      "alphaSha256": "198eb3da6bbaf286bad3fdea4f2765637ad8aa4a8334d2580e5a1795396c7027",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/malik/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/malik/special-04.webp",
       "width": 295,
       "height": 375,
-      "alphaSha256": "ae12782ae629b180d071bb254108aed8147f42b54afb1c2eb01eb533e0da03e6"
+      "alphaSha256": "ae12782ae629b180d071bb254108aed8147f42b54afb1c2eb01eb533e0da03e6",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/malik/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/malik/special-05.webp",
       "width": 397,
       "height": 358,
-      "alphaSha256": "7392452068d7c8afb9b3d4e993fe20a60629c93a4e925478a74fa7113e832c91"
+      "alphaSha256": "7392452068d7c8afb9b3d4e993fe20a60629c93a4e925478a74fa7113e832c91",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/malik/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/malik/special-06.webp",
       "width": 369,
       "height": 314,
-      "alphaSha256": "5cac5372173d0f7aaf444d614d5874f53d9d8b96bc7ac20e8c5a922665bbe9fe"
+      "alphaSha256": "5cac5372173d0f7aaf444d614d5874f53d9d8b96bc7ac20e8c5a922665bbe9fe",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/malik/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/malik/special-07.webp",
       "width": 281,
       "height": 370,
-      "alphaSha256": "2150bdefd5da51e43e90f62cf32440fb2c92c4507feb457de826a5041d21deb5"
+      "alphaSha256": "2150bdefd5da51e43e90f62cf32440fb2c92c4507feb457de826a5041d21deb5",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/malik/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/malik/special-08.webp",
       "width": 183,
       "height": 402,
-      "alphaSha256": "1e0755b96ee0e2e65e6587d671598b72f2f9225b50a7c46fbfde3349b75da948"
+      "alphaSha256": "1e0755b96ee0e2e65e6587d671598b72f2f9225b50a7c46fbfde3349b75da948",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/hugo/rest.webp",
@@ -16919,56 +17031,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/hugo/special-01.webp",
       "width": 220,
       "height": 400,
-      "alphaSha256": "208993e1f1eea1ad66134a43a7dd4fce8dc9f5acabbc1cc032ac7cf940d94fb1"
+      "alphaSha256": "208993e1f1eea1ad66134a43a7dd4fce8dc9f5acabbc1cc032ac7cf940d94fb1",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/hugo/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/hugo/special-02.webp",
       "width": 284,
       "height": 384,
-      "alphaSha256": "7220e10e924613f534174b7f805660a42b7fd2ccd38affbf12464d0683d29860"
+      "alphaSha256": "7220e10e924613f534174b7f805660a42b7fd2ccd38affbf12464d0683d29860",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/hugo/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/hugo/special-03.webp",
       "width": 244,
       "height": 422,
-      "alphaSha256": "2f761475302bd67ea1b84003d56cfaed445406f908a307e6d387f0252663af92"
+      "alphaSha256": "2f761475302bd67ea1b84003d56cfaed445406f908a307e6d387f0252663af92",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/hugo/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/hugo/special-04.webp",
       "width": 352,
       "height": 340,
-      "alphaSha256": "2cb1dda79f9469be862e0d6a1a4e6badaa6d42a0c04a8a42cf0bcec4b7f447d1"
+      "alphaSha256": "2cb1dda79f9469be862e0d6a1a4e6badaa6d42a0c04a8a42cf0bcec4b7f447d1",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/hugo/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/hugo/special-05.webp",
       "width": 323,
       "height": 325,
-      "alphaSha256": "7acf31c07681e6daecc4bf3e3b825cdf6eb79e5fe9d12918b4bde9a238d053d0"
+      "alphaSha256": "7acf31c07681e6daecc4bf3e3b825cdf6eb79e5fe9d12918b4bde9a238d053d0",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/hugo/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/hugo/special-06.webp",
       "width": 403,
       "height": 342,
-      "alphaSha256": "5312324dcde32f4e808169378ed4a524693c5bcde66c60f235897f3b57a440a5"
+      "alphaSha256": "5312324dcde32f4e808169378ed4a524693c5bcde66c60f235897f3b57a440a5",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/hugo/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/hugo/special-07.webp",
       "width": 385,
       "height": 351,
-      "alphaSha256": "1e1803137eb56f34e9740adb69f146aafed7066128c63fc1d6beeb7bcb97a719"
+      "alphaSha256": "1e1803137eb56f34e9740adb69f146aafed7066128c63fc1d6beeb7bcb97a719",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/hugo/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/hugo/special-08.webp",
       "width": 216,
       "height": 400,
-      "alphaSha256": "63ccf568c3aede5f950c39fe2b2ce3b7100172bef699d72038e070d1c4062b81"
+      "alphaSha256": "63ccf568c3aede5f950c39fe2b2ce3b7100172bef699d72038e070d1c4062b81",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/master-animation-v2/jasper/rest.webp",
@@ -17934,56 +18054,64 @@
       "output": "assets/social-club/engraved-v1/special-throw-v1/jasper/special-01.webp",
       "width": 169,
       "height": 411,
-      "alphaSha256": "b25129e6254bcb1a660820955f112f2e37103f2e4d614e6a6c05ebb34b9d3856"
+      "alphaSha256": "b25129e6254bcb1a660820955f112f2e37103f2e4d614e6a6c05ebb34b9d3856",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/jasper/special-02.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/jasper/special-02.webp",
       "width": 214,
       "height": 412,
-      "alphaSha256": "0eb32c024a842bd468ab4077e1bf3f5a7a9cdbe325bd1cd3028af2ab82e1dc82"
+      "alphaSha256": "0eb32c024a842bd468ab4077e1bf3f5a7a9cdbe325bd1cd3028af2ab82e1dc82",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/jasper/special-03.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/jasper/special-03.webp",
       "width": 178,
       "height": 389,
-      "alphaSha256": "ccfa6c66f7795442a2616d55f0bf2aa37b59ba79c35dcdd1c9b1eac88302c29a"
+      "alphaSha256": "ccfa6c66f7795442a2616d55f0bf2aa37b59ba79c35dcdd1c9b1eac88302c29a",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/jasper/special-04.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/jasper/special-04.webp",
       "width": 204,
       "height": 371,
-      "alphaSha256": "1bdb6d2f93c749aad503525857c19e0581a16581acb4609cf88c56f92f88fda2"
+      "alphaSha256": "1bdb6d2f93c749aad503525857c19e0581a16581acb4609cf88c56f92f88fda2",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/jasper/special-05.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/jasper/special-05.webp",
       "width": 236,
       "height": 370,
-      "alphaSha256": "051c7dcefa8001a4583051b3fd383935d4b91e09af210c32867d79bd5e208e3d"
+      "alphaSha256": "051c7dcefa8001a4583051b3fd383935d4b91e09af210c32867d79bd5e208e3d",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/jasper/special-06.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/jasper/special-06.webp",
       "width": 339,
       "height": 356,
-      "alphaSha256": "9fdb34d0f49318c468e76b5501cc24f16e86991b2b13899e8a9952f645b059a5"
+      "alphaSha256": "9fdb34d0f49318c468e76b5501cc24f16e86991b2b13899e8a9952f645b059a5",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/jasper/special-07.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/jasper/special-07.webp",
       "width": 191,
       "height": 402,
-      "alphaSha256": "d835ce75d5e3dceccd866a79aa2ca40a2efcd4f4a1735e588fdaca110674e234"
+      "alphaSha256": "d835ce75d5e3dceccd866a79aa2ca40a2efcd4f4a1735e588fdaca110674e234",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/special-throw-v1/jasper/special-08.webp",
       "output": "assets/social-club/engraved-v1/special-throw-v1/jasper/special-08.webp",
       "width": 279,
       "height": 411,
-      "alphaSha256": "66d0c93ba56ae1089c60efd4b72995d3123a789c44c68077f1cc0a0de0adcd67"
+      "alphaSha256": "66d0c93ba56ae1089c60efd4b72995d3123a789c44c68077f1cc0a0de0adcd67",
+      "encoding": "lossless"
     },
     {
       "source": "assets/social-club/masters-native-v1/bianca-master.webp",

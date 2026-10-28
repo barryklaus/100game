@@ -1,0 +1,984 @@
+{
+  "version": 2,
+  "reviewedAt": "2026-10-28",
+  "method": "Visually reviewed whole-drawing head scale and eye-midpoint registration; one similarity transform per character for all eight poses and release anchor. No bitmap resize.",
+  "sourceResolution": "Native generated frames are 221\u2013437px tall; their lossless re-export preserves available detail but does not reconstruct missing source detail.",
+  "characters": {
+    "vince": {
+      "rest": {
+        "nativeEyes": [
+          [
+            249.94,
+            156.18
+          ],
+          [
+            306.8,
+            163.65
+          ]
+        ],
+        "nativeHeadBox": [
+          146,
+          8,
+          386,
+          180
+        ],
+        "eyeMidpoint": [
+          1044.37,
+          663.915
+        ],
+        "headWidth": 240.0,
+        "eyeSpacing": 57.34858760248592
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            99.33,
+            65.76
+          ],
+          [
+            121.55,
+            66.76
+          ]
+        ],
+        "nativeHeadBox": [
+          48,
+          0,
+          154,
+          74
+        ],
+        "eyeMidpoint": [
+          1045.1240930232557,
+          676.2824186046512
+        ],
+        "headWidth": 282.0093023255814,
+        "eyeSpacing": 59.1753710526885
+      },
+      "registration": [
+        0.92,
+        82.856,
+        41.735
+      ],
+      "transformedRelease": [
+        678.596,
+        1084.271,
+        63.638,
+        88.115
+      ]
+    },
+    "finn": {
+      "rest": {
+        "nativeEyes": [
+          [
+            200.56,
+            155.41
+          ],
+          [
+            261.67,
+            157.31
+          ]
+        ],
+        "nativeHeadBox": [
+          111,
+          8,
+          343,
+          178
+        ],
+        "eyeMidpoint": [
+          1027.115,
+          660.36
+        ],
+        "headWidth": 232.0,
+        "eyeSpacing": 61.139529765937866
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            78.72,
+            55.57
+          ],
+          [
+            103.79,
+            55.94
+          ]
+        ],
+        "nativeHeadBox": [
+          42,
+          0,
+          141,
+          65
+        ],
+        "eyeMidpoint": [
+          1087.8484637681158,
+          684.8803478260869
+        ],
+        "headWidth": 328.27826086956526,
+        "eyeSpacing": 83.13971987262298
+      },
+      "registration": [
+        0.74,
+        222.107,
+        153.549
+      ],
+      "transformedRelease": [
+        1090.288,
+        1068.291,
+        63.799,
+        88.337
+      ]
+    },
+    "june": {
+      "rest": {
+        "nativeEyes": [
+          [
+            198,
+            172.2
+          ],
+          [
+            281.85,
+            176.07
+          ]
+        ],
+        "nativeHeadBox": [
+          54,
+          8,
+          411,
+          204
+        ],
+        "eyeMidpoint": [
+          1036.925,
+          678.135
+        ],
+        "headWidth": 357.0,
+        "eyeSpacing": 83.9392601825868
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            75.2,
+            74
+          ],
+          [
+            114.08,
+            74.58
+          ]
+        ],
+        "nativeHeadBox": [
+          11,
+          0,
+          170,
+          88
+        ],
+        "eyeMidpoint": [
+          1038.9355555555555,
+          696.7309259259258
+        ],
+        "headWidth": 421.05555555555554,
+        "eyeSpacing": 102.97145560032611
+      },
+      "registration": [
+        0.85,
+        153.83,
+        85.914
+      ],
+      "transformedRelease": [
+        754.119,
+        891.32,
+        58.524,
+        81.033
+      ]
+    },
+    "edgar": {
+      "rest": {
+        "nativeEyes": [
+          [
+            223.34,
+            168.76
+          ],
+          [
+            282.15,
+            164.42
+          ]
+        ],
+        "nativeHeadBox": [
+          79,
+          8,
+          353,
+          187
+        ],
+        "eyeMidpoint": [
+          1025.745,
+          670.5899999999999
+        ],
+        "headWidth": 274.0,
+        "eyeSpacing": 58.969921994182734
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            108.26,
+            66.06
+          ],
+          [
+            132.8,
+            60.5
+          ]
+        ],
+        "nativeHeadBox": [
+          19,
+          0,
+          172,
+          72
+        ],
+        "eyeMidpoint": [
+          1093.738454332553,
+          669.5370491803279
+        ],
+        "headWidth": 409.9110070257612,
+        "eyeSpacing": 67.41289055517476
+      },
+      "registration": [
+        0.87,
+        74.193,
+        88.093
+      ],
+      "transformedRelease": [
+        646.909,
+        809.789,
+        60.603,
+        83.911
+      ]
+    },
+    "roxie": {
+      "rest": {
+        "nativeEyes": [
+          [
+            226.54,
+            158.05
+          ],
+          [
+            288,
+            172.41
+          ]
+        ],
+        "nativeHeadBox": [
+          114,
+          8,
+          405,
+          187
+        ],
+        "eyeMidpoint": [
+          1038.27,
+          669.23
+        ],
+        "headWidth": 291.0,
+        "eyeSpacing": 63.115300839020016
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            129.89,
+            74.09
+          ],
+          [
+            159.53,
+            79.28
+          ]
+        ],
+        "nativeHeadBox": [
+          51,
+          0,
+          222,
+          87
+        ],
+        "eyeMidpoint": [
+          1064.3717865429232,
+          703.5444083526681
+        ],
+        "headWidth": 453.88399071925755,
+        "eyeSpacing": 79.87019707127733
+      },
+      "registration": [
+        0.82,
+        165.485,
+        92.324
+      ],
+      "transformedRelease": [
+        1102.02,
+        1129.161,
+        56.59,
+        78.355
+      ]
+    },
+    "otis": {
+      "rest": {
+        "nativeEyes": [
+          [
+            284.15,
+            131.5
+          ],
+          [
+            353.67,
+            125.62
+          ]
+        ],
+        "nativeHeadBox": [
+          194,
+          8,
+          416,
+          153
+        ],
+        "eyeMidpoint": [
+          1024.9099999999999,
+          632.56
+        ],
+        "headWidth": 222.0,
+        "eyeSpacing": 69.76822199253758
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            104.61,
+            50.57
+          ],
+          [
+            133.03,
+            48.17
+          ]
+        ],
+        "nativeHeadBox": [
+          66,
+          0,
+          159,
+          59
+        ],
+        "eyeMidpoint": [
+          1032.0450872817955,
+          640.8460847880298
+        ],
+        "headWidth": 265.31670822942647,
+        "eyeSpacing": 81.36709146088272
+      },
+      "registration": [
+        0.85,
+        147.672,
+        87.841
+      ],
+      "transformedRelease": [
+        882.275,
+        942.055,
+        63.048,
+        87.298
+      ]
+    },
+    "paloma": {
+      "rest": {
+        "nativeEyes": [
+          [
+            196.22,
+            198.59
+          ],
+          [
+            265.77,
+            190.62
+          ]
+        ],
+        "nativeHeadBox": [
+          94,
+          8,
+          373,
+          219
+        ],
+        "eyeMidpoint": [
+          1011.995,
+          698.605
+        ],
+        "headWidth": 279.0,
+        "eyeSpacing": 70.00516695216145
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            73.05,
+            73.11
+          ],
+          [
+            103.24,
+            72.1
+          ]
+        ],
+        "nativeHeadBox": [
+          38,
+          0,
+          155,
+          83
+        ],
+        "eyeMidpoint": [
+          1016.2968867924528,
+          695.8965094339623
+        ],
+        "headWidth": 315.6792452830189,
+        "eyeSpacing": 81.5016087128586
+      },
+      "registration": [
+        0.88,
+        117.654,
+        86.216
+      ],
+      "transformedRelease": [
+        655.5,
+        839.629,
+        61.733,
+        85.476
+      ]
+    },
+    "bianca": {
+      "rest": {
+        "nativeEyes": [
+          [
+            204.95,
+            151.8
+          ],
+          [
+            269.2,
+            155.4
+          ]
+        ],
+        "nativeHeadBox": [
+          71,
+          8,
+          380,
+          176
+        ],
+        "eyeMidpoint": [
+          1023.075,
+          657.6
+        ],
+        "headWidth": 309.0,
+        "eyeSpacing": 64.35077699608607
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            87.41,
+            48.81
+          ],
+          [
+            121.59,
+            55.27
+          ]
+        ],
+        "nativeHeadBox": [
+          40,
+          0,
+          161,
+          64
+        ],
+        "eyeMidpoint": [
+          1145.031884057971,
+          672.5616231884057
+        ],
+        "headWidth": 401.22898550724636,
+        "eyeSpacing": 115.34541406052136
+      },
+      "registration": [
+        0.77,
+        141.4,
+        139.728
+      ],
+      "transformedRelease": [
+        1187.761,
+        1239.645,
+        66.385,
+        91.918
+      ]
+    },
+    "vera": {
+      "rest": {
+        "nativeEyes": [
+          [
+            517.13,
+            259.12
+          ],
+          [
+            576.62,
+            264.8
+          ]
+        ],
+        "nativeHeadBox": [
+          401,
+          59,
+          651,
+          283
+        ],
+        "eyeMidpoint": [
+          1034.875,
+          666.96
+        ],
+        "headWidth": 250.0,
+        "eyeSpacing": 59.7605430028878
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            69.25,
+            66.75
+          ],
+          [
+            99.6,
+            75.1
+          ]
+        ],
+        "nativeHeadBox": [
+          38,
+          0,
+          131,
+          82
+        ],
+        "eyeMidpoint": [
+          1035.9670941176469,
+          603.4461529411763
+        ],
+        "headWidth": 283.5515294117647,
+        "eyeSpacing": 95.97362674372333
+      },
+      "registration": [
+        0.82,
+        185.382,
+        172.134
+      ],
+      "transformedRelease": [
+        681.294,
+        832.156,
+        65.003,
+        90.005
+      ]
+    },
+    "tess": {
+      "rest": {
+        "nativeEyes": [
+          [
+            482.6,
+            262.4
+          ],
+          [
+            547.8,
+            253.1
+          ]
+        ],
+        "nativeHeadBox": [
+          399,
+          109,
+          616,
+          281
+        ],
+        "eyeMidpoint": [
+          1003.2,
+          640.75
+        ],
+        "headWidth": 217.0,
+        "eyeSpacing": 65.85992711808896
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            73.86,
+            59.49
+          ],
+          [
+            98.3,
+            55.57
+          ]
+        ],
+        "nativeHeadBox": [
+          39,
+          0,
+          136,
+          66
+        ],
+        "eyeMidpoint": [
+          977.7639574468087,
+          544.1632127659576
+        ],
+        "headWidth": 311.0191489361702,
+        "eyeSpacing": 79.36558946956492
+      },
+      "registration": [
+        0.74,
+        279.655,
+        238.069
+      ],
+      "transformedRelease": [
+        782.347,
+        831.683,
+        61.691,
+        85.418
+      ]
+    },
+    "nadia": {
+      "rest": {
+        "nativeEyes": [
+          [
+            481.18,
+            207.13
+          ],
+          [
+            551.7,
+            199.4
+          ]
+        ],
+        "nativeHeadBox": [
+          377,
+          62,
+          645,
+          228
+        ],
+        "eyeMidpoint": [
+          1024.44,
+          618.265
+        ],
+        "headWidth": 268.0,
+        "eyeSpacing": 70.94239423645078
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            65,
+            54
+          ],
+          [
+            95.4,
+            52.1
+          ]
+        ],
+        "nativeHeadBox": [
+          27,
+          0,
+          127,
+          64
+        ],
+        "eyeMidpoint": [
+          1035.638261904762,
+          561.7675119047618
+        ],
+        "headWidth": 314.5476190476191,
+        "eyeSpacing": 95.80905680924069
+      },
+      "registration": [
+        0.8,
+        195.929,
+        168.851
+      ],
+      "transformedRelease": [
+        737.069,
+        834.548,
+        65.426,
+        90.59
+      ]
+    },
+    "leon": {
+      "rest": {
+        "nativeEyes": [
+          [
+            505.8,
+            235
+          ],
+          [
+            564.8,
+            243.5
+          ]
+        ],
+        "nativeHeadBox": [
+          449,
+          149,
+          610,
+          260
+        ],
+        "eyeMidpoint": [
+          1029.3,
+          622.25
+        ],
+        "headWidth": 161.0,
+        "eyeSpacing": 59.609143593915135
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            99,
+            34.4
+          ],
+          [
+            127.17,
+            37
+          ]
+        ],
+        "nativeHeadBox": [
+          78,
+          0,
+          144,
+          46
+        ],
+        "eyeMidpoint": [
+          1041.5292530562347,
+          478.3491198044011
+        ],
+        "headWidth": 207.14963325183373,
+        "eyeSpacing": 88.79102234054012
+      },
+      "registration": [
+        0.78,
+        216.907,
+        249.138
+      ],
+      "transformedRelease": [
+        1562.785,
+        884.935,
+        63.651,
+        88.133
+      ]
+    },
+    "dottie": {
+      "rest": {
+        "nativeEyes": [
+          [
+            549.96,
+            283.93
+          ],
+          [
+            629.32,
+            297.93
+          ]
+        ],
+        "nativeHeadBox": [
+          440,
+          126,
+          732,
+          319
+        ],
+        "eyeMidpoint": [
+          1027.64,
+          672.9300000000001
+        ],
+        "headWidth": 292.0,
+        "eyeSpacing": 80.58541803577123
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            97.18,
+            62.75
+          ],
+          [
+            130.89,
+            67.49
+          ]
+        ],
+        "nativeHeadBox": [
+          53,
+          0,
+          176,
+          77
+        ],
+        "eyeMidpoint": [
+          1081.8082725,
+          579.5847199999997
+        ],
+        "headWidth": 417.4005,
+        "eyeSpacing": 115.52022788888235
+      },
+      "registration": [
+        0.7,
+        270.374,
+        267.221
+      ],
+      "transformedRelease": [
+        713.997,
+        819.923,
+        61.762,
+        85.516
+      ]
+    },
+    "malik": {
+      "rest": {
+        "nativeEyes": [
+          [
+            459,
+            188.2
+          ],
+          [
+            522.81,
+            197.46
+          ]
+        ],
+        "nativeHeadBox": [
+          380,
+          3,
+          580,
+          215
+        ],
+        "eyeMidpoint": [
+          1033.905,
+          639.8299999999999
+        ],
+        "headWidth": 200.0,
+        "eyeSpacing": 64.47839715749758
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            77,
+            60.5
+          ],
+          [
+            100.25,
+            64.88
+          ]
+        ],
+        "nativeHeadBox": [
+          52,
+          0,
+          120,
+          71
+        ],
+        "eyeMidpoint": [
+          1046.2638786764705,
+          621.745580882353
+        ],
+        "headWidth": 198.54999999999998,
+        "eyeSpacing": 69.08071551784201
+      },
+      "registration": [
+        1.0,
+        -12.359,
+        18.084
+      ],
+      "transformedRelease": [
+        1563.493,
+        853.884,
+        75.916,
+        105.115
+      ]
+    },
+    "hugo": {
+      "rest": {
+        "nativeEyes": [
+          [
+            559.76,
+            186.75
+          ],
+          [
+            627.89,
+            185.91
+          ]
+        ],
+        "nativeHeadBox": [
+          477,
+          51,
+          709,
+          210
+        ],
+        "eyeMidpoint": [
+          1014.825,
+          569.3299999999999
+        ],
+        "headWidth": 232.0,
+        "eyeSpacing": 68.13517813875589
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            98.95,
+            50.09
+          ],
+          [
+            126.46,
+            50.08
+          ]
+        ],
+        "nativeHeadBox": [
+          68,
+          0,
+          158,
+          60
+        ],
+        "eyeMidpoint": [
+          1032.87442875,
+          528.0163637499999
+        ],
+        "headWidth": 295.26750000000004,
+        "eyeSpacing": 90.25343846283148
+      },
+      "registration": [
+        0.79,
+        198.854,
+        152.197
+      ],
+      "transformedRelease": [
+        1324.013,
+        1128.937,
+        67.387,
+        93.305
+      ]
+    },
+    "jasper": {
+      "rest": {
+        "nativeEyes": [
+          [
+            505.82,
+            191.21
+          ],
+          [
+            565.05,
+            195.7
+          ]
+        ],
+        "nativeHeadBox": [
+          424,
+          62,
+          645,
+          214
+        ],
+        "eyeMidpoint": [
+          1023.435,
+          608.4549999999999
+        ],
+        "headWidth": 221.0,
+        "eyeSpacing": 59.3999410774118
+      },
+      "special-01": {
+        "nativeEyes": [
+          [
+            80.56,
+            49.18
+          ],
+          [
+            103.64,
+            51.16
+          ]
+        ],
+        "nativeHeadBox": [
+          49,
+          0,
+          137,
+          58
+        ],
+        "eyeMidpoint": [
+          1046.9645742092457,
+          553.696406326034
+        ],
+        "headWidth": 265.90559610705594,
+        "eyeSpacing": 69.99594659620101
+      },
+      "registration": [
+        0.83,
+        154.454,
+        148.887
+      ],
+      "transformedRelease": [
+        774.895,
+        720.887,
+        65.207,
+        90.287
+      ]
+    }
+  }
+}

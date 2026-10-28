@@ -58,24 +58,36 @@ def finish(entry):
     tail=entry['source'].split('assets/social-club/',1)[1]
     destination=DEST/tail
     destination.parent.mkdir(parents=True,exist_ok=True)
-    Image.fromarray(a).save(destination,quality=96,method=4,exact=True)
+    # The Special Throw source drawings are small: preserve every ink edge rather
+    # than add another generation of lossy compression to the native pixels.
+    special='/special-throw-v1/' in entry['source']
+    Image.fromarray(a).save(destination,**({'lossless':True,'method':6,'exact':True} if special else {'quality':96,'method':4,'exact':True}))
     exported=Image.open(destination).convert('RGBA')
     assert np.array_equal(np.asarray(exported)[:,:,3],a[:,:,3]), destination
-    return {'source':entry['source'],'output':'assets/social-club/engraved-v1/'+tail,'width':w,'height':h,'alphaSha256':hashlib.sha256(a[:,:,3].tobytes()).hexdigest()}
+    result={'source':entry['source'],'output':'assets/social-club/engraved-v1/'+tail,'width':w,'height':h,'alphaSha256':hashlib.sha256(a[:,:,3].tobytes()).hexdigest()}
+    if special: result['encoding']='lossless'
+    return result
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--trial',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--trial',action='store_true');parser.add_argument('--special-only',action='store_true');args=parser.parse_args()
     entries=sources()
-    if not args.trial:
+    if not args.trial and not args.special_only:
         for source in sorted((ROOT/'public/assets/social-club/masters-native-v1').glob('*-master.webp'))+sorted((ROOT/'public/assets/social-club/masters-v1').glob('*-portrait*.webp')):
             with Image.open(source) as image: w,h=image.size
             entries.append({'source':source.relative_to(ROOT/'public').as_posix(),'bounds':[0,0,w,h]})
     if args.trial: entries=[e for e in entries if e['id'] in ['tess','edgar','otis','roxie'] and e['frame']=='rest' and e['condition']==0]
+    if args.special_only: entries=[e for e in entries if '/special-throw-v1/' in e['source']]
     DEST.mkdir(parents=True,exist_ok=True)
     with ProcessPoolExecutor(max_workers=4) as pool:
         results=[]
         for index,result in enumerate(pool.map(finish,entries)):
             results.append(result)
             if index%100==0: print(f'{index+1}/{len(entries)} frames',flush=True)
-    (DEST/('trial.json' if args.trial else 'manifest.json')).write_text(json.dumps({'version':'engraved-v1','pixelPreserving':True,'frames':results},indent=2)+'\n')
+    if args.special_only:
+        existing=json.loads((DEST/'manifest.json').read_text())
+        replacements={entry['source']:entry for entry in results}
+        existing['frames']=[replacements.get(entry['source'],entry) for entry in existing['frames']]
+        (DEST/'manifest.json').write_text(json.dumps(existing,indent=2)+'\n')
+    else:
+        (DEST/('trial.json' if args.trial else 'manifest.json')).write_text(json.dumps({'version':'engraved-v1','pixelPreserving':True,'frames':results},indent=2)+'\n')
     print(f'Finished {len(results)} whole-character frames',flush=True)

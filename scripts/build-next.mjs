@@ -9,6 +9,9 @@ await build({ entryPoints: ['src/ui/CardHoloPreview.ts'], outfile: 'dist-next/ca
 await build({entryPoints:['src/ui/ConditionPreview.ts'],outfile:'dist-next/condition-preview/preview.js',external:['/assets/*'],bundle:true,format:'iife',target:'es2022',define:{'import.meta.env.BASE_URL':'"/"','import.meta.env.MODE':'"100next"'}});
 const conditionPage=await readFile('dist-next/condition-preview/index.html','utf8');
 await writeFile('dist-next/condition-preview/index.html',conditionPage.replace('/src/ui/ConditionPreview.ts','/condition-preview/preview.js').replace('</head>','<link rel="stylesheet" href="/condition-preview/preview.css"></head>'));
+await build({entryPoints:['src/ui/SpecialThrowPreview.ts'],outfile:'dist-next/special-throw-review/preview.js',bundle:true,format:'iife',target:'es2022',define:{'import.meta.env.BASE_URL':'"/"','import.meta.env.MODE':'"100next"'}});
+const specialPage=await readFile('dist-next/special-throw-review/index.html','utf8');
+await writeFile('dist-next/special-throw-review/index.html',specialPage.replace('/src/ui/SpecialThrowPreview.ts','/special-throw-review/preview.js'));
 await writeFile('dist-next/_routes.json', JSON.stringify({ version: 1, include: ['/api/*'], exclude: [] }));
 const appVersion=JSON.parse(await readFile('package.json','utf8')).version;
 const commit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();

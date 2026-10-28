@@ -3,11 +3,22 @@ import { masterAnimations, type MasterAnimationSet } from './MasterAnimationData
 import { masterHandRect } from './MasterCharacters';
 import { DecodeQueue } from './DecodeQueue';
 import { specialThrows, specialThrowDurations, specialThrowReleaseMs } from './SpecialThrowData';
+import { specialThrowRegistration } from './SpecialThrowRegistration';
 interface CastState { active:number; total:number; overflow:boolean; overflowSeat?:number; target:boolean; reducedMotion:boolean }
-interface Seat { element:HTMLElement; image:HTMLImageElement; id:string; condition:number; data:MasterAnimationSet; epoch:number; held:1|2; frame:string; mood:string; fallen:boolean; timer:number; blinkTimer:number; phase:'rest'|'prepare'|'release'|'receive'; warmed:boolean; specialWarmed:boolean; special:boolean; animation?:{frames:string[];resolve:()=>void;done:Promise<void>} }
-export function masterFrameUrl(id:string,frame='rest',condition=0):string { return `${import.meta.env.BASE_URL}assets/social-club/${import.meta.env?.MODE==='100next'?'engraved-v1/':''}${frame.startsWith('special-')?'special-throw-v1/'+id:condition&&conditionAnimations[id]?.[condition]?'condition-animation-v1/'+id+'/'+condition:'master-animation-v2/'+id}/${frame}.webp`; }
+interface Seat { element:HTMLElement; image:HTMLImageElement; id:string; condition:number; data:MasterAnimationSet; epoch:number; held:1|2; frame:string; mood:string; fallen:boolean; timer:number; blinkTimer:number; phase:'rest'|'prepare'|'release'|'receive'; warmed:boolean; specialWarmed:boolean; special:boolean; animation?:{frames:string[];resolve:()=>void;done:Promise<void>;completedEpoch?:number} }
+export function masterFrameUrl(id:string,frame='rest',condition=0):string {
+ const special=frame.startsWith('special-'),engraved=import.meta.env?.MODE==='100next';
+ return `${import.meta.env.BASE_URL}assets/social-club/${engraved?'engraved-v1/':''}${special?'special-throw-v1/'+id:condition&&conditionAnimations[id]?.[condition]?'condition-animation-v1/'+id+'/'+condition:'master-animation-v2/'+id}/${frame}.webp${engraved&&special?'?v=2':''}`;
+}
+/** Until a matching injured Special Throw exists, retain that condition's complete throw drawings. */
+export function masterSpecialThrowFrames(id:string,condition=0):string[] {
+ return condition===0&&specialThrows[id]?specialThrows[id].frames:(conditionAnimations[id]?.[condition]??masterAnimations[id]).clips.throw.frames;
+}
 export function masterFrameBounds(id:string,frame='rest',condition=0):number[] {
- if(frame.startsWith('special-')&&specialThrows[id]?.bounds[frame])return specialThrows[id].bounds[frame];
+ if(frame.startsWith('special-')&&specialThrows[id]?.bounds[frame]){
+  const [x,y,w,h]=specialThrows[id].bounds[frame],[scale,dx,dy]=specialThrowRegistration[id]??[1,0,0];
+  return [x*scale+dx,y*scale+dy,w*scale,h*scale];
+ }
  const data=conditionAnimations[id]?.[condition]??masterAnimations[id], [x,y,w,h]=data.bounds[frame], [scale,dx,dy]=data.registration??[1,0,0], [poseScale,poseX,poseY]=data.poseRegistration?.[frame]??[1,0,0];
  return [(x*poseScale+poseX)*scale+dx,(y*poseScale+poseY)*scale+dy,w*poseScale*scale,h*poseScale*scale];
 }
@@ -18,6 +29,7 @@ export class MasterAnimations {
  private assets=new Map<string,Promise<HTMLImageElement>>();
  private assetBytes=new Map<string,number>();
  private decodes=new DecodeQueue();
+ private preparations=new WeakMap<Seat,{epoch:number;special:boolean;promise:Promise<DOMRect|undefined>}>();
  private state:CastState={active:0,total:0,overflow:false,target:false,reducedMotion:false};
  private visible=new Set<number>();
  constructor(private root:HTMLElement){}
@@ -28,7 +40,7 @@ export class MasterAnimations {
   const condition=Number(element.dataset.condition??0);
   let seat=this.seats.get(index);
   if(seat&&seat.element===element&&seat.id===id&&seat.condition===condition)return seat;
-  const base=conditionAnimations[id]?.[condition]??masterAnimations[id],special=specialThrows[id];
+  const base=conditionAnimations[id]?.[condition]??masterAnimations[id],special=condition===0?specialThrows[id]:undefined;
   const data=special?{...base,bounds:{...base.bounds,...special.bounds},clips:{...base.clips,'special-throw':{frames:special.frames,durations:specialThrowDurations}}}:base;
   if(!seat||seat.element!==element||seat.id!==id){if(seat){clearTimeout(seat.blinkTimer);this.stop(seat);}seat={element,image,id,condition,data,epoch:0,held:2,frame:'',mood:'Normal',fallen:false,timer:0,blinkTimer:0,phase:'rest',warmed:false,specialWarmed:false,special:false};this.seats.set(index,seat);}
   if(seat.condition!==condition){this.stop(seat);seat.condition=condition;seat.data=data;seat.warmed=false;seat.specialWarmed=false;seat.frame='';}
@@ -121,22 +133,43 @@ export class MasterAnimations {
   if(seat.epoch!==epoch||!seat.image.isConnected)return;
   const total=clip.durations.reduce((a,b)=>a+b,0),until=end??total;
   const finalFrame=()=>{let boundary=0;for(let i=0;i<clip.frames.length;i++){boundary+=clip.durations[i];if(boundary>=until)return clip.frames[i];}return clip.frames.at(-1)!;};
-  if(this.state.reducedMotion){this.paint(seat,finalFrame());this.stop(seat);if(['throw','special-throw'].includes(id)&&seat.phase==='release')seat.phase='rest';return;}
+  if(this.state.reducedMotion){const animation=seat.animation;this.paint(seat,finalFrame());this.stop(seat);if(animation)animation.completedEpoch=seat.epoch;if(['throw','special-throw'].includes(id)&&seat.phase==='release')seat.phase='rest';return;}
   const started=performance.now();
   const step=()=>{
    if(seat.epoch!==epoch||!seat.image.isConnected){done();return;}
    const elapsed=from+performance.now()-started;
-   if(elapsed>=until){this.paint(seat,finalFrame());seat.timer=0;seat.animation=undefined;delete seat.element.dataset.animation;done();if(['throw','special-throw'].includes(id)&&seat.phase==='release')seat.phase='rest';if(until===total&&!['tumble','defeat'].includes(id))void this.rest(index);this.trim();return;}
+   if(elapsed>=until){this.paint(seat,finalFrame());if(seat.animation)seat.animation.completedEpoch=seat.epoch;seat.timer=0;seat.animation=undefined;delete seat.element.dataset.animation;done();if(['throw','special-throw'].includes(id)&&seat.phase==='release')seat.phase='rest';if(until===total&&!['tumble','defeat'].includes(id))void this.rest(index);this.trim();return;}
    let boundary=0,i=0;for(;i<clip.durations.length-1;i++){boundary+=clip.durations[i];if(elapsed<boundary)break;}
    if(seat.frame!==clip.frames[i])this.paint(seat,clip.frames[i]);
    seat.timer=window.setTimeout(step,Math.max(1,Math.min(clip.durations.slice(0,i+1).reduce((a,b)=>a+b,0),until)-elapsed));
   };step();return finished;
  }
- private specialHand(index:number):DOMRect|undefined{const seat=this.seat(index),data=seat&&specialThrows[seat.id];if(!seat||!data)return;const rect=seat.element.getBoundingClientRect(),[x,y,w,h]=data.release;return new DOMRect(rect.left+(x-w/2)/2048*rect.width,rect.top+(y-h/2)/2048*rect.height,w/2048*rect.width,h/2048*rect.height);}
+ private specialHand(index:number):DOMRect|undefined{const seat=this.seat(index),data=seat&&specialThrows[seat.id];if(!seat||!data)return;const rect=seat.element.getBoundingClientRect(),[x,y,w,h]=data.release,[scale,dx,dy]=specialThrowRegistration[seat.id]??[1,0,0];return new DOMRect(rect.left+((x-w/2)*scale+dx)/2048*rect.width,rect.top+((y-h/2)*scale+dy)/2048*rect.height,w*scale/2048*rect.width,h*scale/2048*rect.height);}
  armSpecialThrow(index:number):void{const seat=this.seat(index);if(seat&&seat.held===2&&seat.phase==='rest'&&!seat.fallen)void this.prepareThrow(index,true);}
- cancelSpecialThrow(index:number):void{const seat=this.seat(index);if(seat?.special&&seat.phase==='prepare')this.cancel(index);}
- async prepareThrow(index:number,special=false):Promise<DOMRect|undefined>{const seat=this.seat(index);if(!seat)return;seat.special=special&&!!specialThrows[seat.id];seat.held=2;seat.phase='prepare';await this.play(index,seat.special?'special-throw':'throw',0,seat.special?specialThrowReleaseMs:seat.data.handoff?.releaseMs??320);return seat.special?this.specialHand(index):masterHandRect(this.root,index);}
- release(index:number,special=false):void{const seat=this.seat(index);if(!seat)return;seat.special=special&&!!specialThrows[seat.id];seat.held=1;seat.phase='release';
+ cancelSpecialThrow(index:number):void{const seat=this.seat(index);if(seat?.phase==='prepare')this.cancel(index);}
+ prepareThrow(index:number,special=false):Promise<DOMRect|undefined>{
+  const seat=this.seat(index);if(!seat)return Promise.resolve(undefined);
+  const useSpecial=special&&seat.condition===0&&!!specialThrows[seat.id],previous=this.preparations.get(seat);
+  // Arming already runs the wind-up. The actual play reuses its held pose or
+  // awaits that same preparation, instead of jumping back to special-01.
+  if(special&&seat.special===useSpecial&&seat.phase==='prepare'&&previous?.special&&previous.epoch===seat.epoch)return previous.promise;
+  seat.special=useSpecial;seat.held=2;seat.phase='prepare';
+  const playing=this.play(index,useSpecial?'special-throw':'throw',0,useSpecial?specialThrowReleaseMs:seat.data.handoff?.releaseMs??320),animation=seat.animation;
+  const operation={epoch:seat.epoch,special,promise:Promise.resolve<DOMRect|undefined>(undefined)};
+  operation.promise=playing.then(()=>{
+   const current=this.seats.get(index)===seat&&seat.image.isConnected&&this.preparations.get(seat)===operation;
+   if(!current||seat.phase!=='prepare'||seat.special!==useSpecial||animation?.completedEpoch!==seat.epoch){
+    // A failed decode or canceled wind-up cannot become a ready card anchor.
+    if(current&&seat.phase==='prepare'&&!seat.animation)this.cancel(index);
+    return;
+   }
+   operation.epoch=seat.epoch;
+   return useSpecial?this.specialHand(index):masterHandRect(this.root,index);
+  });
+  this.preparations.set(seat,operation);
+  return operation.promise;
+ }
+ release(index:number,special=false):void{const seat=this.seat(index);if(!seat)return;seat.special=special&&seat.condition===0&&!!specialThrows[seat.id];seat.held=1;seat.phase='release';
   // The flight's onStart callback must remove the painted card in this same
   // task, before any score render or decoding promise can run.
   this.stop(seat);this.paint(seat,seat.special?specialThrows[seat.id].frames[4]:seat.data.handoff?.released??'release');

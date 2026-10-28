@@ -26,7 +26,7 @@ for(const [id,healthy] of Object.entries(master.characters))for(let stage=0;stag
  const data=stage?conditions.characters[id][stage]:healthy;
  for(const frame of Object.keys(data.bounds)){
   assert(existsSync('public'+masterFrameUrl(id,frame,stage)),`${id}/${stage}/${frame} is available in the game`);
-  assert(bySource.has(masterFrameUrl(id,frame,stage).slice(1).replace('engraved-v1/','')));
+  assert(bySource.has(masterFrameUrl(id,frame,stage).slice(1).split('?')[0].replace('engraved-v1/','')));
   assert(masterFrameBounds(id,frame,stage).every(Number.isFinite));
  }
 }
